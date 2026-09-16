@@ -48,7 +48,7 @@ export const ACTIVE_LOCALES: LocaleCode[] = ALL_LOCALES.filter(
   (l) => LOCALE_STATUS[l] === 'active',
 );
 
-export type CalculatorType = 'usPaycheck' | 'salaryToHourly' | 'hourlyToSalary' | 'payFrequencyConverter' | 'salaryRaise';
+export type CalculatorType = 'usPaycheck' | 'salaryToHourly' | 'hourlyToSalary' | 'payFrequencyConverter' | 'salaryRaise' | 'rentAffordability';
 
 export type Category = 'salary' | 'tax' | 'rent' | 'labor' | 'states' | 'guides';
 

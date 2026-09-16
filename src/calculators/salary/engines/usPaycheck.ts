@@ -16,7 +16,7 @@ const stateEngines: Record<string, StateTaxEngine> = {
   TX: txStateEngine,
 };
 
-export type FilingStatus = 'single' | 'marriedJointly';
+export type FilingStatus = 'single' | 'marriedJointly' | 'marriedSeparately' | 'headOfHousehold';
 
 export interface UsPaycheckInput {
   /** Gross pay for ONE pay period, in USD. */
@@ -77,6 +77,9 @@ export const usPaycheckEngine: CalculatorEngine<
     if (input.stateCode && !stateEngines[input.stateCode.toUpperCase()]) {
       errors.stateCode = 'errors.unsupportedState';
     }
+    if (input.filingStatus === 'marriedSeparately' || input.filingStatus === 'headOfHousehold') {
+      errors.filingStatus = 'UNSUPPORTED_FILING_STATUS';
+    }
     return Object.keys(errors).length === 0
       ? { valid: true, data: input }
       : { valid: false, errors };
@@ -87,15 +90,16 @@ export const usPaycheckEngine: CalculatorEngine<
       throw new Error(`US paycheck engine only has verified data for tax year 2026 (got ${year}).`);
     }
 
+    if (input.filingStatus === 'marriedSeparately' || input.filingStatus === 'headOfHousehold') {
+      throw new Error('Married filing separately and Head of household are not supported yet.');
+    }
+
     const periodsPerYear = PERIODS_PER_YEAR[input.payFrequency];
     const preTax = Math.max(0, input.preTaxDeductionsPerPeriod || 0);
     const annualGrossPay = input.grossPayPerPeriod * periodsPerYear;
     const annualPreTaxDeductions = preTax * periodsPerYear;
 
-    const standardDeduction =
-      input.filingStatus === 'single'
-        ? standardDeduction2026.single
-        : standardDeduction2026.marriedJointly;
+    const standardDeduction = input.filingStatus === 'single' ? standardDeduction2026.single : standardDeduction2026.marriedJointly;
 
     const taxableIncome = Math.max(0, annualGrossPay - annualPreTaxDeductions - standardDeduction);
     const brackets =
@@ -111,7 +115,7 @@ export const usPaycheckEngine: CalculatorEngine<
     const annualSocialSecurity = ssTaxableAnnual * fica2026.socialSecurityRate;
     
     let annualMedicare = annualGrossPay * fica2026.medicareRate;
-    const additionalMedicareThreshold = fica2026.additionalMedicareThreshold[input.filingStatus];
+    const additionalMedicareThreshold = input.filingStatus === 'single' ? fica2026.additionalMedicareThreshold.single : fica2026.additionalMedicareThreshold.marriedJointly;
     if (annualGrossPay > additionalMedicareThreshold) {
       annualMedicare += (annualGrossPay - additionalMedicareThreshold) * fica2026.additionalMedicareRate;
     }
