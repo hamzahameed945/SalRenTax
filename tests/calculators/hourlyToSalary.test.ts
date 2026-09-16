@@ -6,7 +6,7 @@ describe('hourlyToSalaryEngine.validate', () => {
     const result = hourlyToSalaryEngine.validate({
       hourlyWage: 25,
       hoursPerWeek: 40,
-      weeksPerYear: 52
+      weeksPerYear: 52,
     });
     expect(result.valid).toBe(true);
   });
@@ -15,7 +15,7 @@ describe('hourlyToSalaryEngine.validate', () => {
     const result = hourlyToSalaryEngine.validate({
       hourlyWage: -10,
       hoursPerWeek: 40,
-      weeksPerYear: 52
+      weeksPerYear: 52,
     });
     expect(result.valid).toBe(false);
   });
@@ -23,12 +23,16 @@ describe('hourlyToSalaryEngine.validate', () => {
 
 describe('hourlyToSalaryEngine.calculate', () => {
   it('calculates annual salary correctly for standard full time', () => {
-    const result = hourlyToSalaryEngine.calculate({
-      hourlyWage: 25,
-      hoursPerWeek: 40,
-      weeksPerYear: 52
-    }, undefined as never, 2026);
-    
+    const result = hourlyToSalaryEngine.calculate(
+      {
+        hourlyWage: 25,
+        hoursPerWeek: 40,
+        weeksPerYear: 52,
+      },
+      undefined as never,
+      2026,
+    );
+
     expect(result.annualSalary).toBe(52000);
     expect(result.weeklyWage).toBe(1000);
     expect(result.dailyWage).toBe(200);

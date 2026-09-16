@@ -14,7 +14,9 @@ describe('usPaycheckEngine.validate', () => {
       preTaxDeductionsPerPeriod: 0,
     });
     expect(result.valid).toBe(false);
-    expect(result.errors.grossPayPerPeriod).toBeDefined();
+    if (!result.valid) {
+      expect(result.errors.grossPayPerPeriod).toBeDefined();
+    }
   });
 
   it('accepts a valid input', () => {
@@ -172,25 +174,60 @@ describe('usPaycheckEngine.calculate', () => {
 
   describe('Additional Medicare Tax', () => {
     it('applies to Single filers over 200k', () => {
-      const result = usPaycheckEngine.calculate({ grossPayPerPeriod: 250_000, payFrequency: 'annually', filingStatus: 'single', preTaxDeductionsPerPeriod: 0 }, CONFIG, 2026);
-      expect(result.annualMedicare).toBeCloseTo(250_000 * fica2026.medicareRate + 50_000 * fica2026.additionalMedicareRate);
+      const result = usPaycheckEngine.calculate(
+        {
+          grossPayPerPeriod: 250_000,
+          payFrequency: 'annually',
+          filingStatus: 'single',
+          preTaxDeductionsPerPeriod: 0,
+        },
+        CONFIG,
+        2026,
+      );
+      expect(result.annualMedicare).toBeCloseTo(
+        250_000 * fica2026.medicareRate + 50_000 * fica2026.additionalMedicareRate,
+      );
     });
 
     it('does not apply exactly at the threshold', () => {
-      const result = usPaycheckEngine.calculate({ grossPayPerPeriod: 200_000, payFrequency: 'annually', filingStatus: 'single', preTaxDeductionsPerPeriod: 0 }, CONFIG, 2026);
+      const result = usPaycheckEngine.calculate(
+        {
+          grossPayPerPeriod: 200_000,
+          payFrequency: 'annually',
+          filingStatus: 'single',
+          preTaxDeductionsPerPeriod: 0,
+        },
+        CONFIG,
+        2026,
+      );
       expect(result.annualMedicare).toBeCloseTo(200_000 * fica2026.medicareRate);
     });
 
     it('applies to Married Jointly filers over 250k', () => {
-      const result = usPaycheckEngine.calculate({ grossPayPerPeriod: 300_000, payFrequency: 'annually', filingStatus: 'marriedJointly', preTaxDeductionsPerPeriod: 0 }, CONFIG, 2026);
-      expect(result.annualMedicare).toBeCloseTo(300_000 * fica2026.medicareRate + 50_000 * fica2026.additionalMedicareRate);
+      const result = usPaycheckEngine.calculate(
+        {
+          grossPayPerPeriod: 300_000,
+          payFrequency: 'annually',
+          filingStatus: 'marriedJointly',
+          preTaxDeductionsPerPeriod: 0,
+        },
+        CONFIG,
+        2026,
+      );
+      expect(result.annualMedicare).toBeCloseTo(
+        300_000 * fica2026.medicareRate + 50_000 * fica2026.additionalMedicareRate,
+      );
     });
-
   });
 
   describe('Unsupported Filing Statuses', () => {
     it('returns UNSUPPORTED_FILING_STATUS for Married filing separately', () => {
-      const result = usPaycheckEngine.validate({ grossPayPerPeriod: 50_000, payFrequency: 'annually', filingStatus: 'marriedSeparately', preTaxDeductionsPerPeriod: 0 });
+      const result = usPaycheckEngine.validate({
+        grossPayPerPeriod: 50_000,
+        payFrequency: 'annually',
+        filingStatus: 'marriedSeparately',
+        preTaxDeductionsPerPeriod: 0,
+      });
       expect(result.valid).toBe(false);
       if (!result.valid) {
         expect(result.errors.filingStatus).toBe('UNSUPPORTED_FILING_STATUS');
@@ -198,7 +235,12 @@ describe('usPaycheckEngine.calculate', () => {
     });
 
     it('returns UNSUPPORTED_FILING_STATUS for Head of household', () => {
-      const result = usPaycheckEngine.validate({ grossPayPerPeriod: 50_000, payFrequency: 'annually', filingStatus: 'headOfHousehold', preTaxDeductionsPerPeriod: 0 });
+      const result = usPaycheckEngine.validate({
+        grossPayPerPeriod: 50_000,
+        payFrequency: 'annually',
+        filingStatus: 'headOfHousehold',
+        preTaxDeductionsPerPeriod: 0,
+      });
       expect(result.valid).toBe(false);
       if (!result.valid) {
         expect(result.errors.filingStatus).toBe('UNSUPPORTED_FILING_STATUS');
@@ -208,19 +250,44 @@ describe('usPaycheckEngine.calculate', () => {
 
   describe('State Tax Architecture', () => {
     it('returns zero state tax if no stateCode is provided', () => {
-      const result = usPaycheckEngine.calculate({ grossPayPerPeriod: 50_000, payFrequency: 'annually', filingStatus: 'single', preTaxDeductionsPerPeriod: 0 }, CONFIG, 2026);
+      const result = usPaycheckEngine.calculate(
+        {
+          grossPayPerPeriod: 50_000,
+          payFrequency: 'annually',
+          filingStatus: 'single',
+          preTaxDeductionsPerPeriod: 0,
+        },
+        CONFIG,
+        2026,
+      );
       expect(result.annualStateIncomeTax).toBeUndefined();
     });
 
     it('calculates zero state tax for Texas (TX)', () => {
-      const result = usPaycheckEngine.calculate({ grossPayPerPeriod: 50_000, payFrequency: 'annually', filingStatus: 'single', preTaxDeductionsPerPeriod: 0, stateCode: 'TX' }, CONFIG, 2026);
+      const result = usPaycheckEngine.calculate(
+        {
+          grossPayPerPeriod: 50_000,
+          payFrequency: 'annually',
+          filingStatus: 'single',
+          preTaxDeductionsPerPeriod: 0,
+          stateCode: 'TX',
+        },
+        CONFIG,
+        2026,
+      );
       expect(result.annualStateIncomeTax).toBe(0);
       expect(result.stateIncomeTaxPerPeriod).toBe(0);
       expect(result.effectiveStateRate).toBe(0);
     });
 
     it('validates stateCode and rejects unsupported states', () => {
-      const result = usPaycheckEngine.validate({ grossPayPerPeriod: 50_000, payFrequency: 'annually', filingStatus: 'single', preTaxDeductionsPerPeriod: 0, stateCode: 'NY' });
+      const result = usPaycheckEngine.validate({
+        grossPayPerPeriod: 50_000,
+        payFrequency: 'annually',
+        filingStatus: 'single',
+        preTaxDeductionsPerPeriod: 0,
+        stateCode: 'NY',
+      });
       expect(result.valid).toBe(false);
       if (!result.valid) {
         expect(result.errors.stateCode).toBeDefined();

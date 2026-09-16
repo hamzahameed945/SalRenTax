@@ -10,7 +10,7 @@ import {
 } from '../../../data/salary/us/federalTax2026';
 
 import { txStateEngine } from './usStates/tx';
-import type { StateTaxEngine, StateTaxResult } from './usStates/types';
+import type { StateTaxEngine } from './usStates/types';
 
 const stateEngines: Record<string, StateTaxEngine> = {
   TX: txStateEngine,
@@ -99,7 +99,10 @@ export const usPaycheckEngine: CalculatorEngine<
     const annualGrossPay = input.grossPayPerPeriod * periodsPerYear;
     const annualPreTaxDeductions = preTax * periodsPerYear;
 
-    const standardDeduction = input.filingStatus === 'single' ? standardDeduction2026.single : standardDeduction2026.marriedJointly;
+    const standardDeduction =
+      input.filingStatus === 'single'
+        ? standardDeduction2026.single
+        : standardDeduction2026.marriedJointly;
 
     const taxableIncome = Math.max(0, annualGrossPay - annualPreTaxDeductions - standardDeduction);
     const brackets =
@@ -113,11 +116,15 @@ export const usPaycheckEngine: CalculatorEngine<
 
     const ssTaxableAnnual = Math.min(annualGrossPay, fica2026.socialSecurityWageBase);
     const annualSocialSecurity = ssTaxableAnnual * fica2026.socialSecurityRate;
-    
+
     let annualMedicare = annualGrossPay * fica2026.medicareRate;
-    const additionalMedicareThreshold = input.filingStatus === 'single' ? fica2026.additionalMedicareThreshold.single : fica2026.additionalMedicareThreshold.marriedJointly;
+    const additionalMedicareThreshold =
+      input.filingStatus === 'single'
+        ? fica2026.additionalMedicareThreshold.single
+        : fica2026.additionalMedicareThreshold.marriedJointly;
     if (annualGrossPay > additionalMedicareThreshold) {
-      annualMedicare += (annualGrossPay - additionalMedicareThreshold) * fica2026.additionalMedicareRate;
+      annualMedicare +=
+        (annualGrossPay - additionalMedicareThreshold) * fica2026.additionalMedicareRate;
     }
 
     const federalIncomeTaxPerPeriod = annualFederalIncomeTax / periodsPerYear;

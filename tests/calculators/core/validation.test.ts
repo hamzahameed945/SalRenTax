@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { isPositiveNumber, isNonNegativeNumber, validateRequired } from '../../../src/calculators/core/validation';
+import {
+  isPositiveNumber,
+  isNonNegativeNumber,
+  validateRequired,
+} from '../../../src/calculators/core/validation';
 
 describe('validation primitives', () => {
   it('isPositiveNumber', () => {

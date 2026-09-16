@@ -1,10 +1,18 @@
 import { useState, useMemo } from 'preact/hooks';
 import { rentAffordabilityEngine } from '../../calculators/rent/engines/rentAffordability';
 
-export default function RentAffordabilityCalculator({ t, locale }: { t: any; locale: string }) {
+export default function RentAffordabilityCalculator({
+  _t,
+  locale,
+}: {
+  _t?: Record<string, unknown>;
+  locale: string;
+}) {
   const [grossIncome, setGrossIncome] = useState('');
   const [netIncome, setNetIncome] = useState('');
-  const [payFrequency, setPayFrequency] = useState<'annually' | 'monthly' | 'biweekly' | 'weekly'>('annually');
+  const [payFrequency, setPayFrequency] = useState<'annually' | 'monthly' | 'biweekly' | 'weekly'>(
+    'annually',
+  );
   const [targetGrossPercentage, setTargetGrossPercentage] = useState('30');
 
   const result = useMemo(() => {
@@ -17,7 +25,14 @@ export default function RentAffordabilityCalculator({ t, locale }: { t: any; loc
 
     const validation = rentAffordabilityEngine.validate(input);
     if (validation.valid) {
-      return { data: rentAffordabilityEngine.calculate(validation.data), error: null };
+      return {
+        data: rentAffordabilityEngine.calculate(
+          validation.data,
+          {} as never,
+          new Date().getFullYear(),
+        ),
+        error: null,
+      };
     }
     return { data: null, error: validation.errors };
   }, [grossIncome, netIncome, payFrequency, targetGrossPercentage]);
@@ -55,7 +70,12 @@ export default function RentAffordabilityCalculator({ t, locale }: { t: any; loc
           <select
             class="w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
             value={payFrequency}
-            onChange={(e) => setPayFrequency((e.target as HTMLSelectElement).value as any)}
+            onChange={(e) =>
+              setPayFrequency(
+                (e.target as HTMLSelectElement).value as
+                  'annually' | 'monthly' | 'biweekly' | 'weekly',
+              )
+            }
           >
             <option value="annually">Annually</option>
             <option value="monthly">Monthly</option>
@@ -65,7 +85,9 @@ export default function RentAffordabilityCalculator({ t, locale }: { t: any; loc
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">Target Rent Percentage (%)</label>
+          <label class="block text-sm font-medium text-slate-700 mb-1">
+            Target Rent Percentage (%)
+          </label>
           <input
             type="number"
             class="w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
@@ -80,38 +102,59 @@ export default function RentAffordabilityCalculator({ t, locale }: { t: any; loc
       </div>
 
       <div class="rounded-xl bg-slate-50 p-6">
-        <h3 class="text-lg font-semibold text-slate-900 mb-4">Affordability Estimate</h3>
+        <h3 class="text-lg font-semibold text-slate-900 mb-4">Affordability Guidelines</h3>
         {result.data ? (
           <div class="space-y-4">
             <div>
-              <p class="text-sm text-slate-500">Target Monthly Rent</p>
+              <p class="text-sm text-slate-500">Recommended Rent (Gross 30% rule)</p>
               <p class="text-3xl font-bold text-accent">
-                {new Intl.NumberFormat(locale, { style: 'currency', currency: 'USD' }).format(result.data.recommendedMonthlyRent)}
+                {new Intl.NumberFormat(locale, { style: 'currency', currency: 'USD' }).format(
+                  result.data.recommendedRentGross,
+                )}
               </p>
             </div>
-            
+
             <div class="pt-4 border-t border-slate-200">
-              <p class="text-sm text-slate-500 mb-1">Maximum recommended rule (40x rule)</p>
+              <p class="text-sm text-slate-500 mb-1">Monthly Gross Income</p>
               <p class="font-medium text-slate-900">
-                {new Intl.NumberFormat(locale, { style: 'currency', currency: 'USD' }).format(result.data.maximumMonthlyRent40xRule)}
+                {new Intl.NumberFormat(locale, { style: 'currency', currency: 'USD' }).format(
+                  result.data.monthlyGrossIncome,
+                )}
               </p>
             </div>
-            
-            {result.data.netIncomePerPeriod && result.data.netIncomeMonthly && (
-              <div class="pt-4 border-t border-slate-200">
-                <p class="text-sm text-slate-500 mb-1">Remaining Net Income (Monthly)</p>
-                <p class="font-medium text-slate-900">
-                  {new Intl.NumberFormat(locale, { style: 'currency', currency: 'USD' }).format(result.data.netIncomeMonthly - result.data.recommendedMonthlyRent)}
-                </p>
-              </div>
+
+            {result.data.monthlyNetIncome && result.data.recommendedRentNet && (
+              <>
+                <div class="pt-4 border-t border-slate-200">
+                  <p class="text-sm text-slate-500 mb-1">Recommended Rent (Net 30% rule)</p>
+                  <p class="font-medium text-amber-600">
+                    {new Intl.NumberFormat(locale, { style: 'currency', currency: 'USD' }).format(
+                      result.data.recommendedRentNet,
+                    )}
+                  </p>
+                </div>
+                <div class="pt-4 border-t border-slate-200">
+                  <p class="text-sm text-slate-500 mb-1">Monthly Net Income</p>
+                  <p class="font-medium text-slate-900">
+                    {new Intl.NumberFormat(locale, { style: 'currency', currency: 'USD' }).format(
+                      result.data.monthlyNetIncome,
+                    )}
+                  </p>
+                </div>
+              </>
             )}
 
             <div class="mt-6 text-sm text-slate-600">
-              <p>Based on your {targetGrossPercentage}% target, your estimated rent matches standard affordability guidelines.</p>
+              <p>
+                Based on your {targetGrossPercentage}% target, your estimated rent matches standard
+                affordability guidelines.
+              </p>
             </div>
           </div>
         ) : (
-          <p class="text-slate-500 text-sm">Enter your income details to see your affordability estimate.</p>
+          <p class="text-slate-500 text-sm">
+            Enter your income details to see your affordability estimate.
+          </p>
         )}
       </div>
     </div>

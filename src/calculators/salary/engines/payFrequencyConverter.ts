@@ -1,6 +1,6 @@
 import type { CalculatorEngine, ValidationResult } from '../../core/types';
 import type { PayFrequency } from '../../core/frequency';
-import { PERIODS_PER_YEAR, convertFrequency } from '../../core/frequency';
+import { PERIODS_PER_YEAR } from '../../core/frequency';
 import { roundToCents } from '../../core/math';
 
 export interface PayFrequencyConverterInput {
@@ -60,7 +60,7 @@ export const payFrequencyConverterEngine: CalculatorEngine<
 
     // Now calculate all other frequencies
     const weeklyWage = annualAmount / 52;
-    
+
     return {
       annually: roundToCents(annualAmount),
       monthly: roundToCents(annualAmount / PERIODS_PER_YEAR.monthly),
@@ -70,5 +70,5 @@ export const payFrequencyConverterEngine: CalculatorEngine<
       daily: roundToCents(weeklyWage / 5),
       hourly: roundToCents(weeklyWage / hoursPerWeek),
     };
-  }
+  },
 };

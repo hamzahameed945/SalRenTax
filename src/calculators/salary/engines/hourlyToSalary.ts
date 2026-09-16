@@ -25,19 +25,31 @@ export const hourlyToSalaryEngine: CalculatorEngine<
   validate(input: HourlyToSalaryInput): ValidationResult<HourlyToSalaryInput> {
     const errors: Partial<Record<keyof HourlyToSalaryInput, string>> = {};
 
-    if (input.hourlyWage === undefined || input.hourlyWage === null || Number.isNaN(input.hourlyWage)) {
+    if (
+      input.hourlyWage === undefined ||
+      input.hourlyWage === null ||
+      Number.isNaN(input.hourlyWage)
+    ) {
       errors.hourlyWage = 'errors.invalidNumber';
     } else if (input.hourlyWage <= 0) {
       errors.hourlyWage = 'errors.mustBePositive';
     }
 
-    if (input.hoursPerWeek === undefined || input.hoursPerWeek === null || Number.isNaN(input.hoursPerWeek)) {
+    if (
+      input.hoursPerWeek === undefined ||
+      input.hoursPerWeek === null ||
+      Number.isNaN(input.hoursPerWeek)
+    ) {
       errors.hoursPerWeek = 'errors.invalidNumber';
     } else if (input.hoursPerWeek <= 0 || input.hoursPerWeek > 168) {
       errors.hoursPerWeek = 'errors.invalidHoursPerWeek';
     }
 
-    if (input.weeksPerYear === undefined || input.weeksPerYear === null || Number.isNaN(input.weeksPerYear)) {
+    if (
+      input.weeksPerYear === undefined ||
+      input.weeksPerYear === null ||
+      Number.isNaN(input.weeksPerYear)
+    ) {
       errors.weeksPerYear = 'errors.invalidNumber';
     } else if (input.weeksPerYear <= 0 || input.weeksPerYear > 52) {
       errors.weeksPerYear = 'errors.invalidWeeksPerYear';
@@ -54,7 +66,7 @@ export const hourlyToSalaryEngine: CalculatorEngine<
     const weeklyWage = hourlyWage * hoursPerWeek;
     const dailyWage = weeklyWage / 5;
     const annualSalary = weeklyWage * weeksPerYear;
-    
+
     const biweeklyWage = annualSalary / PERIODS_PER_YEAR.biweekly;
     const monthlyWage = annualSalary / PERIODS_PER_YEAR.monthly;
 
@@ -66,5 +78,5 @@ export const hourlyToSalaryEngine: CalculatorEngine<
       monthlyWage: roundToCents(monthlyWage),
       annualSalary: roundToCents(annualSalary),
     };
-  }
+  },
 };

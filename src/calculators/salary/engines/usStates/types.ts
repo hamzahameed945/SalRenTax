@@ -9,5 +9,9 @@ export interface StateTaxResult {
 
 export interface StateTaxEngine {
   stateCode: string;
-  calculate(input: UsPaycheckInput, annualGrossPay: number, annualPreTaxDeductions: number): StateTaxResult;
+  calculate(
+    input: UsPaycheckInput,
+    annualGrossPay: number,
+    annualPreTaxDeductions: number,
+  ): StateTaxResult;
 }

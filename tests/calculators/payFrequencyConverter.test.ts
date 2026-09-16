@@ -3,12 +3,16 @@ import { payFrequencyConverterEngine } from '../../src/calculators/salary/engine
 
 describe('payFrequencyConverterEngine.calculate', () => {
   it('converts monthly to all frequencies', () => {
-    const result = payFrequencyConverterEngine.calculate({
-      amount: 5000,
-      frequency: 'monthly',
-      hoursPerWeek: 40
-    }, undefined as never, 2026);
-    
+    const result = payFrequencyConverterEngine.calculate(
+      {
+        amount: 5000,
+        frequency: 'monthly',
+        hoursPerWeek: 40,
+      },
+      undefined as never,
+      2026,
+    );
+
     expect(result.annually).toBe(60000); // 5000 * 12
     expect(result.monthly).toBe(5000);
     expect(result.biweekly).toBeCloseTo(2307.69); // 60000 / 26
@@ -17,12 +21,16 @@ describe('payFrequencyConverterEngine.calculate', () => {
   });
 
   it('converts hourly to all frequencies', () => {
-    const result = payFrequencyConverterEngine.calculate({
-      amount: 25,
-      frequency: 'hourly',
-      hoursPerWeek: 40
-    }, undefined as never, 2026);
-    
+    const result = payFrequencyConverterEngine.calculate(
+      {
+        amount: 25,
+        frequency: 'hourly',
+        hoursPerWeek: 40,
+      },
+      undefined as never,
+      2026,
+    );
+
     expect(result.annually).toBe(52000); // 25 * 40 * 52
     expect(result.weekly).toBe(1000);
     expect(result.hourly).toBe(25);

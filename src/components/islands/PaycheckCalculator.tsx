@@ -1,9 +1,6 @@
 import { useMemo, useState } from 'preact/hooks';
-import {
-  usPaycheckEngine,
-  type FilingStatus,
-  type PayFrequency,
-} from '../../calculators/salary/engines/usPaycheck';
+import { usPaycheckEngine, type FilingStatus } from '../../calculators/salary/engines/usPaycheck';
+import type { PayFrequency } from '../../calculators/core/frequency';
 import { getLocaleConfig } from '../../data/locales';
 import { formatCurrency, formatPercent } from '../../lib/formatting/format';
 import { enUS } from '../../i18n/en-US';
@@ -63,10 +60,10 @@ export default function PaycheckCalculator() {
             value={grossPay}
             onInput={(e) => setGrossPay((e.target as HTMLInputElement).value)}
             class="w-full rounded-md border border-slate-300 px-3 py-2 text-lg focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
-            aria-invalid={touched && !!validation.errors.grossPayPerPeriod}
+            aria-invalid={touched && !validation.valid && !!validation.errors.grossPayPerPeriod}
             aria-describedby="grossPay-error"
           />
-          {touched && validation.errors.grossPayPerPeriod && (
+          {touched && !validation.valid && validation.errors.grossPayPerPeriod && (
             <p id="grossPay-error" class="mt-1 text-sm text-red-600">
               {tErrors[validation.errors.grossPayPerPeriod.split('.')[1] as keyof typeof tErrors]}
             </p>
@@ -84,7 +81,9 @@ export default function PaycheckCalculator() {
             class="w-full rounded-md border border-slate-300 px-3 py-2 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
           >
             {PAY_FREQUENCIES.map((freq) => (
-              <option value={freq}>{t.payFrequencies[freq]}</option>
+              <option value={freq}>
+                {t.payFrequencies[freq as keyof typeof t.payFrequencies]}
+              </option>
             ))}
           </select>
         </div>
@@ -100,7 +99,9 @@ export default function PaycheckCalculator() {
             class="w-full rounded-md border border-slate-300 px-3 py-2 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
           >
             {FILING_STATUSES.map((status) => (
-              <option value={status}>{t.filingStatuses[status]}</option>
+              <option value={status}>
+                {t.filingStatuses[status as keyof typeof t.filingStatuses]}
+              </option>
             ))}
           </select>
         </div>

@@ -1,4 +1,5 @@
-export type PayFrequency = 'annually' | 'monthly' | 'semimonthly' | 'biweekly' | 'weekly' | 'daily' | 'hourly';
+export type PayFrequency =
+  'annually' | 'monthly' | 'semimonthly' | 'biweekly' | 'weekly' | 'daily' | 'hourly';
 
 export const PERIODS_PER_YEAR: Record<PayFrequency, number> = {
   annually: 1,

@@ -3,7 +3,11 @@ import type { UsPaycheckInput } from '../usPaycheck';
 
 export const txStateEngine: StateTaxEngine = {
   stateCode: 'TX',
-  calculate(input: UsPaycheckInput, annualGrossPay: number, annualPreTaxDeductions: number): StateTaxResult {
+  calculate(
+    _input: UsPaycheckInput,
+    _annualGrossPay: number,
+    _annualPreTaxDeductions: number,
+  ): StateTaxResult {
     // Texas has no state income tax
     return {
       state: 'TX',

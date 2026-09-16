@@ -19,15 +19,15 @@ export interface SalaryRaiseResult {
   hourlyDifference?: number;
 }
 
-export const salaryRaiseEngine: CalculatorEngine<
-  SalaryRaiseInput,
-  SalaryRaiseResult,
-  never
-> = {
+export const salaryRaiseEngine: CalculatorEngine<SalaryRaiseInput, SalaryRaiseResult, never> = {
   validate(input: SalaryRaiseInput): ValidationResult<SalaryRaiseInput> {
     const errors: Partial<Record<keyof SalaryRaiseInput, string>> = {};
 
-    if (input.currentSalary === undefined || input.currentSalary === null || Number.isNaN(input.currentSalary)) {
+    if (
+      input.currentSalary === undefined ||
+      input.currentSalary === null ||
+      Number.isNaN(input.currentSalary)
+    ) {
       errors.currentSalary = 'errors.invalidNumber';
     } else if (input.currentSalary <= 0) {
       errors.currentSalary = 'errors.mustBePositive';
@@ -70,7 +70,7 @@ export const salaryRaiseEngine: CalculatorEngine<
 
   calculate(input: SalaryRaiseInput): SalaryRaiseResult {
     const { currentSalary, hoursPerWeek = 40 } = input;
-    
+
     let newSalary = 0;
     let increaseAmount = 0;
     let increasePercentage = 0;
@@ -87,7 +87,7 @@ export const salaryRaiseEngine: CalculatorEngine<
 
     const monthlyDifference = increaseAmount / PERIODS_PER_YEAR.monthly;
     const biweeklyDifference = increaseAmount / PERIODS_PER_YEAR.biweekly;
-    
+
     const currentHourly = currentSalary / (hoursPerWeek * 52);
     const newHourly = newSalary / (hoursPerWeek * 52);
     const hourlyDifference = newHourly - currentHourly;
@@ -101,5 +101,5 @@ export const salaryRaiseEngine: CalculatorEngine<
       biweeklyDifference: roundToCents(biweeklyDifference),
       hourlyDifference: roundToCents(hourlyDifference),
     };
-  }
+  },
 };

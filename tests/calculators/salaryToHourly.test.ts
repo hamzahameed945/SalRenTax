@@ -6,7 +6,7 @@ describe('salaryToHourlyEngine.validate', () => {
     const result = salaryToHourlyEngine.validate({
       annualSalary: 50000,
       hoursPerWeek: 40,
-      weeksPerYear: 52
+      weeksPerYear: 52,
     });
     expect(result.valid).toBe(true);
   });
@@ -15,7 +15,7 @@ describe('salaryToHourlyEngine.validate', () => {
     const result = salaryToHourlyEngine.validate({
       annualSalary: 50000,
       hoursPerWeek: 200, // max 168
-      weeksPerYear: 52
+      weeksPerYear: 52,
     });
     expect(result.valid).toBe(false);
   });
@@ -24,7 +24,7 @@ describe('salaryToHourlyEngine.validate', () => {
     const result = salaryToHourlyEngine.validate({
       annualSalary: 50000,
       hoursPerWeek: 40,
-      weeksPerYear: 53 // max 52
+      weeksPerYear: 53, // max 52
     });
     expect(result.valid).toBe(false);
   });
@@ -32,12 +32,16 @@ describe('salaryToHourlyEngine.validate', () => {
 
 describe('salaryToHourlyEngine.calculate', () => {
   it('calculates hourly wage correctly for standard full time', () => {
-    const result = salaryToHourlyEngine.calculate({
-      annualSalary: 52000,
-      hoursPerWeek: 40,
-      weeksPerYear: 52
-    }, undefined as never, 2026);
-    
+    const result = salaryToHourlyEngine.calculate(
+      {
+        annualSalary: 52000,
+        hoursPerWeek: 40,
+        weeksPerYear: 52,
+      },
+      undefined as never,
+      2026,
+    );
+
     // 52000 / (40 * 52) = 52000 / 2080 = 25
     expect(result.hourlyWage).toBe(25);
     expect(result.weeklyWage).toBe(1000);
@@ -47,12 +51,16 @@ describe('salaryToHourlyEngine.calculate', () => {
   });
 
   it('calculates correctly for part year', () => {
-    const result = salaryToHourlyEngine.calculate({
-      annualSalary: 40000,
-      hoursPerWeek: 40,
-      weeksPerYear: 40
-    }, undefined as never, 2026);
-    
+    const result = salaryToHourlyEngine.calculate(
+      {
+        annualSalary: 40000,
+        hoursPerWeek: 40,
+        weeksPerYear: 40,
+      },
+      undefined as never,
+      2026,
+    );
+
     // hourly = 40000 / (40 * 40) = 40000 / 1600 = 25
     expect(result.hourlyWage).toBe(25);
     // weekly = 40000 / 40 = 1000

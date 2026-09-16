@@ -13,7 +13,7 @@ export interface RentAffordabilityResult {
   monthlyGrossIncome: number;
   monthlyNetIncome?: number;
   recommendedRentGross: number; // Target percentage of gross
-  recommendedRentNet?: number;  // Target percentage of net, if net provided
+  recommendedRentNet?: number; // Target percentage of net, if net provided
 }
 
 export const rentAffordabilityEngine: CalculatorEngine<
@@ -59,7 +59,7 @@ export const rentAffordabilityEngine: CalculatorEngine<
     const periodsPerYear = PERIODS_PER_YEAR[input.payFrequency];
     const annualGrossIncome = input.grossIncomePerPeriod * periodsPerYear;
     const monthlyGrossIncome = annualGrossIncome / PERIODS_PER_YEAR.monthly;
-    
+
     const targetPercentage = input.targetGrossPercentage ?? 30;
     const recommendedRentGross = (monthlyGrossIncome * targetPercentage) / 100;
 
@@ -77,7 +77,9 @@ export const rentAffordabilityEngine: CalculatorEngine<
       monthlyGrossIncome: roundToCents(monthlyGrossIncome),
       ...(monthlyNetIncome !== undefined && { monthlyNetIncome: roundToCents(monthlyNetIncome) }),
       recommendedRentGross: roundToCents(recommendedRentGross),
-      ...(recommendedRentNet !== undefined && { recommendedRentNet: roundToCents(recommendedRentNet) }),
+      ...(recommendedRentNet !== undefined && {
+        recommendedRentNet: roundToCents(recommendedRentNet),
+      }),
     };
-  }
+  },
 };

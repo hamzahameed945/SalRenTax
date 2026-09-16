@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { roundToCents, calculatePercentage, applyCap, applyFloor } from '../../../src/calculators/core/math';
+import {
+  roundToCents,
+  calculatePercentage,
+  applyCap,
+  applyFloor,
+} from '../../../src/calculators/core/math';
 
 describe('math primitives', () => {
   it('roundToCents rounds properly', () => {
