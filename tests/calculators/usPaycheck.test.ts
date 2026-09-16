@@ -99,7 +99,11 @@ describe('usPaycheckEngine.calculate', () => {
       CONFIG,
       2026,
     );
-    expect(result.annualMedicare).toBeCloseTo(highAnnual * fica2026.medicareRate);
+    let expectedMedicare = highAnnual * fica2026.medicareRate;
+    if (highAnnual > 200_000) {
+      expectedMedicare += (highAnnual - 200_000) * 0.009; // Additional medicare rate
+    }
+    expect(result.annualMedicare).toBeCloseTo(expectedMedicare);
   });
 
   it('divides annual figures evenly across pay periods', () => {

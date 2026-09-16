@@ -9,6 +9,13 @@ import {
   standardDeduction2026,
 } from '../../../data/salary/us/federalTax2026';
 
+import { txStateEngine } from './usStates/tx';
+import type { StateTaxEngine, StateTaxResult } from './usStates/types';
+
+const stateEngines: Record<string, StateTaxEngine> = {
+  TX: txStateEngine,
+};
+
 export type FilingStatus = 'single' | 'marriedJointly';
 
 export interface UsPaycheckInput {
@@ -18,6 +25,8 @@ export interface UsPaycheckInput {
   filingStatus: FilingStatus;
   /** Pre-tax deductions (e.g. 401k, HSA) for ONE pay period, in USD. */
   preTaxDeductionsPerPeriod: number;
+  /** Optional 2-letter state code for state tax calculation. */
+  stateCode?: string;
 }
 
 export interface UsPaycheckResult {
@@ -26,12 +35,15 @@ export interface UsPaycheckResult {
   federalIncomeTaxPerPeriod: number;
   socialSecurityPerPeriod: number;
   medicarePerPeriod: number;
+  stateIncomeTaxPerPeriod?: number;
   netPayPerPeriod: number;
   annualGrossPay: number;
   annualFederalIncomeTax: number;
   annualSocialSecurity: number;
   annualMedicare: number;
+  annualStateIncomeTax?: number;
   effectiveFederalRate: number;
+  effectiveStateRate?: number;
 }
 
 /** Country config placeholder — US paycheck engine currently uses only the 2026 data module directly. */
@@ -61,6 +73,9 @@ export const usPaycheckEngine: CalculatorEngine<
       (Number.isNaN(input.preTaxDeductionsPerPeriod) || input.preTaxDeductionsPerPeriod < 0)
     ) {
       errors.preTaxDeductionsPerPeriod = 'errors.invalidNumber';
+    }
+    if (input.stateCode && !stateEngines[input.stateCode.toUpperCase()]) {
+      errors.stateCode = 'errors.unsupportedState';
     }
     return Object.keys(errors).length === 0
       ? { valid: true, data: input }
@@ -94,18 +109,38 @@ export const usPaycheckEngine: CalculatorEngine<
 
     const ssTaxableAnnual = Math.min(annualGrossPay, fica2026.socialSecurityWageBase);
     const annualSocialSecurity = ssTaxableAnnual * fica2026.socialSecurityRate;
-    const annualMedicare = annualGrossPay * fica2026.medicareRate;
+    
+    let annualMedicare = annualGrossPay * fica2026.medicareRate;
+    const additionalMedicareThreshold = fica2026.additionalMedicareThreshold[input.filingStatus];
+    if (annualGrossPay > additionalMedicareThreshold) {
+      annualMedicare += (annualGrossPay - additionalMedicareThreshold) * fica2026.additionalMedicareRate;
+    }
 
     const federalIncomeTaxPerPeriod = annualFederalIncomeTax / periodsPerYear;
     const socialSecurityPerPeriod = annualSocialSecurity / periodsPerYear;
     const medicarePerPeriod = annualMedicare / periodsPerYear;
+
+    let stateIncomeTaxPerPeriod = 0;
+    let annualStateIncomeTax = 0;
+    let effectiveStateRate = 0;
+
+    if (input.stateCode) {
+      const stateEngine = stateEngines[input.stateCode.toUpperCase()];
+      if (stateEngine) {
+        const stateResult = stateEngine.calculate(input, annualGrossPay, annualPreTaxDeductions);
+        stateIncomeTaxPerPeriod = stateResult.stateIncomeTaxPerPeriod;
+        annualStateIncomeTax = stateResult.annualStateIncomeTax;
+        effectiveStateRate = stateResult.effectiveStateRate;
+      }
+    }
 
     const netPayPerPeriod =
       input.grossPayPerPeriod -
       preTax -
       federalIncomeTaxPerPeriod -
       socialSecurityPerPeriod -
-      medicarePerPeriod;
+      medicarePerPeriod -
+      stateIncomeTaxPerPeriod;
 
     return {
       grossPayPerPeriod: input.grossPayPerPeriod,
@@ -113,12 +148,15 @@ export const usPaycheckEngine: CalculatorEngine<
       federalIncomeTaxPerPeriod,
       socialSecurityPerPeriod,
       medicarePerPeriod,
+      ...(input.stateCode ? { stateIncomeTaxPerPeriod } : {}),
       netPayPerPeriod,
       annualGrossPay,
       annualFederalIncomeTax,
       annualSocialSecurity,
       annualMedicare,
+      ...(input.stateCode ? { annualStateIncomeTax } : {}),
       effectiveFederalRate: effectiveRate,
+      ...(input.stateCode ? { effectiveStateRate } : {}),
     };
   },
 };

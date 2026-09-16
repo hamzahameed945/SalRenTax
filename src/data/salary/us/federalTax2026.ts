@@ -73,6 +73,9 @@ export const fica2026 = {
   socialSecurityRate: 0.062,
   socialSecurityWageBase: 184_500,
   medicareRate: 0.0145,
-  // Additional Medicare Tax (0.9% over $200k/$250k) is not yet implemented —
-  // TODO: verify thresholds before enabling for high-income filers.
+  additionalMedicareRate: 0.009,
+  additionalMedicareThreshold: {
+    single: 200_000,
+    marriedJointly: 250_000,
+  },
 } as const;
