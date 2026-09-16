@@ -1,0 +1,35 @@
+---
+import { ALL_LOCALES, LOCALE_STATUS } from '../../i18n/types';
+import { isLocaleActive } from '../../i18n/utils';
+import { buildLocalePath } from '../../i18n/utils';
+
+// Phase 1A: only en-US is active. This component is wired for future
+// locales but intentionally does not link to inactive ones — the locale
+// switcher must never navigate to a 404 (Section 18).
+const statusLabels: Record<string, string> = {
+  planned: 'planned',
+  'coming-soon': 'coming soon',
+  disabled: 'disabled',
+};
+---
+
+<div class="text-xs text-slate-500">
+  <span class="font-medium text-slate-600">Locales:</span>
+  {ALL_LOCALES.map((locale) =>
+    isLocaleActive(locale) ? (
+      <a href={buildLocalePath(locale)} class="ml-2 underline hover:text-slate-800">
+        {locale}
+      </a>
+    ) : (
+      <span
+        class="ml-2 text-slate-300"
+        title={`This locale is ${statusLabels[LOCALE_STATUS[locale]] ?? 'not active'}.`}
+      >
+        {locale}{' '}
+        <span class="text-[10px] uppercase">
+          ({statusLabels[LOCALE_STATUS[locale]] ?? 'inactive'})
+        </span>
+      </span>
+    ),
+  )}
+</div>

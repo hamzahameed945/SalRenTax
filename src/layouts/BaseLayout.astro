@@ -1,0 +1,62 @@
+---
+import '../styles/global.css';
+import Header from '../components/navigation/Header.astro';
+import Footer from '../components/navigation/Footer.astro';
+import JsonLd from '../components/seo/JsonLd.astro';
+import { getDictionary } from '../i18n/dictionaries';
+import { getLocaleConfig } from '../data/locales';
+import { buildWebPageJsonLd, buildWebSiteJsonLd } from '../lib/seo/structuredData';
+import { buildHreflangLinks } from '../lib/seo/hreflang';
+import { resolveSiteUrl } from '../lib/seo/site';
+import type { LocaleCode } from '../i18n/types';
+
+export interface Props {
+  locale: LocaleCode;
+  title: string;
+  description: string;
+  canonical: string;
+  /** Set only for pages registered with an equivalentPageGroup, to emit real (never fake) hreflang links. */
+  equivalentPageGroup?: string;
+}
+const { locale, title, description, canonical, equivalentPageGroup } = Astro.props;
+const t = getDictionary(locale);
+const config = getLocaleConfig(locale);
+const siteUrl = resolveSiteUrl(import.meta.env as unknown as Record<string, string | undefined>);
+const hreflangLinks = buildHreflangLinks(equivalentPageGroup);
+
+const jsonLdEntries = [
+  buildWebSiteJsonLd(t.common.siteName, siteUrl),
+  buildWebPageJsonLd({ name: title, description, url: canonical, inLanguage: config.language }),
+];
+---
+
+<!doctype html>
+<html lang={config.language} dir={config.direction}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {hreflangLinks.map((link) => (
+      <link rel="alternate" hreflang={link.hreflang} href={link.href} />
+    ))}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <JsonLd entries={jsonLdEntries} />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">
+      {t.common.skipToContent}
+    </a>
+    <Header locale={locale} />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer locale={locale} />
+  </body>
+</html>

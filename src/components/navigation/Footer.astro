@@ -1,0 +1,20 @@
+---
+import { getDictionary } from '../../i18n/dictionaries';
+import type { LocaleCode } from '../../i18n/types';
+
+export interface Props {
+  locale: LocaleCode;
+}
+const { locale } = Astro.props;
+const t = getDictionary(locale);
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-16 border-t border-slate-200 bg-white py-8 text-sm text-slate-500">
+  <div class="mx-auto max-w-6xl px-4">
+    <p>{t.disclaimers.general}</p>
+    <p class="mt-4">
+      &copy; {year} {t.common.siteName}
+    </p>
+  </div>
+</footer>

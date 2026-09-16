@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LocaleSwitcher from '../components/navigation/LocaleSwitcher.astro';
+import { getDictionary } from '../i18n/dictionaries';
+import { buildPageMetadata } from '../lib/seo/metadata';
+import { buildLocalePath } from '../i18n/utils';
+
+const locale = 'en-US' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(t.meta.globalHomeTitle, t.meta.globalHomeDescription, '/');
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <section class="mx-auto max-w-3xl px-4 py-16 text-center">
+    <h1 class="text-4xl font-bold tracking-tight text-slate-900">SalRenTax</h1>
+    <p class="mt-4 text-lg text-slate-600">
+      Salary, tax, rent, and labor calculators built with country-specific rules — not blind
+      translations.
+    </p>
+    <div class="mt-8 flex justify-center gap-4">
+      <a
+        href={buildLocalePath(locale)}
+        class="rounded-md bg-accent px-5 py-3 font-semibold text-white hover:bg-accent-dark"
+      >
+        United States (English) →
+      </a>
+    </div>
+    <div class="mt-10">
+      <LocaleSwitcher />
+    </div>
+  </section>
+</BaseLayout>

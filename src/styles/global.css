@@ -1,0 +1,18 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-accent: #0f6e5b;
+  --color-accent-dark: #0b5245;
+}
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply bg-white text-slate-900 antialiased;
+}
+
+.skip-link {
+  @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:shadow-lg;
+}
