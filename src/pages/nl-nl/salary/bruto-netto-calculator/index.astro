@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import NlBruttoNettoCalculator from '../../../../components/islands/NlBruttoNettoCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'nl-NL' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  t.meta.paycheckTitle,
+  t.meta.paycheckDescription,
+  '/nl-nl/salary/bruto-netto-calculator/',
+);
+
+const faqItems = [
+  {
+    question: 'Hoe werkt de inkomstenbelasting in Nederland?',
+    answer: 'Nederland kent een progressief tarief in box 1 (werk en woning). De schijven voor 2026: 35,82% tot €38.441, 37,48% tot €76.817 en 49,50% daarboven. Deze tarieven zijn inclusief premies volksverzekeringen (AOW, ANW, WLZ).',
+  },
+  {
+    question: 'Wat is de algemene heffingskorting?',
+    answer: 'De algemene heffingskorting verlaagt direct de te betalen belasting. In 2026 bedraagt deze maximaal €3.362. De korting wordt afgebouwd als het inkomen boven €24.812 uitkomt.',
+  },
+  {
+    question: 'Wat is de arbeidskorting?',
+    answer: 'De arbeidskorting is een belastingkorting voor mensen met arbeidsinkomen. In 2026 is de maximale arbeidskorting €5.158. Deze calculator past een vereenvoudigde versie toe.',
+  },
+  {
+    question: 'Is dit een exacte berekening?',
+    answer: 'Nee, dit is een vereenvoudigde schatting. De werkelijke berekening is complex en afhankelijk van uw specifieke situatie (leeftijd, AOW, aftrekposten, toeslagen). Raadpleeg de Belastingdienst voor een exacte berekening.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="brutto-netto-rechner"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      { label: t.salary.bruttoNetto.title, href: buildLocalePath(locale, 'salary/bruto-netto-calculator') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">{t.salary.bruttoNetto.h1}</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">{t.salary.bruttoNetto.intro}</p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <NlBruttoNettoCalculator client:load locale={locale} />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="nl-brutonetto-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Belastingschijven box 1 — Nederland 2026</h2>
+      <table>
+        <thead><tr><th>Schijf</th><th>Inkomen</th><th>Tarief (incl. premies)</th></tr></thead>
+        <tbody>
+          <tr><td>Schijf 1</td><td>Tot €38.441</td><td>35,82%</td></tr>
+          <tr><td>Schijf 2</td><td>€38.441 – €76.817</td><td>37,48%</td></tr>
+          <tr><td>Schijf 3 (toptarief)</td><td>Boven €76.817</td><td>49,50%</td></tr>
+        </tbody>
+      </table>
+      <p class="text-sm">Bron: Belastingdienst — Tarieven loonbelasting/inkomstenbelasting box 1 2026.</p>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Veelgestelde vragen over bruto netto berekening" items={faqItems} />
+  </article>
+</BaseLayout>
