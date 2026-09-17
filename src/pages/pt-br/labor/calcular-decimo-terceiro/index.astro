@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'pt-BR' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Calcular Décimo Terceiro Salário 2026 — SalRenTax',
+  'Calcule o valor do seu 13º salário proporcional para 2026 com base nos meses trabalhados.',
+  '/pt-br/labor/calcular-decimo-terceiro/',
+);
+
+const faqItems = [
+  {
+    question: 'Como é calculado o 13º salário?',
+    answer: 'O 13º salário é igual a 1/12 do salário mensal bruto por mês trabalhado no ano. Se você trabalhou o ano todo, recebe o valor integral do salário de dezembro. O pagamento é dividido em duas parcelas: 1ª em novembro e 2ª em dezembro.',
+  },
+  {
+    question: 'Quem tem direito ao 13º salário?',
+    answer: 'Todo trabalhador com carteira assinada tem direito ao 13º salário (CLT Art. 7º, VIII). Autônomos e trabalhadores sem registro formal não têm esse direito, salvo contrato específico.',
+  },
+  {
+    question: 'O 13º salário tem desconto de INSS e IR?',
+    answer: 'Sim. A 2ª parcela do 13º salário está sujeita a descontos de INSS e Imposto de Renda na Fonte, conforme tabelas vigentes. O valor exibido nesta calculadora é o bruto, antes de descontos.',
+  },
+  {
+    question: 'Quando é pago o 13º salário?',
+    answer: 'A 1ª parcela deve ser paga entre 1º de fevereiro e 30 de novembro. A 2ª parcela deve ser paga até 20 de dezembro de cada ano.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout locale={locale} title={meta.title} description={meta.description} canonical={meta.canonical}>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.labor, href: buildLocalePath(locale, 'labor') },
+      { label: t.labor.decimoTerceiro.title, href: buildLocalePath(locale, 'labor/calcular-decimo-terceiro') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">{t.labor.decimoTerceiro.h1}</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">{t.labor.decimoTerceiro.intro}</p>
+
+    <!-- Simple JS calculator for décimo terceiro -->
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm" id="decimo-calc">
+      <div class="grid gap-6 sm:grid-cols-2">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">{t.labor.decimoTerceiro.fields.grossMonthly} (R$)</label>
+          <input id="grossMonthly" type="number" value="3000" class="w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900" placeholder="Ex: 3000" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">{t.labor.decimoTerceiro.fields.monthsWorked} (1–12)</label>
+          <input id="monthsWorked" type="number" min="1" max="12" value="12" class="w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900" />
+        </div>
+      </div>
+      <button id="calcBtn" class="mt-6 rounded-md bg-accent px-6 py-2 font-semibold text-white hover:bg-accent-dark">Calcular</button>
+      <div id="result" class="mt-6 rounded-xl bg-slate-50 p-6 hidden">
+        <p class="text-sm text-slate-500 mb-2">{t.labor.decimoTerceiro.results.totalDecimoTerceiro}</p>
+        <p id="total" class="text-4xl font-bold text-accent"></p>
+        <dl id="breakdown" class="mt-4 space-y-2 text-sm text-slate-700"></dl>
+        <p class="mt-3 text-xs text-slate-500">⚠ Valor bruto antes de descontos de INSS e IR.</p>
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="br-decimo-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Como calcular o décimo terceiro salário</h2>
+      <p>
+        A fórmula é simples: <strong>13º = Salário bruto × (meses trabalhados / 12)</strong>.
+        Frações iguais ou superiores a 15 dias no mês contam como mês completo.
+      </p>
+      <h3>Exemplo prático</h3>
+      <p>Salário de R$ 3.000, trabalhado 10 meses: 3.000 × (10/12) = <strong>R$ 2.500</strong>.</p>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Perguntas frequentes sobre o 13º salário" items={faqItems} />
+  </article>
+</BaseLayout>
+
+<script>
+  document.getElementById('calcBtn')?.addEventListener('click', () => {
+    const gross = parseFloat((document.getElementById('grossMonthly') as HTMLInputElement).value);
+    const months = parseInt((document.getElementById('monthsWorked') as HTMLInputElement).value, 10);
+    if (!gross || gross <= 0 || !months) return;
+
+    const total = gross * (Math.min(12, Math.max(1, months)) / 12);
+    const first = total / 2;
+    const second = total / 2;
+    const fmt = (v: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v);
+
+    document.getElementById('result')!.classList.remove('hidden');
+    document.getElementById('total')!.textContent = fmt(total);
+    document.getElementById('breakdown')!.innerHTML = `
+      <div class="flex justify-between border-b border-slate-200 pb-1"><dt>1ª parcela (novembro)</dt><dd>${fmt(first)}</dd></div>
+      <div class="flex justify-between border-b border-slate-200 pb-1"><dt>2ª parcela (dezembro)</dt><dd>${fmt(second)}</dd></div>
+    `;
+  });
+</script>

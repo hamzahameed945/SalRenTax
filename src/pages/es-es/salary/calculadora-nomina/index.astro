@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import SpainSalaryCalculator from '../../../../components/islands/SpainSalaryCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'es-ES' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  t.meta.paycheckTitle,
+  t.meta.paycheckDescription,
+  '/es-es/salary/calculadora-nomina/',
+);
+
+const faqItems = [
+  {
+    question: '¿Cómo se calcula el IRPF en la nómina?',
+    answer: 'El IRPF se aplica de forma progresiva sobre la base imponible (salario bruto menos Seguridad Social y mínimo personal). Esta calculadora usa el tramo estatal del IRPF 2026 con 6 tramos del 9,5% al 24,5%.',
+  },
+  {
+    question: '¿Por qué el resultado no incluye el IRPF autonómico?',
+    answer: 'El IRPF total = tramo estatal + tramo autonómico. El tramo autonómico varía entre las 17 comunidades autónomas. Esta calculadora incluye solo el tramo estatal, que es igual en toda España, para ofrecer una base comparativa fiable.',
+  },
+  {
+    question: '¿Cuánto es la cotización a la Seguridad Social en 2026?',
+    answer: 'El trabajador cotiza un 6,35% aproximadamente (contingencias comunes 4,7% + desempleo 1,55% + MEI 0,15%). La base máxima de cotización es de 5.101,20 €/mes en 2026.',
+  },
+  {
+    question: '¿Qué diferencia hay entre 12 y 14 pagas?',
+    answer: 'Con 14 pagas, el salario bruto anual se divide en 12 pagas ordinarias más 2 pagas extra (normalmente en junio y diciembre). El sueldo neto anual es el mismo en ambos casos.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="net-salary-calculator-es"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      { label: t.salary.nomina.title, href: buildLocalePath(locale, 'salary/calculadora-nomina') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">{t.salary.nomina.h1}</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">{t.salary.nomina.intro}</p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <SpainSalaryCalculator client:load locale={locale} />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="es-nomina-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Cómo funciona la Calculadora de Nómina 2026</h2>
+      <p>
+        Esta calculadora estima tu <strong>sueldo neto en España para 2026</strong> aplicando:
+      </p>
+      <ul>
+        <li><strong>IRPF estatal 2026:</strong> escala general del Estado (9,5%–24,5%), sin tramo autonómico.</li>
+        <li><strong>Seguridad Social:</strong> contingencias comunes (4,7%), desempleo (1,55%) y MEI (0,15%).</li>
+      </ul>
+      <p>
+        Para obtener tu retención real de IRPF, consulta el simulador de la Agencia Tributaria o habla con tu
+        gestoría, ya que el tramo autonómico varía según tu comunidad.
+      </p>
+      <h3>Tramos IRPF Estatal 2026</h3>
+      <table>
+        <thead><tr><th>Base liquidable</th><th>Tipo estatal</th></tr></thead>
+        <tbody>
+          <tr><td>0 – 12.450 €</td><td>9,5%</td></tr>
+          <tr><td>12.450 – 20.200 €</td><td>12%</td></tr>
+          <tr><td>20.200 – 35.200 €</td><td>15%</td></tr>
+          <tr><td>35.200 – 60.000 €</td><td>18,5%</td></tr>
+          <tr><td>60.000 – 300.000 €</td><td>22,5%</td></tr>
+          <tr><td>Más de 300.000 €</td><td>24,5%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Preguntas frecuentes sobre nómina e IRPF" items={faqItems} />
+  </article>
+</BaseLayout>

@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getDictionary } from '../../i18n/dictionaries';
+import { getLocaleConfig } from '../../data/locales';
+import { getActivePagesForLocale } from '../../seo/page-registry';
+import { buildPageMetadata } from '../../lib/seo/metadata';
+import { buildLocalePath } from '../../i18n/utils';
+
+const locale = 'de-DE' as const;
+const t = getDictionary(locale);
+const config = getLocaleConfig(locale);
+const meta = buildPageMetadata(t.meta.localeHomeTitle, t.meta.localeHomeDescription, '/de-de/');
+const calculatorPages = getActivePagesForLocale(locale).filter((p) => p.pageType === 'calculator');
+---
+
+<BaseLayout locale={locale} title={meta.title} description={meta.description} canonical={meta.canonical}>
+  <section class="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-50">
+    <div class="relative z-10 mx-auto max-w-5xl px-4 pt-16 pb-20 text-center sm:pt-24 sm:pb-28">
+      <p class="text-sm font-semibold uppercase tracking-widest text-accent">Gehaltsrechner 2026</p>
+      <h1 class="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
+        Deutschland — Gehalts- &amp; Lohnrechner
+      </h1>
+      <p class="mx-auto mt-5 max-w-2xl text-lg text-slate-600 leading-relaxed">
+        {t.meta.localeHomeDescription}
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-4 py-12">
+    <h2 class="text-2xl font-bold text-slate-900 mb-6">{t.common.popularCalculators}</h2>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {calculatorPages.map((page) => (
+        <a
+          href={buildLocalePath(locale, page.slug)}
+          class="group flex items-center justify-between rounded-xl border border-slate-200/60 border-l-4 border-l-emerald-500 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
+        >
+          <span class="font-semibold text-slate-800 group-hover:text-accent transition-colors">
+            {page.primaryKeyword}
+          </span>
+          <svg class="h-5 w-5 shrink-0 text-slate-400 group-hover:text-accent group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+          </svg>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- SEO content block -->
+  <section class="mx-auto max-w-3xl px-4 pb-16">
+    <h2 class="text-xl font-semibold text-slate-900 mb-4">Gehaltsrechner Deutschland 2026 — Alles Wissenswerte</h2>
+    <div class="prose prose-slate max-w-none text-slate-600 space-y-4">
+      <p>
+        Der gesetzliche Mindestlohn in Deutschland beträgt seit dem 1. Januar 2026 <strong>13,90 € pro Stunde</strong>.
+        Mit unserem Mindestlohn-Rechner berechnen Sie Ihren Wochen-, Monats- und Jahreslohn auf Basis des aktuellen Mindestlohns.
+      </p>
+      <p>
+        Der Brutto-Netto-Rechner zeigt Ihnen die Abzüge für Rentenversicherung, Krankenversicherung,
+        Arbeitslosenversicherung und Pflegeversicherung für 2026. Alle Werte basieren auf offiziellen Quellen der
+        Deutschen Rentenversicherung und der Bundesregierung.
+      </p>
+      <p>
+        <strong>Hinweis zur Lohnsteuer:</strong> Die Lohnsteuerberechnung nach § 32a EStG ist noch nicht implementiert,
+        da die amtliche Tarifformel für 2026 derzeit verifiziert wird. Die Ergebnisse zeigen die Sozialversicherungsbeiträge vor Lohnsteuer.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

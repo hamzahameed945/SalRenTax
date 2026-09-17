@@ -5,9 +5,16 @@
  */
 
 export type LocaleCode =
-  'en-US' | 'en-GB' | 'en-IE' | 'pt-BR' | 'es-ES' | 'es-MX' | 'de-DE' | 'nl-NL';
+  | 'en-US'
+  | 'en-GB'
+  | 'en-IE'
+  | 'pt-BR'
+  | 'es-ES'
+  | 'es-MX'
+  | 'de-DE'
+  | 'nl-NL';
 
-/** All locales planned for initial coverage (Section 16 of the spec). */
+/** All locales planned for initial coverage. */
 export const ALL_LOCALES: LocaleCode[] = [
   'en-US',
   'en-GB',
@@ -22,28 +29,22 @@ export const ALL_LOCALES: LocaleCode[] = [
 /**
  * Per-locale status: 'active' locales are built and linked. 'planned',
  * 'coming-soon', and 'disabled' locales are typed but never routed,
- * sitemapped, or linked as clickable — they document the roadmap only.
+ * sitemapped, or linked as clickable.
  */
 export type LocaleStatus = 'active' | 'planned' | 'coming-soon' | 'disabled';
 
-/**
- * Per-locale status map. 'active' locales are built and linked; all other
- * statuses are intentionally excluded from routing, the sitemap, and the
- * locale switcher's clickable links — they exist only so the roadmap is
- * typed and visible in code, never as working pages.
- */
 export const LOCALE_STATUS: Record<LocaleCode, LocaleStatus> = {
   'en-US': 'active',
-  'en-GB': 'coming-soon',
-  'en-IE': 'coming-soon',
-  'pt-BR': 'coming-soon',
-  'es-ES': 'coming-soon',
-  'es-MX': 'coming-soon',
-  'de-DE': 'coming-soon',
-  'nl-NL': 'coming-soon',
+  'en-GB': 'active',
+  'en-IE': 'active',
+  'pt-BR': 'active',
+  'es-ES': 'active',
+  'es-MX': 'active',
+  'de-DE': 'active',
+  'nl-NL': 'active',
 };
 
-/** All locales with an 'active' status. Kept in sync with LOCALE_STATUS — do not hand-edit separately. */
+/** All locales with an 'active' status. */
 export const ACTIVE_LOCALES: LocaleCode[] = ALL_LOCALES.filter(
   (l) => LOCALE_STATUS[l] === 'active',
 );
@@ -54,7 +55,15 @@ export type CalculatorType =
   | 'hourlyToSalary'
   | 'payFrequencyConverter'
   | 'salaryRaise'
-  | 'rentAffordability';
+  | 'rentAffordability'
+  | 'deMindestlohn'
+  | 'deBruttoNetto'
+  | 'esNomina'
+  | 'mxIsr'
+  | 'gbPaycheck'
+  | 'iePaycheck'
+  | 'brRescisao'
+  | 'nlBruttoNetto';
 
 export type Category = 'salary' | 'tax' | 'rent' | 'labor' | 'states' | 'guides';
 
