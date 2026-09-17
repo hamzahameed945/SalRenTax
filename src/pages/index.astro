@@ -16,22 +16,183 @@ const meta = buildPageMetadata(t.meta.globalHomeTitle, t.meta.globalHomeDescript
   description={meta.description}
   canonical={meta.canonical}
 >
-  <section class="mx-auto max-w-3xl px-4 py-16 text-center">
-    <h1 class="text-4xl font-bold tracking-tight text-slate-900">SalRenTax</h1>
-    <p class="mt-4 text-lg text-slate-600">
-      Salary, tax, rent, and labor calculators built with country-specific rules — not blind
-      translations.
-    </p>
-    <div class="mt-8 flex justify-center gap-4">
-      <a
-        href={buildLocalePath(locale)}
-        class="rounded-md bg-accent px-5 py-3 font-semibold text-white hover:bg-accent-dark"
-      >
-        United States (English) →
-      </a>
+  <section class="hero-section">
+    <!-- Aurora background lights -->
+    <div class="aurora-container" aria-hidden="true">
+      <div class="aurora-light aurora-light--1"></div>
+      <div class="aurora-light aurora-light--2"></div>
+      <div class="aurora-light aurora-light--3"></div>
     </div>
-    <div class="mt-10">
-      <LocaleSwitcher />
+
+    <div class="hero-content">
+      <h1 class="hero-title animate-fade-in-up">
+        SalRenTax
+      </h1>
+      <p class="hero-subtitle animate-fade-in-up delay-200">
+        Salary, tax, rent, and labor calculators built with country-specific rules — not blind
+        translations.
+      </p>
+      <div class="hero-cta animate-fade-in-up delay-400">
+        <a
+          href={buildLocalePath(locale)}
+          class="cta-button"
+        >
+          United States (English) →
+        </a>
+      </div>
+      <div class="hero-locales animate-fade-in delay-600">
+        <LocaleSwitcher />
+      </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .hero-section {
+    position: relative;
+    min-height: calc(100vh - 65px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #fafbff;
+  }
+
+  /* ── Aurora background lights ── */
+  .aurora-container {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .aurora-light {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0;
+    animation: aurora-appear 2s ease-out forwards, aurora-drift 12s ease-in-out infinite alternate;
+  }
+
+  .aurora-light--1 {
+    width: 600px;
+    height: 600px;
+    top: -10%;
+    right: -5%;
+    background: linear-gradient(135deg, #c7d2fe, #ddd6fe, #e0e7ff);
+    animation-delay: 0s, 0s;
+    opacity: 0;
+    animation: aurora-appear 1.5s 0.3s ease-out forwards, aurora-drift 14s ease-in-out infinite alternate;
+  }
+
+  .aurora-light--2 {
+    width: 500px;
+    height: 500px;
+    top: 20%;
+    right: 5%;
+    background: linear-gradient(200deg, #bfdbfe, #c4b5fd, #ddd6fe);
+    opacity: 0;
+    animation: aurora-appear 1.5s 0.6s ease-out forwards, aurora-drift 10s 2s ease-in-out infinite alternate;
+  }
+
+  .aurora-light--3 {
+    width: 400px;
+    height: 400px;
+    top: 50%;
+    right: -2%;
+    background: linear-gradient(160deg, #e0e7ff, #ede9fe, #f0f4ff);
+    opacity: 0;
+    animation: aurora-appear 1.5s 0.9s ease-out forwards, aurora-drift 16s 4s ease-in-out infinite alternate;
+  }
+
+  @keyframes aurora-appear {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 0.7;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes aurora-drift {
+    0% {
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      transform: translate(-30px, 20px) scale(1.05);
+    }
+    66% {
+      transform: translate(20px, -15px) scale(0.95);
+    }
+    100% {
+      transform: translate(-10px, 10px) scale(1.02);
+    }
+  }
+
+  /* ── Hero content ── */
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 800px;
+    padding: 2rem 1.5rem;
+  }
+
+  .hero-title {
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    color: #0f172a;
+    margin: 0;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1.15rem, 2.5vw, 1.6rem);
+    font-weight: 400;
+    color: #334155;
+    margin-top: 1.5rem;
+    line-height: 1.5;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-cta {
+    margin-top: 2.5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 2rem;
+    background: #0f172a;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.25);
+  }
+
+  .cta-button:hover {
+    background: #1e293b;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.3);
+  }
+
+  .cta-button:active {
+    transform: translateY(0);
+  }
+
+  .hero-locales {
+    margin-top: 3rem;
+  }
+</style>

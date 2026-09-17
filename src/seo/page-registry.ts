@@ -32,6 +32,18 @@ export const pageRegistry: PageDefinition[] = [
     status: 'active',
   },
   {
+    id: 'en-us-rent-category',
+    locale: 'en-US',
+    category: 'rent',
+    slug: 'rent',
+    pageType: 'category',
+    primaryKeyword: 'rent calculators',
+    secondaryKeywords: ['rent affordability', 'how much rent can i afford'],
+    year: null,
+    contentKey: 'rentCategory',
+    status: 'active',
+  },
+  {
     id: 'en-us-salary-paycheck',
     locale: 'en-US',
     category: 'salary',

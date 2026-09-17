@@ -10,11 +10,34 @@ const t = getDictionary(locale);
 const year = new Date().getFullYear();
 ---
 
-<footer class="mt-16 border-t border-slate-200 bg-white py-8 text-sm text-slate-500">
+<footer class="footer-styled">
   <div class="mx-auto max-w-6xl px-4">
-    <p>{t.disclaimers.general}</p>
-    <p class="mt-4">
+    <p class="footer-disclaimer">{t.disclaimers.general}</p>
+    <p class="footer-copy">
       &copy; {year} {t.common.siteName}
     </p>
   </div>
 </footer>
+
+<style>
+  .footer-styled {
+    margin-top: 0;
+    border-top: 1px solid rgba(226, 232, 240, 0.6);
+    background: rgba(250, 251, 255, 0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 2rem 0;
+    font-size: 0.875rem;
+    color: #64748b;
+  }
+
+  .footer-disclaimer {
+    line-height: 1.6;
+  }
+
+  .footer-copy {
+    margin-top: 1rem;
+    font-weight: 500;
+    color: #475569;
+  }
+</style>

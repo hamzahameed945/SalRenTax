@@ -12,7 +12,7 @@ export const enUSConfig: LocaleConfig = {
   dateLocale: 'en-US',
   dateFormat: 'MMMM d, yyyy',
   direction: 'ltr',
-  categories: ['salary', 'tax'],
+  categories: ['salary', 'rent', 'tax'],
   availableYears: [2026],
   defaultYear: 2026,
 };
