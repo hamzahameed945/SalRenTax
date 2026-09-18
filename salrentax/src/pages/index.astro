@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroRegionCards from '../components/hero/HeroRegionCards.astro';
+import { getDictionary } from '../i18n/dictionaries';
+import { buildPageMetadata } from '../lib/seo/metadata';
+
+const locale = 'en-US' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(t.meta.globalHomeTitle, t.meta.globalHomeDescription, '/');
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <HeroRegionCards />
+</BaseLayout>
+
+<style>
+  /*
+   * The hero is full-bleed dark. Override the BaseLayout body background
+   * only on this page so the dark section meets the header/footer edge.
+   */
+  :global(body) {
+    background-color: #0a0a0a;
+  }
+  :global(header) {
+    background-color: #0a0a0a !important;
+    border-bottom-color: rgba(255,255,255,0.08) !important;
+  }
+  :global(header a),
+  :global(header nav a) {
+    color: rgba(255,255,255,0.75) !important;
+  }
+  :global(header a:hover),
+  :global(header nav a:hover) {
+    color: #fff !important;
+  }
+  :global(footer) {
+    background-color: #0a0a0a !important;
+    border-top-color: rgba(255,255,255,0.08) !important;
+    color: rgba(255,255,255,0.4) !important;
+  }
+  :global(footer a) {
+    color: rgba(255,255,255,0.4) !important;
+  }
+  :global(footer a:hover) {
+    color: rgba(255,255,255,0.7) !important;
+  }
+</style>

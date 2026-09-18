@@ -13,15 +13,78 @@ const meta = buildPageMetadata(
   '/',
 );
 
-const localeInfo: Record<string, { flag: string; name: string; tagline: string }> = {
-  'en-US': { flag: '🇺🇸', name: 'United States', tagline: 'Paycheck, salary & rent calculators' },
-  'en-GB': { flag: '🇬🇧', name: 'United Kingdom', tagline: 'Take-home pay, income tax & NI' },
-  'en-IE': { flag: '🇮🇪', name: 'Ireland', tagline: 'PAYE, USC & PRSI calculators' },
-  'pt-BR': { flag: '🇧🇷', name: 'Brasil', tagline: 'Rescisão, 13º salário & CLT' },
-  'es-ES': { flag: '🇪🇸', name: 'España', tagline: 'Nómina, IRPF & Seguridad Social' },
-  'es-MX': { flag: '🇲🇽', name: 'México', tagline: 'ISR, finiquito & sueldo neto' },
-  'de-DE': { flag: '🇩🇪', name: 'Deutschland', tagline: 'Mindestlohn & Brutto-Netto-Rechner' },
-  'nl-NL': { flag: '🇳🇱', name: 'Nederland', tagline: 'Bruto netto calculator' },
+const localeInfo: Record<string, {
+  flag: string;
+  name: string;
+  tagline: string;
+  img: string;
+  imgAlt: string;
+  features: string[];
+}> = {
+  'en-US': {
+    flag: '🇺🇸',
+    name: 'United States',
+    tagline: 'Paycheck, salary & rent calculators',
+    img: 'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?w=600&q=80&auto=format&fit=crop',
+    imgAlt: 'Statue of Liberty, New York',
+    features: ['Paycheck & take-home pay', 'Salary ↔ hourly', 'Rent affordability', 'Pay frequency converter'],
+  },
+  'en-GB': {
+    flag: '🇬🇧',
+    name: 'United Kingdom',
+    tagline: 'Take-home pay, income tax & NI',
+    img: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&q=80&auto=format&fit=crop',
+    imgAlt: 'Big Ben and Houses of Parliament, London',
+    features: ['Income tax & NI calculator', 'Take-home pay 2026', 'PAYE estimates', 'Salary converter'],
+  },
+  'en-IE': {
+    flag: '🇮🇪',
+    name: 'Ireland',
+    tagline: 'PAYE, USC & PRSI calculators',
+    img: 'https://images.unsplash.com/photo-1549918864-48ac978761a4?w=600&q=80&auto=format&fit=crop',
+    imgAlt: 'Cliffs of Moher, Ireland',
+    features: ['PAYE calculator', 'USC & PRSI', 'Net pay 2026', 'Annual & monthly'],
+  },
+  'pt-BR': {
+    flag: '🇧🇷',
+    name: 'Brasil',
+    tagline: 'Rescisão, 13º salário & CLT',
+    img: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=600&q=80&auto=format&fit=crop',
+    imgAlt: 'Christ the Redeemer, Rio de Janeiro',
+    features: ['Rescisão trabalhista', '13º salário', 'FGTS & INSS', 'Salário líquido CLT'],
+  },
+  'es-ES': {
+    flag: '🇪🇸',
+    name: 'España',
+    tagline: 'Nómina, IRPF & Seguridad Social',
+    img: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=600&q=80&auto=format&fit=crop',
+    imgAlt: 'Sagrada Família, Barcelona',
+    features: ['Calculadora nómina IRPF', 'Seguridad Social', 'Sueldo neto 2026', 'Retenciones IRPF'],
+  },
+  'es-MX': {
+    flag: '🇲🇽',
+    name: 'México',
+    tagline: 'ISR, finiquito & sueldo neto',
+    img: 'https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?w=600&q=80&auto=format&fit=crop',
+    imgAlt: 'Angel of Independence, Mexico City',
+    features: ['Calculadora ISR 2026', 'Sueldo neto mensual', 'IMSS & retenciones', 'Finiquito laboral'],
+  },
+  'de-DE': {
+    flag: '🇩🇪',
+    name: 'Deutschland',
+    tagline: 'Mindestlohn & Brutto-Netto-Rechner',
+    img: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=600&q=80&auto=format&fit=crop',
+    imgAlt: 'Brandenburg Gate, Berlin',
+    features: ['Brutto → Netto Rechner', 'Sozialversicherung 2026', 'Mindestlohn Rechner', 'Steuerklassen'],
+  },
+  'nl-NL': {
+    flag: '🇳🇱',
+    name: 'Nederland',
+    tagline: 'Bruto netto calculator',
+    img: 'https://images.unsplash.com/photo-1534351590666-13e3e96b5017?w=600&q=80&auto=format&fit=crop',
+    imgAlt: 'Amsterdam canal houses',
+    features: ['Bruto → netto salaris', 'Loonbelasting 2026', 'Vakantiegeld berekenen', 'Urenconverter'],
+  },
 };
 ---
 
@@ -47,26 +110,51 @@ const localeInfo: Record<string, { flag: string; name: string; tagline: string }
   </section>
 
   <!-- Country grid -->
-  <section class="mx-auto max-w-6xl px-4 py-12 sm:py-16">
-    <h2 class="text-2xl font-bold text-slate-900 mb-2">Select your country</h2>
-    <p class="text-slate-500 mb-8">Every calculator uses verified, country-specific data.</p>
+  <section class="country-section">
+    <div class="country-section__inner">
+      <h2 class="country-section__heading">Select your country</h2>
+      <p class="country-section__sub">Every calculator uses verified, country-specific tax data.</p>
 
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {ACTIVE_LOCALES.map((loc) => {
-        const info = localeInfo[loc] ?? { flag: '🌍', name: loc, tagline: 'Calculators' };
-        return (
-          <a
-            href={buildLocalePath(loc)}
-            class="group flex items-start gap-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-accent"
-          >
-            <span class="text-3xl leading-none mt-0.5" aria-hidden="true">{info.flag}</span>
-            <div>
-              <p class="font-semibold text-slate-900 group-hover:text-accent transition-colors">{info.name}</p>
-              <p class="mt-0.5 text-sm text-slate-500">{info.tagline}</p>
-            </div>
-          </a>
-        );
-      })}
+      <div class="cards-grid" role="list">
+        {ACTIVE_LOCALES.map((loc) => {
+          const info = localeInfo[loc] ?? {
+            flag: '🌍', name: loc, tagline: 'Calculators',
+            img: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80&auto=format&fit=crop',
+            imgAlt: 'World map',
+            features: ['Calculators'],
+          };
+          return (
+            <a
+              href={buildLocalePath(loc)}
+              class="rcard"
+              role="listitem"
+              aria-label={`${info.name} calculators`}
+            >
+              <div class="rcard__img-wrap">
+                <img
+                  src={info.img}
+                  alt={info.imgAlt}
+                  width="600"
+                  height="400"
+                  loading="lazy"
+                  decoding="async"
+                  class="rcard__img"
+                />
+                <div class="rcard__overlay" aria-hidden="true"></div>
+              </div>
+              <div class="rcard__body">
+                <div class="rcard__flag" aria-hidden="true">{info.flag}</div>
+                <h3 class="rcard__title">{info.name}</h3>
+                <p class="rcard__tagline">{info.tagline}</p>
+                <ul class="rcard__features">
+                  {info.features.map((f) => <li>{f}</li>)}
+                </ul>
+                <span class="rcard__cta">Explore →</span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
     </div>
   </section>
 
@@ -96,6 +184,189 @@ const localeInfo: Record<string, { flag: string; name: string; tagline: string }
 </BaseLayout>
 
 <style>
+  /* ── Country section wrapper ─────────────────────────────────── */
+  .country-section {
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .country-section__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 5rem;
+  }
+  .country-section__heading {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.025em;
+  }
+  .country-section__sub {
+    font-size: 1rem;
+    color: #64748b;
+    margin: 0 0 2.5rem;
+  }
+
+  /* ── Cards grid — 4 cols on wide, 2 on md, 1 on mobile ──────── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  @media (max-width: 1024px) {
+    .cards-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .cards-grid { grid-template-columns: 1fr; }
+    .country-section__inner { padding: 3rem 1rem 4rem; }
+  }
+
+  /* ── Individual card ──────────────────────────────────────────── */
+  .rcard {
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+    text-decoration: none;
+    color: #fff;
+    background: #e2e8f0;
+    display: block;
+    height: 300px;
+    box-shadow: 0 2px 12px rgba(15,23,42,0.08);
+    border: 1px solid rgba(15,23,42,0.07);
+    transition:
+      transform 0.3s cubic-bezier(0.4,0,0.2,1),
+      box-shadow 0.3s ease,
+      height 0.35s cubic-bezier(0.4,0,0.2,1);
+    outline-offset: 3px;
+  }
+  .rcard:hover,
+  .rcard:focus-visible {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(15,23,42,0.18);
+    height: 340px;
+    outline: 2px solid #0f6e5b;
+  }
+
+  /* ── Image ────────────────────────────────────────────────────── */
+  .rcard__img-wrap {
+    position: absolute;
+    inset: 0;
+  }
+  .rcard__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 0.55s ease, filter 0.4s ease;
+    filter: brightness(0.72) saturate(0.85);
+  }
+  .rcard:hover .rcard__img,
+  .rcard:focus-visible .rcard__img {
+    transform: scale(1.07);
+    filter: brightness(0.55) saturate(1);
+  }
+
+  /* Gradient — stronger at bottom, light at top for legibility */
+  .rcard__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(15,23,42,0.88) 0%,
+      rgba(15,23,42,0.35) 55%,
+      rgba(15,23,42,0.05) 100%
+    );
+  }
+
+  /* ── Card body ────────────────────────────────────────────────── */
+  .rcard__body {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.25rem 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .rcard__flag {
+    font-size: 1.75rem;
+    line-height: 1;
+    margin-bottom: 0.1rem;
+  }
+  .rcard__title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+  .rcard__tagline {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.65);
+    margin: 0;
+  }
+
+  /* Feature list — revealed on hover */
+  .rcard__features {
+    list-style: none;
+    margin: 0.35rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.3s ease 0.08s, transform 0.3s ease 0.08s;
+  }
+  .rcard:hover .rcard__features,
+  .rcard:focus-visible .rcard__features {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .rcard__features li {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.78);
+    padding-left: 1rem;
+    position: relative;
+  }
+  .rcard__features li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #4ade80;
+    font-size: 0.7rem;
+    top: 1px;
+  }
+
+  /* CTA arrow */
+  .rcard__cta {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #4ade80;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: opacity 0.25s ease 0.15s, transform 0.25s ease 0.15s;
+  }
+  .rcard:hover .rcard__cta,
+  .rcard:focus-visible .rcard__cta {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Mobile: always show features */
+  @media (max-width: 560px) {
+    .rcard { height: 260px; }
+    .rcard:hover, .rcard:focus-visible { height: 300px; transform: none; }
+    .rcard__features, .rcard__cta { opacity: 1; transform: none; }
+  }
+
+  /* ── Aurora (existing) ────────────────────────────────────────── */
   .aurora-container {
     position: absolute;
     inset: 0;
