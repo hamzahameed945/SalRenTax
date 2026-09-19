@@ -1,0 +1,49 @@
+{
+  "name": "salrentax",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.16.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "deploy": "pnpm run build && wrangler deploy",
+    "astro": "astro",
+    "test": "vitest run",
+    "check": "astro check",
+    "lint": "eslint .",
+    "format": "prettier --check ."
+  },
+  "dependencies": {
+    "@astrojs/preact": "^6.0.5",
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.3.2",
+    "preact": "^10.29.8"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/node": "^24.13.4",
+    "@tailwindcss/vite": "^4.3.3",
+    "@testing-library/preact": "^3.2.4",
+    "@typescript-eslint/eslint-plugin": "^8.70.0",
+    "@typescript-eslint/parser": "^8.70.0",
+    "eslint": "^9.39.5",
+    "eslint-plugin-astro": "^3.1.0",
+    "jsdom": "^30.0.1",
+    "prettier": "^3.9.6",
+    "prettier-plugin-astro": "^1.0.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.0",
+    "wrangler": "4.134.0"
+  },
+  "packageManager": "pnpm@10.16.1",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "workerd"
+    ]
+  }
+}

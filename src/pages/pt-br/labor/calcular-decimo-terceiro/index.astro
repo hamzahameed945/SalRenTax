@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import BrDecimoTerceiroCalculator from '../../../../components/islands/BrDecimoTerceiroCalculator';
+import { buildLocalePath } from '../../../../i18n/utils';
+
+const locale = 'pt-BR' as const;
+const title = 'Calcular Décimo Terceiro Salário 2026 — SalRenTax';
+const description = 'Calcule o 13º salário proporcional de 2026 com base nos meses trabalhados.';
+const canonical = '/pt-br/labor/calcular-decimo-terceiro/';
+const faqItems = [{ question: 'Como funciona o 13º salário?', answer: 'O cálculo usa 1/12 do salário bruto por mês trabalhado e divide o total em duas parcelas brutas.' }];
+---
+<BaseLayout locale={locale} title={title} description={description} canonical={canonical}>
+  <Breadcrumbs locale={locale} trail={[
+    { label: 'Calcular Décimo Terceiro', href: buildLocalePath(locale, 'labor/calcular-decimo-terceiro') },
+  ]} />
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Calcular Décimo Terceiro Salário 2026</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">O cálculo usa 1/12 do salário bruto por mês trabalhado e divide o total em duas parcelas brutas.</p>
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <BrDecimoTerceiroCalculator client:load />
+    </div>
+    <div class="mt-8"><InContentAd slotId="pt-br-labor-calcular-decimo-terceiro-1" /></div>
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Información importante</h2>
+      <p>Este calculador usa un modelo explícito y simplificado para apoyar una estimación inicial. Los casos reales pueden variar por deducciones, convenios, topes legales y otros datos personales.</p>
+    </div>
+    <CalculatorFAQ heading="Preguntas frecuentes" items={faqItems} />
+  </article>
+</BaseLayout>

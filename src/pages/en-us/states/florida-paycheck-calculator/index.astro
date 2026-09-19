@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import PaycheckCalculator from '../../../../components/islands/PaycheckCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'en-US' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Florida Paycheck Calculator 2026 — Take-Home Pay FL — SalRenTax',
+  'Calculate your Florida take-home pay for 2026. Florida has no state income tax — only federal income tax and FICA deductions apply.',
+  '/en-us/states/florida-paycheck-calculator/',
+);
+
+const faqItems = [
+  {
+    question: 'Does Florida have a state income tax?',
+    answer: 'No. Florida is one of nine US states with no state income tax. Your paycheck deductions in Florida are limited to federal income tax, Social Security (6.2%), and Medicare (1.45%).',
+  },
+  {
+    question: 'What is the take-home pay on a $60,000 salary in Florida?',
+    answer: 'On a $60,000 annual salary, a single filer in Florida takes home approximately $47,000–$49,000, depending on deductions. The exact amount depends on your pay frequency and pre-tax deductions.',
+  },
+  {
+    question: 'Are there any local income taxes in Florida?',
+    answer: 'No. Florida has no state or local income taxes. This makes it one of the most tax-friendly states for take-home pay.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout locale={locale} title={meta.title} description={meta.description} canonical={meta.canonical}>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'States', href: buildLocalePath(locale, 'states') },
+      { label: 'Florida Paycheck Calculator', href: buildLocalePath(locale, 'states/florida-paycheck-calculator') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Florida Paycheck Calculator 2026</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Calculate your take-home pay in Florida for 2026. Since Florida has <strong>no state income tax</strong>,
+      your deductions are limited to federal income tax, Social Security, and Medicare.
+    </p>
+
+    <div class="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+      ✅ <strong>No Florida state income tax.</strong> Only federal taxes and FICA apply.
+    </div>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <PaycheckCalculator stateCode="FL" client:load />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="fl-paycheck-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Florida Paycheck Tax Guide 2026</h2>
+      <p>
+        Florida residents enjoy <strong>no state income tax</strong>, making it one of the most favorable states
+        for take-home pay. Your deductions are:
+      </p>
+      <ul>
+        <li><strong>Federal income tax</strong> — based on 2026 IRS brackets (10%–37%)</li>
+        <li><strong>Social Security</strong> — 6.2% up to the $176,100 wage base</li>
+        <li><strong>Medicare</strong> — 1.45% (+ 0.9% Additional Medicare Tax above $200,000 for single filers)</li>
+      </ul>
+      <p>
+        Florida also has no local income taxes, no inheritance tax, and no estate tax — contributing to its
+        reputation as a tax-friendly state.
+      </p>
+      <h3>Comparing Florida to other states</h3>
+      <p>
+        Compared to New York or California, Florida residents keep significantly more of their paycheck.
+        For example, on a $80,000 salary, a Florida resident saves approximately $4,000–$6,000 per year
+        compared to states with 5–6% state income taxes.
+      </p>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Florida Paycheck FAQs" items={faqItems} />
+  </article>
+</BaseLayout>

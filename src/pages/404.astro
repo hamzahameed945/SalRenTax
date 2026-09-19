@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getDictionary } from '../i18n/dictionaries';
+import { buildPageMetadata } from '../lib/seo/metadata';
+
+const locale = 'en-US' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  `${t.errors.pageNotFound} — SalRenTax`,
+  t.errors.pageNotFoundBody,
+  '/404/',
+);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <section class="mx-auto max-w-xl px-4 py-24 text-center">
+    <h1 class="text-3xl font-bold text-slate-900">{t.errors.pageNotFound}</h1>
+    <p class="mt-3 text-slate-600">{t.errors.pageNotFoundBody}</p>
+    <a
+      href="/en-us/"
+      class="mt-6 inline-block rounded-md bg-accent px-5 py-3 font-semibold text-white"
+    >
+      Go to the US homepage
+    </a>
+  </section>
+</BaseLayout>

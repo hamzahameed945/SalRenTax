@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import RentAffordabilityCalculator from '../../../../components/islands/RentAffordabilityCalculator';
+
+const locale = 'en-US' as const;
+const meta = buildPageMetadata(
+  'Rent Affordability Calculator — SalRenTax',
+  'Calculate how much rent you can afford based on your income.',
+  '/en-us/rent/rent-affordability/',
+);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <section class="mx-auto max-w-4xl px-4 py-12">
+    <h1 class="text-3xl font-bold text-slate-900 mb-6">Rent Affordability Calculator</h1>
+    <p class="mb-8 text-slate-600">
+      Estimate your target monthly rent based on your income. Standard guidelines suggest spending
+      no more than 30% of your gross income on rent.
+    </p>
+    <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <RentAffordabilityCalculator client:load locale={locale} />
+    </div>
+  </section>
+</BaseLayout>

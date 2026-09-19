@@ -1,0 +1,70 @@
+---
+import '../styles/global.css';
+import Header from '../components/navigation/Header.astro';
+import Footer from '../components/navigation/Footer.astro';
+import JsonLd from '../components/seo/JsonLd.astro';
+import { getDictionary } from '../i18n/dictionaries';
+import { getLocaleConfig } from '../data/locales';
+import { buildWebPageJsonLd, buildWebSiteJsonLd } from '../lib/seo/structuredData';
+import { buildHreflangLinks } from '../lib/seo/hreflang';
+import { resolveSiteUrl } from '../lib/seo/site';
+import type { LocaleCode } from '../i18n/types';
+
+export interface Props {
+  locale: LocaleCode;
+  title: string;
+  description: string;
+  canonical: string;
+  /** Set only for pages registered with an equivalentPageGroup, to emit real (never fake) hreflang links. */
+  equivalentPageGroup?: string;
+  ogImage?: string;
+}
+const { locale, title, description, canonical, equivalentPageGroup, ogImage = '/og-default.png' } = Astro.props;
+const t = getDictionary(locale);
+const config = getLocaleConfig(locale);
+const siteUrl = resolveSiteUrl(import.meta.env as unknown as Record<string, string | undefined>);
+const canonicalUrl = new URL(canonical, siteUrl).toString();
+const resolvedOgImage = new URL(ogImage, siteUrl).toString();
+const hreflangLinks = buildHreflangLinks(equivalentPageGroup);
+
+const jsonLdEntries = [
+  buildWebSiteJsonLd(t.common.siteName, siteUrl),
+  buildWebPageJsonLd({ name: title, description, url: canonicalUrl, inLanguage: config.language }),
+];
+---
+
+<!doctype html>
+<html lang={config.language} dir={config.direction}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    {hreflangLinks.map((link) => (
+      <link rel="alternate" hreflang={link.hreflang} href={link.href} />
+    ))}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={resolvedOgImage} />
+    <meta property="og:image:alt" content={title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={resolvedOgImage} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <JsonLd entries={jsonLdEntries} />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">
+      {t.common.skipToContent}
+    </a>
+    <Header locale={locale} />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer locale={locale} />
+  </body>
+</html>

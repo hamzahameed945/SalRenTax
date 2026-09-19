@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import PaycheckCalculator from '../../../../components/islands/PaycheckCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'en-US' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'New York Paycheck Calculator 2026 — NY Take-Home Pay — SalRenTax',
+  'Calculate your New York take-home pay for 2026. Includes federal income tax, FICA, and estimated New York State income tax. NYC local tax is not included.',
+  '/en-us/states/new-york-paycheck-calculator/',
+);
+
+const faqItems = [
+  {
+    question: 'What is the New York state income tax rate?',
+    answer: 'New York State has graduated income-tax rates. This calculator uses a 2026 New York State schedule and does not include New York City local income tax.',
+  },
+  {
+    question: 'How much tax do New York residents pay?',
+    answer: 'New York City residents can have an additional local income tax; that city-level tax is outside this state calculator.',
+  },
+  {
+    question: 'Does this calculator include NY state tax?',
+    answer: 'This calculator includes a simplified 2026 New York State income-tax estimate. New York City local income tax and payroll-specific withholding allowances are not modeled.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout locale={locale} title={meta.title} description={meta.description} canonical={meta.canonical}>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'States', href: buildLocalePath(locale, 'states') },
+      { label: 'New York Paycheck Calculator', href: buildLocalePath(locale, 'states/new-york-paycheck-calculator') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">New York Paycheck Calculator 2026</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Estimate your New York take-home pay for 2026. This calculator applies 2026 federal income tax, FICA, and an estimated New York State income tax. NYC local tax is not included.
+    </p>
+
+    <div class="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+      <strong>Included:</strong> 2026 federal income tax, FICA, and an estimated New York State income tax. NYC local tax is not included.
+    </div>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <PaycheckCalculator stateCode="NY" client:load />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="ny-paycheck-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>New York Tax Overview 2026</h2>
+      <p>New York has multiple layers of taxation that significantly impact take-home pay:</p>
+      <table>
+        <thead><tr><th>Tax</th><th>Rate range</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Federal income tax</td><td>10%–37%</td><td>All residents</td></tr>
+          <tr><td>NY State income tax</td><td>4%–10.9%</td><td>10 brackets</td></tr>
+          <tr><td>Social Security</td><td>6.2%</td><td>Up to $176,100</td></tr>
+          <tr><td>Medicare</td><td>1.45%</td><td>+0.9% above $200k</td></tr>
+        </tbody>
+      </table>
+      <p>
+        The result is a planning estimate. Actual New York withholding can vary with Form IT-2104 elections, deductions, credits, and local taxes.
+      </p>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="New York Paycheck FAQs" items={faqItems} />
+  </article>
+</BaseLayout>
