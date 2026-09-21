@@ -1,0 +1,33 @@
+---
+export interface Props {
+  position: 'top' | 'in-content' | 'sidebar' | 'bottom';
+  slotId: string;
+}
+const { position, slotId } = Astro.props;
+
+// Ads are not live yet, so nothing is rendered by default. This keeps placeholder boxes
+// out of the public pages. Set PUBLIC_ADS_ENABLED=true once a real ad provider is wired in.
+const adsEnabled = import.meta.env.PUBLIC_ADS_ENABLED === 'true';
+
+// Reserve space per position to avoid layout shift once a real provider is wired in.
+const heights: Record<Props['position'], string> = {
+  top: 'min-h-[90px]',
+  'in-content': 'min-h-[250px]',
+  sidebar: 'min-h-[600px]',
+  bottom: 'min-h-[90px]',
+};
+---
+
+{adsEnabled && (
+<div
+  data-slot={slotId}
+  data-ad-position={position}
+  class:list={[
+    'flex items-center justify-center rounded-lg border border-dashed border-slate-200 bg-slate-50 text-xs text-slate-400',
+    heights[position],
+  ]}
+  aria-hidden="true"
+>
+  Ad slot ({position})
+</div>
+)}

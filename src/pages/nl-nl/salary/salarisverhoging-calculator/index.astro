@@ -1,0 +1,124 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import SalaryRaiseCalculator from '../../../../components/islands/SalaryRaiseCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'nl-NL' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Salarisverhoging Calculator — PayRenTax',
+  t.salary.salaryRaise.intro,
+  '/nl-nl/salary/salarisverhoging-calculator/',
+);
+
+const faqItems = [
+  {
+    question: 'Hoe bereken ik mijn nieuwe salaris na een loonsverhoging?',
+    answer:
+      'Vermenigvuldig uw huidige salaris met (1 + het percentage / 100). Bij een verhoging van 5% op €45.000: €45.000 × 1,05 = €47.250.',
+  },
+  {
+    question: 'Wat is een gemiddelde loonsverhoging in Nederland?',
+    answer:
+      'De gemiddelde cao-loonstijging in Nederland lag in 2025 rond de 5–6%. De exacte verhoging hangt af van uw sector, cao en individuele prestaties.',
+  },
+  {
+    question: 'Hoe werkt de inflatiecorrectie bij salarisonderhandelingen?',
+    answer:
+      'Een reële loonsverhoging is de procentuele verhoging minus de inflatie. Als u 3% loonsverhoging ontvangt maar de inflatie is 4%, daalt uw koopkracht effectief met 1%.',
+  },
+  {
+    question: 'Hoe beïnvloedt een loonsverhoging mijn netto salaris?',
+    answer:
+      'Door de progressieve belasting in Nederland profiteert u netto minder dan bruto van een verhoging. Een groot deel van de verhoging kan in een hoger belastingtarief vallen. Gebruik onze Bruto Netto Calculator om het verschil te berekenen.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="salary-raise"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      { label: t.salary.salaryRaise.title, href: buildLocalePath(locale, 'salary/salarisverhoging-calculator') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">{t.salary.salaryRaise.h1}</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">{t.salary.salaryRaise.intro}</p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <SalaryRaiseCalculator
+        client:load
+        t={t}
+        locale={locale}
+        currency="EUR"
+        labels={{
+          currentSalary:       'Huidig bruto jaarsalaris',
+          raiseType:           'Type verhoging',
+          raiseTypePercentage: 'Percentage (%)',
+          raiseTypeFlat:       'Vast bedrag (€)',
+          raiseValuePct:       'Verhogingspercentage (%)',
+          raiseValueFlat:      'Verhogingsbedrag (€)',
+          hoursPerWeek:        'Uren per week',
+          resultsHeading:      'Effect loonsverhoging',
+          newAnnualSalary:     'Nieuw bruto jaarsalaris',
+          totalIncrease:       'Totale verhoging',
+          monthlyIncrease:     'Maandelijkse verbetering',
+          biweeklyIncrease:    'Verbetering per twee weken',
+          hourlyIncrease:      'Verbetering per uur',
+          placeholder:         'Voer uw salaris en de verhoging in om het effect te zien.',
+        }}
+      />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="nl-salary-raise-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Voorbeelden loonsverhoging</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Huidig bruto jaarsalaris</th>
+            <th>Verhoging 3%</th>
+            <th>Verhoging 5%</th>
+            <th>Verhoging 10%</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>€30.000</td><td>€30.900</td><td>€31.500</td><td>€33.000</td></tr>
+          <tr><td>€45.000</td><td>€46.350</td><td>€47.250</td><td>€49.500</td></tr>
+          <tr><td>€60.000</td><td>€61.800</td><td>€63.000</td><td>€66.000</td></tr>
+          <tr><td>€80.000</td><td>€82.400</td><td>€84.000</td><td>€88.000</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional}
+    </p>
+
+    <CalculatorFAQ heading="Veelgestelde vragen over loonsverhoging" items={faqItems} />
+  </article>
+  <CalculatorResource locale="nl-NL" category="salary" />
+</BaseLayout>

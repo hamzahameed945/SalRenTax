@@ -1,0 +1,108 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import NlVakantiegeldCalculator from '../../../../components/islands/NlVakantiegeldCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'nl-NL' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  t.salary.vakantiegeld.title,
+  t.salary.vakantiegeld.metaDescription,
+  '/nl-nl/salary/vakantiegeld-calculator/',
+);
+
+const faqItems = [
+  {
+    question: 'Hoeveel vakantiegeld heb ik recht op?',
+    answer:
+      'Op grond van de Wet minimumloon en minimumvakantiebijslag heeft elke werknemer recht op minimaal 8% van het bruto jaarsalaris als vakantiegeld. Veel CAO\'s bieden een hoger percentage — controleer uw arbeidsovereenkomst.',
+  },
+  {
+    question: 'Wanneer wordt vakantiegeld uitbetaald?',
+    answer:
+      'Vakantiegeld wordt doorgaans eenmaal per jaar uitbetaald, traditioneel in mei. Sommige werkgevers betalen het maandelijks uit of bij het einde van een dienstverband. De exacte datum staat in uw arbeidscontract of CAO.',
+  },
+  {
+    question: 'Bouw ik vakantiegeld op als ik parttime werk?',
+    answer:
+      'Ja. Vakantiegeld wordt berekend over het feitelijk verdiende bruto loon, ongeacht het aantal uren. Als u 6 maanden in dienst bent geweest, ontvangt u vakantiegeld over die 6 maanden.',
+  },
+  {
+    question: 'Is vakantiegeld belast?',
+    answer:
+      'Ja. Vakantiegeld is onderdeel van het loon en wordt belast als bijzonder tarief in de loonheffing. Het werkelijke bedrag op uw bankrekening is dus lager dan het brutobedrag.',
+  },
+  {
+    question: 'Wat als ik ontslag neem of ontslagen word?',
+    answer:
+      'Bij uitdiensttreding heeft u recht op vakantiegeld over de nog niet uitbetaalde opbouwperiode. De werkgever is verplicht dit uit te betalen bij de eindafrekening.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="nl-vakantiegeld-calculator"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      { label: t.salary.vakantiegeld.title, href: buildLocalePath(locale, 'salary/vakantiegeld-calculator') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">{t.salary.vakantiegeld.h1}</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">{t.salary.vakantiegeld.intro}</p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <NlVakantiegeldCalculator client:load locale={locale} />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="nl-vakantiegeld-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Hoe wordt vakantiegeld berekend?</h2>
+      <p>
+        De wettelijke minimumvakantiebijslag bedraagt <strong>8% van het bruto loon</strong> dat in het opbouwjaar
+        is verdiend. Het opbouwjaar loopt doorgaans van 1 juni tot en met 31 mei.
+      </p>
+      <p>
+        Rekenvoorbeeld: bruto jaarsalaris €45.000 × 8% = <strong>€3.600 vakantiegeld</strong>.
+        Als u slechts 6 van de 12 maanden in dienst was, ontvangt u de helft: €1.800.
+      </p>
+      <h2>Hogere CAO-percentages</h2>
+      <p>
+        Veel sectoren kennen CAO-percentages van 8,33% (zodat het vakantiegeld precies één maandloon bedraagt)
+        of zelfs hoger. Controleer uw CAO of arbeidsovereenkomst.
+      </p>
+      <p class="text-sm">
+        Bron: <a href="https://www.rijksoverheid.nl/onderwerpen/vakantiedagen-en-vakantiegeld/vakantiegeld" target="_blank" rel="noopener noreferrer">Rijksoverheid — Vakantiegeld</a>
+      </p>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Veelgestelde vragen over vakantiegeld" items={faqItems} />
+  </article>
+  <CalculatorResource locale="nl-NL" category="salary" />
+</BaseLayout>

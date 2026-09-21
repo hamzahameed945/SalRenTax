@@ -1,0 +1,29 @@
+---
+import PublicResourcePage from '../../components/content/PublicResourcePage.astro';
+const sections = [
+  { heading: 'Questions and corrections', paragraphs: [
+    'Have a question, spotted something that looks wrong, or found information that may be out of date? Send us an email at contact@payrentax.me.',
+    'If you are reporting a calculator issue, include the calculator name or page URL and tell us what you expected to see. A short, specific description makes it much easier to investigate.'
+  ]},
+  { heading: 'What you can report', bullets: [
+    'A calculation that looks incorrect or gives an unexpected result.',
+    'Tax-year information that appears outdated or needs a source review.',
+    'A broken page, button, or navigation link.',
+    'A translation or terminology problem.',
+    'An accessibility or mobile usability issue.'
+  ]},
+  { heading: 'Please do not send sensitive information', paragraphs: [
+    'Do not include Social Security numbers, tax identification numbers, bank details, employer records, passwords, or other sensitive personal information in your email.',
+    'Calculator inputs are intended to be processed locally in your browser. Email should not be used as a substitute for a private consultation with a qualified professional.'
+  ]},
+  { heading: 'Email', paragraphs: ['contact@payrentax.me'] }
+];
+---
+
+<PublicResourcePage
+  title="Contact PayRenTax"
+  description="Contact PayRenTax about calculation issues, outdated information, broken pages, translations, or accessibility problems."
+  canonical="/contact/"
+  sections={sections}
+  eyebrow="Get in touch"
+/>

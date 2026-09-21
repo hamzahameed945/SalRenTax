@@ -1,0 +1,34 @@
+---
+import PublicResourcePage from '../../components/content/PublicResourcePage.astro';
+const sections = [
+  {
+    heading: 'September 2026',
+    paragraphs: [
+      'PayRenTax expanded its multilingual calculator platform with country-specific salary and labor routes, source documentation, shared calculator interfaces, supported US state calculators, and a centralized page registry.',
+    ],
+  },
+  {
+    heading: 'Public-content improvements',
+    bullets: [
+      'Added public About, Contact, Privacy, Disclaimer, Terms, Data Sources, Methodology, Cookie Information, and Updates pages.',
+      'Expanded the header and footer so visitors can move between countries, calculator categories, resources, and legal information.',
+      'Added clearer explanations of estimates, sources, assumptions, and limitations.',
+    ],
+  },
+  {
+    heading: 'What comes next',
+    paragraphs: [
+      'Future releases may add more detailed localized explanations, additional verified country rules, and more calculator-specific examples.',
+      'A feature is only published when its underlying data can be sourced, reviewed, and tested.',
+    ],
+  },
+];
+---
+
+<PublicResourcePage
+  title="PayRenTax Updates"
+  description="A concise record of PayRenTax calculator, content, SEO, and transparency improvements."
+  canonical="/updates/"
+  sections={sections}
+  eyebrow="Release notes"
+/>

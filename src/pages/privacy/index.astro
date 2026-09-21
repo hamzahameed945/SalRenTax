@@ -1,0 +1,46 @@
+---
+import PublicResourcePage from '../../components/content/PublicResourcePage.astro';
+const sections = [
+  { heading: '1. Introduction', paragraphs: [
+    'This Privacy Policy explains how PayRenTax handles information when you visit and use the website.',
+    'PayRenTax is an independent calculator project. If we add analytics, advertising, contact forms, accounts, or other third-party services, we will update this policy so the published information matches the way the site actually works.'
+  ]},
+  { heading: '2. Calculator inputs', paragraphs: [
+    'Salary, rent, pay frequency, and other values you enter into the calculators are processed by the calculator in your browser.',
+    'The calculator interface is not designed to send those values to a PayRenTax application server. Even so, avoid entering information that directly identifies you or someone else.'
+  ]},
+  { heading: '3. Information you provide', paragraphs: [
+    'The current site does not require a user account and does not operate an on-site contact form.',
+    'If you email PayRenTax at contact@payrentax.me, we receive the information included in your message so we can read and respond to it. Email providers and other services involved in delivering the message may also process that information under their own policies.',
+    'Please do not send sensitive financial, tax, identity, or account information unless it is genuinely necessary.'
+  ]},
+  { heading: '4. Automatically collected information', paragraphs: [
+    'PayRenTax does not intentionally keep a first-party analytics database for calculator functionality.',
+    'The hosting provider, CDN, browser, or linked third-party services may process technical request information while the website is being delivered. Those services have their own terms and privacy policies.'
+  ]},
+  { heading: '5. Advertising and analytics', paragraphs: [
+    'If PayRenTax enables advertising or measurement services such as Google AdSense or Google Analytics, this policy will be updated before those services go live. The update will explain the relevant cookies or identifiers, their purpose, applicable retention information, available choices, and the provider involved.'
+  ]},
+  { heading: '6. Security, retention, and children', paragraphs: [
+    'Because calculator inputs are processed in the browser, PayRenTax does not maintain a calculator-input history on its application server.',
+    'Use a current browser and avoid putting sensitive information into calculators or sending sensitive information by email.',
+    'The site is not intended to collect personal information from children.'
+  ]},
+  { heading: '7. International visitors and changes', paragraphs: [
+    'Privacy rights depend on the laws that apply to you and where you are located.',
+    'We may update this policy when the site adds services, changes how information is handled, or new legal requirements apply. The review information on the page should reflect the latest revision.'
+  ]},
+  { heading: '8. Contact', paragraphs: [
+    'For privacy questions, email contact@payrentax.me.',
+    'Please describe the issue without including unnecessary sensitive personal information.'
+  ]}
+];
+---
+
+<PublicResourcePage
+  title="Privacy Policy"
+  description="Learn how PayRenTax handles calculator inputs, contact messages, cookies, analytics, and privacy-related questions."
+  canonical="/privacy/"
+  sections={sections}
+  eyebrow="Legal information"
+/>

@@ -1,0 +1,107 @@
+---
+import type { Category, LocaleCode } from '../../i18n/types';
+import { getLocaleConfig } from '../../data/locales';
+
+export interface Props {
+  locale: LocaleCode;
+  category: Category;
+}
+const { locale } = Astro.props;
+const config = getLocaleConfig(locale);
+---
+
+<section class="mx-auto mt-10 max-w-4xl px-4 pb-12" aria-labelledby="calculator-resource-heading">
+  <div class="grid gap-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+    <div>
+      <p class="text-sm font-semibold uppercase tracking-[.14em] text-accent">
+        Transparent estimate
+      </p>
+      <h2 id="calculator-resource-heading" class="mt-2 text-2xl font-bold text-slate-900">
+        How this calculator works
+      </h2>
+      <p class="mt-3 leading-7 text-slate-600">
+        Enter the supported information above to get an estimate for your selected country or region. The
+        result is calculated using the rules built into this specific calculator, then displayed
+        in {config.currency} using the local number format.
+      </p>
+      <p class="mt-3 leading-7 text-slate-600">
+        A simple way to check the result is to compare the gross amount you entered with the
+        deductions and final amount shown in the breakdown. The exact result depends on the pay
+        frequency, tax year, location, filing choices, and other inputs supported by the page.
+      </p>
+    </div>
+    <div class="grid gap-6 sm:grid-cols-2">
+      <div>
+        <h3 class="text-lg font-bold text-slate-900">What is generally included?</h3>
+        <ul class="mt-3 list-disc space-y-2 pl-5 leading-7 text-slate-600">
+          <li>The inputs and pay frequency you selected.</li>
+          <li>Country- or state-specific rates and thresholds supported by the calculator.</li>
+          <li>A formatted result and, where available, a breakdown of major deductions.</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold text-slate-900">What may be excluded?</h3>
+        <ul class="mt-3 list-disc space-y-2 pl-5 leading-7 text-slate-600">
+          <li>
+            Employer benefits, credits, dependents, or deductions that were not part of the
+            calculator inputs.
+          </li>
+          <li>Local, municipal, or regional rules that are not listed on the page.</li>
+          <li>
+            Collective agreements, unusual legal exceptions, and employer-specific payroll
+            rounding.
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="rounded-xl bg-slate-50 p-5">
+      <h3 class="text-lg font-bold text-slate-900">Data year, sources, and assumptions</h3>
+      <p class="mt-2 leading-7 text-slate-600">
+        Where a calculator uses a specific tax year, the page identifies it. The current release
+        focuses on 2026 data where a tax year is shown. Before relying on an estimate for an
+        important decision, review the relevant source notes on the{' '}
+        <a class="font-semibold text-accent underline" href="/data-sources/">
+          Data Sources
+        </a>{' '}
+        page and the{' '}
+        <a class="font-semibold text-accent underline" href="/how-calculators-work/">
+          methodology
+        </a>{' '}
+        page.
+      </p>
+    </div>
+    <div>
+      <h3 class="text-lg font-bold text-slate-900">Frequently asked questions</h3>
+      <div class="mt-3 divide-y divide-slate-200 rounded-xl border border-slate-200">
+        <details class="p-4">
+          <summary class="cursor-pointer font-semibold text-slate-800">
+            Why is my result different from my payslip?
+          </summary>
+          <p class="mt-2 leading-7 text-slate-600">
+            Your actual payslip may include employer-specific withholding, benefits, credits, local
+            taxes, deductions, or rounding that the calculator does not model.
+          </p>
+        </details>
+        <details class="p-4">
+          <summary class="cursor-pointer font-semibold text-slate-800">
+            Can I use this as official tax advice?
+          </summary>
+          <p class="mt-2 leading-7 text-slate-600">
+            No. PayRenTax provides general informational estimates. For a filing, employment,
+            legal, or financial decision, confirm the details with the appropriate authority or a
+            qualified professional.
+          </p>
+        </details>
+        <details class="p-4">
+          <summary class="cursor-pointer font-semibold text-slate-800">
+            What if my country or region is not supported?
+          </summary>
+          <p class="mt-2 leading-7 text-slate-600">
+            Do not use another country or state as a substitute. Choose a calculator that matches
+            your jurisdiction and check the page for any unsupported-input warnings.
+          </p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>

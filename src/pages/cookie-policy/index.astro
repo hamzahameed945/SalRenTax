@@ -1,0 +1,25 @@
+---
+import PublicResourcePage from '../../components/content/PublicResourcePage.astro';
+const sections = [
+  { heading: 'Current status', paragraphs: [
+    'You do not need an account or cookies just to use the calculators. The calculator inputs are processed in your browser.'
+  ]},
+  { heading: 'Hosting and external services', paragraphs: [
+    'The hosting provider, CDN, linked websites, and any third-party services used by the site may handle technical information under their own privacy policies.',
+    'If PayRenTax turns on a service such as Google AdSense, Google Analytics, or another advertising or measurement service, this page and the Privacy Policy will be updated to explain what is being used and why.'
+  ]},
+  { heading: 'Future changes', paragraphs: [
+    'If we introduce analytics, personalized advertising, or other non-essential cookies, we will update this page and the Privacy Policy before those services go live.',
+    'The update will explain the types of cookies or identifiers involved, their purpose, the relevant providers, retention information where applicable, and the choices available to visitors.'
+  ]},
+  { heading: 'Contact', paragraphs: ['If you have a privacy question, email contact@payrentax.me.'] }
+];
+---
+
+<PublicResourcePage
+  title="Cookie Information"
+  description="Current information about cookies, tracking, and consent on PayRenTax."
+  canonical="/cookie-policy/"
+  sections={sections}
+  eyebrow="Privacy choices"
+/>

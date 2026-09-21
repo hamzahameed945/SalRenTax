@@ -1,0 +1,103 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import SalaryRaiseCalculator from '../../../../components/islands/SalaryRaiseCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'en-GB' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Salary Raise Calculator UK — PayRenTax',
+  t.salary.salaryRaise.intro,
+  '/en-gb/salary/salary-raise/',
+);
+
+const faqItems = [
+  {
+    question: 'How do I calculate my new salary after a pay rise?',
+    answer:
+      'Multiply your current salary by (1 + the percentage / 100). For a 5% rise on £38,000: £38,000 × 1.05 = £39,900.',
+  },
+  {
+    question: 'What is the average pay rise in the UK?',
+    answer:
+      'Average UK pay growth has varied significantly with inflation. In 2024–25 private sector wage growth ran at approximately 5–6% annually. The ONS publishes regular Average Weekly Earnings data for up-to-date figures.',
+  },
+  {
+    question: 'How much more will I take home after a pay rise?',
+    answer:
+      'Because UK income tax and NI are progressive, a portion of any salary increase may fall into a higher tax band. Our take-home pay calculator shows the net impact after income tax and National Insurance contributions.',
+  },
+  {
+    question: 'Is a pay rise pensionable in the UK?',
+    answer:
+      'If you are in a defined contribution scheme, pension contributions are usually a percentage of qualifying earnings. A higher salary therefore also increases employer and employee pension contributions above the auto-enrolment threshold (£6,240 in 2025–26).',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="salary-raise"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      { label: t.salary.salaryRaise.title, href: buildLocalePath(locale, 'salary/salary-raise') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">{t.salary.salaryRaise.h1}</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">{t.salary.salaryRaise.intro}</p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <SalaryRaiseCalculator client:load t={t} locale={locale} />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="gb-salary-raise-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Pay rise examples — UK salaries 2026</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Current salary</th>
+            <th>3% rise</th>
+            <th>5% rise</th>
+            <th>10% rise</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>£25,000</td><td>£25,750</td><td>£26,250</td><td>£27,500</td></tr>
+          <tr><td>£35,000</td><td>£36,050</td><td>£36,750</td><td>£38,500</td></tr>
+          <tr><td>£50,000</td><td>£51,500</td><td>£52,500</td><td>£55,000</td></tr>
+          <tr><td>£75,000</td><td>£77,250</td><td>£78,750</td><td>£82,500</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Frequently asked questions" items={faqItems} />
+  </article>
+  <CalculatorResource locale="en-GB" category="salary" />
+</BaseLayout>

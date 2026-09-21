@@ -1,0 +1,35 @@
+---
+import PublicResourcePage from '../../components/content/PublicResourcePage.astro';
+const sections = [
+  { heading: 'Acceptance and permitted use', paragraphs: [
+    'By using PayRenTax, you agree to use the website lawfully and for personal, educational, research, or internal planning purposes.',
+    'You may link to public PayRenTax pages and use calculator results as a starting point for your own research and verification.'
+  ]},
+  { heading: 'Estimates and prohibited use', paragraphs: [
+    'PayRenTax calculators provide estimates. They are not intended to be the sole basis for tax filings, legal claims, payroll commitments, lending decisions, housing decisions, or other high-impact decisions.',
+    'Do not try to overload or disrupt the service, scrape it in a way that harms normal operation, reverse engineer protected parts of the service, or otherwise interfere with the website.'
+  ]},
+  { heading: 'Intellectual property', paragraphs: [
+    'The PayRenTax name, original written content, interface, code, and design are protected to the extent allowed by applicable law.',
+    'Third-party names, trademarks, source material, and linked resources remain the property of their respective owners.'
+  ]},
+  { heading: 'External links and availability', paragraphs: [
+    'PayRenTax may link to official government resources and other external websites when they provide useful additional information.',
+    'We do not control those websites, so we cannot guarantee their availability, accuracy, or continued content.',
+    'Pages on PayRenTax may be updated, corrected, moved, or temporarily unavailable as the project develops.'
+  ]},
+  { heading: 'Limitation and changes', paragraphs: [
+    'To the extent permitted by law, PayRenTax is not responsible for losses or decisions that result from relying on a calculator estimate.',
+    'These Terms and the website may be updated as the project changes.'
+  ]},
+  { heading: 'Contact', paragraphs: ['Questions about these Terms can be sent to contact@payrentax.me.'] }
+];
+---
+
+<PublicResourcePage
+  title="Terms of Use"
+  description="Read the rules and limitations for using PayRenTax calculators and public resources."
+  canonical="/terms/"
+  sections={sections}
+  eyebrow="Legal information"
+/>

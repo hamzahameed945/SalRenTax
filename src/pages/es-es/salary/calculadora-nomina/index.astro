@@ -1,0 +1,147 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import SpainSalaryCalculator from '../../../../components/islands/SpainSalaryCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'es-ES' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  t.salary.nomina.title,
+  t.salary.nomina.metaDescription,
+  '/es-es/salary/calculadora-nomina/',
+);
+
+const faqItems = [
+  {
+    question: '¿Cómo se calcula el IRPF en la nómina 2026?',
+    answer:
+      'El IRPF se aplica sobre la base liquidable: salario bruto menos cotización a la SS (6,50%), menos gastos deducibles (€2.000 mínimo) y menos el mínimo personal (€5.550 general). Sobre esa base se aplica la escala estatal y la escala autonómica de tu comunidad. Esta calculadora incluye la reducción por rendimientos del trabajo (Art. 20 LIRPF) para rentas inferiores a €19.747,50.',
+  },
+  {
+    question: '¿Por qué varía el IRPF según la comunidad autónoma?',
+    answer:
+      'El IRPF tiene dos partes: una escala estatal (igual en toda España) y una escala autonómica que cada comunidad legisla libremente. Madrid tiene los tipos más bajos (tipo mínimo autonómico 8,5%), mientras que la Comunidad Valenciana tiene los más altos (tipo marginal autonómico hasta 29,5%). Con un salario de €30.000 la diferencia entre comunidades puede ser de €300–€600 al año.',
+  },
+  {
+    question: '¿Cuánto es la cotización a la Seguridad Social en 2026?',
+    answer:
+      'El trabajador cotiza un 6,50% total: contingencias comunes (4,70%) + desempleo (1,55%) + MEI (0,15%) + Formación Profesional (0,10%). La base máxima de cotización es de 5.101,20 €/mes. Fuente: Orden PJC/297/2026.',
+  },
+  {
+    question: '¿Qué es la reducción por rendimientos del trabajo (Art. 20)?',
+    answer:
+      'Es una deducción especial para trabajadores con rentas netas del trabajo inferiores a €19.747,50/año. La reducción máxima es de €7.302 (si el rendimiento neto es ≤ €14.852) y se va reduciendo hasta cero. Beneficia especialmente a trabajadores con salarios cerca del SMI.',
+  },
+  {
+    question: '¿Qué diferencia hay entre 12 y 14 pagas?',
+    answer:
+      'Con 14 pagas, el salario bruto anual se divide en 12 mensualidades ordinarias más 2 pagas extra (normalmente en junio y diciembre). El sueldo neto anual es el mismo en ambos casos; la diferencia es solo cuándo cobras cada importe.',
+  },
+  {
+    question: '¿Cuál es el SMI en España en 2026?',
+    answer:
+      'El Salario Mínimo Interprofesional (SMI) en España para 2026 es de 1.221 € brutos mensuales en 14 pagas, equivalente a 17.094 € brutos anuales. Aprobado por Real Decreto 126/2026 de 18 de febrero.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="net-salary-calculator-es"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      { label: t.salary.nomina.title, href: buildLocalePath(locale, 'salary/calculadora-nomina') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">{t.salary.nomina.h1}</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">{t.salary.nomina.intro}</p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <SpainSalaryCalculator client:load locale={locale} />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="es-nomina-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Cómo funciona la Calculadora de Nómina 2026</h2>
+      <p>La calculadora aplica, en este orden:</p>
+      <ol>
+        <li><strong>Cotización a la SS:</strong> 6,50% sobre la base (máx. 5.101,20 €/mes)</li>
+        <li><strong>Gastos deducibles mínimos:</strong> €2.000 (Art. 19.2.f LIRPF)</li>
+        <li><strong>Reducción rendimientos trabajo (Art. 20):</strong> hasta €7.302 para rentas &lt; €19.747,50</li>
+        <li><strong>Mínimo personal:</strong> €5.550 (general), €6.700 (mayores de 65), €8.100 (mayores de 75)</li>
+        <li><strong>IRPF estatal + autonómico</strong> sobre la base liquidable</li>
+      </ol>
+
+      <h3>Tramos IRPF Estatal 2026</h3>
+      <table>
+        <thead><tr><th>Base liquidable</th><th>Tipo estatal</th></tr></thead>
+        <tbody>
+          <tr><td>0 – 12.450 €</td><td>9,5 %</td></tr>
+          <tr><td>12.450 – 20.200 €</td><td>12,0 %</td></tr>
+          <tr><td>20.200 – 35.200 €</td><td>15,0 %</td></tr>
+          <tr><td>35.200 – 60.000 €</td><td>18,5 %</td></tr>
+          <tr><td>60.000 – 300.000 €</td><td>22,5 %</td></tr>
+          <tr><td>Más de 300.000 €</td><td>24,5 %</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Tipos autonómicos 2026 — resumen por comunidad</h3>
+      <table>
+        <thead><tr><th>Comunidad Autónoma</th><th>Tipo mín. autonómico</th><th>Tipo máx. autonómico</th><th>Total máx. combinado</th></tr></thead>
+        <tbody>
+          <tr><td>Madrid</td><td>8,5 %</td><td>20,5 %</td><td>45,0 %</td></tr>
+          <tr><td>Castilla y León</td><td>9,0 %</td><td>21,5 %</td><td>46,0 %</td></tr>
+          <tr><td>Galicia / Castilla-La Mancha</td><td>9,5 %</td><td>22,5 %</td><td>47,0 %</td></tr>
+          <tr><td>Andalucía / Baleares / Murcia</td><td>9,5 %</td><td>24,5 %</td><td>49,0 %</td></tr>
+          <tr><td>Cataluña / Aragón / Asturias</td><td>10,0–10,5 %</td><td>25,5 %</td><td>50,0 %</td></tr>
+          <tr><td>Comunidad Valenciana</td><td>10,0 %</td><td>29,5 %</td><td>54,0 %</td></tr>
+        </tbody>
+      </table>
+      <p class="text-sm">
+        Fuente: <a href="https://calculadorarenta.es/tramos-irpf-por-comunidad/" target="_blank" rel="noopener noreferrer">calculadorarenta.es — tramos por comunidad autónoma 2026</a> · País Vasco y Navarra tienen régimen foral propio.
+      </p>
+
+      <h3>Seguridad Social trabajador 2026</h3>
+      <table>
+        <thead><tr><th>Concepto</th><th>Tipo</th></tr></thead>
+        <tbody>
+          <tr><td>Contingencias comunes</td><td>4,70 %</td></tr>
+          <tr><td>Desempleo</td><td>1,55 %</td></tr>
+          <tr><td>MEI</td><td>0,15 %</td></tr>
+          <tr><td>Formación Profesional</td><td>0,10 %</td></tr>
+          <tr><td><strong>Total</strong></td><td><strong>6,50 %</strong></td></tr>
+        </tbody>
+      </table>
+      <p class="text-sm">Fuente: Orden PJC/297/2026 (BOE 31-03-2026). Base máxima: 5.101,20 €/mes.</p>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Preguntas frecuentes sobre nómina e IRPF 2026" items={faqItems} />
+  </article>
+  <CalculatorResource locale="es-ES" category="salary" />
+</BaseLayout>

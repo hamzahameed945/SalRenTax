@@ -1,0 +1,27 @@
+---
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+export interface Props {
+  items: FaqItem[];
+  heading: string;
+}
+const { items, heading } = Astro.props;
+---
+
+<section aria-labelledby="faq-heading" class="mt-10">
+  <h2 id="faq-heading" class="mb-4 text-xl font-semibold text-slate-900">
+    {heading}
+  </h2>
+  <div class="divide-y divide-slate-200 rounded-lg border border-slate-200 bg-white">
+    {items.map((item) => (
+      <details class="group p-4">
+        <summary class="cursor-pointer list-none font-medium text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40">
+          {item.question}
+        </summary>
+        <p class="mt-2 text-sm text-slate-600">{item.answer}</p>
+      </details>
+    ))}
+  </div>
+</section>

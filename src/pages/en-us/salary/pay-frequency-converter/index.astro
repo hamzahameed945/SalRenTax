@@ -1,0 +1,40 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import PayFrequencyConverter from '../../../../components/islands/PayFrequencyConverter';
+
+const locale = 'en-US' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Pay Frequency Converter — PayRenTax',
+  t.salary.payFrequency.intro,
+  '/en-us/salary/pay-frequency-converter/',
+);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <section class="mx-auto max-w-4xl px-4 py-12">
+    <h1 class="text-3xl font-bold text-slate-900 mb-6">{t.salary.payFrequency.h1}</h1>
+    <p class="mb-8 text-slate-600">{t.salary.payFrequency.intro}</p>
+    <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <PayFrequencyConverter client:load t={t} locale={locale} />
+    </div>
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Why pay frequency matters</h2>
+      <p>
+        A salary can look very different depending on how often you are paid. This tool converts between common pay frequencies so you can compare amounts on the same basis.
+      </p>
+      <p>
+        Small differences can appear between an estimate and an employer's actual paycheck because payroll systems use their own rounding and payment schedules.
+      </p>
+    </div>
+  </section>
+  <CalculatorResource locale="en-US" category="salary" />
+</BaseLayout>

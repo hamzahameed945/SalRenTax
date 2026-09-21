@@ -1,0 +1,6 @@
+# Keep the temporary *.workers.dev address out of search results.
+# The real domain (payrentax.me) is not matched by these rules, so it stays indexable.
+# Do NOT block crawling in robots.txt for this: search engines must be able to
+# fetch the page to see the noindex header.
+https://:worker.:account.workers.dev/*
+  X-Robots-Tag: noindex, nofollow

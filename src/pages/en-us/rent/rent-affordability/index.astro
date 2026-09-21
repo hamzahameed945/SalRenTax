@@ -1,0 +1,41 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import RentAffordabilityCalculator from '../../../../components/islands/RentAffordabilityCalculator';
+
+const locale = 'en-US' as const;
+const meta = buildPageMetadata(
+  'Rent Affordability Calculator — PayRenTax',
+  'Estimate a starting rent budget based on your income and the percentage of income you want to put toward housing.',
+  '/en-us/rent/rent-affordability/',
+);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <section class="mx-auto max-w-4xl px-4 py-12">
+    <h1 class="text-3xl font-bold text-slate-900 mb-6">Rent Affordability Calculator</h1>
+    <p class="mb-8 text-slate-600">
+      Estimate a starting rent budget based on your income and the percentage of income you want
+      to put toward housing.
+    </p>
+    <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <RentAffordabilityCalculator client:load locale={locale} />
+    </div>
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Using the 30% guideline sensibly</h2>
+      <p>
+        The common 30% guideline can be useful as a starting point, but it does not work equally well for every household. Your other expenses, debt, savings goals, location, and income stability all matter.
+      </p>
+      <p>
+        Use the calculator to create a starting range, then compare that range with your complete monthly budget.
+      </p>
+    </div>
+  </section>
+  <CalculatorResource locale="en-US" category="rent" />
+</BaseLayout>
