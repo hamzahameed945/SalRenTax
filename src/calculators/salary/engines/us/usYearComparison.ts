@@ -85,8 +85,8 @@ export const usYearComparisonEngine: CalculatorEngine<
     if (
       input.previousYearNetPayPerPeriod !== undefined &&
       input.previousYearNetPayPerPeriod !== null &&
-      !typeof input.previousYearNetPayPerPeriod === 'number' && Number.isNaN(input.previousYearNetPayPerPeriod) &&
-      input.previousYearNetPayPerPeriod < 0
+      (typeof input.previousYearNetPayPerPeriod !== 'number' || Number.isNaN(input.previousYearNetPayPerPeriod) ||
+      input.previousYearNetPayPerPeriod < 0)
     ) {
       errors.previousYearNetPayPerPeriod = 'errors.mustBePositive';
     }
@@ -94,8 +94,8 @@ export const usYearComparisonEngine: CalculatorEngine<
     if (
       input.inflationRate !== undefined &&
       input.inflationRate !== null &&
-      !typeof input.inflationRate === 'number' && Number.isNaN(input.inflationRate) &&
-      input.inflationRate < 0
+      (typeof input.inflationRate !== 'number' || Number.isNaN(input.inflationRate) ||
+      input.inflationRate < 0)
     ) {
       errors.inflationRate = 'errors.mustBePositive';
     }

@@ -77,10 +77,10 @@ export const usRaiseSimulatorEngine: CalculatorEngine<
     // At least one of raiseAmount or raisePercent is required
     const hasRaiseAmount = input.raiseAmount !== undefined && 
                           input.raiseAmount !== null && 
-                          !typeof input.raiseAmount === 'number' && Number.isNaN(input.raiseAmount);
+                          typeof input.raiseAmount === 'number' && !Number.isNaN(input.raiseAmount);
     const hasRaisePercent = input.raisePercent !== undefined && 
                            input.raisePercent !== null && 
-                           !typeof input.raisePercent === 'number' && Number.isNaN(input.raisePercent);
+                           typeof input.raisePercent === 'number' && !Number.isNaN(input.raisePercent);
 
     if (!hasRaiseAmount && !hasRaisePercent) {
       errors.raiseAmount = 'errors.raiseAmountOrPercentRequired';

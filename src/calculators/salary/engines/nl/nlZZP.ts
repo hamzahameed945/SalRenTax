@@ -85,7 +85,7 @@ export const nlZZPEngine: CalculatorEngine<NlZZPInput, NlZZPResult, never> = {
     const errors: Partial<Record<keyof NlZZPInput, string>> = {};
 
     // Resolve revenue from hourlyRate × hours if annualRevenue not given
-    const hasRevenue = input.annualRevenue > 0 && !typeof input.annualRevenue === 'number' && Number.isNaN(input.annualRevenue);
+    const hasRevenue = input.annualRevenue > 0 && typeof input.annualRevenue === 'number' && !Number.isNaN(input.annualRevenue);
     const hasHourly = input.hourlyRate && input.billableHours;
 
     if (!hasRevenue && !hasHourly) {

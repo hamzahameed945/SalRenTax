@@ -17,7 +17,7 @@ import { ilStateEngine } from './usStates/il';
 import { azStateEngine } from './usStates/az';
 import { nyStateEngine } from './usStates/ny';
 import { flStateEngine } from './usStates/fl';
-import { caStateEngine } from './usStates/ca';
+// import { caStateEngine } from './usStates/ca'; // CA not yet supported in production
 import { njStateEngine } from './usStates/nj';
 import { paStateEngine } from './usStates/pa';
 import { waStateEngine } from './usStates/wa';
@@ -29,7 +29,7 @@ const stateEngines: Record<string, StateTaxEngine> = {
   AZ: azStateEngine,
   NY: nyStateEngine,
   FL: flStateEngine,
-  CA: caStateEngine,
+  // CA: caStateEngine, // CA not yet supported in production
   NJ: njStateEngine,
   PA: paStateEngine,
   WA: waStateEngine,
@@ -99,12 +99,17 @@ export const usPaycheckEngine: CalculatorEngine<
       errors.grossPayPerPeriod = 'errors.mustBePositive';
     }
     
+    // Required field: filingStatus - only 'single' and 'marriedJointly' are supported
+    if (input.filingStatus !== 'single' && input.filingStatus !== 'marriedJointly') {
+      errors.filingStatus = 'UNSUPPORTED_FILING_STATUS';
+    }
+    
     // Optional field: preTaxDeductionsPerPeriod
     if (
       input.preTaxDeductionsPerPeriod !== undefined &&
       input.preTaxDeductionsPerPeriod !== null &&
-      !typeof input.preTaxDeductionsPerPeriod === 'number' && Number.isNaN(input.preTaxDeductionsPerPeriod) &&
-      input.preTaxDeductionsPerPeriod < 0
+      (typeof input.preTaxDeductionsPerPeriod !== 'number' || Number.isNaN(input.preTaxDeductionsPerPeriod) ||
+      input.preTaxDeductionsPerPeriod < 0)
     ) {
       errors.preTaxDeductionsPerPeriod = 'errors.mustBePositive';
     }
@@ -118,8 +123,8 @@ export const usPaycheckEngine: CalculatorEngine<
     if (
       input.dependents !== undefined &&
       input.dependents !== null &&
-      !typeof input.dependents === 'number' && Number.isNaN(input.dependents) &&
-      (input.dependents < 0 || !Number.isInteger(input.dependents))
+      (typeof input.dependents !== 'number' || Number.isNaN(input.dependents) ||
+      input.dependents < 0 || !Number.isInteger(input.dependents))
     ) {
       errors.dependents = 'errors.invalidNumber';
     }
@@ -128,8 +133,8 @@ export const usPaycheckEngine: CalculatorEngine<
     if (
       input.additionalFederalWithholding !== undefined &&
       input.additionalFederalWithholding !== null &&
-      !typeof input.additionalFederalWithholding === 'number' && Number.isNaN(input.additionalFederalWithholding) &&
-      input.additionalFederalWithholding < 0
+      (typeof input.additionalFederalWithholding !== 'number' || Number.isNaN(input.additionalFederalWithholding) ||
+      input.additionalFederalWithholding < 0)
     ) {
       errors.additionalFederalWithholding = 'errors.mustBePositive';
     }

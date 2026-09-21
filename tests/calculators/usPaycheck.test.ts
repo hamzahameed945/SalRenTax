@@ -101,11 +101,14 @@ describe('usPaycheckEngine.calculate', () => {
       CONFIG,
       2026,
     );
-    let expectedMedicare = highAnnual * fica2026.medicareRate;
-    if (highAnnual > 200_000) {
-      expectedMedicare += (highAnnual - 200_000) * 0.009; // Additional medicare rate
+    const expectedBaseMedicare = highAnnual * fica2026.medicareRate;
+    const expectedAdditionalMedicare = highAnnual > 200_000 
+      ? (highAnnual - 200_000) * fica2026.additionalMedicareRate 
+      : 0;
+    expect(result.annualMedicare).toBeCloseTo(expectedBaseMedicare);
+    if (expectedAdditionalMedicare > 0) {
+      expect(result.annualAdditionalMedicare).toBeCloseTo(expectedAdditionalMedicare);
     }
-    expect(result.annualMedicare).toBeCloseTo(expectedMedicare);
   });
 
   it('divides annual figures evenly across pay periods', () => {
@@ -201,9 +204,8 @@ describe('usPaycheckEngine.calculate', () => {
         CONFIG,
         2026,
       );
-      expect(result.annualMedicare).toBeCloseTo(
-        250_000 * fica2026.medicareRate + 50_000 * fica2026.additionalMedicareRate,
-      );
+      expect(result.annualMedicare).toBeCloseTo(250_000 * fica2026.medicareRate);
+      expect(result.annualAdditionalMedicare).toBeCloseTo(50_000 * fica2026.additionalMedicareRate);
     });
 
     it('does not apply exactly at the threshold', () => {
@@ -218,6 +220,7 @@ describe('usPaycheckEngine.calculate', () => {
         2026,
       );
       expect(result.annualMedicare).toBeCloseTo(200_000 * fica2026.medicareRate);
+      expect(result.annualAdditionalMedicare).toBeUndefined();
     });
 
     it('applies to Married Jointly filers over 250k', () => {
@@ -231,9 +234,8 @@ describe('usPaycheckEngine.calculate', () => {
         CONFIG,
         2026,
       );
-      expect(result.annualMedicare).toBeCloseTo(
-        300_000 * fica2026.medicareRate + 50_000 * fica2026.additionalMedicareRate,
-      );
+      expect(result.annualMedicare).toBeCloseTo(300_000 * fica2026.medicareRate);
+      expect(result.annualAdditionalMedicare).toBeCloseTo(50_000 * fica2026.additionalMedicareRate);
     });
   });
 
