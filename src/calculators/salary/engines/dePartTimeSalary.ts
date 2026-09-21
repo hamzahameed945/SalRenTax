@@ -23,7 +23,7 @@ export const dePartTimeSalaryEngine: CalculatorEngine<
 
     if (
       input.fullTimeMonthlyGross === undefined ||
-      Number.isNaN(input.fullTimeMonthlyGross) ||
+      typeof input.fullTimeMonthlyGross === 'number' && Number.isNaN(input.fullTimeMonthlyGross) ||
       input.fullTimeMonthlyGross <= 0
     ) {
       errors.fullTimeMonthlyGross = 'errors.mustBePositive';
@@ -31,7 +31,7 @@ export const dePartTimeSalaryEngine: CalculatorEngine<
 
     if (
       input.fullTimeHoursPerWeek === undefined ||
-      Number.isNaN(input.fullTimeHoursPerWeek) ||
+      typeof input.fullTimeHoursPerWeek === 'number' && Number.isNaN(input.fullTimeHoursPerWeek) ||
       input.fullTimeHoursPerWeek <= 0
     ) {
       errors.fullTimeHoursPerWeek = 'errors.invalidNumber';
@@ -39,7 +39,7 @@ export const dePartTimeSalaryEngine: CalculatorEngine<
 
     if (
       input.partTimeHoursPerWeek === undefined ||
-      Number.isNaN(input.partTimeHoursPerWeek) ||
+      typeof input.partTimeHoursPerWeek === 'number' && Number.isNaN(input.partTimeHoursPerWeek) ||
       input.partTimeHoursPerWeek <= 0 ||
       input.partTimeHoursPerWeek > input.fullTimeHoursPerWeek
     ) {

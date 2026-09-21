@@ -133,7 +133,7 @@ export const mexicoSalaryEngine: CalculatorEngine<MexicoSalaryInput, MexicoSalar
   validate(input: MexicoSalaryInput): ValidationResult<MexicoSalaryInput> {
     const errors: Partial<Record<keyof MexicoSalaryInput, string>> = {};
 
-    if (!input.grossMonthly || Number.isNaN(input.grossMonthly)) {
+    if (!input.grossMonthly || typeof input.grossMonthly === 'number' && Number.isNaN(input.grossMonthly)) {
       errors.grossMonthly = 'errors.invalidNumber';
     } else if (input.grossMonthly <= 0) {
       errors.grossMonthly = 'errors.mustBePositive';

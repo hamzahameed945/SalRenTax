@@ -22,7 +22,7 @@ export const deMinijobEngine: CalculatorEngine<DeMinijobInput, DeMinijobResult, 
 
     if (
       input.hourlyWage === undefined ||
-      Number.isNaN(input.hourlyWage) ||
+      typeof input.hourlyWage === 'number' && Number.isNaN(input.hourlyWage) ||
       input.hourlyWage <= 0
     ) {
       errors.hourlyWage = 'errors.mustBePositive';
@@ -30,7 +30,7 @@ export const deMinijobEngine: CalculatorEngine<DeMinijobInput, DeMinijobResult, 
 
     if (
       input.hoursPerMonth === undefined ||
-      Number.isNaN(input.hoursPerMonth) ||
+      typeof input.hoursPerMonth === 'number' && Number.isNaN(input.hoursPerMonth) ||
       input.hoursPerMonth < 0
     ) {
       errors.hoursPerMonth = 'errors.invalidNumber';

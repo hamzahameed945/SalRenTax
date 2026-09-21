@@ -56,17 +56,17 @@ export const nlMinimumloonEngine: CalculatorEngine<NlMinimumloonInput, NlMinimum
   validate(input: NlMinimumloonInput): ValidationResult<NlMinimumloonInput> {
     const errors: Partial<Record<keyof NlMinimumloonInput, string>> = {};
 
-    if (input.hourlyRate !== undefined && (Number.isNaN(input.hourlyRate) || input.hourlyRate < 0)) {
+    if (input.hourlyRate !== undefined && (typeof input.hourlyRate === 'number' && Number.isNaN(input.hourlyRate) || input.hourlyRate < 0)) {
       errors.hourlyRate = 'errors.invalidNumber';
     }
-    if (input.monthlySalary !== undefined && (Number.isNaN(input.monthlySalary) || input.monthlySalary < 0)) {
+    if (input.monthlySalary !== undefined && (typeof input.monthlySalary === 'number' && Number.isNaN(input.monthlySalary) || input.monthlySalary < 0)) {
       errors.monthlySalary = 'errors.invalidNumber';
     }
     const hrs = input.hoursPerWeek ?? 40;
-    if (Number.isNaN(hrs) || hrs < 1 || hrs > 60) {
+    if (typeof hrs === 'number' && Number.isNaN(hrs) || hrs < 1 || hrs > 60) {
       errors.hoursPerWeek = 'errors.invalidHours';
     }
-    if (input.age !== undefined && (Number.isNaN(input.age) || input.age < 15 || input.age > 100)) {
+    if (input.age !== undefined && (typeof input.age === 'number' && Number.isNaN(input.age) || input.age < 15 || input.age > 100)) {
       errors.age = 'errors.invalidAge';
     }
 

@@ -67,26 +67,26 @@ export const mxFiniquitoEngine: CalculatorEngine<MxFiniquitoInput, MxFiniquitoRe
   validate(input: MxFiniquitoInput): ValidationResult<MxFiniquitoInput> {
     const errors: Partial<Record<keyof MxFiniquitoInput, string>> = {};
 
-    if (!input.dailyWage || Number.isNaN(input.dailyWage)) {
+    if (!input.dailyWage || typeof input.dailyWage === 'number' && Number.isNaN(input.dailyWage)) {
       errors.dailyWage = 'errors.invalidNumber';
     } else if (input.dailyWage <= 0) {
       errors.dailyWage = 'errors.mustBePositive';
     }
 
-    if (input.yearsWorked === undefined || Number.isNaN(input.yearsWorked) || input.yearsWorked < 0) {
+    if (input.yearsWorked === undefined || typeof input.yearsWorked === 'number' && Number.isNaN(input.yearsWorked) || input.yearsWorked < 0) {
       errors.yearsWorked = 'errors.invalidNumber';
     }
 
     if (
       input.daysVacationPending !== undefined &&
-      (Number.isNaN(input.daysVacationPending) || input.daysVacationPending < 0 || input.daysVacationPending > 365)
+      (typeof input.daysVacationPending === 'number' && Number.isNaN(input.daysVacationPending) || input.daysVacationPending < 0 || input.daysVacationPending > 365)
     ) {
       errors.daysVacationPending = 'errors.invalidNumber';
     }
 
     if (
       input.monthsWorkedThisYear === undefined ||
-      Number.isNaN(input.monthsWorkedThisYear) ||
+      typeof input.monthsWorkedThisYear === 'number' && Number.isNaN(input.monthsWorkedThisYear) ||
       input.monthsWorkedThisYear < 1 ||
       input.monthsWorkedThisYear > 12
     ) {

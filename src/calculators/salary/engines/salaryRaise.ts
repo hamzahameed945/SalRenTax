@@ -26,7 +26,7 @@ export const salaryRaiseEngine: CalculatorEngine<SalaryRaiseInput, SalaryRaiseRe
     if (
       input.currentSalary === undefined ||
       input.currentSalary === null ||
-      Number.isNaN(input.currentSalary)
+      typeof input.currentSalary === 'number' && Number.isNaN(input.currentSalary)
     ) {
       errors.currentSalary = 'errors.invalidNumber';
     } else if (input.currentSalary <= 0) {
@@ -42,7 +42,7 @@ export const salaryRaiseEngine: CalculatorEngine<SalaryRaiseInput, SalaryRaiseRe
     }
 
     if (input.raisePercentage !== undefined && input.raisePercentage !== null) {
-      if (Number.isNaN(input.raisePercentage)) {
+      if (typeof input.raisePercentage === 'number' && Number.isNaN(input.raisePercentage)) {
         errors.raisePercentage = 'errors.invalidNumber';
       } else if (input.raisePercentage < 0) {
         errors.raisePercentage = 'errors.mustBePositive';
@@ -50,7 +50,7 @@ export const salaryRaiseEngine: CalculatorEngine<SalaryRaiseInput, SalaryRaiseRe
     }
 
     if (input.newSalary !== undefined && input.newSalary !== null) {
-      if (Number.isNaN(input.newSalary)) {
+      if (typeof input.newSalary === 'number' && Number.isNaN(input.newSalary)) {
         errors.newSalary = 'errors.invalidNumber';
       } else if (input.newSalary <= 0) {
         errors.newSalary = 'errors.mustBePositive';
@@ -58,7 +58,7 @@ export const salaryRaiseEngine: CalculatorEngine<SalaryRaiseInput, SalaryRaiseRe
     }
 
     if (input.hoursPerWeek !== undefined) {
-      if (Number.isNaN(input.hoursPerWeek)) {
+      if (typeof input.hoursPerWeek === 'number' && Number.isNaN(input.hoursPerWeek)) {
         errors.hoursPerWeek = 'errors.invalidNumber';
       } else if (input.hoursPerWeek <= 0 || input.hoursPerWeek > 168) {
         errors.hoursPerWeek = 'errors.invalidHoursPerWeek';

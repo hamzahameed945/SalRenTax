@@ -18,7 +18,7 @@ export const brFeriasEngine: CalculatorEngine<BrFeriasInput, BrFeriasResult, nev
 
     if (
       input.monthlySalary === undefined ||
-      Number.isNaN(input.monthlySalary) ||
+      typeof input.monthlySalary === 'number' && Number.isNaN(input.monthlySalary) ||
       input.monthlySalary <= 0
     ) {
       errors.monthlySalary = 'errors.mustBePositive';
@@ -26,7 +26,7 @@ export const brFeriasEngine: CalculatorEngine<BrFeriasInput, BrFeriasResult, nev
 
     if (
       input.vacationDays === undefined ||
-      Number.isNaN(input.vacationDays) ||
+      typeof input.vacationDays === 'number' && Number.isNaN(input.vacationDays) ||
       input.vacationDays < 1 ||
       input.vacationDays > 30
     ) {

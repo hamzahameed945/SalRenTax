@@ -144,7 +144,7 @@ export const nlBruttoNettoEngine: CalculatorEngine<NlBruttoNettoInput, NlBruttoN
   validate(input: NlBruttoNettoInput): ValidationResult<NlBruttoNettoInput> {
     const errors: Partial<Record<keyof NlBruttoNettoInput, string>> = {};
 
-    if (!input.grossAnnual || Number.isNaN(input.grossAnnual)) {
+    if (!input.grossAnnual || typeof input.grossAnnual === 'number' && Number.isNaN(input.grossAnnual)) {
       errors.grossAnnual = 'errors.invalidNumber';
     } else if (input.grossAnnual <= 0) {
       errors.grossAnnual = 'errors.mustBePositive';
@@ -153,7 +153,7 @@ export const nlBruttoNettoEngine: CalculatorEngine<NlBruttoNettoInput, NlBruttoN
     }
 
     if (input.age !== undefined) {
-      if (Number.isNaN(input.age) || input.age < 15 || input.age > 100) {
+      if (typeof input.age === 'number' && Number.isNaN(input.age) || input.age < 15 || input.age > 100) {
         errors.age = 'errors.invalidAge';
       }
     }

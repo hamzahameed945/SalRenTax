@@ -211,7 +211,7 @@ export const bruttoNettoEngine: CalculatorEngine<BruttoNettoInput, BruttoNettoBr
   validate(input: BruttoNettoInput): ValidationResult<BruttoNettoInput> {
     const errors: Partial<Record<keyof BruttoNettoInput, string>> = {};
 
-    if (!input.grossMonthly || Number.isNaN(input.grossMonthly)) {
+    if (!input.grossMonthly || typeof input.grossMonthly === 'number' && Number.isNaN(input.grossMonthly)) {
       errors.grossMonthly = 'errors.invalidNumber';
     } else if (input.grossMonthly <= 0) {
       errors.grossMonthly = 'errors.mustBePositive';
@@ -220,7 +220,7 @@ export const bruttoNettoEngine: CalculatorEngine<BruttoNettoInput, BruttoNettoBr
     }
 
     const kids = input.numberOfChildren ?? 0;
-    if (Number.isNaN(kids) || kids < 0 || kids > 20) {
+    if (typeof kids === 'number' && Number.isNaN(kids) || kids < 0 || kids > 20) {
       errors.numberOfChildren = 'errors.invalidNumber';
     }
 

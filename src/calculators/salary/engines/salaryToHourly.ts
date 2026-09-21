@@ -28,7 +28,7 @@ export const salaryToHourlyEngine: CalculatorEngine<
     if (
       input.annualSalary === undefined ||
       input.annualSalary === null ||
-      Number.isNaN(input.annualSalary)
+      (typeof input.annualSalary === 'number' && Number.isNaN(input.annualSalary))
     ) {
       errors.annualSalary = 'errors.invalidNumber';
     } else if (input.annualSalary <= 0) {
@@ -38,7 +38,7 @@ export const salaryToHourlyEngine: CalculatorEngine<
     if (
       input.hoursPerWeek === undefined ||
       input.hoursPerWeek === null ||
-      Number.isNaN(input.hoursPerWeek)
+      (typeof input.hoursPerWeek === 'number' && Number.isNaN(input.hoursPerWeek))
     ) {
       errors.hoursPerWeek = 'errors.invalidNumber';
     } else if (input.hoursPerWeek <= 0 || input.hoursPerWeek > 168) {
@@ -48,7 +48,7 @@ export const salaryToHourlyEngine: CalculatorEngine<
     if (
       input.weeksPerYear === undefined ||
       input.weeksPerYear === null ||
-      Number.isNaN(input.weeksPerYear)
+      (typeof input.weeksPerYear === 'number' && Number.isNaN(input.weeksPerYear))
     ) {
       errors.weeksPerYear = 'errors.invalidNumber';
     } else if (input.weeksPerYear <= 0 || input.weeksPerYear > 52) {

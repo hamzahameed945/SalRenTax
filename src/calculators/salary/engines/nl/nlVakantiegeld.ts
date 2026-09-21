@@ -34,19 +34,19 @@ export const nlVakantiegeldEngine: CalculatorEngine<NlVakantiegeldInput, NlVakan
   validate(input: NlVakantiegeldInput): ValidationResult<NlVakantiegeldInput> {
     const errors: Partial<Record<keyof NlVakantiegeldInput, string>> = {};
 
-    if (!input.grossAnnual || Number.isNaN(input.grossAnnual)) {
+    if (!input.grossAnnual || typeof input.grossAnnual === 'number' && Number.isNaN(input.grossAnnual)) {
       errors.grossAnnual = 'errors.invalidNumber';
     } else if (input.grossAnnual <= 0) {
       errors.grossAnnual = 'errors.mustBePositive';
     }
 
     const months = input.monthsWorked ?? 12;
-    if (Number.isNaN(months) || months < 1 || months > 12) {
+    if (typeof months === 'number' && Number.isNaN(months) || months < 1 || months > 12) {
       errors.monthsWorked = 'errors.invalidMonths';
     }
 
     const rate = input.customRate ?? NL_VAKANTIEGELD_RATE;
-    if (Number.isNaN(rate) || rate < 0.08 || rate > 0.25) {
+    if (typeof rate === 'number' && Number.isNaN(rate) || rate < 0.08 || rate > 0.25) {
       errors.customRate = 'errors.invalidRate';
     }
 

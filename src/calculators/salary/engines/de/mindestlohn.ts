@@ -19,13 +19,13 @@ export const mindestlohnEngine: CalculatorEngine<MindestlohnInput, MindestlohnRe
   validate(input: MindestlohnInput): ValidationResult<MindestlohnInput> {
     const errors: Partial<Record<keyof MindestlohnInput, string>> = {};
 
-    if (!input.hoursPerWeek || Number.isNaN(input.hoursPerWeek)) {
+    if (!input.hoursPerWeek || typeof input.hoursPerWeek === 'number' && Number.isNaN(input.hoursPerWeek)) {
       errors.hoursPerWeek = 'errors.invalidNumber';
     } else if (input.hoursPerWeek <= 0 || input.hoursPerWeek > 80) {
       errors.hoursPerWeek = 'errors.mustBePositive';
     }
 
-    if (!input.weeksPerYear || Number.isNaN(input.weeksPerYear)) {
+    if (!input.weeksPerYear || typeof input.weeksPerYear === 'number' && Number.isNaN(input.weeksPerYear)) {
       errors.weeksPerYear = 'errors.invalidNumber';
     } else if (input.weeksPerYear <= 0 || input.weeksPerYear > 52) {
       errors.weeksPerYear = 'errors.mustBePositive';

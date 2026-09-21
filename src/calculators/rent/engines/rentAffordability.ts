@@ -27,7 +27,7 @@ export const rentAffordabilityEngine: CalculatorEngine<
     if (
       input.grossIncomePerPeriod === undefined ||
       input.grossIncomePerPeriod === null ||
-      Number.isNaN(input.grossIncomePerPeriod)
+      (typeof input.grossIncomePerPeriod === 'number' && Number.isNaN(input.grossIncomePerPeriod))
     ) {
       errors.grossIncomePerPeriod = 'errors.invalidNumber';
     } else if (input.grossIncomePerPeriod <= 0) {
@@ -36,14 +36,14 @@ export const rentAffordabilityEngine: CalculatorEngine<
 
     if (
       input.netIncomePerPeriod !== undefined &&
-      (Number.isNaN(input.netIncomePerPeriod) || input.netIncomePerPeriod < 0)
+      ((typeof input.netIncomePerPeriod === 'number' && Number.isNaN(input.netIncomePerPeriod)) || input.netIncomePerPeriod < 0)
     ) {
       errors.netIncomePerPeriod = 'errors.invalidNumber';
     }
 
     if (
       input.targetGrossPercentage !== undefined &&
-      (Number.isNaN(input.targetGrossPercentage) ||
+      ((typeof input.targetGrossPercentage === 'number' && Number.isNaN(input.targetGrossPercentage)) ||
         input.targetGrossPercentage <= 0 ||
         input.targetGrossPercentage > 100)
     ) {

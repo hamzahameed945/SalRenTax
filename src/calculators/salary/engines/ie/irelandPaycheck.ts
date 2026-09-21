@@ -96,7 +96,7 @@ export const irelandPaycheckEngine: CalculatorEngine<IrelandPaycheckInput, Irela
   validate(input: IrelandPaycheckInput): ValidationResult<IrelandPaycheckInput> {
     const errors: Partial<Record<keyof IrelandPaycheckInput, string>> = {};
 
-    if (!input.grossAnnual || Number.isNaN(input.grossAnnual)) {
+    if (!input.grossAnnual || typeof input.grossAnnual === 'number' && Number.isNaN(input.grossAnnual)) {
       errors.grossAnnual = 'errors.invalidNumber';
     } else if (input.grossAnnual <= 0) {
       errors.grossAnnual = 'errors.mustBePositive';

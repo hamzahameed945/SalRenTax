@@ -43,7 +43,7 @@ export const brRescisaoEngine: CalculatorEngine<BrRescisaoInput, BrRescisaoResul
   validate(input: BrRescisaoInput): ValidationResult<BrRescisaoInput> {
     const errors: Partial<Record<keyof BrRescisaoInput, string>> = {};
 
-    if (!input.grossMonthly || Number.isNaN(input.grossMonthly)) {
+    if (!input.grossMonthly || typeof input.grossMonthly === 'number' && Number.isNaN(input.grossMonthly)) {
       errors.grossMonthly = 'errors.invalidNumber';
     } else if (input.grossMonthly <= 0) {
       errors.grossMonthly = 'errors.mustBePositive';
@@ -51,7 +51,7 @@ export const brRescisaoEngine: CalculatorEngine<BrRescisaoInput, BrRescisaoResul
 
     if (
       input.monthsWorked === undefined ||
-      Number.isNaN(input.monthsWorked) ||
+      typeof input.monthsWorked === 'number' && Number.isNaN(input.monthsWorked) ||
       input.monthsWorked < 1 ||
       input.monthsWorked > 12
     ) {
@@ -60,7 +60,7 @@ export const brRescisaoEngine: CalculatorEngine<BrRescisaoInput, BrRescisaoResul
 
     if (
       input.daysVacationPending === undefined ||
-      Number.isNaN(input.daysVacationPending) ||
+      typeof input.daysVacationPending === 'number' && Number.isNaN(input.daysVacationPending) ||
       input.daysVacationPending < 0 ||
       input.daysVacationPending > 30
     ) {

@@ -84,7 +84,7 @@ export const ukPaycheckEngine: CalculatorEngine<UkPaycheckInput, UkPaycheckResul
   validate(input: UkPaycheckInput): ValidationResult<UkPaycheckInput> {
     const errors: Partial<Record<keyof UkPaycheckInput, string>> = {};
 
-    if (!input.grossAnnual || Number.isNaN(input.grossAnnual)) {
+    if (!input.grossAnnual || typeof input.grossAnnual === 'number' && Number.isNaN(input.grossAnnual)) {
       errors.grossAnnual = 'errors.invalidNumber';
     } else if (input.grossAnnual <= 0) {
       errors.grossAnnual = 'errors.mustBePositive';

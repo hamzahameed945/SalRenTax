@@ -19,7 +19,7 @@ export const payFrequencyConverterEngine: CalculatorEngine<
   validate(input: PayFrequencyConverterInput): ValidationResult<PayFrequencyConverterInput> {
     const errors: Partial<Record<keyof PayFrequencyConverterInput, string>> = {};
 
-    if (input.amount === undefined || input.amount === null || Number.isNaN(input.amount)) {
+    if (input.amount === undefined || input.amount === null || (typeof input.amount === 'number' && Number.isNaN(input.amount))) {
       errors.amount = 'errors.invalidNumber';
     } else if (input.amount < 0) {
       errors.amount = 'errors.mustBePositive';
@@ -30,7 +30,7 @@ export const payFrequencyConverterEngine: CalculatorEngine<
     }
 
     if (input.hoursPerWeek !== undefined) {
-      if (Number.isNaN(input.hoursPerWeek)) {
+      if (typeof input.hoursPerWeek === 'number' && Number.isNaN(input.hoursPerWeek)) {
         errors.hoursPerWeek = 'errors.invalidNumber';
       } else if (input.hoursPerWeek <= 0 || input.hoursPerWeek > 168) {
         errors.hoursPerWeek = 'errors.invalidHoursPerWeek';

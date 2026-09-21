@@ -69,19 +69,19 @@ export const esFiniquitoEngine: CalculatorEngine<EsFiniquitoInput, EsFiniquitoBr
   validate(input: EsFiniquitoInput): ValidationResult<EsFiniquitoInput> {
     const errors: Partial<Record<keyof EsFiniquitoInput, string>> = {};
 
-    if (!input.grossAnnual || Number.isNaN(input.grossAnnual)) {
+    if (!input.grossAnnual || typeof input.grossAnnual === 'number' && Number.isNaN(input.grossAnnual)) {
       errors.grossAnnual = 'errors.invalidNumber';
     } else if (input.grossAnnual <= 0) {
       errors.grossAnnual = 'errors.mustBePositive';
     }
 
-    if (input.yearsWorked === undefined || Number.isNaN(input.yearsWorked) || input.yearsWorked < 0) {
+    if (input.yearsWorked === undefined || typeof input.yearsWorked === 'number' && Number.isNaN(input.yearsWorked) || input.yearsWorked < 0) {
       errors.yearsWorked = 'errors.invalidNumber';
     }
 
     if (
       input.daysHolidayPending === undefined ||
-      Number.isNaN(input.daysHolidayPending) ||
+      typeof input.daysHolidayPending === 'number' && Number.isNaN(input.daysHolidayPending) ||
       input.daysHolidayPending < 0 ||
       input.daysHolidayPending > 365
     ) {
@@ -90,13 +90,13 @@ export const esFiniquitoEngine: CalculatorEngine<EsFiniquitoInput, EsFiniquitoBr
 
     if (input.departureMonth !== undefined) {
       const m = input.departureMonth;
-      if (Number.isNaN(m) || m < 1 || m > 12) {
+      if (typeof m === 'number' && Number.isNaN(m) || m < 1 || m > 12) {
         errors.departureMonth = 'errors.invalidNumber';
       }
     }
 
     const pre2012 = input.yearsWorkedPre2012 ?? 0;
-    if (Number.isNaN(pre2012) || pre2012 < 0 || pre2012 > input.yearsWorked) {
+    if (typeof pre2012 === 'number' && Number.isNaN(pre2012) || pre2012 < 0 || pre2012 > input.yearsWorked) {
       errors.yearsWorkedPre2012 = 'errors.invalidNumber';
     }
 

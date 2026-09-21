@@ -91,7 +91,7 @@ export const usPaycheckEngine: CalculatorEngine<
     if (
       input.grossPayPerPeriod === undefined ||
       input.grossPayPerPeriod === null ||
-      Number.isNaN(input.grossPayPerPeriod) ||
+      typeof input.grossPayPerPeriod === 'number' && Number.isNaN(input.grossPayPerPeriod) ||
       input.grossPayPerPeriod === 0
     ) {
       errors.grossPayPerPeriod = 'errors.invalidNumber';
@@ -103,7 +103,7 @@ export const usPaycheckEngine: CalculatorEngine<
     if (
       input.preTaxDeductionsPerPeriod !== undefined &&
       input.preTaxDeductionsPerPeriod !== null &&
-      !Number.isNaN(input.preTaxDeductionsPerPeriod) &&
+      !typeof input.preTaxDeductionsPerPeriod === 'number' && Number.isNaN(input.preTaxDeductionsPerPeriod) &&
       input.preTaxDeductionsPerPeriod < 0
     ) {
       errors.preTaxDeductionsPerPeriod = 'errors.mustBePositive';
@@ -118,7 +118,7 @@ export const usPaycheckEngine: CalculatorEngine<
     if (
       input.dependents !== undefined &&
       input.dependents !== null &&
-      !Number.isNaN(input.dependents) &&
+      !typeof input.dependents === 'number' && Number.isNaN(input.dependents) &&
       (input.dependents < 0 || !Number.isInteger(input.dependents))
     ) {
       errors.dependents = 'errors.invalidNumber';
@@ -128,7 +128,7 @@ export const usPaycheckEngine: CalculatorEngine<
     if (
       input.additionalFederalWithholding !== undefined &&
       input.additionalFederalWithholding !== null &&
-      !Number.isNaN(input.additionalFederalWithholding) &&
+      !typeof input.additionalFederalWithholding === 'number' && Number.isNaN(input.additionalFederalWithholding) &&
       input.additionalFederalWithholding < 0
     ) {
       errors.additionalFederalWithholding = 'errors.mustBePositive';

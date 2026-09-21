@@ -97,11 +97,11 @@ function calcIrrf(base: number, grossMonthly: number): {
 export const brSalarioLiquidoEngine: CalculatorEngine<BrSalarioLiquidoInput, BrSalarioLiquidoResult, never> = {
   validate(input): ValidationResult<BrSalarioLiquidoInput> {
     const errors: Partial<Record<keyof BrSalarioLiquidoInput, string>> = {};
-    if (input.grossMonthly === undefined || Number.isNaN(input.grossMonthly)) errors.grossMonthly = 'errors.invalidNumber';
+    if (input.grossMonthly === undefined || (typeof input.grossMonthly === 'number' && Number.isNaN(input.grossMonthly))) errors.grossMonthly = 'errors.invalidNumber';
     else if (input.grossMonthly <= 0) errors.grossMonthly = 'errors.mustBePositive';
     
     if (input.dependents !== undefined) {
-      if (Number.isNaN(input.dependents)) errors.dependents = 'errors.invalidNumber';
+      if (typeof input.dependents === 'number' && Number.isNaN(input.dependents)) errors.dependents = 'errors.invalidNumber';
       else if (input.dependents < 0) errors.dependents = 'errors.mustBeNonNegative';
       else if (!Number.isInteger(input.dependents)) errors.dependents = 'errors.mustBeInteger';
     }

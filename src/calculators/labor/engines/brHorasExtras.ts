@@ -24,7 +24,7 @@ export const brHorasExtrasEngine: CalculatorEngine<
 
     if (
       input.monthlySalary === undefined ||
-      Number.isNaN(input.monthlySalary) ||
+      typeof input.monthlySalary === 'number' && Number.isNaN(input.monthlySalary) ||
       input.monthlySalary <= 0
     ) {
       errors.monthlySalary = 'errors.mustBePositive';
@@ -32,7 +32,7 @@ export const brHorasExtrasEngine: CalculatorEngine<
 
     if (
       input.monthlyHours === undefined ||
-      Number.isNaN(input.monthlyHours) ||
+      typeof input.monthlyHours === 'number' && Number.isNaN(input.monthlyHours) ||
       input.monthlyHours <= 0
     ) {
       errors.monthlyHours = 'errors.invalidNumber';
@@ -40,7 +40,7 @@ export const brHorasExtrasEngine: CalculatorEngine<
 
     if (
       input.overtimeHours === undefined ||
-      Number.isNaN(input.overtimeHours) ||
+      typeof input.overtimeHours === 'number' && Number.isNaN(input.overtimeHours) ||
       input.overtimeHours < 0
     ) {
       errors.overtimeHours = 'errors.invalidNumber';
@@ -48,7 +48,7 @@ export const brHorasExtrasEngine: CalculatorEngine<
 
     if (
       input.premiumPercent === undefined ||
-      Number.isNaN(input.premiumPercent) ||
+      typeof input.premiumPercent === 'number' && Number.isNaN(input.premiumPercent) ||
       input.premiumPercent < 0
     ) {
       errors.premiumPercent = 'errors.invalidNumber';

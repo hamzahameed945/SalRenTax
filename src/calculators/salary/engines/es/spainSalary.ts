@@ -99,7 +99,7 @@ export const spainSalaryEngine: CalculatorEngine<SpainSalaryInput, SpainSalaryBr
   validate(input: SpainSalaryInput): ValidationResult<SpainSalaryInput> {
     const errors: Partial<Record<keyof SpainSalaryInput, string>> = {};
 
-    if (!input.grossAnnual || Number.isNaN(input.grossAnnual)) {
+    if (!input.grossAnnual || typeof input.grossAnnual === 'number' && Number.isNaN(input.grossAnnual)) {
       errors.grossAnnual = 'errors.invalidNumber';
     } else if (input.grossAnnual <= 0) {
       errors.grossAnnual = 'errors.mustBePositive';
@@ -111,7 +111,7 @@ export const spainSalaryEngine: CalculatorEngine<SpainSalaryInput, SpainSalaryBr
       errors.paymentsPerYear = 'errors.invalidNumber';
     }
 
-    if (input.age !== undefined && (Number.isNaN(input.age) || input.age < 16 || input.age > 100)) {
+    if (input.age !== undefined && (typeof input.age === 'number' && Number.isNaN(input.age) || input.age < 16 || input.age > 100)) {
       errors.age = 'errors.invalidAge';
     }
 

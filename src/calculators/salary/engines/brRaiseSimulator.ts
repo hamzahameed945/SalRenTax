@@ -50,13 +50,13 @@ export const brRaiseSimulatorEngine: CalculatorEngine<BrRaiseSimulatorInput, BrR
   validate(input): ValidationResult<BrRaiseSimulatorInput> {
     const errors: Partial<Record<keyof BrRaiseSimulatorInput, string>> = {};
     
-    if (input.currentGrossMonthly === undefined || Number.isNaN(input.currentGrossMonthly)) {
+    if (input.currentGrossMonthly === undefined || (typeof input.currentGrossMonthly === 'number' && Number.isNaN(input.currentGrossMonthly))) {
       errors.currentGrossMonthly = 'errors.invalidNumber';
     } else if (input.currentGrossMonthly <= 0) {
       errors.currentGrossMonthly = 'errors.mustBePositive';
     }
     
-    if (input.raisePercentage === undefined || Number.isNaN(input.raisePercentage)) {
+    if (input.raisePercentage === undefined || (typeof input.raisePercentage === 'number' && Number.isNaN(input.raisePercentage))) {
       errors.raisePercentage = 'errors.invalidNumber';
     } else if (input.raisePercentage < 0) {
       errors.raisePercentage = 'errors.mustBeNonNegative';
@@ -65,7 +65,7 @@ export const brRaiseSimulatorEngine: CalculatorEngine<BrRaiseSimulatorInput, BrR
     }
     
     if (input.dependents !== undefined) {
-      if (Number.isNaN(input.dependents)) errors.dependents = 'errors.invalidNumber';
+      if (typeof input.dependents === 'number' && Number.isNaN(input.dependents)) errors.dependents = 'errors.invalidNumber';
       else if (input.dependents < 0) errors.dependents = 'errors.mustBeNonNegative';
       else if (!Number.isInteger(input.dependents)) errors.dependents = 'errors.mustBeInteger';
     }
