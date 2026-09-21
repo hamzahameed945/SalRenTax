@@ -1,0 +1,113 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../navigation/Breadcrumbs.astro';
+import { buildPageMetadata } from '../../lib/seo/metadata';
+import { CONTACT_EMAIL } from '../../lib/seo/site';
+
+type Section = {
+  heading: string;
+  paragraphs?: string[];
+  bullets?: string[];
+};
+
+export interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  sections: Section[];
+  eyebrow?: string;
+}
+
+const { title, description, canonical, sections, eyebrow = 'PayRenTax resource' } = Astro.props;
+const meta = buildPageMetadata(title, description, canonical);
+
+// Split text around the public contact address so it can be rendered as a mailto link.
+const splitEmail = (text: string): string[] => text.split(CONTACT_EMAIL);
+const hasEmail = (text: string): boolean => text.includes(CONTACT_EMAIL);
+---
+
+<BaseLayout
+  locale="en-US"
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <Breadcrumbs locale="en-US" trail={[{ label: title, href: canonical }]} />
+  <main class="mx-auto max-w-4xl px-4 py-10 sm:py-14">
+    <header class="mb-10 max-w-3xl">
+      <p class="text-sm font-semibold uppercase tracking-[.14em] text-accent">{eyebrow}</p>
+      <h1 class="mt-3 text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">{title}</h1>
+      <p class="mt-5 text-lg leading-8 text-slate-600">{description}</p>
+      <p class="mt-4 text-xs font-medium uppercase tracking-wide text-slate-400">
+        Reviewed September 2026 · PayRenTax
+      </p>
+    </header>
+    <div class="resource-content">
+      {sections.map((section) => (
+        <section class="resource-section">
+          <h2>{section.heading}</h2>
+          {section.paragraphs?.map((paragraph) =>
+            hasEmail(paragraph) ? (
+              <p>
+                {splitEmail(paragraph).map((part, index, parts) => (
+                  <>
+                    {part}
+                    {index < parts.length - 1 && (
+                      <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+                    )}
+                  </>
+                ))}
+              </p>
+            ) : (
+              <p>{paragraph}</p>
+            ),
+          )}
+          {section.bullets && (
+            <ul>
+              {section.bullets.map((bullet) => (
+                <li>{bullet}</li>
+              ))}
+            </ul>
+          )}
+        </section>
+      ))}
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .resource-content {
+    display: grid;
+    gap: 2.2rem;
+  }
+  .resource-section {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 1.8rem;
+  }
+  .resource-section h2 {
+    margin: 0 0 0.8rem;
+    color: #0f172a;
+    font-size: 1.45rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .resource-section p {
+    margin: 0.75rem 0 0;
+    color: #475569;
+    line-height: 1.8;
+  }
+  .resource-section a {
+    color: #0f6e5b;
+    font-weight: 600;
+    text-decoration: underline;
+  }
+  .resource-section ul {
+    margin: 0.8rem 0 0;
+    padding-left: 1.25rem;
+    color: #475569;
+    line-height: 1.8;
+  }
+  .resource-section li {
+    margin: 0.35rem 0;
+  }
+</style>

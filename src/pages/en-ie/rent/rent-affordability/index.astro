@@ -1,0 +1,103 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import RentAffordabilityCalculator from '../../../../components/islands/RentAffordabilityCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'en-IE' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Rent Affordability Calculator Ireland — PayRenTax',
+  t.rent.rentAffordability.intro,
+  '/en-ie/rent/rent-affordability/',
+);
+
+const faqItems = [
+  {
+    question: 'How much of my salary should I spend on rent in Ireland?',
+    answer:
+      'The widely used 30% rule suggests spending no more than 30% of gross income on rent. In Dublin and other high-demand areas, many renters spend 35–45% of income on housing. The Housing Agency and RTB publish guidance on affordability thresholds.',
+  },
+  {
+    question: 'What are average rents in Ireland in 2026?',
+    answer:
+      'Average advertised rents in Ireland have exceeded €2,000/month in Dublin. Outside Dublin, cities like Cork, Galway, and Limerick average €1,400–€1,800/month. The Residential Tenancies Board (RTB) publishes the Rent Index with the latest data.',
+  },
+  {
+    question: 'Is there rent credit available in Ireland?',
+    answer:
+      'Yes. The Rent Tax Credit introduced in Budget 2023 is worth up to €1,000 per year (€500 per person) for private renters. It is claimed through Revenue\'s myAccount. This reduces the net cost of renting but does not change how affordability is calculated here.',
+  },
+  {
+    question: 'What is Rent Pressure Zone (RPZ) and does it affect my rent?',
+    answer:
+      'Rent Pressure Zones are designated areas where rent increases are capped by legislation. Within RPZs, rent can only increase by the rate of general inflation (HICP) or 2%, whichever is lower. Check the RTB\'s RPZ map to see if a property is in a designated zone.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="rent-affordability"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.rent, href: buildLocalePath(locale, 'rent') },
+      { label: t.rent.rentAffordability.title, href: buildLocalePath(locale, 'rent/rent-affordability') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">{t.rent.rentAffordability.h1}</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">{t.rent.rentAffordability.intro}</p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <RentAffordabilityCalculator client:load locale={locale} />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="ie-rent-affordability-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Ireland Rent Affordability — 30% Rule</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Gross monthly income</th>
+            <th>Max rent (30%)</th>
+            <th>Max rent (35%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>€2,500</td><td>€750</td><td>€875</td></tr>
+          <tr><td>€3,500</td><td>€1,050</td><td>€1,225</td></tr>
+          <tr><td>€5,000</td><td>€1,500</td><td>€1,750</td></tr>
+          <tr><td>€7,000</td><td>€2,100</td><td>€2,450</td></tr>
+          <tr><td>€10,000</td><td>€3,000</td><td>€3,500</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Frequently asked questions" items={faqItems} />
+  </article>
+  <CalculatorResource locale="en-IE" category="rent" />
+</BaseLayout>

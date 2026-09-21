@@ -1,0 +1,119 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import NlZZPCalculator from '../../../../components/islands/NlZZPCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'nl-NL' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  t.salary.zzpNetto.title,
+  t.salary.zzpNetto.metaDescription,
+  '/nl-nl/salary/zzp-netto-calculator/',
+);
+
+const faqItems = [
+  {
+    question: 'Hoe wordt het netto inkomen van een ZZP\'er berekend?',
+    answer:
+      'ZZP\'ers berekenen eerst de winst (omzet minus zakelijke kosten). Daarna worden ondernemersaftrekken toegepast: de zelfstandigenaftrek (€2.470 in 2026) en eventueel de startersaftrek. Op de resterende winst na de MKB-winstvrijstelling (13,31%) wordt box 1 belasting geheven, verminderd met de arbeidskorting en algemene heffingskorting.',
+  },
+  {
+    question: 'Wat is de zelfstandigenaftrek 2026?',
+    answer:
+      'De zelfstandigenaftrek is €2.470 in 2026. Het is een aftrekpost voor ondernemers die voldoen aan het urencriterium (minimaal 1.225 declarabele uren per jaar). De aftrek wordt elk jaar verder verlaagd en is in 2030 verdwenen.',
+  },
+  {
+    question: 'Wat is de MKB-winstvrijstelling?',
+    answer:
+      'De MKB-winstvrijstelling bedraagt 13,31% van de winst na ondernemersaftrek. Dit deel van de winst is vrijgesteld van belasting. De vrijstelling geldt voor alle IB-ondernemers, ongeacht het aantal gewerkte uren.',
+  },
+  {
+    question: 'Moet ik als ZZP\'er BTW betalen?',
+    answer:
+      'Ja, de meeste ZZP\'ers berekenen 21% BTW aan hun opdrachtgevers. U draagt dit af aan de Belastingdienst, maar kunt de BTW die u zelf betaalt over zakelijke kosten als voorbelasting verrekenen. De BTW staat los van de inkomstenbelasting en verlaagt uw netto inkomen niet direct.',
+  },
+  {
+    question: 'Hoe zit het met pensioen als ZZP\'er?',
+    answer:
+      'ZZP\'ers bouwen geen pensioen op via een werkgever. Het is sterk aan te raden zelf te sparen via een lijfrente, banksparen, of de derde pijler. Een vuistregel is om 10-15% van de brutowinst opzij te zetten voor pensioen.',
+  },
+  {
+    question: 'Wat is een realistisch uurtarief voor ZZP in Nederland?',
+    answer:
+      'Het gemiddelde ZZP-tarief in Nederland ligt tussen €60 en €110 per uur, afhankelijk van sector en ervaring. Houd er rekening mee dat u als ZZP\'er doorgaans 50–70% van uw beschikbare uren kunt declareren; de rest gaat naar acquisitie, administratie en scholing.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="nl-zzp-netto-calculator"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      { label: t.salary.zzpNetto.title, href: buildLocalePath(locale, 'salary/zzp-netto-calculator') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">{t.salary.zzpNetto.h1}</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">{t.salary.zzpNetto.intro}</p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <NlZZPCalculator client:load locale={locale} />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="nl-zzp-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Van omzet naar netto: de ZZP-berekening stap voor stap</h2>
+      <ol>
+        <li><strong>Omzet</strong> (excl. BTW) minus zakelijke kosten = <strong>brutowinst</strong></li>
+        <li>Brutowinst minus <strong>zelfstandigenaftrek</strong> (€2.470) en eventueel startersaftrek (€2.123)</li>
+        <li>Resterende winst minus <strong>MKB-winstvrijstelling</strong> (13,31%) = <strong>belastbare winst</strong></li>
+        <li>Box 1-tarieven (35,75% / 37,56% / 49,50%) toegepast op de belastbare winst</li>
+        <li>Belasting verminderd met arbeidskorting en algemene heffingskorting</li>
+      </ol>
+
+      <h2>Ondernemersaftrekken 2026</h2>
+      <table>
+        <thead>
+          <tr><th>Aftrek</th><th>Bedrag 2026</th><th>Voorwaarde</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Zelfstandigenaftrek</td><td>€2.470</td><td>Urencriterium ≥ 1.225 uur/jaar</td></tr>
+          <tr><td>Startersaftrek</td><td>€2.123</td><td>Eerste 3 jaar als ondernemer</td></tr>
+          <tr><td>MKB-winstvrijstelling</td><td>13,31% van winst</td><td>Geen urencriterium</td></tr>
+        </tbody>
+      </table>
+      <p class="text-sm">
+        Bron: <a href="https://www.belastingdienst.nl/wps/wcm/connect/bldcontentnl/belastingdienst/zakelijk/winst/zelfstandigenaftrek/" target="_blank" rel="noopener noreferrer">Belastingdienst — Zelfstandigenaftrek 2026</a>
+      </p>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Veelgestelde vragen over ZZP netto inkomen" items={faqItems} />
+  </article>
+  <CalculatorResource locale="nl-NL" category="salary" />
+</BaseLayout>

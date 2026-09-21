@@ -1,0 +1,124 @@
+---
+import { getActivePagesForLocale } from '../../seo/page-registry';
+import { buildLocalePath } from '../../i18n/utils';
+import type { Category, LocaleCode } from '../../i18n/types';
+
+export interface Props {
+  locale: LocaleCode;
+  category: Category;
+}
+const { locale, category } = Astro.props;
+const pages = getActivePagesForLocale(locale).filter(
+  (page) => page.category === category && page.pageType === 'calculator',
+);
+const copy: Record<Category, { intro: string; how: string; choose: string }> = {
+  salary: {
+    intro:
+      'Salary calculators are useful when you want a quick way to compare gross pay, take-home pay, hourly rates, pay frequencies, or changes in compensation.',
+    how: 'Each calculator starts with the information you enter and applies the country-specific rules supported by that tool. The page explains the main assumptions so you can understand what the estimate includes before using it for planning.',
+    choose:
+      'Use a paycheck or net-salary calculator when you want to understand deductions and take-home pay. Use a salary-to-hourly calculator when you want to compare an annual salary with an hourly rate. For a pay increase, use the salary raise calculator. If you are comparing weekly, biweekly, monthly, and annual amounts, use the pay frequency converter.',
+  },
+  tax: {
+    intro:
+      'Tax calculators give you a clear starting estimate for income-tax and payroll questions. They are not a replacement for an official tax assessment.',
+    how: 'Each country has its own tax-year data, brackets, allowances, and social contributions. The calculator page explains which of those items are included and which are outside its scope.',
+    choose:
+      'Start with the calculator for your country and tax year. If your state, region, filing status, or a particular deduction is not supported, do not use a result from another jurisdiction as a substitute.',
+  },
+  rent: {
+    intro:
+      'Rent calculators give you a quick starting point for connecting your income with a reasonable housing budget. They are useful for planning, but they cannot account for every part of your financial situation.',
+    how: 'When deciding what you can comfortably afford, also consider utilities, insurance, debt payments, transportation, savings goals, emergency expenses, and actual rental prices in your area.',
+    choose:
+      'Start with the rent affordability calculator for a simple budget range. Treat the result as a planning estimate rather than a recommendation from a landlord, lender, or financial adviser.',
+  },
+  labor: {
+    intro:
+      'Labor calculators cover selected termination, leave, overtime, and employment-related estimates using the rules described for each country.',
+    how: 'Results depend on dates, length of service, pay, contract terms, and legal limits. Where a full legal or collective-agreement calculation is not possible, the tool uses a simplified model and says so.',
+    choose:
+      'Pick the country and employment situation that match yours, read the limitations on the page, and confirm anything consequential with your employer, a union, an official authority, or a lawyer.',
+  },
+  states: {
+    intro:
+      'US state paycheck calculators add a state-specific estimate wherever PayRenTax supports the state and has documented its rules.',
+    how: 'Federal deductions are combined with the rules for the state you choose. A state that is not supported is never quietly mapped to a different one, so you may need a federal-only estimate or an official tool instead.',
+    choose:
+      'Choose the page for your exact state. Check whether local taxes, credits, filing options, or employer-specific withholding are left out of the estimate.',
+  },
+  guides: {
+    intro: 'Guides explain how to use PayRenTax tools and how to read an estimate sensibly.',
+    how: 'Each guide links back to the relevant calculators, source notes, and limitations, so the explanation always connects to something you can try.',
+    choose:
+      'If you know your country, start with its calculator hub. If you would like to see how the site works first, read the methodology and data-source pages.',
+  },
+};
+const content = copy[category];
+const categoryHeading = category === 'states' ? 'state paycheck calculators' : `${category} calculators`;
+---
+
+<section class="mx-auto mt-12 max-w-4xl px-4 pb-12">
+  <div class="grid gap-8 rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-8 lg:grid-cols-[1.15fr_.85fr]">
+    <div>
+      <h2 class="text-2xl font-bold text-slate-900">How {categoryHeading} work</h2>
+      <p class="mt-3 leading-7 text-slate-600">{content.intro}</p>
+      <p class="mt-3 leading-7 text-slate-600">{content.how}</p>
+      <h3 class="mt-6 text-lg font-bold text-slate-900">Which calculator should I use?</h3>
+      <p class="mt-2 leading-7 text-slate-600">{content.choose}</p>
+    </div>
+    <div>
+      <h2 class="text-lg font-bold text-slate-900">Related calculators</h2>
+      <ul class="mt-3 grid gap-2 text-sm">
+        {pages.slice(0, 8).map((page) => (
+          <li>
+            <a
+              class="font-semibold text-accent hover:underline"
+              href={buildLocalePath(locale, page.slug)}
+            >
+              {page.primaryKeyword}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a
+        class="mt-6 inline-block text-sm font-semibold text-slate-700 underline"
+        href="/how-calculators-work/"
+      >
+        Read the full methodology
+      </a>
+    </div>
+  </div>
+  <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6">
+    <h2 class="text-xl font-bold text-slate-900">Frequently asked questions</h2>
+    <div class="mt-4 divide-y divide-slate-200">
+      <details class="py-4">
+        <summary class="cursor-pointer font-semibold text-slate-800">
+          Are these calculations exact?
+        </summary>
+        <p class="mt-2 leading-7 text-slate-600">
+          No. They are estimates based on the inputs, rules, tax year, and limitations supported by
+          each calculator.
+        </p>
+      </details>
+      <details class="py-4">
+        <summary class="cursor-pointer font-semibold text-slate-800">
+          What tax year do the calculators use?
+        </summary>
+        <p class="mt-2 leading-7 text-slate-600">
+          The current release focuses on 2026 data where a page displays a tax year. Always check
+          the page's data year and source notes before relying on a result.
+        </p>
+      </details>
+      <details class="py-4">
+        <summary class="cursor-pointer font-semibold text-slate-800">
+          Why does my result differ from my payslip?
+        </summary>
+        <p class="mt-2 leading-7 text-slate-600">
+          Your employer may apply benefits, deductions, credits, local taxes, withholding settings,
+          or payroll rounding that are not included in the calculator.
+        </p>
+      </details>
+    </div>
+  </div>
+</section>

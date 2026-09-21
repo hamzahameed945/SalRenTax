@@ -1,0 +1,12 @@
+---
+export interface Props {
+  /** One or more JSON-LD objects (already built by src/lib/seo/structuredData.ts). Falsy entries are skipped. */
+  entries: (object | null | undefined)[];
+}
+const { entries } = Astro.props;
+const valid = entries.filter((e): e is object => Boolean(e));
+---
+
+{valid.map((entry) => (
+  <script type="application/ld+json" set:html={JSON.stringify(entry)} is:inline></script>
+))}

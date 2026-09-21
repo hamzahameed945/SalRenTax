@@ -1,0 +1,90 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import PaycheckCalculator from '../../../../components/islands/PaycheckCalculator.tsx';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+import { buildLocalePath } from '../../../../i18n/utils';
+
+const locale = 'en-US' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  t.meta.paycheckTitle,
+  t.meta.paycheckDescription,
+  '/en-us/salary/paycheck-calculator/',
+);
+
+const faqItems = [
+  {
+    question: 'How is my federal income tax estimated?',
+    answer:
+      'This calculator applies the 2026 IRS federal income tax brackets to your taxable income (annualized gross pay minus pre-tax deductions and the standard deduction for your filing status).',
+  },
+  {
+    question: 'Does this include state income tax?',
+    answer:
+      'No. This calculator covers federal deductions only. For a state-level estimate, use one of the state paycheck calculators, which are available for Florida, Texas, New York, Arizona, and Illinois.',
+  },
+  {
+    question: 'What counts as a pre-tax deduction?',
+    answer:
+      'Common examples include traditional 401(k) contributions and HSA contributions. Enter the amount withheld per pay period, not the annual total.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="paycheck-calculator"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      {
+        label: t.salary.paycheck.title,
+        href: buildLocalePath(locale, 'salary/paycheck-calculator'),
+      },
+    ]}
+  />
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">{t.salary.paycheck.h1}</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">{t.salary.paycheck.intro}</p>
+
+    <div class="mt-8">
+      <PaycheckCalculator client:load />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="paycheck-in-content-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>What can change your actual paycheck</h2>
+      <p>
+        Your actual paycheck can differ from this estimate. Employer benefits, additional
+        deductions, credits, dependents, local taxes, withholding settings, and other payroll
+        details may affect the final amount.
+      </p>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+      {t.common.dataYear}: 2026.
+    </p>
+
+    <CalculatorFAQ heading="Frequently asked questions" items={faqItems} />
+  </article>
+  <CalculatorResource locale="en-US" category="salary" />
+</BaseLayout>

@@ -1,0 +1,38 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import { buildLocalePath } from '../../../../i18n/utils';
+import DeMinijobCalculator from '../../../../components/islands/DeMinijobCalculator';
+const locale = 'de-DE' as const;
+---
+
+<BaseLayout
+  locale={locale}
+  title="Minijob Rechner 2026 — PayRenTax"
+  description="Berechnen Sie das monatliche Brutto aus Stundenlohn und Monatsstunden und prüfen Sie die 603-Euro-Grenze."
+  canonical="/de-de/salary/minijob-rechner/"
+>
+  <Breadcrumbs
+    locale={locale}
+    trail={[{ label: 'Gehaltsrechner', href: buildLocalePath(locale, 'salary') }]}
+  />
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Minijob Rechner 2026</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Die 2026-Grenze wird gegen den berechneten Monatsverdienst geprüft.
+    </p>
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <DeMinijobCalculator client:load />
+    </div>
+    <div class="mt-8">
+      <InContentAd slotId="de-minijob-1" />
+    </div>
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Minijob-Grenze</h2>
+      <p>Die 2026-Grenze wird gegen den berechneten Monatsverdienst geprüft.</p>
+    </div>
+  </article>
+  <CalculatorResource locale="de-DE" category="salary" />
+</BaseLayout>

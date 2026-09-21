@@ -1,0 +1,603 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { buildPageMetadata } from '../lib/seo/metadata';
+import { buildLocalePath } from '../i18n/utils';
+import { ACTIVE_LOCALES } from '../i18n/types';
+
+const locale = 'en-US' as const;
+const meta = buildPageMetadata(
+  'PayRenTax — Free Salary, Tax & Rent Calculators Worldwide',
+  'Simple salary, tax, rent, and payroll calculators for the US, UK, Ireland, Germany, Spain, Mexico, Brazil, and the Netherlands, built around country-specific rules and clear assumptions.',
+  '/',
+);
+
+const localeInfo: Record<
+  string,
+  {
+    flag: string;
+    name: string;
+    tagline: string;
+    img: string;
+    imgAlt: string;
+    features: string[];
+  }
+> = {
+  'en-US': {
+    flag: '🇺🇸',
+    name: 'United States',
+    tagline: 'Paycheck, salary & rent calculators',
+    img: 'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?w=600&q=80&auto=format&fit=crop',
+    imgAlt: 'Statue of Liberty, New York',
+    features: [
+      'Paycheck & take-home pay',
+      'Salary ↔ hourly',
+      'Rent affordability',
+      'Pay frequency converter',
+    ],
+  },
+  'en-GB': {
+    flag: '🇬🇧',
+    name: 'United Kingdom',
+    tagline: 'Take-home pay, income tax & NI',
+    img: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&q=80&auto=format&fit=crop',
+    imgAlt: 'Big Ben and Houses of Parliament, London',
+    features: [
+      'Income tax & NI calculator',
+      'Take-home pay 2026',
+      'PAYE estimates',
+      'Salary converter',
+    ],
+  },
+  'en-IE': {
+    flag: '🇮🇪',
+    name: 'Ireland',
+    tagline: 'PAYE, USC & PRSI calculators',
+    img: 'https://images.unsplash.com/photo-1549918864-48ac978761a4?w=600&q=80&auto=format&fit=crop',
+    imgAlt: 'Cliffs of Moher, Ireland',
+    features: ['PAYE calculator', 'USC & PRSI', 'Net pay 2026', 'Annual & monthly'],
+  },
+  'pt-BR': {
+    flag: '🇧🇷',
+    name: 'Brasil',
+    tagline: 'Rescisão, 13º salário & CLT',
+    img: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=600&q=80&auto=format&fit=crop',
+    imgAlt: 'Christ the Redeemer, Rio de Janeiro',
+    features: ['Rescisão trabalhista', '13º salário', 'FGTS & INSS', 'Salário líquido CLT'],
+  },
+  'es-ES': {
+    flag: '🇪🇸',
+    name: 'España',
+    tagline: 'Nómina, IRPF & Seguridad Social',
+    img: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=600&q=80&auto=format&fit=crop',
+    imgAlt: 'Sagrada Família, Barcelona',
+    features: [
+      'Calculadora nómina IRPF',
+      'Seguridad Social',
+      'Sueldo neto 2026',
+      'Retenciones IRPF',
+    ],
+  },
+  'es-MX': {
+    flag: '🇲🇽',
+    name: 'México',
+    tagline: 'ISR, finiquito & sueldo neto',
+    img: 'https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?w=600&q=80&auto=format&fit=crop',
+    imgAlt: 'Angel of Independence, Mexico City',
+    features: [
+      'Calculadora ISR 2026',
+      'Sueldo neto mensual',
+      'IMSS & retenciones',
+      'Finiquito laboral',
+    ],
+  },
+  'de-DE': {
+    flag: '🇩🇪',
+    name: 'Deutschland',
+    tagline: 'Mindestlohn & Brutto-Netto-Rechner',
+    img: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=600&q=80&auto=format&fit=crop',
+    imgAlt: 'Brandenburg Gate, Berlin',
+    features: [
+      'Brutto → Netto Rechner',
+      'Sozialversicherung 2026',
+      'Mindestlohn Rechner',
+      'Steuerklassen',
+    ],
+  },
+  'nl-NL': {
+    flag: '🇳🇱',
+    name: 'Nederland',
+    tagline: 'Bruto netto calculator',
+    img: 'https://images.unsplash.com/photo-1534351590666-13e3e96b5017?w=600&q=80&auto=format&fit=crop',
+    imgAlt: 'Amsterdam canal houses',
+    features: [
+      'Bruto → netto salaris',
+      'Loonbelasting 2026',
+      'Vakantiegeld berekenen',
+      'Urenconverter',
+    ],
+  },
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <!-- Hero -->
+  <section class="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-50">
+    <div class="aurora-container" aria-hidden="true">
+      <div class="aurora-light aurora-light--1"></div>
+      <div class="aurora-light aurora-light--2"></div>
+      <div class="aurora-light aurora-light--3"></div>
+    </div>
+    <div class="relative z-10 mx-auto max-w-5xl px-4 pt-20 pb-24 text-center sm:pt-28 sm:pb-32">
+      <h1 class="animate-fade-in-up text-5xl font-black tracking-tight text-slate-900 sm:text-7xl">
+        PayRenTax
+      </h1>
+      <p class="animate-fade-in-up delay-200 mx-auto mt-6 max-w-2xl text-xl text-slate-600 leading-relaxed">
+        Simple salary, tax, rent, and payroll calculators built around country-specific rules
+        <br class="hidden sm:block" /> and clear assumptions.
+      </p>
+      <p class="animate-fade-in-up delay-300 mt-3 text-sm text-slate-400 uppercase tracking-widest">
+        8 countries · 20+ calculators · Updated for 2026
+      </p>
+    </div>
+  </section>
+
+  <!-- Country grid -->
+  <section class="country-section">
+    <div class="country-section__inner">
+      <h2 class="country-section__heading">Select your country</h2>
+      <p class="country-section__sub">Each calculator uses country-specific tax data and explains its assumptions.</p>
+
+      <div class="cards-grid" role="list">
+        {ACTIVE_LOCALES.map((loc) => {
+          const info = localeInfo[loc] ?? {
+            flag: '🌍',
+            name: loc,
+            tagline: 'Calculators',
+            img: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80&auto=format&fit=crop',
+            imgAlt: 'World map',
+            features: ['Calculators'],
+          };
+          return (
+            <a
+              href={buildLocalePath(loc)}
+              class="rcard"
+              role="listitem"
+              aria-label={`${info.name} calculators`}
+            >
+              <div class="rcard__img-wrap">
+                <img
+                  src={info.img}
+                  alt={info.imgAlt}
+                  width="600"
+                  height="400"
+                  loading="lazy"
+                  decoding="async"
+                  class="rcard__img"
+                />
+                <div class="rcard__overlay" aria-hidden="true"></div>
+              </div>
+              <div class="rcard__body">
+                <div class="rcard__flag" aria-hidden="true">
+                  {info.flag}
+                </div>
+                <h3 class="rcard__title">{info.name}</h3>
+                <p class="rcard__tagline">{info.tagline}</p>
+                <ul class="rcard__features">
+                  {info.features.map((f) => (
+                    <li>{f}</li>
+                  ))}
+                </ul>
+                <span class="rcard__cta">Explore →</span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why PayRenTax -->
+  <section class="bg-slate-50 border-t border-slate-100">
+    <div class="mx-auto max-w-4xl px-4 py-12 sm:py-16">
+      <h2 class="text-2xl font-bold text-slate-900 mb-8 text-center">Why PayRenTax?</h2>
+      <div class="grid gap-6 sm:grid-cols-3">
+        <div class="rounded-xl bg-white border border-slate-200 p-6">
+          <div class="text-2xl mb-3">✅</div>
+          <h3 class="font-semibold text-slate-900 mb-2">Official data sources</h3>
+          <p class="text-sm text-slate-500">
+            Rates and thresholds are based on official sources such as the IRS, HMRC, Revenue
+            Ireland, AEAT, and SAT. The Data Sources page explains what each country uses.
+          </p>
+        </div>
+        <div class="rounded-xl bg-white border border-slate-200 p-6">
+          <div class="text-2xl mb-3">🌍</div>
+          <h3 class="font-semibold text-slate-900 mb-2">Country-specific rules</h3>
+          <p class="text-sm text-slate-500">
+            Each country has its own tax brackets, currency, and terminology. We don't treat a
+            translation as a local calculation.
+          </p>
+        </div>
+        <div class="rounded-xl bg-white border border-slate-200 p-6">
+          <div class="text-2xl mb-3">⚡</div>
+          <h3 class="font-semibold text-slate-900 mb-2">Instant, private</h3>
+          <p class="text-sm text-slate-500">
+            Calculations run in your browser, so there is no account to create and the numbers you
+            enter are not sent to a PayRenTax server.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-4 py-16 sm:py-20">
+    <div class="grid gap-10 lg:grid-cols-[1.2fr_.8fr] lg:items-start">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-[.14em] text-accent">
+          How PayRenTax works
+        </p>
+        <h2 class="mt-3 text-3xl font-black tracking-tight text-slate-900">
+          A calculator plus the context behind the number
+        </h2>
+        <p class="mt-4 leading-8 text-slate-600">
+          Choose a country, open a calculator, and review the inputs, assumptions, source year, and
+          limitations alongside the result. Each tool uses country-specific rules rather than a
+          blind translation of another country’s payroll logic.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a
+            href="/how-calculators-work/"
+            class="rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-white hover:bg-accent-dark"
+          >
+            Read the methodology
+          </a>
+          <a
+            href="/data-sources/"
+            class="rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:border-accent hover:text-accent"
+          >
+            View data sources
+          </a>
+        </div>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h3 class="text-lg font-bold text-slate-900">Popular starting points</h3>
+        <div class="mt-4 grid gap-2 text-sm">
+          <a
+            class="rounded-lg bg-slate-50 p-3 font-semibold text-accent hover:bg-emerald-50"
+            href="/en-us/salary/paycheck-calculator/"
+          >
+            US Paycheck Calculator
+          </a>
+          <a
+            class="rounded-lg bg-slate-50 p-3 font-semibold text-accent hover:bg-emerald-50"
+            href="/de-de/salary/brutto-netto-rechner/"
+          >
+            Germany Brutto-Netto-Rechner
+          </a>
+          <a
+            class="rounded-lg bg-slate-50 p-3 font-semibold text-accent hover:bg-emerald-50"
+            href="/es-es/salary/calculadora-nomina/"
+          >
+            Spain Nómina Calculator
+          </a>
+          <a
+            class="rounded-lg bg-slate-50 p-3 font-semibold text-accent hover:bg-emerald-50"
+            href="/pt-br/salary/calculadora-salario-liquido/"
+          >
+            Brazil Net Salary Calculator
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-slate-100 bg-white">
+    <div class="mx-auto max-w-4xl px-4 py-14">
+      <h2 class="text-2xl font-bold text-slate-900">Frequently asked questions</h2>
+      <div class="mt-6 divide-y divide-slate-200 rounded-xl border border-slate-200">
+        <details class="p-5">
+          <summary class="cursor-pointer font-semibold text-slate-800">
+            Are PayRenTax results official tax determinations?
+          </summary>
+          <p class="mt-2 leading-7 text-slate-600">
+            No. Results are estimates based on the selected country, year, inputs, and documented
+            assumptions. Use an official authority or qualified professional for filing and
+            compliance decisions.
+          </p>
+        </details>
+        <details class="p-5">
+          <summary class="cursor-pointer font-semibold text-slate-800">
+            Why are countries and languages separate?
+          </summary>
+          <p class="mt-2 leading-7 text-slate-600">
+            The same language can cover different tax systems. United States, United Kingdom, and
+            Ireland therefore have separate locale and calculator rules even though all use English.
+          </p>
+        </details>
+        <details class="p-5">
+          <summary class="cursor-pointer font-semibold text-slate-800">
+            Are calculator inputs sent to a server?
+          </summary>
+          <p class="mt-2 leading-7 text-slate-600">
+            The calculator interface processes inputs locally in your browser. Do not enter
+            sensitive personal information, and review the Privacy Policy for the current service
+            boundaries.
+          </p>
+        </details>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ── Country section wrapper ─────────────────────────────────── */
+  .country-section {
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .country-section__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 5rem;
+  }
+  .country-section__heading {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.025em;
+  }
+  .country-section__sub {
+    font-size: 1rem;
+    color: #64748b;
+    margin: 0 0 2.5rem;
+  }
+
+  /* ── Cards grid — 4 cols on wide, 2 on md, 1 on mobile ──────── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  @media (max-width: 1024px) {
+    .cards-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 560px) {
+    .cards-grid {
+      grid-template-columns: 1fr;
+    }
+    .country-section__inner {
+      padding: 3rem 1rem 4rem;
+    }
+  }
+
+  /* ── Individual card ──────────────────────────────────────────── */
+  .rcard {
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+    text-decoration: none;
+    color: #fff;
+    background: #e2e8f0;
+    display: block;
+    height: 300px;
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08);
+    border: 1px solid rgba(15, 23, 42, 0.07);
+    transition:
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.3s ease,
+      height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    outline-offset: 3px;
+  }
+  .rcard:hover,
+  .rcard:focus-visible {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.18);
+    height: 340px;
+    outline: 2px solid #0f6e5b;
+  }
+
+  /* ── Image ────────────────────────────────────────────────────── */
+  .rcard__img-wrap {
+    position: absolute;
+    inset: 0;
+  }
+  .rcard__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition:
+      transform 0.55s ease,
+      filter 0.4s ease;
+    filter: brightness(0.72) saturate(0.85);
+  }
+  .rcard:hover .rcard__img,
+  .rcard:focus-visible .rcard__img {
+    transform: scale(1.07);
+    filter: brightness(0.55) saturate(1);
+  }
+
+  /* Gradient — stronger at bottom, light at top for legibility */
+  .rcard__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(15, 23, 42, 0.88) 0%,
+      rgba(15, 23, 42, 0.35) 55%,
+      rgba(15, 23, 42, 0.05) 100%
+    );
+  }
+
+  /* ── Card body ────────────────────────────────────────────────── */
+  .rcard__body {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.25rem 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .rcard__flag {
+    font-size: 1.75rem;
+    line-height: 1;
+    margin-bottom: 0.1rem;
+  }
+  .rcard__title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+  .rcard__tagline {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0;
+  }
+
+  /* Feature list — revealed on hover */
+  .rcard__features {
+    list-style: none;
+    margin: 0.35rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+      opacity 0.3s ease 0.08s,
+      transform 0.3s ease 0.08s;
+  }
+  .rcard:hover .rcard__features,
+  .rcard:focus-visible .rcard__features {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .rcard__features li {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.78);
+    padding-left: 1rem;
+    position: relative;
+  }
+  .rcard__features li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #4ade80;
+    font-size: 0.7rem;
+    top: 1px;
+  }
+
+  /* CTA arrow */
+  .rcard__cta {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #4ade80;
+    opacity: 0;
+    transform: translateY(5px);
+    transition:
+      opacity 0.25s ease 0.15s,
+      transform 0.25s ease 0.15s;
+  }
+  .rcard:hover .rcard__cta,
+  .rcard:focus-visible .rcard__cta {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Mobile: always show features */
+  @media (max-width: 560px) {
+    .rcard {
+      height: 260px;
+    }
+    .rcard:hover,
+    .rcard:focus-visible {
+      height: 300px;
+      transform: none;
+    }
+    .rcard__features,
+    .rcard__cta {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* ── Aurora (existing) ────────────────────────────────────────── */
+  .aurora-container {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .aurora-light {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0;
+    animation:
+      aurora-appear 1.5s ease-out forwards,
+      aurora-drift 14s ease-in-out infinite alternate;
+  }
+  .aurora-light--1 {
+    width: 500px;
+    height: 500px;
+    top: -10%;
+    right: -5%;
+    background: linear-gradient(135deg, #c7d2fe, #ddd6fe);
+    animation-delay: 0.3s, 0s;
+  }
+  .aurora-light--2 {
+    width: 400px;
+    height: 400px;
+    top: 20%;
+    right: 5%;
+    background: linear-gradient(200deg, #bfdbfe, #c4b5fd);
+    animation-delay: 0.6s, 2s;
+  }
+  .aurora-light--3 {
+    width: 350px;
+    height: 350px;
+    top: 50%;
+    right: -2%;
+    background: linear-gradient(160deg, #e0e7ff, #ede9fe);
+    animation-delay: 0.9s, 4s;
+  }
+  @keyframes aurora-appear {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 0.7;
+      transform: scale(1);
+    }
+  }
+  @keyframes aurora-drift {
+    0% {
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      transform: translate(-20px, 15px) scale(1.05);
+    }
+    100% {
+      transform: translate(10px, -10px) scale(0.97);
+    }
+  }
+</style>

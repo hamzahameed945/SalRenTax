@@ -1,0 +1,42 @@
+---
+import PublicResourcePage from '../../components/content/PublicResourcePage.astro';
+const sections = [
+  { heading: 'How sources are used', paragraphs: [
+    'PayRenTax calculators use country-specific data and explain the important assumptions behind the estimates on the relevant pages.',
+    'A source may support a tax rate, threshold, contribution, rule, or other calculation assumption. Using an official source does not make a simplified calculator an official payroll or tax determination.'
+  ]},
+  { heading: 'United States', bullets: [
+    'Internal Revenue Service (IRS) guidance for federal tax brackets, deductions, and related federal rules.',
+    'Social Security Administration (SSA) information for Social Security contribution and related figures.',
+    'State revenue department guidance for supported state estimates.'
+  ]},
+  { heading: 'United Kingdom and Ireland', bullets: [
+    'HM Revenue & Customs (HMRC) guidance for UK payroll and income-tax calculations.',
+    'Revenue Ireland guidance for PAYE, USC, and PRSI estimates.'
+  ]},
+  { heading: 'Germany and Netherlands', bullets: [
+    'German statutory payroll and social-insurance information used by the 2026 German tools.',
+    'Netherlands payroll and wage-tax information used in the Netherlands data modules.'
+  ]},
+  { heading: 'Spain and Mexico', bullets: [
+    'Agencia Estatal de Administración Tributaria (AEAT) and applicable Spanish payroll guidance for Spain estimates.',
+    'Servicio de Administración Tributaria (SAT) and applicable Mexican payroll guidance for Mexico estimates.'
+  ]},
+  { heading: 'Brazil', bullets: [
+    'INSS contribution tables.',
+    'Receita Federal monthly IRRF tables and applicable reduction rules.'
+  ]},
+  { heading: 'Review date and limitations', paragraphs: [
+    'The current release focuses on 2026 data where a 2026 tax year is shown.',
+    'If a complete rule set cannot be verified, the relevant calculator is kept simplified, limited, or unpublished rather than presenting an unsupported figure as authoritative.'
+  ]}
+];
+---
+
+<PublicResourcePage
+  title="PayRenTax Data Sources"
+  description="See the official source categories, tax-year scope, and limitations used for PayRenTax calculator data."
+  canonical="/data-sources/"
+  sections={sections}
+  eyebrow="Sources and transparency"
+/>

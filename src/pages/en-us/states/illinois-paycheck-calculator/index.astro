@@ -1,0 +1,54 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import { buildLocalePath } from '../../../../i18n/utils';
+import PaycheckCalculator from '../../../../components/islands/PaycheckCalculator';
+const locale = 'en-US' as const;
+---
+
+<BaseLayout
+  locale={locale}
+  title="Illinois Paycheck Calculator 2026 — PayRenTax"
+  description="Estimate your Illinois take-home pay for 2026 using the state's 4.95% flat individual income-tax rate along with the federal deductions supported by the calculator."
+  canonical="/en-us/states/illinois-paycheck-calculator/"
+>
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      {
+        label: 'Illinois Paycheck Calculator',
+        href: buildLocalePath(locale, 'states/illinois-paycheck-calculator'),
+      },
+    ]}
+  />
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Illinois Paycheck Calculator 2026</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Estimate your Illinois take-home pay for 2026 using the state's{' '}
+      <strong>4.95% flat individual income-tax rate</strong> along with the federal deductions
+      supported by the calculator.
+    </p>
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <PaycheckCalculator stateCode="IL" client:load />
+    </div>
+    <div class="mt-8">
+      <InContentAd slotId="illinois-paycheck-1" />
+    </div>
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>How Illinois paycheck taxes work</h2>
+      <p>
+        Illinois taxes individual income at a flat 4.95% rate, so the state rate stays the same as
+        your income changes. Federal income tax, Social Security, and Medicare still apply, and the
+        calculator estimates them alongside the state amount.
+      </p>
+      <p>
+        Local taxes are not modeled here. Employer benefits, credits, and other deductions can also
+        change your real paycheck, so compare the estimate with your actual paystub before making
+        plans around it.
+      </p>
+    </div>
+  </article>
+  <CalculatorResource locale="en-US" category="states" />
+</BaseLayout>

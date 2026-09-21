@@ -1,0 +1,126 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import NlBruttoNettoCalculator from '../../../../components/islands/NlBruttoNettoCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'nl-NL' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  t.salary.bruttoNetto.title,
+  t.salary.bruttoNetto.metaDescription,
+  '/nl-nl/salary/bruto-netto-calculator/',
+);
+
+const faqItems = [
+  {
+    question: 'Hoe werkt de inkomstenbelasting in Nederland?',
+    answer:
+      'Nederland kent een progressief tarief in box 1 (werk en woning). De schijven voor 2026: 35,75% tot €38.883, 37,56% tot €78.426 en 49,50% daarboven. Deze tarieven zijn inclusief premies volksverzekeringen (AOW, ANW, WLZ).',
+  },
+  {
+    question: 'Wat is de algemene heffingskorting 2026?',
+    answer:
+      'De algemene heffingskorting verlaagt direct de te betalen belasting. In 2026 bedraagt deze maximaal €3.115. De korting wordt afgebouwd als het verzamelinkomen boven €29.736 uitkomt, en is €0 bij €78.426 of meer.',
+  },
+  {
+    question: 'Wat is de arbeidskorting 2026?',
+    answer:
+      'De arbeidskorting is een belastingkorting voor mensen met arbeidsinkomen. In 2026 bedraagt de maximale arbeidskorting €5.685. De korting bouwt op tot €45.592 en wordt daarna afgebouwd tot €0 bij een inkomen boven €132.920.',
+  },
+  {
+    question: 'Wat is de 30%-regeling?',
+    answer:
+      'De 30%-regeling is een belastingfaciliteit voor specifiek uit het buitenland geworven werknemers. Tot 30% van het salaris wordt als onbelaste vergoeding uitgekeerd, waardoor het netto loon aanzienlijk hoger uitvalt. In 2026 blijft het tarief 30%; vanaf 2027 daalt het naar 27%.',
+  },
+  {
+    question: 'Wat is het verschil tussen bruto en netto?',
+    answer:
+      'Het bruto salaris is uw loon vóór belastingen en premies. Hiervan worden inkomstenbelasting (box 1) en premies volksverzekeringen ingehouden. Na aftrek van belasting minus heffingskortingen blijft het netto salaris over.',
+  },
+  {
+    question: 'Wat is vakantiegeld en wanneer krijg ik het?',
+    answer:
+      'Vakantiegeld is een wettelijke uitkering van minimaal 8% van uw bruto jaarsalaris. Het wordt doorgaans in mei uitbetaald, maar kan ook maandelijks worden uitbetaald als dat in uw contract staat.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="nl-bruto-netto-calculator"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      { label: t.salary.bruttoNetto.title, href: buildLocalePath(locale, 'salary/bruto-netto-calculator') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">{t.salary.bruttoNetto.h1}</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">{t.salary.bruttoNetto.intro}</p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <NlBruttoNettoCalculator client:load locale={locale} />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="nl-brutonetto-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Belastingschijven box 1 — Nederland 2026</h2>
+      <p>
+        Het tarief in box 1 is een gecombineerd tarief van inkomstenbelasting én premies volksverzekeringen (AOW, ANW, WLZ).
+        Wie de AOW-leeftijd (67 jaar) heeft bereikt betaalt geen AOW-premie meer; voor hen geldt in schijf 1 een tarief van 17,85%.
+      </p>
+      <table>
+        <thead>
+          <tr><th>Schijf</th><th>Belastbaar inkomen</th><th>Tarief (incl. premies)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Schijf 1</td><td>Tot €38.883</td><td>35,75%</td></tr>
+          <tr><td>Schijf 2</td><td>€38.883 – €78.426</td><td>37,56%</td></tr>
+          <tr><td>Schijf 3 (toptarief)</td><td>Boven €78.426</td><td>49,50%</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Heffingskortingen 2026</h2>
+      <p>
+        Heffingskortingen verlagen direct de verschuldigde belasting — niet het belastbaar inkomen.
+        De twee meest gangbare kortingen voor werknemers zijn:
+      </p>
+      <ul>
+        <li><strong>Algemene heffingskorting:</strong> maximaal €3.115, afgebouwd met 6,398% boven €29.736 (€0 bij €78.426+)</li>
+        <li><strong>Arbeidskorting:</strong> maximaal €5.685 bij een arbeidsinkomen van circa €45.592; daarna afgebouwd tot €0 bij €132.920</li>
+        <li><strong>IACK (combinatiekorting):</strong> tot €3.032 voor co-ouders met kinderen onder 12</li>
+        <li><strong>Ouderenkorting:</strong> tot €2.067 voor AOW-gerechtigden</li>
+      </ul>
+      <p class="text-sm">
+        Bron: <a href="https://www.belastingdienst.nl/wps/wcm/connect/nl/voorlopige-aanslag/content/voorlopige-aanslag-tarieven-en-heffingskortingen" target="_blank" rel="noopener noreferrer">Belastingdienst — Tarieven en heffingskortingen voorlopige aanslag 2026</a>
+      </p>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Veelgestelde vragen over bruto netto berekening" items={faqItems} />
+  </article>
+  <CalculatorResource locale="nl-NL" category="salary" />
+</BaseLayout>

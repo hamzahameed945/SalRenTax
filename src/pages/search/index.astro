@@ -1,0 +1,216 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/navigation/Breadcrumbs.astro';
+import { getActivePages } from '../../seo/page-registry';
+import { buildLocalePath } from '../../i18n/utils';
+import type { LocaleCode } from '../../i18n/types';
+
+const locale = 'en-US' as const;
+const localeLabels: Record<LocaleCode, string> = {
+  'en-US': 'United States',
+  'en-GB': 'United Kingdom',
+  'en-IE': 'Ireland',
+  'pt-BR': 'Brazil',
+  'es-ES': 'Spain',
+  'es-MX': 'Mexico',
+  'de-DE': 'Germany',
+  'nl-NL': 'Netherlands',
+};
+const categoryLabels: Record<string, string> = {
+  salary: 'Salary',
+  tax: 'Tax',
+  rent: 'Rent',
+  labor: 'Labor',
+  states: 'US states',
+};
+const calculators = getActivePages()
+  .filter((page) => page.pageType === 'calculator')
+  .map((page) => ({
+    title: page.primaryKeyword,
+    keywords: [page.primaryKeyword, ...page.secondaryKeywords].join(' '),
+    category: page.category,
+    locale: page.locale,
+    country: localeLabels[page.locale],
+    year: page.year,
+    href: buildLocalePath(page.locale, page.slug),
+  }));
+const calculatorData = JSON.stringify(calculators).replace(/</g, '\\u003c');
+---
+
+<BaseLayout
+  locale={locale}
+  title="Find a Salary, Tax, Rent, or Labor Calculator | PayRenTax"
+  description="Search PayRenTax calculators by country, category, keyword, and tax year."
+  canonical="/search/"
+>
+  <Breadcrumbs locale={locale} trail={[{ label: 'Calculator search', href: '/search/' }]} />
+  <main class="mx-auto max-w-6xl px-4 py-10 sm:py-14">
+    <header class="max-w-3xl">
+      <p class="text-sm font-semibold uppercase tracking-[.14em] text-accent">
+        Calculator discovery
+      </p>
+      <h1 class="mt-3 text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">
+        Find the right calculator
+      </h1>
+      <p class="mt-5 text-lg leading-8 text-slate-600">
+        Search by calculator name, country, category, or keyword. Results come from the active page
+        registry, so this page does not link to unpublished or unsupported tools.
+      </p>
+    </header>
+
+    <section
+      class="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:p-6"
+      aria-label="Calculator filters"
+    >
+      <div class="grid gap-4 md:grid-cols-[1fr_auto_auto] md:items-end">
+        <label class="grid gap-2 text-sm font-semibold text-slate-700">
+          Search calculators
+          <input
+            id="calculator-search"
+            type="search"
+            placeholder="e.g. paycheck, bruto netto, férias"
+            autocomplete="off"
+            class="h-11 rounded-lg border border-slate-300 bg-white px-3 font-normal outline-none focus:border-accent focus:ring-2 focus:ring-emerald-100"
+          />
+        </label>
+        <label class="grid gap-2 text-sm font-semibold text-slate-700">
+          Country
+          <select
+            id="calculator-country"
+            class="h-11 rounded-lg border border-slate-300 bg-white px-3 font-normal outline-none focus:border-accent focus:ring-2 focus:ring-emerald-100"
+          >
+            <option value="all">All countries</option>
+            {Object.entries(localeLabels).map(([code, label]) => (
+              <option value={code}>{label}</option>
+            ))}
+          </select>
+        </label>
+        <label class="grid gap-2 text-sm font-semibold text-slate-700">
+          Category
+          <select
+            id="calculator-category"
+            class="h-11 rounded-lg border border-slate-300 bg-white px-3 font-normal outline-none focus:border-accent focus:ring-2 focus:ring-emerald-100"
+          >
+            <option value="all">All categories</option>
+            {Object.entries(categoryLabels).map(([value, label]) => (
+              <option value={value}>{label}</option>
+            ))}
+          </select>
+        </label>
+      </div>
+      <p id="calculator-count" class="mt-4 text-sm text-slate-500" aria-live="polite"></p>
+    </section>
+
+    <section class="mt-8" aria-labelledby="results-heading">
+      <h2 id="results-heading" class="text-2xl font-bold text-slate-900">
+        Available calculators
+      </h2>
+      <div id="calculator-results" class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+      <p
+        id="calculator-empty"
+        class="mt-6 hidden rounded-xl border border-dashed border-slate-300 p-8 text-center text-slate-600"
+      >
+        No active calculator matches those filters. Try another keyword or country.
+      </p>
+    </section>
+
+    <section class="mt-14 rounded-2xl border border-slate-200 p-6 sm:p-8">
+      <h2 class="text-xl font-bold text-slate-900">Need context before choosing?</h2>
+      <p class="mt-2 leading-7 text-slate-600">
+        Read{' '}
+        <a class="font-semibold text-accent underline" href="/how-calculators-work/">
+          how PayRenTax calculators work
+        </a>{' '}
+        or review the{' '}
+        <a class="font-semibold text-accent underline" href="/data-sources/">
+          data sources
+        </a>
+        . Results are estimates, not official tax, legal, payroll, or financial advice.
+      </p>
+    </section>
+  </main>
+</BaseLayout>
+
+<script is:inline define:vars={{ calculatorData, categoryLabels }}>
+  const calculators = JSON.parse(calculatorData);
+  const search = document.querySelector('#calculator-search');
+  const country = document.querySelector('#calculator-country');
+  const category = document.querySelector('#calculator-category');
+  const results = document.querySelector('#calculator-results');
+  const count = document.querySelector('#calculator-count');
+  const empty = document.querySelector('#calculator-empty');
+
+  function render() {
+    const query = search.value.trim().toLowerCase();
+    const selectedCountry = country.value;
+    const selectedCategory = category.value;
+    const matches = calculators.filter((calculator) => {
+      const matchesQuery =
+        !query || `${calculator.keywords} ${calculator.country}`.toLowerCase().includes(query);
+      return (
+        matchesQuery &&
+        (selectedCountry === 'all' || calculator.locale === selectedCountry) &&
+        (selectedCategory === 'all' || calculator.category === selectedCategory)
+      );
+    });
+    results.innerHTML = matches
+      .map(
+        (calculator) => `
+      <a class="search-card" href="${calculator.href}">
+        <span class="search-card__eyebrow">${calculator.country} · ${categoryLabels[calculator.category]}${calculator.year ? ` · ${calculator.year}` : ''}</span>
+        <strong>${calculator.title}</strong>
+        <span class="search-card__cta">Open calculator →</span>
+      </a>
+    `,
+      )
+      .join('');
+    count.textContent = `${matches.length} calculator${matches.length === 1 ? '' : 's'} found`;
+    empty.classList.toggle('hidden', matches.length !== 0);
+  }
+
+  [search, country, category].forEach((control) => control.addEventListener('input', render));
+  render();
+</script>
+
+<style>
+  .search-card {
+    display: grid;
+    gap: 0.55rem;
+    min-height: 10rem;
+    align-content: start;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.9rem;
+    background: white;
+    padding: 1.1rem;
+    color: #0f172a;
+    text-decoration: none;
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .search-card:hover,
+  .search-card:focus-visible {
+    transform: translateY(-2px);
+    border-color: #0f6e5b;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    outline: none;
+  }
+  .search-card__eyebrow {
+    color: #64748b;
+    font-size: 0.73rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .search-card strong {
+    font-size: 1.05rem;
+    line-height: 1.45;
+  }
+  .search-card__cta {
+    margin-top: auto;
+    color: #0f6e5b;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+</style>

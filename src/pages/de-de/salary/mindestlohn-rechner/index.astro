@@ -1,0 +1,110 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import MindestlohnCalculator from '../../../../components/islands/MindestlohnCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'de-DE' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  t.meta.paycheckTitle,
+  t.meta.paycheckDescription,
+  '/de-de/salary/mindestlohn-rechner/',
+);
+
+const faqItems = [
+  {
+    question: 'Wie hoch ist der Mindestlohn 2026 in Deutschland?',
+    answer:
+      'Der gesetzliche Mindestlohn beträgt ab dem 1. Januar 2026 13,90 € pro Stunde. Das entspricht einem monatlichen Bruttolohn von ca. 2.410 € bei einer 40-Stunden-Woche.',
+  },
+  {
+    question: 'Was ist die Minijob-Grenze 2026?',
+    answer:
+      'Die Geringfügigkeitsgrenze (Minijob-Grenze) liegt 2026 bei 603 € pro Monat. Wer mehr verdient, ist sozialversicherungspflichtig.',
+  },
+  {
+    question: 'Gilt der Mindestlohn für alle Arbeitnehmer?',
+    answer:
+      'Der gesetzliche Mindestlohn gilt grundsätzlich für alle Arbeitnehmerinnen und Arbeitnehmer in Deutschland. Ausnahmen gelten u. a. für Auszubildende und bestimmte Praktika.',
+  },
+  {
+    question: 'Wie berechne ich meinen monatlichen Mindestlohn?',
+    answer:
+      'Monatslohn = Stundenlohn × Wochenstunden × (Jahreswochen / 12). Für 40 Stunden/Woche und 52 Wochen: 13,90 € × 40 × 52 / 12 = ca. 2.409 €.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="minimum-wage-calculator"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      {
+        label: t.salary.mindestlohn.title,
+        href: buildLocalePath(locale, 'salary/mindestlohn-rechner'),
+      },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">{t.salary.mindestlohn.h1}</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">{t.salary.mindestlohn.intro}</p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <MindestlohnCalculator client:load locale={locale} />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="de-mindestlohn-1" />
+    </div>
+
+    <!-- Contextual SEO content -->
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Mindestlohn 2026 in Deutschland — Alle wichtigen Informationen</h2>
+      <p>
+        Seit dem <strong>1. Januar 2026</strong> gilt in Deutschland ein gesetzlicher Mindestlohn
+        von
+        <strong>13,90 € pro Stunde</strong>. Dies entspricht einer Erhöhung gegenüber dem Vorjahr
+        und betrifft nahezu alle sozialversicherungspflichtigen Arbeitnehmer in Deutschland.
+      </p>
+      <h3>Minijob-Grenze (Geringfügigkeitsgrenze) 2026</h3>
+      <p>
+        Die Minijob-Grenze liegt 2026 bei <strong>603 € monatlich</strong>. Arbeitnehmer, die mehr
+        verdienen, werden automatisch sozialversicherungspflichtig. Unser Rechner zeigt Ihnen, ob
+        Ihr Verdienst über dieser Grenze liegt.
+      </p>
+      <h3>Brutto-Netto: Sozialversicherungsbeiträge beachten</h3>
+      <p>
+        Vom Bruttolohn werden Beiträge zur Renten-, Kranken-, Arbeitslosen- und Pflegeversicherung
+        abgezogen. Nutzen Sie unseren{' '}
+        <a href={buildLocalePath(locale, 'salary/brutto-netto-rechner')}>Brutto-Netto-Rechner</a>,
+        um Ihre Sozialversicherungsabgaben zu berechnen.
+      </p>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Häufig gestellte Fragen" items={faqItems} />
+  </article>
+  <CalculatorResource locale="de-DE" category="salary" />
+</BaseLayout>

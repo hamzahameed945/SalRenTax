@@ -1,0 +1,45 @@
+---
+import PublicResourcePage from '../../components/content/PublicResourcePage.astro';
+const sections = [
+  { heading: 'What is PayRenTax?', paragraphs: [
+    'PayRenTax is an independent website with salary, tax, rent, and payroll calculators designed to make everyday money questions a little easier to work through.',
+    'The goal is simple: give you a useful estimate and explain where the number comes from, whether you are checking a payslip, comparing a job offer, planning your budget, or trying to understand your housing costs.'
+  ]},
+  { heading: 'Why we built it', paragraphs: [
+    'Tax and payroll rules are not the same everywhere. A calculation that makes sense in one country can be completely wrong in another, even when the wording sounds similar.',
+    'That is why PayRenTax keeps country-specific rules, currencies, terminology, and calculation assumptions separate. When a rule changes, the relevant calculator can be reviewed without pretending that one set of rules fits every location.'
+  ]},
+  { heading: 'Our approach', bullets: [
+    'Use official or reliable sources when tax-year information is available.',
+    'Keep the calculation logic separate from the page content and interface.',
+    'Explain important assumptions in clear, everyday language.',
+    'Test calculation logic and important site routes before changes are released.',
+    'Review tax-year information when the underlying rules change.',
+    'Do not invent a rule just because a search keyword suggests that a page should exist.'
+  ]},
+  { heading: 'How the calculators work', paragraphs: [
+    'You enter the details supported by a calculator in your browser. The relevant country or state calculation engine checks those inputs, applies the rules built into the tool, and returns an estimate for the page to show you.',
+    'Calculator inputs are designed to be handled in your browser rather than sent to a PayRenTax application server.'
+  ]},
+  { heading: 'Editorial and calculation standards', paragraphs: [
+    'A PayRenTax result is always presented as an estimate, not as an official tax determination. If a calculator uses a simplified model, the page should make that clear.',
+    'PayRenTax does not present itself as a tax or accounting firm and does not promise that every estimate will match an employer or tax authority calculation exactly. When a rule cannot be supported confidently, it is better to keep the calculation limited than to make up an answer.'
+  ]},
+  { heading: 'Updates and limitations', paragraphs: [
+    'Tax laws, thresholds, payroll practices, and official guidance can change. Where it matters, the relevant page identifies the supported tax year and other review information.',
+    'If you are making an important tax, employment, housing, or financial decision, compare the estimate with your actual documents and confirm the details with the appropriate official source or a qualified professional.'
+  ]},
+  { heading: 'Contact', paragraphs: [
+    'Found an outdated figure, broken link, unclear wording, translation issue, or something that does not look right?',
+    'Email us at contact@payrentax.me with the page you were using and a short description of the problem. Please leave out sensitive personal or tax information.'
+  ]}
+];
+---
+
+<PublicResourcePage
+  title="About PayRenTax"
+  description="Learn how PayRenTax creates country-specific salary, tax, rent, and labor calculators with clear assumptions and transparent estimates."
+  canonical="/about/"
+  sections={sections}
+  eyebrow="About the project"
+/>

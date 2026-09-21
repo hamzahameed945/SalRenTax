@@ -1,0 +1,96 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import BruttoNettoCalculator from '../../../../components/islands/BruttoNettoCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'de-DE' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Brutto-Netto-Rechner Bayern 2026 — Kirchensteuer 8 % — PayRenTax',
+  'Berechnen Sie Ihr Nettogehalt in Bayern 2026 inklusive Kirchensteuer 8 %, Lohnsteuer nach § 32a EStG und allen Steuerklassen.',
+  '/de-de/salary/brutto-netto-rechner-bayern/',
+);
+
+const faqItems = [
+  {
+    question: 'Wie hoch ist die Kirchensteuer in Bayern?',
+    answer:
+      'In Bayern beträgt die Kirchensteuer 8 % der Lohnsteuer. In allen anderen Bundesländern sind es 9 %. Kirchensteuer zahlen nur Mitglieder einer steuererhebenden Religionsgemeinschaft.',
+  },
+  {
+    question: 'Unterscheidet sich die Lohnsteuer in Bayern von anderen Bundesländern?',
+    answer:
+      'Die Lohnsteuer nach § 32a EStG ist bundesweit einheitlich. Der einzige regionale Unterschied beim Nettogehalt entsteht durch die Kirchensteuer (8 % in Bayern vs. 9 % anderswo) und die Pflegeversicherung in Sachsen (abweichende Aufteilung).',
+  },
+  {
+    question: 'Welche Steuerklasse ist für mich richtig?',
+    answer:
+      'Steuerklasse I gilt für Ledige und Geschiedene. Verheiratete wählen meist III/V (wenn ein Partner deutlich mehr verdient) oder IV/IV (bei ähnlichem Einkommen). SK II gilt für Alleinerziehende mit Entlastungsbetrag.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="de-brutto-netto-rechner-bayern"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      { label: 'Brutto-Netto-Rechner', href: buildLocalePath(locale, 'salary/brutto-netto-rechner') },
+      { label: 'Bayern', href: buildLocalePath(locale, 'salary/brutto-netto-rechner-bayern') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Brutto-Netto-Rechner Bayern 2026</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Berechnen Sie Ihr Nettogehalt in Bayern 2026 — inklusive Kirchensteuer 8 %, Lohnsteuer nach
+      § 32a EStG, Solidaritätszuschlag und allen Sozialversicherungsbeiträgen. Kirchensteuer ist
+      vorausgewählt; deaktivieren Sie sie, wenn Sie kein Kirchenmitglied sind.
+    </p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <BruttoNettoCalculator client:load locale={locale} defaultKirchensteuer="bayern" />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="de-bayern-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Kirchensteuer in Bayern</h2>
+      <p>
+        Bayern erhebt Kirchensteuer in Höhe von <strong>8 % der Lohnsteuer</strong> — einen Prozentpunkt
+        weniger als die übrigen Bundesländer (9 %). Die Kirchensteuer wird nur fällig, wenn Sie Mitglied
+        einer steuererhebenden Religionsgemeinschaft (z. B. katholische oder evangelische Kirche) sind.
+      </p>
+      <p>
+        Bei einem monatlichen Bruttogehalt von 4.000 € (Steuerklasse I, kinderlos) beläuft sich die
+        Kirchensteuer in Bayern auf etwa 16–20 € pro Monat, in anderen Bundesländern auf etwa 18–23 €.
+      </p>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Häufig gestellte Fragen — Bayern" items={faqItems} />
+  </article>
+  <CalculatorResource locale="de-DE" category="salary" />
+</BaseLayout>

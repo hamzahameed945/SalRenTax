@@ -1,0 +1,48 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import { buildLocalePath } from '../../../../i18n/utils';
+import PaycheckCalculator from '../../../../components/islands/PaycheckCalculator';
+const locale = 'en-US' as const;
+---
+
+<BaseLayout
+  locale={locale}
+  title="Paystub Calculator 2026 — PayRenTax"
+  description="Use your pay information to understand how gross pay, taxes, deductions, and take-home pay fit together."
+  canonical="/en-us/salary/paystub-calculator/"
+>
+  <Breadcrumbs
+    locale={locale}
+    trail={[{ label: 'Salary Calculators', href: buildLocalePath(locale, 'salary') }]}
+  />
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Paystub Calculator 2026</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Use your pay information to understand how gross pay, taxes, deductions, and take-home pay
+      fit together.
+    </p>
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <PaycheckCalculator client:load />
+    </div>
+    <div class="mt-8">
+      <InContentAd slotId="paystub-calculator-1" />
+    </div>
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>What this paystub calculator estimates</h2>
+      <p>
+        A paystub can contain several different deductions, which can make it difficult to see
+        where your money is going. This calculator provides a simple estimate and breakdown based
+        on the information supported by the tool: gross pay, federal income tax, Social Security,
+        Medicare, and any pre-tax deduction you enter.
+      </p>
+      <p>
+        For an exact explanation of your paycheck, use the figures on your actual paystub and speak
+        with your employer or payroll department when something does not match.
+      </p>
+    </div>
+  </article>
+  <CalculatorResource locale="en-US" category="salary" />
+</BaseLayout>

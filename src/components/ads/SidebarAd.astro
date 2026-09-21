@@ -1,0 +1,9 @@
+---
+import AdSlot from './AdSlot.astro';
+export interface Props {
+  slotId: string;
+}
+const { slotId } = Astro.props;
+---
+
+<AdSlot position="sidebar" slotId={slotId} />

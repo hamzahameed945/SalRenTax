@@ -1,0 +1,102 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import SalaryToHourlyCalculator from '../../../../components/islands/SalaryToHourlyCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'en-IE' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Salary to Hourly Calculator Ireland — PayRenTax',
+  t.salary.salaryToHourly.intro,
+  '/en-ie/salary/salary-to-hourly/',
+);
+
+const faqItems = [
+  {
+    question: 'How do I convert my annual salary to an hourly rate in Ireland?',
+    answer:
+      'Divide your annual gross salary by your total working hours per year. A standard 39-hour week over 52 weeks gives 2,028 hours. For example, €55,000 ÷ 2,028 = €27.12 per hour.',
+  },
+  {
+    question: 'What is the minimum wage in Ireland in 2026?',
+    answer:
+      'Ireland\'s national minimum wage is €13.50 per hour from January 2025, with planned increases in subsequent years. Workers aged 20 and over are entitled to the full rate. Check gov.ie for the latest confirmed rate for 2026.',
+  },
+  {
+    question: 'How many hours per week is full-time in Ireland?',
+    answer:
+      'Full-time employment in Ireland is typically 37.5 to 39 hours per week. The Organisation of Working Time Act limits the average working week to 48 hours (including overtime) over a reference period.',
+  },
+  {
+    question: 'Is the hourly rate calculated on gross or net salary?',
+    answer:
+      'This calculator uses your gross (before-tax) annual salary to produce a gross hourly rate. Your net hourly rate after PAYE, USC, and PRSI will be lower. Use our Ireland Take Home Pay Calculator to estimate your net pay.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="salary-to-hourly"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      { label: t.salary.salaryToHourly.title, href: buildLocalePath(locale, 'salary/salary-to-hourly') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">{t.salary.salaryToHourly.h1}</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">{t.salary.salaryToHourly.intro}</p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <SalaryToHourlyCalculator client:load locale={locale} currency="EUR" />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="ie-salary-hourly-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Gross Hourly Rate Examples — Ireland 2026</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Annual gross salary</th>
+            <th>Hourly rate (39 hrs/wk)</th>
+            <th>Hourly rate (37.5 hrs/wk)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>€30,000</td><td>€14.79</td><td>€15.38</td></tr>
+          <tr><td>€45,000</td><td>€22.19</td><td>€23.08</td></tr>
+          <tr><td>€60,000</td><td>€29.59</td><td>€30.77</td></tr>
+          <tr><td>€80,000</td><td>€39.45</td><td>€41.03</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Frequently asked questions" items={faqItems} />
+  </article>
+  <CalculatorResource locale="en-IE" category="salary" />
+</BaseLayout>

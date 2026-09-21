@@ -1,0 +1,37 @@
+---
+import PublicResourcePage from '../../components/content/PublicResourcePage.astro';
+const sections = [
+  { heading: 'General information only', paragraphs: [
+    'PayRenTax calculators are provided for general information and educational purposes.',
+    'The figures you see are estimates based on the information you enter and the assumptions supported by the specific calculator you are using.'
+  ]},
+  { heading: 'Not tax, legal, or financial advice', paragraphs: [
+    'A PayRenTax result is not tax advice, legal advice, financial advice, payroll advice, or an official tax determination.',
+    'Using PayRenTax does not create a professional adviser-client relationship with us.'
+  ]},
+  { heading: 'Why your result may differ', paragraphs: ['Your actual result may be different for several reasons, including:'], bullets: [
+    'Your employer may use different payroll settings or pay schedules.',
+    'Benefits, credits, dependents, allowances, or deductions may not be included in the calculator.',
+    "Local, municipal, regional, or state rules may fall outside the calculator's scope.",
+    'Payroll systems can use different rounding, withholding methods, or year-end adjustments.',
+    "Tax laws and official guidance may have changed after the calculator's stated review date."
+  ]},
+  { heading: 'Country and state limitations', paragraphs: [
+    'Each calculator is built for the country or state identified on its page.',
+    'Some tools use a simplified model rather than reproducing every part of a real payroll system. A rule from one country or state should never be assumed to apply somewhere else.'
+  ]},
+  { heading: 'Your responsibility', paragraphs: [
+    'For an important result, compare the estimate with your payslip, employer information, official tax guidance, or advice from a qualified accountant, lawyer, tax professional, or other appropriate adviser.',
+    'Do not rely on a calculator estimate alone when making a tax filing, employment, housing, lending, or other high-impact financial decision.'
+  ]},
+  { heading: 'Contact', paragraphs: ['Questions about a calculator or this disclaimer can be sent to contact@payrentax.me.'] }
+];
+---
+
+<PublicResourcePage
+  title="Disclaimer"
+  description="Important limitations for PayRenTax salary, tax, rent, and labor calculator estimates."
+  canonical="/disclaimer/"
+  sections={sections}
+  eyebrow="Please read"
+/>

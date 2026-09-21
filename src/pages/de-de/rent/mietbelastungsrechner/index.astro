@@ -1,0 +1,103 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import RentAffordabilityCalculator from '../../../../components/islands/RentAffordabilityCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'de-DE' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Mietbelastungsrechner Deutschland — PayRenTax',
+  t.rent.rentAffordability.intro,
+  '/de-de/rent/mietbelastungsrechner/',
+);
+
+const faqItems = [
+  {
+    question: 'Wie viel Prozent des Einkommens sollte die Miete betragen?',
+    answer:
+      'Die verbreitete 30%-Faustregel empfiehlt, nicht mehr als 30% des Bruttoeinkommens für Miete auszugeben. In Großstädten wie München, Frankfurt oder Hamburg liegen die Mietbelastungsquoten häufig bei 35–45%, da die Mieten dort deutlich über dem Bundesdurchschnitt liegen.',
+  },
+  {
+    question: 'Was sind durchschnittliche Mieten in Deutschland 2026?',
+    answer:
+      'Die Kaltmieten variieren stark nach Region: München liegt im Median bei über €20/m², Berlin bei ca. €14–17/m², Leipzig oder Dresden bei €8–11/m². Für eine 70-m²-Wohnung ergibt das in München rund €1.400/Monat Kaltmiete, in ostdeutschen Städten oft unter €800.',
+  },
+  {
+    question: 'Was ist der Unterschied zwischen Kalt- und Warmmiete?',
+    answer:
+      'Die Kaltmiete ist der reine Mietzins ohne Nebenkosten. Die Warmmiete umfasst zusätzlich die Betriebs- und Nebenkosten (Wasser, Heizung, Hausmeister etc.), typischerweise 2–3 €/m² mehr. Achten Sie bei Inseraten auf den Unterschied.',
+  },
+  {
+    question: 'Habe ich in Deutschland Anspruch auf Wohngeld?',
+    answer:
+      'Wohngeld ist ein staatlicher Mietzuschuss für Haushalte mit geringem Einkommen, die keinen Anspruch auf ALG II oder Bürgergeld haben. Die Höhe richtet sich nach Haushaltsgröße, Einkommen und Miete. Antrag beim Wohngeldbehörde der Gemeinde oder Stadt stellen.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="rent-affordability"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.rent, href: buildLocalePath(locale, 'rent') },
+      { label: t.rent.rentAffordability.title, href: buildLocalePath(locale, 'rent/mietbelastungsrechner') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">{t.rent.rentAffordability.h1}</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">{t.rent.rentAffordability.intro}</p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <RentAffordabilityCalculator client:load locale={locale} />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="de-rent-affordability-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Mietbelastungsrichtwerte nach Einkommenshöhe</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Bruttomonatseinkommen</th>
+            <th>Max. Miete (30%)</th>
+            <th>Max. Miete (35%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>€2.000</td><td>€600</td><td>€700</td></tr>
+          <tr><td>€3.000</td><td>€900</td><td>€1.050</td></tr>
+          <tr><td>€4.000</td><td>€1.200</td><td>€1.400</td></tr>
+          <tr><td>€5.000</td><td>€1.500</td><td>€1.750</td></tr>
+          <tr><td>€7.000</td><td>€2.100</td><td>€2.450</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Häufige Fragen zur Mietbelastung" items={faqItems} />
+  </article>
+  <CalculatorResource locale="de-DE" category="rent" />
+</BaseLayout>

@@ -1,0 +1,12 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 100" width="180" height="100" role="img" aria-label="PayRenTax">
+  <!-- Large PRT letters -->
+  <text x="4"   y="68" font-family="'Helvetica Neue', Arial, sans-serif" font-size="72" font-weight="100" fill="#0f172a" letter-spacing="2">P</text>
+  <text x="60"  y="68" font-family="'Helvetica Neue', Arial, sans-serif" font-size="72" font-weight="100" fill="#0f172a" letter-spacing="2">R</text>
+  <text x="116" y="68" font-family="'Helvetica Neue', Arial, sans-serif" font-size="72" font-weight="100" fill="#0f172a" letter-spacing="2">T</text>
+  <!-- Green dot above T -->
+  <circle cx="162" cy="8" r="6" fill="#0f6e5b"/>
+  <!-- Small labels below: PAY  RENT  TAX -->
+  <text x="10"  y="86" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="700" fill="#0f172a" letter-spacing="2">PAY</text>
+  <text x="68"  y="86" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="700" fill="#0f172a" letter-spacing="2">RENT</text>
+  <text x="122" y="86" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="700" fill="#0f172a" letter-spacing="2">TAX</text>
+</svg>

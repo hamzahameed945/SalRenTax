@@ -1,0 +1,135 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import BruttoNettoCalculator from '../../../../components/islands/BruttoNettoCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'de-DE' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  t.salary.bruttoNetto.title,
+  t.salary.bruttoNetto.metaDescription,
+  '/de-de/salary/brutto-netto-rechner/',
+);
+
+const faqItems = [
+  {
+    question: 'Wie wird die Lohnsteuer 2026 berechnet?',
+    answer:
+      'Die Lohnsteuer wird nach § 32a EStG in fünf Zonen berechnet. Der Grundfreibetrag beträgt 2026 zwölftausend dreihundertachtundvierzig Euro. Bis ca. 17.799 Euro steigt der Satz linear von 14 % auf 23,97 %, danach bis 69.878 Euro auf 42 %. Ab 277.826 Euro gilt die Reichensteuer von 45 %. Dieser Rechner wendet die exakten Formeln an.',
+  },
+  {
+    question: 'Was ist die Steuerklasse und welche sollte ich wählen?',
+    answer:
+      'Die Steuerklasse bestimmt, welche Freibeträge auf die Lohnsteuer angerechnet werden. Klasse I für Ledige, II für Alleinerziehende, III für den Besserverdiener in einer Ehe (mit SK V beim Partner), IV für Ehepaare mit ähnlichem Einkommen, V für den Geringverdiener in einer Ehe, VI für Zweitjobs.',
+  },
+  {
+    question: 'Was ist der Solidaritätszuschlag 2026?',
+    answer:
+      'Der Solidaritätszuschlag beträgt 5,5 % der Lohnsteuer. Er fällt nur an, wenn die Jahres-Lohnsteuer die Freigrenze von 20.350 Euro (Alleinstehende) bzw. 40.700 Euro (Zusammenveranlagte) übersteigt. In der Milderungszone beträgt er 11,9 % des Betrags über der Freigrenze.',
+  },
+  {
+    question: 'Wie wird die Pflegeversicherung nach Kinderzahl berechnet?',
+    answer:
+      'Seit Juli 2023 staffelt sich der Pflegeversicherungsbeitrag nach der Anzahl der Kinder. Kinderlose zahlen 2,3 % (AN-Anteil), Eltern mit einem Kind 1,7 %. Für das zweite bis fünfte Kind unter 25 Jahren sinkt der Satz um je 0,25 %, auf minimal 0,7 % bei fünf oder mehr Kindern.',
+  },
+  {
+    question: 'Was ist die Kirchensteuer und wie hoch ist sie?',
+    answer:
+      'Die Kirchensteuer berechnet sich als Prozentsatz der Lohnsteuer. In Bayern beträgt der Satz 8 %, in allen anderen Bundesländern 9 %. Nur Mitglieder einer steuererhebenden Religionsgemeinschaft zahlen sie.',
+  },
+  {
+    question: 'Was ist das Ehegattensplitting (Steuerklasse III)?',
+    answer:
+      'Bei Steuerklasse III wird die Lohnsteuer nach dem Splitting-Verfahren berechnet: Das gemeinsame Einkommen wird halbiert, die Steuer berechnet und dann verdoppelt. Das führt zu einer deutlichen Steuerersparnis für Ehepaare mit unterschiedlichem Einkommen.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="de-brutto-netto-rechner"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      { label: t.salary.bruttoNetto.title, href: buildLocalePath(locale, 'salary/brutto-netto-rechner') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">{t.salary.bruttoNetto.h1}</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">{t.salary.bruttoNetto.intro}</p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <BruttoNettoCalculator client:load locale={locale} />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="de-bruttonetto-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Steuern und Abzüge 2026 im Überblick</h2>
+
+      <h3>Einkommensteuer (§ 32a EStG) 2026</h3>
+      <table>
+        <thead><tr><th>Zone</th><th>Zu versteuerndes Einkommen</th><th>Steuersatz</th></tr></thead>
+        <tbody>
+          <tr><td>Grundfreibetrag</td><td>bis 12.348 €</td><td>0 %</td></tr>
+          <tr><td>Progressionszone 1</td><td>12.349 – 17.799 €</td><td>14 % – 23,97 %</td></tr>
+          <tr><td>Progressionszone 2</td><td>17.800 – 69.878 €</td><td>23,97 % – 42 %</td></tr>
+          <tr><td>Proportionalzone</td><td>69.879 – 277.825 €</td><td>42 %</td></tr>
+          <tr><td>Reichensteuer</td><td>ab 277.826 €</td><td>45 %</td></tr>
+        </tbody>
+      </table>
+      <p class="text-sm">Quelle: <a href="https://dejure.org/gesetze/EStG/32a.html" target="_blank" rel="noopener noreferrer">§ 32a EStG — dejure.org</a> (Steuerfortentwicklungsgesetz v. 23.12.2024)</p>
+
+      <h3>Sozialversicherung 2026</h3>
+      <table>
+        <thead><tr><th>Versicherung</th><th>Gesamtbeitrag</th><th>AN-Anteil</th><th>BBG/Monat</th></tr></thead>
+        <tbody>
+          <tr><td>Rentenversicherung</td><td>18,6 %</td><td>9,3 %</td><td>8.450 €</td></tr>
+          <tr><td>Arbeitslosenversicherung</td><td>2,6 %</td><td>1,3 %</td><td>8.450 €</td></tr>
+          <tr><td>Krankenversicherung (Ø)</td><td>17,5 % (Ø)</td><td>8,75 % (Ø)</td><td>5.812,50 €</td></tr>
+          <tr><td>Pflegeversicherung (kinderlos)</td><td>4,0 % + 0,6 % Zuschlag</td><td>2,3 %</td><td>5.812,50 €</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Pflegeversicherung nach Kinderzahl</h3>
+      <table>
+        <thead><tr><th>Kinderzahl</th><th>AN-Anteil</th></tr></thead>
+        <tbody>
+          <tr><td>0 (kinderlos, über 23)</td><td>2,3 %</td></tr>
+          <tr><td>1 Kind</td><td>1,7 %</td></tr>
+          <tr><td>2 Kinder unter 25</td><td>1,45 %</td></tr>
+          <tr><td>3 Kinder unter 25</td><td>1,2 %</td></tr>
+          <tr><td>4 Kinder unter 25</td><td>0,95 %</td></tr>
+          <tr><td>5+ Kinder unter 25</td><td>0,7 %</td></tr>
+        </tbody>
+      </table>
+      <p class="text-sm">Quelle: <a href="https://www.barmer.de/firmenkunden/sozialversicherung/aenderungen-2026/sozialversicherungswerte-2026-1239210" target="_blank" rel="noopener noreferrer">BARMER — Sozialversicherungswerte 2026</a></p>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Häufig gestellte Fragen" items={faqItems} />
+  </article>
+  <CalculatorResource locale="de-DE" category="salary" />
+</BaseLayout>

@@ -1,0 +1,102 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import PayFrequencyConverter from '../../../../components/islands/PayFrequencyConverter';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'en-GB' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Pay Frequency Converter UK — PayRenTax',
+  t.salary.payFrequency.intro,
+  '/en-gb/salary/pay-frequency-converter/',
+);
+
+const faqItems = [
+  {
+    question: 'How do I convert my annual salary to a monthly amount?',
+    answer:
+      'Divide your annual gross salary by 12 to get your monthly gross pay. For example, £42,000 ÷ 12 = £3,500 per month. Note that this is before income tax and National Insurance deductions.',
+  },
+  {
+    question: 'How many working weeks are in a year in the UK?',
+    answer:
+      'The standard UK working year is 52 weeks (or 52.18 more precisely). Most full-time employees work 37.5 to 40 hours per week. Statutory holiday entitlement is at least 28 days (5.6 weeks), reducing actual worked weeks.',
+  },
+  {
+    question: 'What is the difference between fortnightly and bi-weekly pay?',
+    answer:
+      'Fortnightly and bi-weekly both mean every two weeks (26 pay periods per year). In UK employment, "fortnightly" is the more common term. This gives 26 pay packets per year, slightly higher per period than semi-monthly (24 per year).',
+  },
+  {
+    question: 'How does pay frequency affect my National Insurance contributions?',
+    answer:
+      'National Insurance thresholds are applied per pay period, not annually. Weekly earners hit the primary threshold sooner proportionally than monthly earners. A monthly worker might pay slightly different NI than a weekly worker at the same annual salary. Our take-home calculator accounts for this.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="pay-frequency"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      { label: t.salary.payFrequency.title, href: buildLocalePath(locale, 'salary/pay-frequency-converter') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">{t.salary.payFrequency.h1}</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">{t.salary.payFrequency.intro}</p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <PayFrequencyConverter client:load t={t} locale={locale} />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="gb-pay-freq-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>UK Pay Period Conversion Table</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Pay Period</th>
+            <th>Periods per year</th>
+            <th>Formula from annual</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Weekly</td><td>52</td><td>Annual ÷ 52</td></tr>
+          <tr><td>Fortnightly</td><td>26</td><td>Annual ÷ 26</td></tr>
+          <tr><td>Monthly</td><td>12</td><td>Annual ÷ 12</td></tr>
+          <tr><td>Annually</td><td>1</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Frequently asked questions" items={faqItems} />
+  </article>
+  <CalculatorResource locale="en-GB" category="salary" />
+</BaseLayout>

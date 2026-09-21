@@ -1,0 +1,55 @@
+---
+import PublicResourcePage from '../../components/content/PublicResourcePage.astro';
+const sections = [
+  {
+    heading: 'Calculation engines',
+    paragraphs: [
+      'Each calculator uses a small, focused calculation engine that validates the information you enter and returns structured numeric results.',
+      "The page then formats those results for the selected country and language. It does not quietly substitute another country's rules when a specific jurisdiction is selected.",
+    ],
+  },
+  {
+    heading: 'Tax-year data',
+    paragraphs: [
+      'Each page identifies the tax year supported by its data when a tax year applies.',
+      'The current release focuses on 2026 data for pages that display a 2026 tax year. When a new tax year is published, the relevant data and calculator assumptions should be reviewed again.',
+    ],
+  },
+  {
+    heading: 'Rounding and display',
+    paragraphs: [
+      "The calculation engine keeps numeric precision during the calculation and formats the final amounts for display using the selected locale's currency and number conventions.",
+      "Pay-period amounts can differ slightly from an employer's final paycheck because real payroll systems may use different rounding and payment schedules.",
+    ],
+  },
+  {
+    heading: 'Assumptions and country rules',
+    paragraphs: [
+      'Each calculator supports a defined set of inputs. Depending on the tool, that can include standard deductions, progressive tax brackets, social insurance, state rules, proportional estimates, or employment-related limits.',
+      'Benefits, local taxes, collective agreements, unusual legal exceptions, and personal circumstances may fall outside the supported model.',
+    ],
+  },
+  {
+    heading: 'Estimates versus official payroll',
+    paragraphs: [
+      'A PayRenTax result is an estimate.',
+      'It is not an official payslip, tax assessment, legal calculation, or employer payroll output. Always read the included and excluded items on the relevant calculator page before relying on the result.',
+    ],
+  },
+  {
+    heading: 'Testing and updates',
+    paragraphs: [
+      'The project uses tests for calculation arithmetic, input validation, representative scenarios, route registration, and important SEO behavior.',
+      'When an official threshold or rule changes, the related data module, tests, documentation, and page review information should be updated together.',
+    ],
+  },
+];
+---
+
+<PublicResourcePage
+  title="How PayRenTax Calculators Work"
+  description="Learn how PayRenTax calculation engines handle inputs, tax-year data, rounding, country rules, assumptions, and testing."
+  canonical="/how-calculators-work/"
+  sections={sections}
+  eyebrow="Methodology"
+/>
