@@ -74,15 +74,23 @@ export const usRaiseSimulatorEngine: CalculatorEngine<
 
     const errors: Partial<Record<keyof UsRaiseSimulatorInput, string>> = {};
 
-    if (!input.raiseAmount && !input.raisePercent) {
+    // At least one of raiseAmount or raisePercent is required
+    const hasRaiseAmount = input.raiseAmount !== undefined && 
+                          input.raiseAmount !== null && 
+                          !Number.isNaN(input.raiseAmount);
+    const hasRaisePercent = input.raisePercent !== undefined && 
+                           input.raisePercent !== null && 
+                           !Number.isNaN(input.raisePercent);
+
+    if (!hasRaiseAmount && !hasRaisePercent) {
       errors.raiseAmount = 'errors.raiseAmountOrPercentRequired';
     }
 
-    if (input.raiseAmount !== undefined && input.raiseAmount < 0) {
+    if (hasRaiseAmount && input.raiseAmount! < 0) {
       errors.raiseAmount = 'errors.mustBePositive';
     }
 
-    if (input.raisePercent !== undefined && input.raisePercent < 0) {
+    if (hasRaisePercent && input.raisePercent! < 0) {
       errors.raisePercent = 'errors.mustBePositive';
     }
 

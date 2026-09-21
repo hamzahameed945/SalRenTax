@@ -44,6 +44,8 @@ export const salaryRaiseEngine: CalculatorEngine<SalaryRaiseInput, SalaryRaiseRe
     if (input.raisePercentage !== undefined && input.raisePercentage !== null) {
       if (Number.isNaN(input.raisePercentage)) {
         errors.raisePercentage = 'errors.invalidNumber';
+      } else if (input.raisePercentage < 0) {
+        errors.raisePercentage = 'errors.mustBePositive';
       }
     }
 

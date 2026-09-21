@@ -74,18 +74,29 @@ export const usYearComparisonEngine: CalculatorEngine<
 
     const errors: Partial<Record<keyof UsYearComparisonInput, string>> = {};
 
-    if (!input.previousYearGrossPayPerPeriod || input.previousYearGrossPayPerPeriod <= 0) {
+    if (
+      !input.previousYearGrossPayPerPeriod || 
+      input.previousYearGrossPayPerPeriod <= 0 ||
+      Number.isNaN(input.previousYearGrossPayPerPeriod)
+    ) {
       errors.previousYearGrossPayPerPeriod = 'errors.mustBePositive';
     }
 
     if (
       input.previousYearNetPayPerPeriod !== undefined &&
+      input.previousYearNetPayPerPeriod !== null &&
+      !Number.isNaN(input.previousYearNetPayPerPeriod) &&
       input.previousYearNetPayPerPeriod < 0
     ) {
       errors.previousYearNetPayPerPeriod = 'errors.mustBePositive';
     }
 
-    if (input.inflationRate !== undefined && input.inflationRate < 0) {
+    if (
+      input.inflationRate !== undefined &&
+      input.inflationRate !== null &&
+      !Number.isNaN(input.inflationRate) &&
+      input.inflationRate < 0
+    ) {
       errors.inflationRate = 'errors.mustBePositive';
     }
 

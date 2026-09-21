@@ -86,39 +86,54 @@ export const usPaycheckEngine: CalculatorEngine<
 > = {
   validate(input: UsPaycheckInput): ValidationResult<UsPaycheckInput> {
     const errors: Partial<Record<keyof UsPaycheckInput, string>> = {};
+    
+    // Required field: grossPayPerPeriod
     if (
       input.grossPayPerPeriod === undefined ||
       input.grossPayPerPeriod === null ||
-      Number.isNaN(input.grossPayPerPeriod)
+      Number.isNaN(input.grossPayPerPeriod) ||
+      input.grossPayPerPeriod === 0
     ) {
       errors.grossPayPerPeriod = 'errors.invalidNumber';
-    } else if (input.grossPayPerPeriod <= 0) {
+    } else if (input.grossPayPerPeriod < 0) {
       errors.grossPayPerPeriod = 'errors.mustBePositive';
     }
+    
+    // Optional field: preTaxDeductionsPerPeriod
     if (
       input.preTaxDeductionsPerPeriod !== undefined &&
       input.preTaxDeductionsPerPeriod !== null &&
-      (Number.isNaN(input.preTaxDeductionsPerPeriod) || input.preTaxDeductionsPerPeriod < 0)
+      !Number.isNaN(input.preTaxDeductionsPerPeriod) &&
+      input.preTaxDeductionsPerPeriod < 0
     ) {
-      errors.preTaxDeductionsPerPeriod = 'errors.invalidNumber';
+      errors.preTaxDeductionsPerPeriod = 'errors.mustBePositive';
     }
+    
+    // Optional field: stateCode
     if (input.stateCode && !stateEngines[input.stateCode.toUpperCase()]) {
       errors.stateCode = 'errors.unsupportedState';
     }
+    
+    // Optional field: dependents
     if (
       input.dependents !== undefined &&
       input.dependents !== null &&
-      (Number.isNaN(input.dependents) || input.dependents < 0 || !Number.isInteger(input.dependents))
+      !Number.isNaN(input.dependents) &&
+      (input.dependents < 0 || !Number.isInteger(input.dependents))
     ) {
       errors.dependents = 'errors.invalidNumber';
     }
+    
+    // Optional field: additionalFederalWithholding
     if (
       input.additionalFederalWithholding !== undefined &&
       input.additionalFederalWithholding !== null &&
-      (Number.isNaN(input.additionalFederalWithholding) || input.additionalFederalWithholding < 0)
+      !Number.isNaN(input.additionalFederalWithholding) &&
+      input.additionalFederalWithholding < 0
     ) {
-      errors.additionalFederalWithholding = 'errors.invalidNumber';
+      errors.additionalFederalWithholding = 'errors.mustBePositive';
     }
+    
     return Object.keys(errors).length === 0
       ? { valid: true, data: input }
       : { valid: false, errors };
