@@ -132,7 +132,9 @@ export const pageRegistry: PageDefinition[] = [
     year: 2026,
     contentKey: 'usRaiseSimulator',
     equivalentPageGroup: 'salary-raise-simulator',
-    status: 'active',
+    // No src/pages file exists for this slug yet, so 'active' was producing
+    // a dead link everywhere this registry is used to render navigation.
+    status: 'planned',
   },
   {
     id: 'en-us-salary-year-comparison',
@@ -147,7 +149,9 @@ export const pageRegistry: PageDefinition[] = [
     year: 2026,
     contentKey: 'usYearComparison',
     equivalentPageGroup: 'salary-year-comparison',
-    status: 'active',
+    // No src/pages file exists for this slug yet, so 'active' was producing
+    // a dead link everywhere this registry is used to render navigation.
+    status: 'planned',
   },
   {
     id: 'en-us-rent-affordability',
@@ -292,7 +296,9 @@ export const pageRegistry: PageDefinition[] = [
     year: 2026,
     contentKey: 'usPaycheckCA',
     equivalentPageGroup: undefined,
-    status: 'active',
+    // No src/pages file exists for this slug yet, so 'active' was producing
+    // a dead link everywhere this registry is used to render navigation.
+    status: 'planned',
   },
   {
     id: 'en-us-paycheck-new-jersey',
@@ -307,7 +313,9 @@ export const pageRegistry: PageDefinition[] = [
     year: 2026,
     contentKey: 'usPaycheckNJ',
     equivalentPageGroup: undefined,
-    status: 'active',
+    // No src/pages file exists for this slug yet, so 'active' was producing
+    // a dead link everywhere this registry is used to render navigation.
+    status: 'planned',
   },
   {
     id: 'en-us-paycheck-pennsylvania',
@@ -322,7 +330,9 @@ export const pageRegistry: PageDefinition[] = [
     year: 2026,
     contentKey: 'usPaycheckPA',
     equivalentPageGroup: undefined,
-    status: 'active',
+    // No src/pages file exists for this slug yet, so 'active' was producing
+    // a dead link everywhere this registry is used to render navigation.
+    status: 'planned',
   },
   {
     id: 'en-us-paycheck-washington',
@@ -337,7 +347,9 @@ export const pageRegistry: PageDefinition[] = [
     year: 2026,
     contentKey: 'usPaycheckWA',
     equivalentPageGroup: undefined,
-    status: 'active',
+    // No src/pages file exists for this slug yet, so 'active' was producing
+    // a dead link everywhere this registry is used to render navigation.
+    status: 'planned',
   },
   // ── de-DE ────────────────────────────────────────────────────────────
   {
