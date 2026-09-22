@@ -57,6 +57,15 @@ const jsonLdEntries = [
     <meta name="twitter:image" content={resolvedOgImage} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <JsonLd entries={jsonLdEntries} />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-29HDGNV1R3"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-29HDGNV1R3');
+    </script>
   </head>
   <body>
     <a href="#main-content" class="skip-link">
