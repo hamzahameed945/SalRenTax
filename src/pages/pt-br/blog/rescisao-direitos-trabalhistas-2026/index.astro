@@ -1,0 +1,419 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import { buildLocalePath } from '../../../../i18n/utils';
+
+const locale = 'pt-BR' as const;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Rescisão Trabalhista 2026: Guia Completo dos Seus Direitos",
+  "description": "Guia completo de rescisão trabalhista 2026: direitos CLT, cálculo de verbas, multa FGTS 40%, prazos e documentos. Saiba quanto você vai receber.",
+  "datePublished": "2026-09-22",
+  "dateModified": "2026-09-22",
+  "author": {
+    "@type": "Organization",
+    "name": "PayRenTax"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PayRenTax",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://payrentax.me/logo.svg"
+    }
+  },
+  "inLanguage": "pt-BR",
+  "keywords": "rescisão trabalhista 2026, direitos trabalhistas, demissão sem justa causa, multa FGTS, aviso prévio, seguro desemprego, CLT 2026"
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title="Rescisão Trabalhista 2026: Guia Completo dos Seus Direitos | PayRenTax"
+  description="Guia completo de rescisão trabalhista 2026: direitos CLT, cálculo de verbas, multa FGTS 40%, prazos e documentos. Saiba quanto você vai receber."
+  canonical="/pt-br/blog/rescisao-direitos-trabalhistas-2026/"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Blog', href: buildLocalePath(locale, 'blog') },
+      { label: 'Rescisão Trabalhista 2026', href: buildLocalePath(locale, 'blog/rescisao-direitos-trabalhistas-2026') }
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <header class="mb-10">
+      <h1 class="text-4xl font-bold text-slate-900">
+        Rescisão Trabalhista 2026: Guia Completo dos Seus Direitos
+      </h1>
+      <p class="mt-4 text-lg text-slate-600">
+        Última atualização: Setembro 2026
+      </p>
+    </header>
+
+    <div class="prose prose-slate prose-lg max-w-none">
+      <p class="lead">
+        Receber a notícia de uma demissão (ou decidir pedir) traz muitas dúvidas: <strong>quanto vou receber? Quando? Quais meus direitos?</strong> Este guia completo explica tudo sobre rescisão trabalhista em 2026, com exemplos práticos e calculadoras.
+      </p>
+
+      <h2>Tipos de Rescisão Trabalhista</h2>
+      <p>A CLT prevê <strong>4 tipos principais</strong> de rescisão:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Iniciativa</th>
+            <th>Direitos Principais</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Sem Justa Causa</strong></td>
+            <td>Empregador</td>
+            <td>✅ Todos + FGTS + Seguro-desemprego</td>
+          </tr>
+          <tr>
+            <td><strong>Pedido de Demissão</strong></td>
+            <td>Empregado</td>
+            <td>⚠️ Básicos (sem FGTS, sem seguro)</td>
+          </tr>
+          <tr>
+            <td><strong>Justa Causa</strong></td>
+            <td>Empregador</td>
+            <td>❌ Mínimos (perde maioria dos direitos)</td>
+          </tr>
+          <tr>
+            <td><strong>Acordo (Lei 13.467/17)</strong></td>
+            <td>Ambos</td>
+            <td>⚖️ Metade dos direitos</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="demissao-sem-justa-causa">Demissão Sem Justa Causa (Mais Comum)</h2>
+      <p>Quando a <strong>empresa decide encerrar</strong> o contrato sem culpa do trabalhador.</p>
+
+      <h3>Direitos Garantidos ✅</h3>
+
+      <h4>1. Saldo de Salário</h4>
+      <p>Dias trabalhados no mês da demissão.</p>
+      <p><strong>Cálculo:</strong></p>
+      <pre><code>Saldo = (Salário Mensal ÷ 30) × Dias Trabalhados</code></pre>
+      <p><strong>Exemplo:</strong></p>
+      <ul>
+        <li>Salário: R$ 3.000</li>
+        <li>Demitido dia 15</li>
+        <li>Saldo: (R$ 3.000 ÷ 30) × 15 = <strong>R$ 1.500</strong></li>
+      </ul>
+
+      <h4>2. Aviso Prévio</h4>
+      <ul>
+        <li><strong>Mínimo:</strong> 30 dias</li>
+        <li><strong>Adicional:</strong> 3 dias por ano trabalhado</li>
+        <li><strong>Máximo:</strong> 90 dias (20+ anos)</li>
+      </ul>
+
+      <p><strong>Pode ser:</strong></p>
+      <ul>
+        <li><strong>Trabalhado:</strong> Você trabalha mais 30 dias (ou reduz 2h/dia ou falta 7 dias)</li>
+        <li><strong>Indenizado:</strong> Empresa paga sem você trabalhar</li>
+      </ul>
+
+      <p><strong>Cálculo do aviso proporcional:</strong></p>
+      <pre><code>Aviso = 30 dias + (3 dias × anos trabalhados)
+Máximo = 90 dias</code></pre>
+
+      <p><strong>Exemplos:</strong></p>
+      <ul>
+        <li>1 ano: 30 + 3 = <strong>33 dias</strong></li>
+        <li>5 anos: 30 + 15 = <strong>45 dias</strong></li>
+        <li>10 anos: 30 + 30 = <strong>60 dias</strong></li>
+        <li>20+ anos: <strong>90 dias</strong> (teto)</li>
+      </ul>
+
+      <h4>3. 13º Salário Proporcional</h4>
+      <p>Valor proporcional aos meses trabalhados no ano.</p>
+      <pre><code>13º Proporcional = (Salário ÷ 12) × Meses Trabalhados</code></pre>
+      <p><strong>Regra:</strong> Conta como mês trabalhado qualquer mês com 15+ dias.</p>
+      <p><strong>Exemplo:</strong></p>
+      <ul>
+        <li>Salário: R$ 4.000</li>
+        <li>Trabalhou jan-ago (8 meses)</li>
+        <li>13º: (R$ 4.000 ÷ 12) × 8 = <strong>R$ 2.666,67</strong></li>
+      </ul>
+
+      <h4>4. Férias Vencidas + 1/3</h4>
+      <p>Férias do período aquisitivo completo que você não tirou.</p>
+      <pre><code>Férias Vencidas = Salário × 1,333</code></pre>
+      <p>O 1,333 representa o salário + adicional de 1/3 constitucional.</p>
+
+      <h4>5. Férias Proporcionais + 1/3</h4>
+      <p>Férias do período aquisitivo atual (incompleto).</p>
+      <pre><code>Férias Proporcionais = (Salário ÷ 12) × Meses × 1,333</code></pre>
+      <p><strong>Exemplo:</strong></p>
+      <ul>
+        <li>Salário: R$ 3.000</li>
+        <li>Trabalhou 7 meses no período atual</li>
+        <li>Férias: (R$ 3.000 ÷ 12) × 7 × 1,333 = <strong>R$ 2.332,25</strong></li>
+      </ul>
+
+      <h4>6. Multa de 40% do FGTS</h4>
+      <p>A empresa deposita mensalmente 8% do seu salário no FGTS. Na demissão sem justa causa, você recebe <strong>multa de 40%</strong> sobre o saldo total acumulado.</p>
+      <pre><code>Multa FGTS = Saldo Total FGTS × 40%</code></pre>
+      <p><strong>Exemplo:</strong></p>
+      <ul>
+        <li>Saldo FGTS: R$ 15.000</li>
+        <li>Multa: R$ 15.000 × 0,40 = <strong>R$ 6.000</strong></li>
+      </ul>
+
+      <h4>7. Saque do FGTS</h4>
+      <p>Você pode sacar <strong>100% do saldo</strong> da conta vinculada (incluindo a multa de 40%).</p>
+
+      <h4>8. Seguro-Desemprego</h4>
+      <p>Se você trabalhou o tempo mínimo, tem direito a 3 a 5 parcelas do seguro-desemprego.</p>
+      <p><strong>Requisitos:</strong></p>
+      <ul>
+        <li><strong>1ª solicitação:</strong> 12 meses trabalhados nos últimos 18 meses</li>
+        <li><strong>2ª solicitação:</strong> 9 meses nos últimos 12 meses</li>
+        <li><strong>3ª+ solicitação:</strong> 6 meses consecutivos</li>
+      </ul>
+
+      <h2 id="pedido-de-demissao">Pedido de Demissão</h2>
+      <p>Quando <strong>você decide sair</strong> voluntariamente.</p>
+
+      <h3>Direitos Garantidos</h3>
+      <ul>
+        <li>✅ Saldo de salário</li>
+        <li>✅ 13º proporcional</li>
+        <li>✅ Férias vencidas + 1/3</li>
+        <li>✅ Férias proporcionais + 1/3</li>
+        <li>❌ <strong>Sem</strong> multa FGTS</li>
+        <li>❌ <strong>Sem</strong> saque FGTS</li>
+        <li>❌ <strong>Sem</strong> seguro-desemprego</li>
+      </ul>
+
+      <p><strong>Aviso prévio:</strong> Você deve cumprir 30 dias ou a empresa pode descontar do salário.</p>
+
+      <h2 id="justa-causa">Demissão por Justa Causa</h2>
+      <p>Quando há <strong>falta grave</strong> do trabalhador (furto, abandono, indisciplina grave, embriaguez habitual, etc.).</p>
+
+      <h3>Direitos Restritos</h3>
+      <ul>
+        <li>✅ Saldo de salário</li>
+        <li>✅ Férias vencidas + 1/3 (se houver período completo)</li>
+        <li>❌ <strong>Sem</strong> 13º proporcional</li>
+        <li>❌ <strong>Sem</strong> férias proporcionais</li>
+        <li>❌ <strong>Sem</strong> aviso prévio</li>
+        <li>❌ <strong>Sem</strong> multa FGTS</li>
+        <li>❌ <strong>Sem</strong> saque FGTS</li>
+        <li>❌ <strong>Sem</strong> seguro-desemprego</li>
+      </ul>
+
+      <p><strong>Importante:</strong> A justa causa deve ser comprovada pela empresa. Você pode contestar na Justiça do Trabalho.</p>
+
+      <h2 id="rescisao-por-acordo">Rescisão por Acordo (Lei 13.467/2017)</h2>
+      <p>Modalidade criada pela Reforma Trabalhista: <strong>empregador e empregado entram em acordo</strong> para encerrar o contrato.</p>
+
+      <h3>Direitos (Metade)</h3>
+      <ul>
+        <li>✅ Saldo de salário (integral)</li>
+        <li>✅ <strong>50%</strong> do aviso prévio indenizado</li>
+        <li>✅ 13º proporcional (integral)</li>
+        <li>✅ Férias vencidas + 1/3 (integral)</li>
+        <li>✅ Férias proporcionais + 1/3 (integral)</li>
+        <li>✅ Multa de <strong>20%</strong> do FGTS (metade da multa normal)</li>
+        <li>✅ Saque de <strong>até 80%</strong> do FGTS</li>
+        <li>❌ <strong>Sem</strong> seguro-desemprego</li>
+      </ul>
+
+      <p><strong>Quando vale a pena:</strong> Se você já tem outro emprego garantido e quer receber parte do FGTS sem perder todos os direitos.</p>
+
+      <h2 id="como-calcular">Como Calcular Cada Verba</h2>
+
+      <h3>Tabela Resumo de Fórmulas</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Verba</th>
+            <th>Fórmula</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Saldo de Salário</td>
+            <td>(Salário ÷ 30) × Dias Trabalhados</td>
+          </tr>
+          <tr>
+            <td>Aviso Prévio</td>
+            <td>30 + (3 × Anos), máx. 90 dias</td>
+          </tr>
+          <tr>
+            <td>13º Proporcional</td>
+            <td>(Salário ÷ 12) × Meses</td>
+          </tr>
+          <tr>
+            <td>Férias Vencidas</td>
+            <td>Salário × 1,333</td>
+          </tr>
+          <tr>
+            <td>Férias Proporcionais</td>
+            <td>(Salário ÷ 12) × Meses × 1,333</td>
+          </tr>
+          <tr>
+            <td>Multa FGTS</td>
+            <td>Saldo FGTS × 40% (ou 20% no acordo)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="exemplos">Exemplo Completo: Demissão Sem Justa Causa</h2>
+
+      <h3>Perfil do Trabalhador</h3>
+      <ul>
+        <li><strong>Salário:</strong> R$ 4.000</li>
+        <li><strong>Tempo de empresa:</strong> 2 anos e 6 meses</li>
+        <li><strong>Saldo FGTS:</strong> R$ 15.000</li>
+        <li><strong>Dias trabalhados no mês:</strong> 20 dias</li>
+        <li><strong>Férias vencidas:</strong> 1 período (não tirou férias)</li>
+      </ul>
+
+      <h3>Cálculo Detalhado</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Cálculo</th>
+            <th>Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Saldo de salário</td>
+            <td>(R$ 4.000 ÷ 30) × 20</td>
+            <td>R$ 2.666,67</td>
+          </tr>
+          <tr>
+            <td>Aviso prévio (36 dias)</td>
+            <td>(R$ 4.000 ÷ 30) × 36</td>
+            <td>R$ 4.800,00</td>
+          </tr>
+          <tr>
+            <td>13º proporcional (6 meses)</td>
+            <td>(R$ 4.000 ÷ 12) × 6</td>
+            <td>R$ 2.000,00</td>
+          </tr>
+          <tr>
+            <td>Férias vencidas + 1/3</td>
+            <td>R$ 4.000 × 1,333</td>
+            <td>R$ 5.333,33</td>
+          </tr>
+          <tr>
+            <td>Férias proporcionais (6 meses)</td>
+            <td>(R$ 4.000 ÷ 12) × 6 × 1,333</td>
+            <td>R$ 2.666,67</td>
+          </tr>
+          <tr>
+            <td>Multa FGTS 40%</td>
+            <td>R$ 15.000 × 0,40</td>
+            <td>R$ 6.000,00</td>
+          </tr>
+          <tr>
+            <td colspan="2"><strong>TOTAL DA RESCISÃO</strong></td>
+            <td><strong>R$ 23.466,67</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Mais:</strong></p>
+      <ul>
+        <li>Saque FGTS: R$ 15.000 (depositado na conta vinculada)</li>
+        <li>Seguro-desemprego: 4 parcelas (~R$ 2.200 total)</li>
+      </ul>
+
+      <h2 id="prazos">Prazos para Recebimento</h2>
+
+      <h3>Demissão Sem Justa Causa</h3>
+      <p>Pagamento deve ser feito em até <strong>10 dias corridos</strong> após:</p>
+      <ul>
+        <li>O término do aviso prévio trabalhado, OU</li>
+        <li>A data da comunicação da dispensa (se aviso indenizado)</li>
+      </ul>
+
+      <h3>Pedido de Demissão</h3>
+      <p>Pagamento no <strong>primeiro dia útil</strong> após o término do contrato.</p>
+
+      <h3>Multa por Atraso</h3>
+      <p>Se a empresa não pagar no prazo, deve pagar multa equivalente a <strong>1 salário mensal</strong> ao trabalhador.</p>
+
+      <h2>Documentos Necessários</h2>
+      <p>Para receber a rescisão, você precisará:</p>
+      <ul>
+        <li>✅ <strong>Termo de Rescisão de Contrato (TRCT)</strong> — documento oficial com todos os cálculos</li>
+        <li>✅ <strong>Carteira de Trabalho</strong> — para anotação da baixa</li>
+        <li>✅ <strong>Exame demissional</strong> — obrigatório por lei (feito em até 10 dias)</li>
+        <li>✅ <strong>Chave de acesso ao eSocial</strong> — para consultar FGTS</li>
+        <li>✅ <strong>Formulário do seguro-desemprego</strong> — fornecido pela empresa (se aplicável)</li>
+      </ul>
+
+      <h2>Como Solicitar o Seguro-Desemprego</h2>
+      <ol>
+        <li>Receba o formulário de requerimento da empresa</li>
+        <li>Acesse o Portal Gov.br ou aplicativo Carteira de Trabalho Digital</li>
+        <li>Solicite online (ou vá a uma agência do SINE)</li>
+        <li>Prazo: de 7 a 120 dias após a demissão</li>
+      </ol>
+
+      <p><strong>Valor do benefício:</strong> De R$ 1.412 a R$ 2.424,11, conforme faixas salariais.</p>
+
+      <h2>Erros Comuns no Cálculo de Rescisão</h2>
+
+      <h3>1. Esquecer o Aviso Prévio Proporcional</h3>
+      <p>Muitas empresas calculam só 30 dias, mas você tem direito a 3 dias por ano trabalhado.</p>
+
+      <h3>2. Não Incluir Férias Vencidas</h3>
+      <p>Se você não tirou férias de períodos anteriores, tem direito a receber em dobro (simples + em dobro).</p>
+
+      <h3>3. Calcular FGTS Errado</h3>
+      <p>A multa de 40% é sobre o saldo <strong>total</strong> do FGTS, não só do último ano.</p>
+
+      <h3>4. Não Conferir os Dias Proporcionais</h3>
+      <p>Verifique se 13º e férias proporcionais estão corretos (regra dos 15 dias).</p>
+
+      <h2>O Que Fazer se a Empresa Não Pagar</h2>
+      <ol>
+        <li><strong>Tente negociar:</strong> Envie e-mail formal cobrando</li>
+        <li><strong>Registre reclamação no Ministério do Trabalho:</strong> Sistema Emprega Brasil</li>
+        <li><strong>Entre com ação trabalhista:</strong> Não precisa de advogado para valores até R$ 54.000</li>
+      </ol>
+
+      <p><strong>Prazo para processar:</strong> Até <strong>2 anos</strong> após a rescisão.</p>
+
+      <h2>Ferramentas Úteis</h2>
+      <p>Use nossa <a href="/pt-br/labor/calcular-rescisao/">calculadora de rescisão trabalhista</a> para calcular exatamente quanto você vai receber em cada tipo de demissão, com todas as verbas detalhadas.</p>
+
+      <h2>Conclusão</h2>
+      <p>
+        Conhecer seus direitos na rescisão é fundamental para:
+      </p>
+      <ul>
+        <li>✅ <strong>Receber tudo que te é devido</strong></li>
+        <li>✅ <strong>Identificar erros</strong> nos cálculos da empresa</li>
+        <li>✅ <strong>Tomar decisões informadas</strong> (pedir demissão vs acordo)</li>
+        <li>✅ <strong>Se planejar financeiramente</strong> para o período de transição</li>
+      </ul>
+
+      <p>
+        Se você foi demitido ou está considerando pedir demissão, use nossas calculadoras para simular os valores e comparar cenários. Todas as ferramentas são gratuitas e atualizadas com a legislação vigente.
+      </p>
+
+      <p><strong>Lembre-se:</strong> A rescisão trabalhista é um direito seu. Exija os documentos corretos e confira todos os valores antes de assinar o Termo de Rescisão.</p>
+    </div>
+  </article>
+</BaseLayout>

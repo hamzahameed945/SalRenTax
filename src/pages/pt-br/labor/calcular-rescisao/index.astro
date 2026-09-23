@@ -13,32 +13,54 @@ import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
 
 const locale = 'pt-BR' as const;
 const t = getDictionary(locale);
-const meta = buildPageMetadata(
-  t.meta.paycheckTitle,
-  t.meta.paycheckDescription,
-  '/pt-br/labor/calcular-rescisao/',
-);
+const meta = {
+  title: 'Calcular Rescisão Trabalhista 2026 | CLT Atualizada | PayRenTax',
+  description: 'Calculadora de rescisão trabalhista 2026: calcule aviso prévio, férias, 13º e multa FGTS 40%. Conforme CLT. Resultado instantâneo e preciso.',
+  canonical: '/pt-br/labor/calcular-rescisao/',
+};
+
+const schemaWebApp = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Calculadora de Rescisão Trabalhista 2026",
+  "description": "Calculadora gratuita para cálculo de rescisão trabalhista no Brasil: aviso prévio, férias, 13º e multa FGTS.",
+  "url": "https://payrentax.me/pt-br/labor/calcular-rescisao/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "BRL"
+  },
+  "inLanguage": "pt-BR",
+  "featureList": "Cálculo de saldo salário, aviso prévio, 13º proporcional, férias proporcionais, multa FGTS 40%"
+};
 
 const faqItems = [
   {
-    question: 'O que é incluído no cálculo da rescisão?',
+    question: 'Quais são os tipos de rescisão trabalhista?',
     answer:
-      'A rescisão inclui: saldo de salário, férias proporcionais (+ 1/3), 13º salário proporcional, aviso prévio (se aplicável) e multa de 40% do FGTS (apenas em demissão sem justa causa).',
+      'Existem 4 tipos: 1) Demissão sem justa causa (empregador desliga, você recebe todos os direitos + multa FGTS 40%), 2) Pedido de demissão (você pede, perde multa e seguro-desemprego), 3) Justa causa (perde quase todos os direitos), 4) Rescisão por acordo (direitos pela metade).',
   },
   {
-    question: 'Qual é a multa do FGTS na demissão sem justa causa?',
+    question: 'Quanto é a multa do FGTS em 2026?',
     answer:
-      'A multa do FGTS equivale a 40% do saldo da conta vinculada do FGTS. Como não temos acesso ao saldo real, estimamos com base em 8% de depósito mensal pelos meses trabalhados.',
+      'A multa do FGTS equivale a 40% do saldo total da conta vinculada na demissão sem justa causa, ou 20% na rescisão por acordo. Esta multa é paga pelo empregador diretamente ao trabalhador.',
   },
   {
-    question: 'Tenho direito ao aviso prévio se pedir demissão?',
+    question: 'Como é calculado o aviso prévio?',
     answer:
-      'Ao pedir demissão (pedido de exoneração), o trabalhador deve cumprir o aviso prévio. Se o empregador dispensar o cumprimento, não há pagamento adicional. Em demissão sem justa causa pelo empregador, o trabalhador recebe o aviso prévio indenizado.',
+      'O aviso prévio começa com 30 dias e adiciona 3 dias por ano trabalhado, com limite de 90 dias (após 20 anos). Por exemplo: 5 anos de empresa = 30 + 15 = 45 dias de aviso prévio.',
   },
   {
-    question: 'Como é calculado o 13º salário proporcional?',
+    question: 'Tenho direito ao seguro-desemprego na rescisão?',
     answer:
-      'O 13º salário proporcional é calculado multiplicando o salário mensal pela fração de meses trabalhados no ano. Por exemplo, 8 meses = (8/12) × salário.',
+      'Sim, apenas na demissão sem justa causa. Você precisa ter trabalhado pelo menos 12 meses nos últimos 18 meses (primeira solicitação) ou 9 meses nas solicitações seguintes. Na rescisão por acordo ou pedido de demissão não há direito ao seguro.',
+  },
+  {
+    question: 'Quando devo receber o pagamento da rescisão?',
+    answer:
+      'Na demissão sem justa causa, o pagamento deve ser feito em até 10 dias corridos após o término do contrato. No pedido de demissão, no primeiro dia útil seguinte. O atraso gera multa para o empregador.',
   },
 ];
 
@@ -51,6 +73,9 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
   description={meta.description}
   canonical={meta.canonical}
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schemaWebApp)} />
+  </Fragment>
   <JsonLd entries={[faqJsonLd]} />
   <Breadcrumbs
     locale={locale}
@@ -73,7 +98,172 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
     </div>
 
     <div class="mt-10 prose prose-slate max-w-none">
-      <h2>O que você recebe em cada tipo de rescisão?</h2>
+      <h2>Como Calcular Rescisão Trabalhista 2026</h2>
+      <p>
+        A rescisão trabalhista é o <strong>acerto final quando há término do contrato de trabalho</strong>. Os valores a receber variam conforme o tipo de desligamento, tempo de serviço, e saldo de FGTS acumulado. Esta calculadora usa as regras da CLT atualizadas para 2026.
+      </p>
+
+      <h3>Tipos de Rescisão e Direitos</h3>
+
+      <h4>1. Demissão Sem Justa Causa (Iniciativa do Empregador)</h4>
+      <p>Quando o empregador desliga o funcionário sem justa causa, <strong>todos os direitos trabalhistas são mantidos</strong>:</p>
+      <ul>
+        <li>✅ Saldo de salário (dias trabalhados no mês)</li>
+        <li>✅ Aviso prévio indenizado (se não trabalhou)</li>
+        <li>✅ 13º salário proporcional</li>
+        <li>✅ Férias vencidas + 1/3 constitucional</li>
+        <li>✅ Férias proporcionais + 1/3</li>
+        <li>✅ <strong>Multa de 40% do FGTS</strong></li>
+        <li>✅ Saque do FGTS completo</li>
+        <li>✅ Seguro-desemprego (se elegível)</li>
+      </ul>
+
+      <h4>2. Pedido de Demissão (Iniciativa do Empregado)</h4>
+      <p>Quando você pede demissão voluntariamente, <strong>perde alguns direitos importantes</strong>:</p>
+      <ul>
+        <li>✅ Saldo de salário</li>
+        <li>✅ 13º salário proporcional</li>
+        <li>✅ Férias vencidas + 1/3</li>
+        <li>✅ Férias proporcionais + 1/3</li>
+        <li>❌ Sem multa FGTS</li>
+        <li>❌ Sem saque FGTS</li>
+        <li>❌ Sem seguro-desemprego</li>
+      </ul>
+
+      <h4>3. Demissão por Justa Causa</h4>
+      <p>Quando há falta grave do trabalhador, os direitos são <strong>drasticamente reduzidos</strong>:</p>
+      <ul>
+        <li>✅ Saldo de salário (dias trabalhados)</li>
+        <li>✅ Férias vencidas + 1/3 (se houver período completo)</li>
+        <li>❌ Sem 13º proporcional</li>
+        <li>❌ Sem férias proporcionais</li>
+        <li>❌ Sem multa FGTS</li>
+        <li>❌ Sem saque FGTS</li>
+        <li>❌ Sem seguro-desemprego</li>
+      </ul>
+
+      <h4>4. Rescisão por Acordo (Lei da Reforma Trabalhista)</h4>
+      <p>Quando empregador e empregado entram em acordo, os direitos são <strong>parciais</strong> (Lei 13.467/2017):</p>
+      <ul>
+        <li>✅ Saldo de salário</li>
+        <li>✅ <strong>50% do aviso prévio</strong></li>
+        <li>✅ 13º proporcional</li>
+        <li>✅ Férias proporcionais + 1/3</li>
+        <li>✅ <strong>Multa de 20% do FGTS</strong> (metade)</li>
+        <li>✅ Saque de até 80% do FGTS</li>
+        <li>❌ Sem seguro-desemprego</li>
+      </ul>
+
+      <h3>Como é Calculado Cada Item</h3>
+
+      <h4>Saldo de Salário</h4>
+      <p>Valor proporcional aos dias trabalhados no mês da rescisão:</p>
+      <pre>Saldo = (Salário Mensal ÷ 30) × Dias Trabalhados</pre>
+      <p><strong>Exemplo:</strong> Salário R$ 3.000, trabalhou 20 dias = R$ 2.000</p>
+
+      <h4>13º Salário Proporcional</h4>
+      <p>Proporcional aos meses trabalhados no ano (1/12 por mês com 15+ dias):</p>
+      <pre>13º = (Salário Mensal ÷ 12) × Meses Trabalhados</pre>
+      <p><strong>Exemplo:</strong> Salário R$ 3.000, trabalhou 8 meses = R$ 2.000</p>
+
+      <h4>Férias Proporcionais + 1/3</h4>
+      <p>Proporcional aos meses do período aquisitivo atual (1/12 por mês), mais adicional de 1/3:</p>
+      <pre>Férias = (Salário Mensal ÷ 12) × Meses × 1,333</pre>
+      <p><strong>Exemplo:</strong> Salário R$ 3.000, 6 meses = R$ 2.000 × 1,333 = R$ 2.666</p>
+
+      <h4>Aviso Prévio</h4>
+      <p>Duração progressiva conforme tempo de empresa:</p>
+      <ul>
+        <li><strong>Mínimo:</strong> 30 dias</li>
+        <li><strong>Adicional:</strong> 3 dias por ano trabalhado</li>
+        <li><strong>Máximo:</strong> 90 dias (após 20 anos)</li>
+      </ul>
+      <p><strong>Exemplo:</strong> 5 anos de empresa = 30 + (5 × 3) = 45 dias de aviso prévio</p>
+
+      <h4>Multa FGTS 40%</h4>
+      <p>Apenas na demissão sem justa causa. Calculada sobre o saldo total do FGTS:</p>
+      <pre>Multa = Saldo Total do FGTS × 40%</pre>
+      <p><strong>Exemplo:</strong> FGTS de R$ 15.000 = multa de R$ 6.000</p>
+
+      <h3>Exemplo Completo de Rescisão</h3>
+      <p><strong>Situação:</strong> Demissão sem justa causa</p>
+      <ul>
+        <li><strong>Salário:</strong> R$ 4.000</li>
+        <li><strong>Tempo de empresa:</strong> 2 anos e 6 meses</li>
+        <li><strong>FGTS acumulado:</strong> R$ 15.000</li>
+        <li><strong>Dias trabalhados no mês:</strong> 20 dias</li>
+      </ul>
+      <p><strong>Cálculo detalhado:</strong></p>
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Cálculo</th>
+            <th>Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Saldo de salário</td>
+            <td>R$ 4.000 ÷ 30 × 20</td>
+            <td>R$ 2.666,67</td>
+          </tr>
+          <tr>
+            <td>Aviso prévio (36 dias)</td>
+            <td>R$ 4.000 ÷ 30 × 36</td>
+            <td>R$ 4.800,00</td>
+          </tr>
+          <tr>
+            <td>13º proporcional (6 meses)</td>
+            <td>R$ 4.000 ÷ 12 × 6</td>
+            <td>R$ 2.000,00</td>
+          </tr>
+          <tr>
+            <td>Férias vencidas + 1/3</td>
+            <td>R$ 4.000 × 1,333</td>
+            <td>R$ 5.333,33</td>
+          </tr>
+          <tr>
+            <td>Férias proporcionais (6 meses)</td>
+            <td>R$ 2.000 × 1,333</td>
+            <td>R$ 2.666,67</td>
+          </tr>
+          <tr>
+            <td>Multa FGTS 40%</td>
+            <td>R$ 15.000 × 0,40</td>
+            <td>R$ 6.000,00</td>
+          </tr>
+          <tr>
+            <td colspan="2"><strong>TOTAL DA RESCISÃO</strong></td>
+            <td><strong>R$ 23.466,67</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Prazos para Recebimento</h3>
+      <p><strong>Demissão sem justa causa:</strong> Pagamento deve ser feito em até <strong>10 dias corridos</strong> após o término do contrato ou aviso prévio.</p>
+      <p><strong>Pedido de demissão:</strong> Pagamento deve ser feito no <strong>primeiro dia útil</strong> seguinte ao término do contrato.</p>
+      <p><strong>Multa por atraso:</strong> Se o empregador não pagar no prazo, há multa de 1 salário mensal para o trabalhador.</p>
+
+      <h3>Documentos Necessários</h3>
+      <p>Para receber a rescisão, você precisará dos seguintes documentos:</p>
+      <ul>
+        <li>✅ <strong>Termo de Rescisão de Contrato (TRCT)</strong> — assinado por ambas as partes</li>
+        <li>✅ <strong>Carteira de Trabalho</strong> — para baixa do contrato</li>
+        <li>✅ <strong>Exame demissional</strong> — obrigatório por lei</li>
+        <li>✅ <strong>Chaves de acesso ao eSocial/FGTS</strong> — para saque e acompanhamento</li>
+      </ul>
+
+      <h3>Seguro-Desemprego</h3>
+      <p>Disponível apenas na <strong>demissão sem justa causa</strong>. Requisitos:</p>
+      <ul>
+        <li>Primeira solicitação: mínimo de 12 meses trabalhados nos últimos 18 meses</li>
+        <li>Segunda solicitação: mínimo de 9 meses trabalhados nos últimos 12 meses</li>
+        <li>Terceira solicitação em diante: mínimo de 6 meses trabalhados</li>
+      </ul>
+      <p>Duração: 3 a 5 parcelas, dependendo do tempo trabalhado.</p>
+
+      <h2>Tabela Comparativa: O Que Você Recebe</h2>
       <table>
         <thead>
           <tr>
@@ -81,6 +271,7 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
             <th>Pedido de demissão</th>
             <th>Demissão sem justa causa</th>
             <th>Justa causa</th>
+            <th>Acordo</th>
           </tr>
         </thead>
         <tbody>
@@ -89,11 +280,13 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
             <td>✅</td>
             <td>✅</td>
             <td>✅</td>
+            <td>✅</td>
           </tr>
           <tr>
             <td>Férias proporcionais + 1/3</td>
             <td>✅</td>
             <td>✅</td>
+            <td>❌</td>
             <td>✅</td>
           </tr>
           <tr>
@@ -101,23 +294,34 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
             <td>✅</td>
             <td>✅</td>
             <td>❌</td>
+            <td>✅</td>
           </tr>
           <tr>
             <td>Aviso prévio</td>
             <td>Cumpre</td>
-            <td>Indenizado</td>
+            <td>Indenizado (100%)</td>
             <td>❌</td>
+            <td>50%</td>
           </tr>
           <tr>
-            <td>Multa 40% FGTS</td>
+            <td>Multa FGTS</td>
             <td>❌</td>
-            <td>✅</td>
+            <td>40%</td>
             <td>❌</td>
+            <td>20%</td>
+          </tr>
+          <tr>
+            <td>Saque FGTS</td>
+            <td>❌</td>
+            <td>100%</td>
+            <td>❌</td>
+            <td>80%</td>
           </tr>
           <tr>
             <td>Seguro-desemprego</td>
             <td>❌</td>
             <td>✅</td>
+            <td>❌</td>
             <td>❌</td>
           </tr>
         </tbody>

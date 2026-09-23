@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/navigation/Breadcrumbs.astro';
+import { buildLocalePath } from '../../../i18n/utils';
+
+const locale = 'pt-BR' as const;
+
+const blogPosts = [
+  {
+    title: 'Salário Líquido 2026: Guia Completo com Nova Lei de Isenção até R$ 5.000',
+    description: 'Entenda como funciona o cálculo do salário líquido com a nova lei que isenta até R$ 5.000. Tabelas INSS e IRRF 2026, exemplos práticos e calculadora.',
+    slug: 'salario-liquido-2026',
+    date: '22 de setembro de 2026',
+    readTime: '15 min',
+    keywords: ['Salário Líquido', 'INSS 2026', 'IRRF', 'Isenção R$ 5.000']
+  },
+  {
+    title: 'Rescisão Trabalhista 2026: Guia Completo dos Seus Direitos',
+    description: 'Tudo sobre rescisão trabalhista: direitos CLT, cálculo de verbas rescisórias, multa FGTS 40%, aviso prévio proporcional, prazos e documentos necessários.',
+    slug: 'rescisao-direitos-trabalhistas-2026',
+    date: '22 de setembro de 2026',
+    readTime: '18 min',
+    keywords: ['Rescisão', 'Demissão', 'FGTS', 'Direitos Trabalhistas']
+  }
+];
+---
+
+<BaseLayout
+  locale={locale}
+  title="Blog PayRenTax | Guias de Salário, Impostos e Direitos Trabalhistas"
+  description="Guias completos sobre cálculo de salário líquido, rescisão trabalhista, férias, 13º salário e direitos CLT. Conteúdo atualizado para 2026."
+  canonical="/pt-br/blog/"
+>
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Blog', href: buildLocalePath(locale, 'blog') }
+    ]}
+  />
+
+  <div class="mx-auto max-w-4xl px-4 py-10">
+    <header class="mb-12">
+      <h1 class="text-4xl font-bold text-slate-900">Blog PayRenTax</h1>
+      <p class="mt-4 text-lg text-slate-600">
+        Guias completos sobre salário, impostos e direitos trabalhistas no Brasil. Conteúdo atualizado para 2026.
+      </p>
+    </header>
+
+    <div class="space-y-8">
+      {blogPosts.map((post) => (
+        <article class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+          <div class="mb-3 flex flex-wrap gap-2">
+            {post.keywords.map((keyword) => (
+              <span class="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-800">
+                {keyword}
+              </span>
+            ))}
+          </div>
+          
+          <h2 class="mb-3 text-2xl font-bold text-slate-900">
+            <a 
+              href={buildLocalePath(locale, `blog/${post.slug}`)}
+              class="hover:text-blue-600 transition-colors"
+            >
+              {post.title}
+            </a>
+          </h2>
+          
+          <p class="mb-4 text-slate-600">
+            {post.description}
+          </p>
+          
+          <div class="flex items-center gap-4 text-sm text-slate-500">
+            <time datetime="2026-09-22">{post.date}</time>
+            <span>•</span>
+            <span>{post.readTime} de leitura</span>
+          </div>
+          
+          <a 
+            href={buildLocalePath(locale, `blog/${post.slug}`)}
+            class="mt-4 inline-flex items-center gap-2 font-medium text-blue-600 hover:text-blue-700"
+          >
+            Ler artigo completo
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </article>
+      ))}
+    </div>
+
+    <div class="mt-12 rounded-xl border border-blue-200 bg-blue-50 p-6">
+      <h2 class="mb-3 text-xl font-bold text-slate-900">Calculadoras Gratuitas</h2>
+      <p class="mb-4 text-slate-600">
+        Use nossas calculadoras para simular valores exatos conforme a legislação vigente:
+      </p>
+      <ul class="space-y-2">
+        <li>
+          <a href="/pt-br/salary/calculadora-salario-liquido/" class="text-blue-600 hover:text-blue-700 font-medium">
+            → Calculadora de Salário Líquido 2026
+          </a>
+        </li>
+        <li>
+          <a href="/pt-br/labor/calcular-rescisao/" class="text-blue-600 hover:text-blue-700 font-medium">
+            → Calculadora de Rescisão Trabalhista
+          </a>
+        </li>
+        <li>
+          <a href="/pt-br/labor/calcular-decimo-terceiro/" class="text-blue-600 hover:text-blue-700 font-medium">
+            → Calculadora de 13º Salário
+          </a>
+        </li>
+        <li>
+          <a href="/pt-br/labor/calcular-ferias/" class="text-blue-600 hover:text-blue-700 font-medium">
+            → Calculadora de Férias CLT
+          </a>
+        </li>
+        <li>
+          <a href="/pt-br/labor/calculadora-horas-extras/" class="text-blue-600 hover:text-blue-700 font-medium">
+            → Calculadora de Horas Extras
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</BaseLayout>

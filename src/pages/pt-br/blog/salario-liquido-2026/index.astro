@@ -1,0 +1,391 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import { buildLocalePath } from '../../../../i18n/utils';
+
+const locale = 'pt-BR' as const;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Salário Líquido 2026: Guia Completo com Nova Lei de Isenção até R$ 5.000",
+  "description": "Salário líquido 2026: nova lei isenta até R$ 5.000. Entenda INSS, IRRF, descontos e quanto sobra do seu salário. Guia completo atualizado.",
+  "datePublished": "2026-09-22",
+  "dateModified": "2026-09-22",
+  "author": {
+    "@type": "Organization",
+    "name": "PayRenTax"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PayRenTax",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://payrentax.me/logo.svg"
+    }
+  },
+  "inLanguage": "pt-BR",
+  "keywords": "salário líquido 2026, nova lei imposto renda, isenção até 5000, tabela INSS 2026, IRRF 2026, descontos salário, como calcular salário líquido"
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title="Salário Líquido 2026: Guia Completo com Nova Lei de Isenção até R$ 5.000 | PayRenTax"
+  description="Salário líquido 2026: nova lei isenta até R$ 5.000. Entenda INSS, IRRF, descontos e quanto sobra do seu salário. Guia completo atualizado."
+  canonical="/pt-br/blog/salario-liquido-2026/"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Blog', href: buildLocalePath(locale, 'blog') },
+      { label: 'Salário Líquido 2026', href: buildLocalePath(locale, 'blog/salario-liquido-2026') }
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <header class="mb-10">
+      <h1 class="text-4xl font-bold text-slate-900">
+        Salário Líquido 2026: Guia Completo com Nova Lei de Isenção até R$ 5.000
+      </h1>
+      <p class="mt-4 text-lg text-slate-600">
+        Última atualização: Setembro 2026
+      </p>
+    </header>
+
+    <div class="prose prose-slate prose-lg max-w-none">
+      <p class="lead">
+        A maior novidade de 2026 para trabalhadores brasileiros é a <strong>isenção total de Imposto de Renda para quem ganha até R$ 5.000 por mês</strong>. Se você está confuso sobre quanto vai sobrar do seu salário com as novas regras, este guia completo vai esclarecer tudo.
+      </p>
+
+      <h2>O Que Mudou em 2026?</h2>
+      <p>
+        A <strong>Lei 15.270/2025</strong> revolucionou o cálculo do salário líquido no Brasil:
+      </p>
+
+      <h3>Antes (2025)</h3>
+      <ul>
+        <li>Isenção de IRRF: até R$ 2.259,20</li>
+        <li>Quem ganhava R$ 3.000 pagava ~R$ 60 de IR</li>
+      </ul>
+
+      <h3>Agora (2026)</h3>
+      <ul>
+        <li><strong>Isenção de IRRF: até R$ 5.000</strong></li>
+        <li>Quem ganha R$ 3.000 paga <strong>R$ 0 de IR</strong> 🎉</li>
+        <li>Redução gradual entre R$ 5.000 e R$ 7.350</li>
+      </ul>
+
+      <p>
+        <strong>Impacto real:</strong> Cerca de <strong>16 milhões de trabalhadores</strong> deixaram de pagar Imposto de Renda em 2026.
+      </p>
+
+      <h2>Como Calcular Seu Salário Líquido em 2026</h2>
+      <p>O cálculo segue esta ordem:</p>
+
+      <pre><code>Salário Bruto
+  − INSS (progressivo)
+  = Base de Cálculo do IR
+  − IRRF (com nova isenção)
+  − Outros descontos (vale-transporte, plano de saúde)
+  = SALÁRIO LÍQUIDO</code></pre>
+
+      <h3>Passo 1: Desconto do INSS (Progressivo)</h3>
+      <p>
+        O INSS mudou para cálculo progressivo em 2020 e continua assim em 2026:
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Faixa Salarial</th>
+            <th>Alíquota</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Até R$ 1.621,00</td>
+            <td>7,5%</td>
+          </tr>
+          <tr>
+            <td>R$ 1.621,01 a R$ 2.902,84</td>
+            <td>9%</td>
+          </tr>
+          <tr>
+            <td>R$ 2.902,85 a R$ 4.354,27</td>
+            <td>12%</td>
+          </tr>
+          <tr>
+            <td>R$ 4.354,28 a R$ 8.475,55</td>
+            <td>14%</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        <strong>Importante:</strong> Cada faixa é calculada separadamente. Não é uma alíquota única sobre o salário total!
+      </p>
+
+      <h4>Exemplo de Cálculo Progressivo (Salário R$ 4.000)</h4>
+      <ul>
+        <li>R$ 1.621 × 7,5% = <strong>R$ 121,58</strong></li>
+        <li>R$ 1.281,84 × 9% = <strong>R$ 115,37</strong></li>
+        <li>R$ 1.097,16 × 12% = <strong>R$ 131,66</strong></li>
+        <li><strong>Total INSS:</strong> R$ 368,61</li>
+      </ul>
+
+      <h3>Passo 2: Cálculo do IRRF (Com Nova Regra)</h3>
+      <p>Depois de descontar o INSS, aplica-se a tabela do IR:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Base de Cálculo</th>
+            <th>Alíquota</th>
+            <th>Dedução</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Até R$ 2.428,80</td>
+            <td>Isento</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>R$ 2.428,81 a R$ 2.826,65</td>
+            <td>7,5%</td>
+            <td>R$ 182,16</td>
+          </tr>
+          <tr>
+            <td>R$ 2.826,66 a R$ 3.751,05</td>
+            <td>15%</td>
+            <td>R$ 394,16</td>
+          </tr>
+          <tr>
+            <td>R$ 3.751,06 a R$ 4.664,68</td>
+            <td>22,5%</td>
+            <td>R$ 675,49</td>
+          </tr>
+          <tr>
+            <td>Acima de R$ 4.664,68</td>
+            <td>27,5%</td>
+            <td>R$ 908,73</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        <strong>Mas atenção:</strong> Existe um <strong>redutor especial</strong> que zera o IR para rendas até R$ 5.000!
+      </p>
+
+      <h4>Como Funciona o Redutor de 2026</h4>
+      <ul>
+        <li><strong>Rendimento até R$ 5.000:</strong> Redutor zera completamente o IR</li>
+        <li><strong>Rendimento R$ 5.000 - R$ 7.350:</strong> Redutor parcial decrescente</li>
+        <li><strong>Rendimento acima R$ 7.350:</strong> Sem redutor, tabela normal</li>
+      </ul>
+
+      <h2>Exemplos Práticos Detalhados</h2>
+
+      <h3>Exemplo 1: Salário de R$ 2.500</h3>
+      <p><strong>Perfil:</strong> Assistente administrativo, sem dependentes</p>
+      <ol>
+        <li><strong>Salário bruto:</strong> R$ 2.500</li>
+        <li><strong>INSS:</strong> 
+          <ul>
+            <li>R$ 1.621 × 7,5% = R$ 121,58</li>
+            <li>R$ 879 × 9% = R$ 79,11</li>
+            <li><strong>Total INSS:</strong> R$ 200,69</li>
+          </ul>
+        </li>
+        <li><strong>Base IR:</strong> R$ 2.500 − R$ 200,69 = R$ 2.299,31</li>
+        <li><strong>IRRF:</strong> R$ 0 (isento até R$ 5.000)</li>
+        <li><strong>Salário líquido:</strong> <strong>R$ 2.299,31</strong></li>
+      </ol>
+      <p><strong>Quanto sobrou:</strong> 91,97% do salário bruto</p>
+
+      <h3>Exemplo 2: Salário de R$ 4.000</h3>
+      <p><strong>Perfil:</strong> Analista pleno, sem dependentes</p>
+      <ol>
+        <li><strong>Salário bruto:</strong> R$ 4.000</li>
+        <li><strong>INSS:</strong> R$ 368,61 (cálculo progressivo)</li>
+        <li><strong>Base IR:</strong> R$ 4.000 − R$ 368,61 = R$ 3.631,39</li>
+        <li><strong>IRRF:</strong> R$ 0 (isento até R$ 5.000)</li>
+        <li><strong>Salário líquido:</strong> <strong>R$ 3.631,39</strong></li>
+      </ol>
+      <p><strong>Quanto sobrou:</strong> 90,78% do salário bruto</p>
+
+      <h3>Exemplo 3: Salário de R$ 6.000</h3>
+      <p><strong>Perfil:</strong> Coordenador, sem dependentes</p>
+      <ol>
+        <li><strong>Salário bruto:</strong> R$ 6.000</li>
+        <li><strong>INSS:</strong> R$ 642,01</li>
+        <li><strong>Base IR:</strong> R$ 6.000 − R$ 642,01 = R$ 5.357,99</li>
+        <li><strong>IRRF antes do redutor:</strong> R$ 595,53</li>
+        <li><strong>Redutor parcial:</strong> R$ 179,73</li>
+        <li><strong>IRRF final:</strong> R$ 415,80</li>
+        <li><strong>Salário líquido:</strong> <strong>R$ 4.942,19</strong></li>
+      </ol>
+      <p><strong>Quanto sobrou:</strong> 82,37% do salário bruto</p>
+
+      <h3>Exemplo 4: Salário de R$ 10.000</h3>
+      <p><strong>Perfil:</strong> Gerente sênior, 2 dependentes</p>
+      <ol>
+        <li><strong>Salário bruto:</strong> R$ 10.000</li>
+        <li><strong>INSS:</strong> R$ 921,51 (teto)</li>
+        <li><strong>Base IR:</strong> R$ 10.000 − R$ 921,51 = R$ 9.078,49</li>
+        <li><strong>Dedução dependentes:</strong> 2 × R$ 189,59 = R$ 379,18</li>
+        <li><strong>Base IR ajustada:</strong> R$ 8.699,31</li>
+        <li><strong>IRRF:</strong> R$ 1.483,49</li>
+        <li><strong>Salário líquido:</strong> <strong>R$ 7.594,99</strong></li>
+      </ol>
+      <p><strong>Quanto sobrou:</strong> 75,95% do salário bruto</p>
+
+      <h2>Tabela Resumo: Do Bruto ao Líquido</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Salário Bruto</th>
+            <th>INSS</th>
+            <th>IRRF</th>
+            <th>Salário Líquido</th>
+            <th>% Líquido</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>R$ 2.000</td>
+            <td>R$ 155,59</td>
+            <td>R$ 0</td>
+            <td>R$ 1.844,41</td>
+            <td>92,2%</td>
+          </tr>
+          <tr>
+            <td>R$ 3.000</td>
+            <td>R$ 262,77</td>
+            <td>R$ 0</td>
+            <td>R$ 2.737,23</td>
+            <td>91,2%</td>
+          </tr>
+          <tr>
+            <td>R$ 5.000</td>
+            <td>R$ 501,52</td>
+            <td>R$ 0</td>
+            <td>R$ 4.498,48</td>
+            <td>90,0%</td>
+          </tr>
+          <tr>
+            <td>R$ 7.000</td>
+            <td>R$ 774,57</td>
+            <td>R$ 507,49</td>
+            <td>R$ 5.717,94</td>
+            <td>81,7%</td>
+          </tr>
+          <tr>
+            <td>R$ 10.000</td>
+            <td>R$ 921,51</td>
+            <td>R$ 1.483,49</td>
+            <td>R$ 7.594,99</td>
+            <td>75,9%</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Dedução de Dependentes</h2>
+      <p>
+        Cada dependente deduz <strong>R$ 189,59 por mês</strong> da base de cálculo do IRRF. São considerados dependentes:
+      </p>
+      <ul>
+        <li>Filho(a) menor de 21 anos</li>
+        <li>Filho(a) universitário até 24 anos</li>
+        <li>Cônjuge sem renda própria ou com renda baixa</li>
+        <li>Pais, avós ou bisavós com renda baixa</li>
+        <li>Irmão(ã), neto(a) ou bisneto(a) menor de 21 anos (sob guarda)</li>
+      </ul>
+
+      <h2>Outros Descontos Comuns no Holerite</h2>
+      <p>Além de INSS e IRRF, seu salário pode ter estes descontos:</p>
+
+      <h3>Vale-Transporte (6%)</h3>
+      <ul>
+        <li>Desconto máximo: 6% do salário bruto</li>
+        <li>Apenas se você optar por receber vale-transporte</li>
+      </ul>
+
+      <h3>Plano de Saúde</h3>
+      <ul>
+        <li>Valor varia conforme operadora e coparticipação</li>
+        <li>Dedutível do IRRF na declaração anual</li>
+      </ul>
+
+      <h3>Vale-Refeição/Alimentação</h3>
+      <ul>
+        <li>Empresas podem descontar até 20% do valor</li>
+        <li>Desconto opcional e voluntário</li>
+      </ul>
+
+      <h3>Pensão Alimentícia</h3>
+      <ul>
+        <li>Descontada antes do IRRF</li>
+        <li>Valor determinado judicialmente</li>
+      </ul>
+
+      <h3>Contribuição Sindical</h3>
+      <ul>
+        <li>Desde 2017, é opcional (precisa autorizar)</li>
+        <li>Não pode ser descontada automaticamente</li>
+      </ul>
+
+      <h2>Como Aumentar Seu Salário Líquido (Legalmente)</h2>
+
+      <h3>1. Declare Dependentes</h3>
+      <p>Cada dependente reduz R$ 189,59 da base de cálculo do IRRF mensalmente (R$ 2.275 por ano).</p>
+
+      <h3>2. Contribua para Previdência Privada (PGBL)</h3>
+      <p>Até 12% da sua renda pode ser deduzida do IR com PGBL.</p>
+
+      <h3>3. Negocie Benefícios Isentos</h3>
+      <ul>
+        <li>Vale-alimentação</li>
+        <li>Vale-transporte</li>
+        <li>Auxílio home office (até R$ 1.000)</li>
+        <li>Bolsa de estudos</li>
+      </ul>
+
+      <h3>4. Peça Ajuste no Plano de Saúde</h3>
+      <p>Desconto de plano de saúde é dedutível na declaração anual.</p>
+
+      <h2>Quando Você Deve Declarar Imposto de Renda?</h2>
+      <p>Você é obrigado a declarar IR em 2027 (ano-calendário 2026) se:</p>
+      <ul>
+        <li>Recebeu rendimentos tributáveis acima de <strong>R$ 33.888</strong> no ano</li>
+        <li>Recebeu rendimentos isentos acima de R$ 200.000</li>
+        <li>Teve ganho de capital na venda de bens</li>
+        <li>Operou na bolsa de valores</li>
+      </ul>
+
+      <h2>Ferramentas Úteis</h2>
+      <p>Use nossa <a href="/pt-br/salary/calculadora-salario-liquido/">calculadora de salário líquido 2026</a> para calcular exatamente quanto você vai receber com qualquer salário, com as tabelas oficiais atualizadas.</p>
+
+      <h2>Conclusão</h2>
+      <p>
+        A nova lei de isenção até R$ 5.000 representa um <strong>ganho real de poder de compra</strong> para milhões de brasileiros. Entender como funciona o cálculo do salário líquido te ajuda a:
+      </p>
+      <ul>
+        <li>✅ <strong>Planejar suas finanças</strong> com precisão</li>
+        <li>✅ <strong>Negociar salário</strong> sabendo o valor líquido</li>
+        <li>✅ <strong>Identificar erros</strong> no holerite</li>
+        <li>✅ <strong>Comparar propostas</strong> de emprego corretamente</li>
+      </ul>
+
+      <p>
+        Se você tem dúvidas sobre seu holerite ou quer simular aumentos salariais, use nossa calculadora gratuita e sempre atualizada com as leis vigentes.
+      </p>
+    </div>
+  </article>
+</BaseLayout>

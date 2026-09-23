@@ -5,15 +5,71 @@ import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
 import InContentAd from '../../../../components/ads/InContentAd.astro';
 import { buildLocalePath } from '../../../../i18n/utils';
 import BrHorasExtrasCalculator from '../../../../components/islands/BrHorasExtrasCalculator';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
 const locale = 'pt-BR' as const;
+
+const schemaWebApp = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Calculadora de Horas Extras 2026",
+  "description": "Calculadora gratuita para calcular horas extras no Brasil: 50%, 100%, adicional noturno e reflexos no DSR.",
+  "url": "https://payrentax.me/pt-br/labor/calculadora-horas-extras/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "BRL"
+  },
+  "inLanguage": "pt-BR",
+  "featureList": "Cálculo de horas extras 50%, 100%, adicional noturno 20%, reflexos DSR, férias, 13º salário"
+};
+
+const faqItems = [
+  {
+    question: 'Quanto vale uma hora extra?',
+    answer: 'Uma hora extra comum vale no mínimo 50% a mais que a hora normal. Para calcular: divida o salário por 220 horas e multiplique por 1,5. Por exemplo, salário de R$ 3.000: hora normal R$ 13,64, hora extra R$ 20,46.',
+  },
+  {
+    question: 'Qual é a diferença entre hora extra 50% e 100%?',
+    answer: 'Hora extra de 50% é o adicional mínimo da CLT para dias úteis após o expediente. Hora extra de 100% (dobro) é obrigatória para trabalho em domingos e feriados, ou pode ser estabelecida por convenção coletiva.',
+  },
+  {
+    question: 'O que é reflexo de horas extras no DSR?',
+    answer: 'Quando você faz horas extras habitualmente, elas geram reflexo no Descanso Semanal Remunerado (DSR). Cálculo: (Total de HE do mês ÷ Dias úteis) × Número de domingos/feriados. Esse valor adicional deve ser pago junto com o salário.',
+  },
+  {
+    question: 'Horas extras têm adicional noturno?',
+    answer: 'Sim! Se você trabalha entre 22h e 5h, além do adicional de hora extra (50%) você recebe o adicional noturno (20%). O cálculo acumula: hora normal × 1,5 × 1,2 = × 1,8 (80% a mais). A hora noturna tem duração reduzida: 52min30s.',
+  },
+  {
+    question: 'Horas extras influenciam férias e 13º salário?',
+    answer: 'Sim! Horas extras habituais (feitas regularmente) entram no cálculo da média para férias, 13º salário, FGTS e aviso prévio. A média dos últimos 12 meses de horas extras é somada ao salário base para esses cálculos.',
+  },
+];
 ---
 
 <BaseLayout
   locale={locale}
-  title="Calculadora de Horas Extras 2026 — PayRenTax"
-  description="Calcule o valor das horas extras a partir do salário, jornada mensal e adicional informado."
+  title="Calculadora de Horas Extras 2026 | 50% e 100% CLT | PayRenTax"
+  description="Calculadora de horas extras 2026: calcule 50%, 100% e reflexos no DSR. Adicional noturno incluído. Conforme CLT. Grátis."
   canonical="/pt-br/labor/calculadora-horas-extras/"
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schemaWebApp)} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqItems.map(item => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.answer
+        }
+      }))
+    })} />
+  </Fragment>
   <Breadcrumbs
     locale={locale}
     trail={[{ label: 'Calculadoras trabalhistas', href: buildLocalePath(locale, 'labor') }]}
@@ -21,7 +77,7 @@ const locale = 'pt-BR' as const;
   <article class="mx-auto max-w-4xl px-4 py-10">
     <h1 class="text-3xl font-bold text-slate-900">Calculadora de Horas Extras 2026</h1>
     <p class="mt-3 max-w-2xl text-slate-600">
-      O adicional padrão é 50%, mas pode ser ajustado para o seu acordo.
+      Calcule o valor das horas extras com adicional de 50%, 100%, adicional noturno e reflexos no DSR. Conforme CLT atualizada.
     </p>
     <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
       <BrHorasExtrasCalculator client:load />
@@ -30,9 +86,210 @@ const locale = 'pt-BR' as const;
       <InContentAd slotId="br-horas-extras-1" />
     </div>
     <div class="mt-10 prose prose-slate max-w-none">
-      <h2>Horas extras</h2>
-      <p>O adicional padrão é 50%, mas pode ser ajustado para o seu acordo.</p>
+      <h2>Como Calcular Horas Extras 2026</h2>
+      <p>
+        <strong>Horas extras</strong> são as horas trabalhadas além da jornada contratual. A CLT garante pagamento com <strong>adicional mínimo de 50%</strong> sobre o valor da hora normal, podendo chegar a <strong>100%</strong> em domingos e feriados.
+      </p>
+
+      <h3>Tipos de Horas Extras</h3>
+
+      <h4>1. Horas Extras Comuns (50%)</h4>
+      <ul>
+        <li>Trabalho em <strong>dias úteis após horário normal</strong></li>
+        <li>Adicional <strong>mínimo de 50%</strong> previsto na CLT</li>
+        <li>Pode ser maior por convenção coletiva (60%, 70%, etc.)</li>
+      </ul>
+
+      <h4>2. Horas Extras em Domingo/Feriado (100%)</h4>
+      <ul>
+        <li>Trabalho em <strong>descanso semanal remunerado</strong></li>
+        <li><strong>Dobro</strong> do valor da hora normal</li>
+        <li>Obrigatório mesmo sem convenção coletiva</li>
+      </ul>
+
+      <h4>3. Adicional Noturno (20% extra)</h4>
+      <ul>
+        <li>Trabalho entre <strong>22h e 5h</strong></li>
+        <li>Adicional de <strong>20%</strong> sobre hora normal</li>
+        <li>Hora noturna reduzida: <strong>52 minutos e 30 segundos</strong></li>
+        <li>Pode acumular com hora extra: 50% + 20% = 80% de adicional</li>
+      </ul>
+
+      <h3>Como Calcular o Valor da Hora</h3>
+      <p><strong>Fórmula básica para jornada de 220 horas/mês (44h semanais):</strong></p>
+      <pre>Valor da Hora = Salário Mensal ÷ 220</pre>
+
+      <p><strong>Para jornadas diferentes:</strong></p>
+      <ul>
+        <li>44h semanais = 220h mensais</li>
+        <li>40h semanais = 200h mensais</li>
+        <li>36h semanais = 180h mensais</li>
+      </ul>
+
+      <h3>Fórmulas de Cálculo de Horas Extras</h3>
+
+      <h4>Hora Extra 50%</h4>
+      <pre>Hora Extra 50% = Valor da Hora × 1,5</pre>
+
+      <h4>Hora Extra 100%</h4>
+      <pre>Hora Extra 100% = Valor da Hora × 2</pre>
+
+      <h4>Hora Extra Noturna (50% + 20%)</h4>
+      <pre>Hora Extra Noturna = Valor da Hora × 1,5 × 1,2 = × 1,8</pre>
+
+      <h3>Exemplos Práticos Completos</h3>
+
+      <h4>Exemplo 1: Hora Extra Simples (50%)</h4>
+      <ul>
+        <li><strong>Salário:</strong> R$ 3.000</li>
+        <li><strong>Valor da hora:</strong> R$ 3.000 ÷ 220 = R$ 13,64</li>
+        <li><strong>Hora extra 50%:</strong> R$ 13,64 × 1,5 = <strong>R$ 20,46</strong></li>
+        <li><strong>10 horas extras no mês:</strong> R$ 204,60</li>
+      </ul>
+
+      <h4>Exemplo 2: Hora Extra em Domingo (100%)</h4>
+      <ul>
+        <li><strong>Salário:</strong> R$ 4.000</li>
+        <li><strong>Valor da hora:</strong> R$ 4.000 ÷ 220 = R$ 18,18</li>
+        <li><strong>Hora extra 100%:</strong> R$ 18,18 × 2 = <strong>R$ 36,36</strong></li>
+        <li><strong>8 horas de domingo:</strong> R$ 290,88</li>
+      </ul>
+
+      <h4>Exemplo 3: Hora Extra Noturna (50% + 20%)</h4>
+      <ul>
+        <li><strong>Salário:</strong> R$ 2.500</li>
+        <li><strong>Valor da hora:</strong> R$ 2.500 ÷ 220 = R$ 11,36</li>
+        <li><strong>HE noturna:</strong> R$ 11,36 × 1,8 = <strong>R$ 20,45</strong></li>
+        <li><strong>15 horas noturnas:</strong> R$ 306,75</li>
+      </ul>
+
+      <h4>Exemplo 4: Com Reflexo no DSR</h4>
+      <ul>
+        <li><strong>20 horas extras</strong> em 22 dias úteis</li>
+        <li><strong>Valor HE:</strong> R$ 400</li>
+        <li><strong>Domingos/feriados no mês:</strong> 4</li>
+        <li><strong>Reflexo DSR:</strong> (R$ 400 ÷ 22) × 4 = <strong>R$ 72,73</strong></li>
+        <li><strong>Total a receber:</strong> R$ 472,73</li>
+      </ul>
+
+      <h3>Reflexos das Horas Extras</h3>
+      <p>
+        Horas extras <strong>habituais</strong> (feitas regularmente por mais de 2 meses) têm reflexos obrigatórios em outros direitos trabalhistas:
+      </p>
+
+      <h4>✅ DSR (Descanso Semanal Remunerado)</h4>
+      <pre>Reflexo DSR = (Soma HE da semana ÷ Dias úteis) × Domingos/feriados</pre>
+      <p>O reflexo no DSR deve ser <strong>pago todo mês</strong> junto com o salário.</p>
+
+      <h4>✅ 13º Salário</h4>
+      <p>A <strong>média anual de horas extras</strong> é somada ao 13º salário proporcional.</p>
+
+      <h4>✅ Férias + 1/3</h4>
+      <p>A <strong>média dos últimos 12 meses de HE</strong> entra no cálculo das férias.</p>
+
+      <h4>✅ FGTS</h4>
+      <p>Horas extras fazem parte da base de cálculo do <strong>FGTS (8%)</strong> mensal.</p>
+
+      <h4>✅ Aviso Prévio</h4>
+      <p>A <strong>média de HE</strong> integra o valor do aviso prévio indenizado.</p>
+
+      <h3>Banco de Horas</h3>
+      <p>
+        A <strong>Reforma Trabalhista (2017)</strong> permite banco de horas por acordo individual ou coletivo:
+      </p>
+
+      <h4>Como Funciona</h4>
+      <ul>
+        <li>Horas extras viram <strong>crédito de horas</strong></li>
+        <li>Podem ser compensadas com <strong>folgas</strong> ou saídas antecipadas</li>
+        <li>Prazo de compensação: <strong>até 6 meses</strong></li>
+        <li>Se não compensar no prazo, paga com <strong>adicional de 50%</strong></li>
+      </ul>
+
+      <p><strong>Exemplo de banco de horas:</strong></p>
+      <ul>
+        <li>Trabalhou 10 horas extras em janeiro</li>
+        <li>Pode compensar com 10 horas de folga até junho</li>
+        <li>Se não compensar até junho, recebe as 10h com adicional de 50%</li>
+      </ul>
+
+      <h3>Limite de Horas Extras</h3>
+      <p>
+        A CLT estabelece limite de <strong>2 horas extras por dia</strong>. Ultrapassar esse limite pode configurar jornada excessiva e gerar direito a indenização adicional.
+      </p>
+
+      <h3>Acordo de Compensação</h3>
+      <p>
+        Algumas empresas adotam acordos de compensação permitidos pela CLT:
+      </p>
+
+      <h4>Semana Espanhola</h4>
+      <ul>
+        <li>Uma semana trabalha 48h, outra 40h</li>
+        <li>Compensa as 4h extras da primeira semana</li>
+        <li>Não paga adicional se compensar</li>
+      </ul>
+
+      <h4>Escala 12x36</h4>
+      <ul>
+        <li>Trabalha 12 horas, descansa 36 horas</li>
+        <li>Comum em hospitais e segurança</li>
+        <li>Acordo deve ser formalizado</li>
+      </ul>
+
+      <h3>Quando Você Deve Receber</h3>
+      <p>
+        Horas extras devem ser pagas no <strong>mesmo mês em que foram realizadas</strong>, junto com o salário. O atraso no pagamento gera multa e pode configurar mora salarial.
+      </p>
+
+      <h3>Como Comprovar Horas Extras</h3>
+      <p>Para reclamar horas extras não pagas, você precisará de provas:</p>
+      <ul>
+        <li>✅ <strong>Ponto eletrônico</strong> ou folhas de ponto assinadas</li>
+        <li>✅ <strong>E-mails, mensagens</strong> solicitando trabalho fora do horário</li>
+        <li>✅ <strong>Testemunhas</strong> (colegas de trabalho)</li>
+        <li>✅ <strong>Holerites</strong> com histórico de HE pagas</li>
+      </ul>
+
+      <h3>Tabela Comparativa de Adicionais</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Adicional</th>
+            <th>Multiplicador</th>
+            <th>Quando</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>HE Normal</td>
+            <td>50%</td>
+            <td>× 1,5</td>
+            <td>Dias úteis</td>
+          </tr>
+          <tr>
+            <td>HE Domingo/Feriado</td>
+            <td>100%</td>
+            <td>× 2</td>
+            <td>Descanso semanal</td>
+          </tr>
+          <tr>
+            <td>Adicional Noturno</td>
+            <td>20%</td>
+            <td>× 1,2</td>
+            <td>22h às 5h</td>
+          </tr>
+          <tr>
+            <td>HE Noturna</td>
+            <td>80%</td>
+            <td>× 1,8</td>
+            <td>HE + Noturno</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+    <CalculatorFAQ heading="Perguntas frequentes sobre horas extras" items={faqItems} />
   </article>
   <CalculatorResource locale="pt-BR" category="labor" />
 </BaseLayout>

@@ -13,32 +13,54 @@ import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
 
 const locale = 'pt-BR' as const;
 const t = getDictionary(locale);
-const meta = buildPageMetadata(
-  'Calculadora de Quanto Posso Pagar de Aluguel — PayRenTax',
-  t.rent.rentAffordability.intro,
-  '/pt-br/rent/calculadora-aluguel/',
-);
+const meta = {
+  title: 'Calculadora de Aluguel 2026 | Quanto Posso Pagar | PayRenTax',
+  description: 'Calculadora de aluguel 2026: descubra quanto você pode pagar de aluguel com seu salário. Regra dos 30% da renda. Planejamento financeiro.',
+  canonical: '/pt-br/rent/calculadora-aluguel/',
+};
+
+const schemaWebApp = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Calculadora de Aluguel 2026",
+  "description": "Calculadora gratuita para descobrir quanto você pode pagar de aluguel com base na sua renda. Regra dos 30%.",
+  "url": "https://payrentax.me/pt-br/rent/calculadora-aluguel/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "BRL"
+  },
+  "inLanguage": "pt-BR",
+  "featureList": "Cálculo de capacidade de aluguel, regra dos 30%, regra dos 25%, custos adicionais de moradia"
+};
 
 const faqItems = [
   {
     question: 'Quanto da minha renda devo gastar com aluguel?',
     answer:
-      'A regra dos 30% recomenda gastar no máximo 30% da renda bruta com aluguel. No Brasil, o Código Civil permite ao proprietário exigir comprovação de renda equivalente a 3 vezes o valor do aluguel (ou seja, aluguel de até 33% da renda). Em São Paulo e Rio de Janeiro, muitos inquilinos gastam 35–40% da renda.',
+      'A regra dos 30% recomenda gastar no máximo 30% da renda líquida mensal com aluguel e despesas de moradia. Isso garante equilíbrio financeiro e permite poupar. Em cidades caras, pode chegar a 35%, mas exige controle rigoroso.',
   },
   {
-    question: 'O que são os índices de reajuste de aluguel no Brasil?',
+    question: 'A regra dos 30% é sobre salário bruto ou líquido?',
     answer:
-      'Os aluguéis residenciais são reajustados anualmente pelo IGP-M (Índice Geral de Preços do Mercado) ou pelo IPCA (Índice de Preços ao Consumidor Amplo), conforme acordado em contrato. O IGP-M é publicado pela FGV e o IPCA pelo IBGE.',
+      'O ideal é calcular sobre o salário líquido (após descontos de INSS e IRRF). Se você ganha R$ 5.000 bruto mas recebe R$ 4.200 líquido, o aluguel ideal é 30% de R$ 4.200 = R$ 1.260, não R$ 1.500.',
   },
   {
-    question: 'Quais são os custos além do aluguel que preciso considerar?',
+    question: 'Quais custos além do aluguel devo considerar?',
     answer:
-      'Além do valor do aluguel, considere: IPTU (imposto predial), condomínio, água, luz e gás. Em muitas cidades, esses custos adicionais representam 20–40% do valor do aluguel. Inclua esses valores no seu planejamento financeiro.',
+      'Além do aluguel, considere: condomínio (R$ 100-800), IPTU, água (R$ 50-150), luz (R$ 100-400), gás (R$ 80-120), internet (R$ 80-150). Custos iniciais incluem caução (2-3 meses), taxa de imobiliária (1 mês) e mudança.',
   },
   {
-    question: 'Como funciona a garantia locatícia no Brasil?',
+    question: 'O que é a regra dos 25% e quando usar?',
     answer:
-      'A Lei do Inquilinato (Lei 8.245/91) prevê quatro tipos de garantia: fiador, caução (depósito de até 3 meses), seguro-fiança e cessão fiduciária de quotas. O proprietário só pode exigir um tipo de garantia por contrato.',
+      'A regra dos 25% é mais conservadora: limita o aluguel a 25% da renda líquida. Use se você quer poupar mais, tem renda instável, está começando a carreira ou prefere maior segurança financeira para emergências.',
+  },
+  {
+    question: 'Posso alugar com renda menor que 3 vezes o aluguel?',
+    answer:
+      'Muitas imobiliárias exigem renda de 3 vezes o aluguel (33% da renda). Se sua renda for menor, pode ser necessário fiador com renda comprovada, seguro-fiança, ou pagar caução maior. Negocie diretamente com proprietários para flexibilizar.',
   },
 ];
 
@@ -52,7 +74,21 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
   canonical={meta.canonical}
   equivalentPageGroup="rent-affordability"
 >
-  <JsonLd entries={[faqJsonLd]} />
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schemaWebApp)} />
+  </Fragment>
+  <JsonLd entries={[{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map(item => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer
+      }
+    }))
+  }]} />
   <Breadcrumbs
     locale={locale}
     trail={[
@@ -74,23 +110,238 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
     </div>
 
     <div class="mt-10 prose prose-slate max-w-none">
-      <h2>Comprometimento de renda com aluguel — regra dos 30%</h2>
+      <h2>Como Calcular Quanto Posso Pagar de Aluguel 2026</h2>
+      <p>
+        Decidir quanto gastar com aluguel é uma das <strong>decisões financeiras mais importantes</strong>. A <strong>regra dos 30%</strong> é o padrão recomendado por especialistas em finanças pessoais e bancos.
+      </p>
+
+      <h3>Regra dos 30% da Renda</h3>
+      <p>
+        A recomendação clássica é que o aluguel e despesas de moradia <strong>não ultrapassem 30% da sua renda líquida mensal</strong>:
+      </p>
+      <pre>Aluguel Máximo = Salário Líquido × 30%</pre>
+
+      <p><strong>Por que 30%?</strong></p>
+      <ul>
+        <li>✅ Mantém <strong>equilíbrio financeiro</strong></li>
+        <li>✅ Sobra dinheiro para <strong>outras despesas essenciais</strong></li>
+        <li>✅ Permite formar <strong>reserva de emergência</strong></li>
+        <li>✅ Evita <strong>endividamento</strong> e aperto financeiro</li>
+      </ul>
+
+      <h3>Como Calcular Sua Capacidade de Aluguel</h3>
+
+      <h4>Passo 1: Identifique Sua Renda Líquida</h4>
+      <pre>Renda Líquida = Salário Bruto − INSS − IRRF − Outros Descontos</pre>
+      <p>
+        Use sua calculadora de salário líquido para saber exatamente quanto você recebe após os descontos.
+      </p>
+
+      <h4>Passo 2: Aplique a Regra dos 30%</h4>
+      <pre>Aluguel Ideal = Renda Líquida × 0,30</pre>
+
+      <h4>Passo 3: Subtraia Outras Despesas de Moradia</h4>
+      <p>Lembre-se de considerar custos adicionais:</p>
+      <ul>
+        <li>Condomínio</li>
+        <li>IPTU</li>
+        <li>Água, luz, gás</li>
+        <li>Internet</li>
+      </ul>
+
+      <h3>Exemplos Práticos Completos</h3>
+
+      <h4>Exemplo 1: Salário de R$ 3.000 Líquido</h4>
+      <ul>
+        <li><strong>Aluguel máximo (30%):</strong> R$ 3.000 × 30% = <strong>R$ 900</strong></li>
+        <li>Com condomínio R$ 200: Aluguel até <strong>R$ 700</strong></li>
+        <li>Restam <strong>R$ 2.100</strong> para alimentação, transporte, lazer e poupança</li>
+      </ul>
+
+      <h4>Exemplo 2: Salário de R$ 5.000 Líquido</h4>
+      <ul>
+        <li><strong>Aluguel máximo (30%):</strong> R$ 5.000 × 30% = <strong>R$ 1.500</strong></li>
+        <li>Com condomínio R$ 300: Aluguel até <strong>R$ 1.200</strong></li>
+        <li>Restam <strong>R$ 3.500</strong> para outras despesas</li>
+      </ul>
+
+      <h4>Exemplo 3: Salário de R$ 8.000 Líquido</h4>
+      <ul>
+        <li><strong>Aluguel máximo (30%):</strong> R$ 8.000 × 30% = <strong>R$ 2.400</strong></li>
+        <li>Com condomínio R$ 500: Aluguel até <strong>R$ 1.900</strong></li>
+        <li>Restam <strong>R$ 5.600</strong> para outras despesas</li>
+      </ul>
+
+      <h3>Variações da Regra</h3>
+
+      <h4>Regra dos 25% (Conservadora)</h4>
+      <p>Para quem prefere <strong>maior segurança financeira</strong>:</p>
+      <pre>Aluguel Máximo = Renda Líquida × 25%</pre>
+
+      <p><strong>Vantagens:</strong></p>
+      <ul>
+        <li>✅ Mais margem para <strong>imprevistos</strong></li>
+        <li>✅ Facilita <strong>poupar</strong> e investir</li>
+        <li>✅ Menor risco de endividamento</li>
+        <li>✅ Ideal para quem está começando a carreira</li>
+      </ul>
+
+      <h4>Regra dos 35% (Flexível)</h4>
+      <p>Em <strong>grandes cidades</strong> com aluguel caro (São Paulo, Rio):</p>
+      <pre>Aluguel Máximo = Renda Líquida × 35%</pre>
+
+      <p><strong>Cuidados:</strong></p>
+      <ul>
+        <li>⚠️ Deixa menos margem para emergências</li>
+        <li>⚠️ Exige <strong>controle rigoroso</strong> das finanças</li>
+        <li>⚠️ Pode dificultar poupar</li>
+        <li>⚠️ Só recomendado se não tiver dívidas</li>
+      </ul>
+
+      <h3>Tabela de Referência: Quanto Posso Pagar</h3>
       <table>
         <thead>
           <tr>
-            <th>Renda bruta mensal</th>
-            <th>Aluguel máx. (30%)</th>
-            <th>Aluguel máx. (33%)</th>
+            <th>Renda Líquida</th>
+            <th>25% (Conservador)</th>
+            <th>30% (Ideal)</th>
+            <th>35% (Flexível)</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>R$ 3.000</td><td>R$ 900</td><td>R$ 990</td></tr>
-          <tr><td>R$ 5.000</td><td>R$ 1.500</td><td>R$ 1.650</td></tr>
-          <tr><td>R$ 8.000</td><td>R$ 2.400</td><td>R$ 2.640</td></tr>
-          <tr><td>R$ 12.000</td><td>R$ 3.600</td><td>R$ 3.960</td></tr>
-          <tr><td>R$ 20.000</td><td>R$ 6.000</td><td>R$ 6.600</td></tr>
+          <tr>
+            <td>R$ 2.000</td>
+            <td>R$ 500</td>
+            <td>R$ 600</td>
+            <td>R$ 700</td>
+          </tr>
+          <tr>
+            <td>R$ 3.000</td>
+            <td>R$ 750</td>
+            <td>R$ 900</td>
+            <td>R$ 1.050</td>
+          </tr>
+          <tr>
+            <td>R$ 5.000</td>
+            <td>R$ 1.250</td>
+            <td>R$ 1.500</td>
+            <td>R$ 1.750</td>
+          </tr>
+          <tr>
+            <td>R$ 8.000</td>
+            <td>R$ 2.000</td>
+            <td>R$ 2.400</td>
+            <td>R$ 2.800</td>
+          </tr>
+          <tr>
+            <td>R$ 12.000</td>
+            <td>R$ 3.000</td>
+            <td>R$ 3.600</td>
+            <td>R$ 4.200</td>
+          </tr>
         </tbody>
       </table>
+
+      <h3>Outros Custos de Moradia</h3>
+      <p>Além do aluguel, você terá despesas mensais com moradia:</p>
+
+      <h4>Custos Fixos Mensais</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>Despesa</th>
+            <th>Valor Médio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Condomínio</td>
+            <td>R$ 100 - R$ 800+</td>
+          </tr>
+          <tr>
+            <td>IPTU (mensal)</td>
+            <td>Varia por cidade</td>
+          </tr>
+          <tr>
+            <td>Energia elétrica</td>
+            <td>R$ 100 - R$ 400</td>
+          </tr>
+          <tr>
+            <td>Água e esgoto</td>
+            <td>R$ 50 - R$ 150</td>
+          </tr>
+          <tr>
+            <td>Gás</td>
+            <td>R$ 80 - R$ 120</td>
+          </tr>
+          <tr>
+            <td>Internet</td>
+            <td>R$ 80 - R$ 150</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Custos Iniciais (Uma Vez)</h4>
+      <ul>
+        <li><strong>Caução:</strong> 2 a 3 meses de aluguel (ou seguro-fiança)</li>
+        <li><strong>Primeiro aluguel:</strong> 1 mês</li>
+        <li><strong>Taxa de imobiliária:</strong> Geralmente 1 mês de aluguel</li>
+        <li><strong>Mudança:</strong> R$ 300 - R$ 2.000</li>
+        <li><strong>Móveis básicos:</strong> Se não tiver, R$ 3.000 - R$ 10.000</li>
+      </ul>
+      <p>
+        <strong>Total inicial:</strong> Pode chegar a <strong>5-6 vezes o valor do aluguel</strong>. Planeje com antecedência!
+      </p>
+
+      <h3>Exigências das Imobiliárias</h3>
+      <p>
+        Muitas imobiliárias exigem <strong>renda de 3 vezes o valor do aluguel</strong> (ou seja, aluguel de até 33% da renda). Se sua renda for menor:
+      </p>
+      <ul>
+        <li>Procure <strong>fiador</strong> com renda comprovada</li>
+        <li>Contrate <strong>seguro-fiança</strong> (3-5% do aluguel por mês)</li>
+        <li>Ofereça <strong>caução maior</strong> (6 meses)</li>
+        <li>Negocie <strong>diretamente com proprietários</strong> (sem imobiliária)</li>
+      </ul>
+
+      <h3>Reajuste de Aluguel</h3>
+      <p>
+        Os aluguéis são reajustados <strong>anualmente</strong> por índices como:
+      </p>
+      <ul>
+        <li><strong>IGP-M (FGV):</strong> Índice Geral de Preços do Mercado</li>
+        <li><strong>IPCA (IBGE):</strong> Índice de Preços ao Consumidor Amplo</li>
+      </ul>
+      <p>
+        O índice deve estar <strong>definido no contrato</strong>. O reajuste acontece após 12 meses de contrato.
+      </p>
+
+      <h3>Dicas para Economizar no Aluguel</h3>
+      <ul>
+        <li>🏠 Considere <strong>bairros mais afastados</strong> do centro (transporte pode compensar)</li>
+        <li>👥 Divida apartamento com <strong>colegas de quarto</strong></li>
+        <li>📅 Negocie aluguel em <strong>períodos de baixa demanda</strong> (janeiro, fevereiro)</li>
+        <li>🔍 Procure imóveis <strong>direto com proprietários</strong> (sem taxa de imobiliária)</li>
+        <li>⚡ Escolha imóveis com <strong>boa eficiência energética</strong> (reduz conta de luz)</li>
+        <li>📝 Negocie <strong>melhorias no imóvel</strong> em troca de desconto no aluguel</li>
+      </ul>
+
+      <h3>Quando Vale a Pena Alugar vs Comprar</h3>
+      <p><strong>Aluguel é melhor quando:</strong></p>
+      <ul>
+        <li>Você vai morar na cidade por <strong>menos de 5 anos</strong></li>
+        <li>Não tem <strong>entrada</strong> para comprar (20-30% do valor)</li>
+        <li>Prefere <strong>flexibilidade</strong> para mudar de bairro/cidade</li>
+        <li>O custo de compra é muito alto (mercado supervalorizado)</li>
+      </ul>
+
+      <p><strong>Comprar é melhor quando:</strong></p>
+      <ul>
+        <li>Vai morar no local por <strong>mais de 10 anos</strong></li>
+        <li>Tem <strong>entrada</strong> e renda estável para financiamento</li>
+        <li>Quer <strong>patrimônio próprio</strong> e segurança no longo prazo</li>
+        <li>Preço de compra é razoável (aluguel seria 0,5-0,7% do valor do imóvel)</li>
+      </ul>
     </div>
 
     <p class="mt-8 text-xs text-slate-500">

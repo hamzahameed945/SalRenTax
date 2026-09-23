@@ -6,21 +6,75 @@ import InContentAd from '../../../../components/ads/InContentAd.astro';
 import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
 import BrDecimoTerceiroCalculator from '../../../../components/islands/BrDecimoTerceiroCalculator';
 import { buildLocalePath } from '../../../../i18n/utils';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
 
 const locale = 'pt-BR' as const;
-const title = 'Calcular Décimo Terceiro Salário 2026 — PayRenTax';
-const description = 'Calcule o 13º salário proporcional de 2026 com base nos meses trabalhados.';
+const title = 'Calcular Décimo Terceiro 2026 | 13º Salário Proporcional | PayRenTax';
+const description = 'Calculadora de décimo terceiro 2026: calcule seu 13º salário proporcional com descontos INSS e IRRF. 1ª e 2ª parcelas. Simples e grátis.';
 const canonical = '/pt-br/labor/calcular-decimo-terceiro/';
+
+const schemaWebApp = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Calculadora de Décimo Terceiro 2026",
+  "description": "Calculadora gratuita para calcular o 13º salário proporcional no Brasil com INSS e IRRF.",
+  "url": "https://payrentax.me/pt-br/labor/calcular-decimo-terceiro/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "BRL"
+  },
+  "inLanguage": "pt-BR",
+  "featureList": "Cálculo de 13º proporcional, 1ª e 2ª parcelas, descontos INSS e IRRF"
+};
+
 const faqItems = [
   {
     question: 'Como funciona o 13º salário?',
     answer:
-      'O cálculo usa 1/12 do salário bruto por mês trabalhado e divide o total em duas parcelas brutas.',
+      'O 13º salário (gratificação natalina) corresponde a 1/12 do salário por mês trabalhado (mínimo 15 dias). É pago em duas parcelas: 1ª até 30/novembro (50% sem descontos), 2ª até 20/dezembro (50% com descontos de INSS e IRRF).',
+  },
+  {
+    question: 'Quando recebo a 1ª e 2ª parcela do 13º?',
+    answer:
+      'A 1ª parcela (50% do valor bruto) deve ser paga até 30 de novembro, sem descontos. A 2ª parcela (50% restante) deve ser paga até 20 de dezembro, com descontos de INSS e IRRF calculados sobre o valor total.',
+  },
+  {
+    question: 'Posso pedir adiantamento do 13º nas férias?',
+    answer:
+      'Sim! Você pode solicitar o adiantamento da 1ª parcela do 13º junto com as férias, desde que faça a solicitação por escrito ao empregador em janeiro do mesmo ano.',
+  },
+  {
+    question: 'O 13º salário tem desconto de INSS e IRRF?',
+    answer:
+      'Sim, mas apenas na 2ª parcela. O INSS é calculado progressivamente (7,5% a 14%) e o IRRF conforme a tabela 2026 (isento até R$ 2.428,80). A 1ª parcela não tem descontos.',
+  },
+  {
+    question: 'Quem trabalhou menos de 1 ano recebe 13º?',
+    answer:
+      'Sim! O 13º é proporcional aos meses trabalhados. Quem trabalhou 6 meses recebe 6/12 do salário. Cada mês com 15 dias ou mais de trabalho conta como 1 mês para o cálculo.',
   },
 ];
 ---
 
 <BaseLayout locale={locale} title={title} description={description} canonical={canonical}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schemaWebApp)} />
+  </Fragment>
+  <JsonLd entries={[{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map(item => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer
+      }
+    }))
+  }]} />
   <Breadcrumbs
     locale={locale}
     trail={[
@@ -33,8 +87,7 @@ const faqItems = [
   <article class="mx-auto max-w-4xl px-4 py-10">
     <h1 class="text-3xl font-bold text-slate-900">Calcular Décimo Terceiro Salário 2026</h1>
     <p class="mt-3 max-w-2xl text-slate-600">
-      O cálculo usa 1/12 do salário bruto por mês trabalhado e divide o total em duas parcelas
-      brutas.
+      Calcule o 13º salário proporcional com descontos de INSS e IRRF. Veja quanto você receberá na 1ª parcela (novembro) e 2ª parcela (dezembro).
     </p>
     <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
       <BrDecimoTerceiroCalculator client:load />
@@ -43,14 +96,223 @@ const faqItems = [
       <InContentAd slotId="pt-br-labor-calcular-decimo-terceiro-1" />
     </div>
     <div class="mt-10 prose prose-slate max-w-none">
-      <h2>Información importante</h2>
+      <h2>Como Calcular o Décimo Terceiro Salário 2026</h2>
       <p>
-        Este calculador usa un modelo explícito y simplificado para apoyar una estimación inicial.
-        Los casos reales pueden variar por deducciones, convenios, topes legales y otros datos
-        personales.
+        O <strong>décimo terceiro salário</strong> (também chamado de gratificação natalina) é um direito garantido pela CLT a todos os trabalhadores com carteira assinada. Ele corresponde a <strong>1/12 avos da remuneração por cada mês trabalhado</strong> durante o ano.
+      </p>
+
+      <h3>Quem Tem Direito ao 13º Salário</h3>
+      <ul>
+        <li>✅ <strong>Trabalhadores CLT</strong> (carteira assinada)</li>
+        <li>✅ <strong>Aposentados e pensionistas</strong> do INSS</li>
+        <li>✅ <strong>Empregados domésticos</strong></li>
+        <li>✅ <strong>Trabalhadores rurais</strong></li>
+        <li>✅ <strong>Servidores públicos</strong></li>
+      </ul>
+      <p>
+        Conta como "mês trabalhado" qualquer mês em que você trabalhou <strong>15 dias ou mais</strong>. Menos de 15 dias não conta.
+      </p>
+
+      <h3>Como Funciona o Cálculo Proporcional</h3>
+      <p>O cálculo básico do 13º bruto é:</p>
+      <pre>13º Bruto = (Salário Mensal ÷ 12) × Meses Trabalhados</pre>
+      <p><strong>Exemplos:</strong></p>
+      <ul>
+        <li>Trabalhou 12 meses, salário R$ 3.000 → 13º = R$ 3.000</li>
+        <li>Trabalhou 6 meses, salário R$ 3.000 → 13º = R$ 1.500</li>
+        <li>Trabalhou 8 meses, salário R$ 4.500 → 13º = R$ 3.000</li>
+      </ul>
+
+      <h3>Parcelas do 13º Salário</h3>
+      <p>O pagamento do 13º é dividido em <strong>duas parcelas</strong>:</p>
+
+      <h4>1ª Parcela (até 30 de novembro)</h4>
+      <ul>
+        <li><strong>Valor:</strong> 50% do 13º bruto</li>
+        <li><strong>Descontos:</strong> Nenhum! A 1ª parcela vem sem descontos de INSS ou IRRF</li>
+        <li><strong>Prazo:</strong> Deve ser paga até o dia 30 de novembro</li>
+      </ul>
+
+      <h4>2ª Parcela (até 20 de dezembro)</h4>
+      <ul>
+        <li><strong>Valor:</strong> 50% restante do 13º bruto</li>
+        <li><strong>Descontos:</strong> INSS e IRRF são calculados sobre o valor <strong>total</strong> do 13º e descontados nesta parcela</li>
+        <li><strong>Prazo:</strong> Deve ser paga até o dia 20 de dezembro</li>
+      </ul>
+
+      <h3>Descontos no 13º Salário</h3>
+
+      <h4>INSS sobre o 13º (Tabela 2026)</h4>
+      <p>O INSS é calculado progressivamente sobre o valor total do 13º:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Faixa do 13º</th>
+            <th>Alíquota</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Até R$ 1.621,00</td>
+            <td>7,5%</td>
+          </tr>
+          <tr>
+            <td>R$ 1.621,01 a R$ 2.902,84</td>
+            <td>9%</td>
+          </tr>
+          <tr>
+            <td>R$ 2.902,85 a R$ 4.354,27</td>
+            <td>12%</td>
+          </tr>
+          <tr>
+            <td>R$ 4.354,28 a R$ 8.475,55</td>
+            <td>14%</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>IRRF sobre o 13º (Tabela 2026)</h4>
+      <p>O IRRF também é calculado sobre o total e descontado apenas na 2ª parcela:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Base do 13º</th>
+            <th>Alíquota</th>
+            <th>Dedução</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Até R$ 2.428,80</td>
+            <td>Isento</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>R$ 2.428,81 a R$ 2.826,65</td>
+            <td>7,5%</td>
+            <td>R$ 182,16</td>
+          </tr>
+          <tr>
+            <td>R$ 2.826,66 a R$ 3.751,05</td>
+            <td>15%</td>
+            <td>R$ 394,16</td>
+          </tr>
+          <tr>
+            <td>R$ 3.751,06 a R$ 4.664,68</td>
+            <td>22,5%</td>
+            <td>R$ 675,49</td>
+          </tr>
+          <tr>
+            <td>Acima de R$ 4.664,68</td>
+            <td>27,5%</td>
+            <td>R$ 908,73</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        <strong>Importante:</strong> O 13º salário <strong>NÃO</strong> é somado ao salário mensal para cálculo de INSS/IRRF. Ele é tributado separadamente.
+      </p>
+
+      <h3>Exemplos Práticos Completos</h3>
+
+      <h4>Exemplo 1: Trabalhou o Ano Todo</h4>
+      <ul>
+        <li><strong>Salário:</strong> R$ 3.500</li>
+        <li><strong>Meses:</strong> 12</li>
+        <li><strong>13º bruto:</strong> R$ 3.500</li>
+        <li><strong>1ª parcela (novembro):</strong> R$ 1.750 (sem desconto)</li>
+        <li><strong>INSS:</strong> R$ 331,86</li>
+        <li><strong>IRRF:</strong> R$ 95,85</li>
+        <li><strong>2ª parcela (dezembro):</strong> R$ 1.322,29</li>
+        <li><strong>Total líquido:</strong> R$ 3.072,29</li>
+      </ul>
+
+      <h4>Exemplo 2: Trabalhou 6 Meses</h4>
+      <ul>
+        <li><strong>Salário:</strong> R$ 5.000</li>
+        <li><strong>Meses:</strong> 6</li>
+        <li><strong>13º bruto:</strong> R$ 2.500</li>
+        <li><strong>1ª parcela:</strong> R$ 1.250 (sem desconto)</li>
+        <li><strong>INSS:</strong> R$ 222,07</li>
+        <li><strong>IRRF:</strong> R$ 0 (isento)</li>
+        <li><strong>2ª parcela:</strong> R$ 1.027,93</li>
+        <li><strong>Total líquido:</strong> R$ 2.277,93</li>
+      </ul>
+
+      <h4>Exemplo 3: Entrou em Julho</h4>
+      <ul>
+        <li><strong>Salário:</strong> R$ 2.800</li>
+        <li><strong>Meses trabalhados:</strong> 6 (julho a dezembro)</li>
+        <li><strong>13º bruto:</strong> R$ 1.400</li>
+        <li><strong>1ª parcela:</strong> R$ 700</li>
+        <li><strong>INSS:</strong> R$ 126,00</li>
+        <li><strong>IRRF:</strong> R$ 0 (isento)</li>
+        <li><strong>2ª parcela:</strong> R$ 574,00</li>
+        <li><strong>Total líquido:</strong> R$ 1.274,00</li>
+      </ul>
+
+      <h3>13º Salário em Casos Especiais</h3>
+
+      <h4>Férias Durante o Ano</h4>
+      <p>O 13º <strong>não é afetado</strong> por férias. Você recebe o 13º normalmente mesmo se tirou férias.</p>
+
+      <h4>Licença Médica (Auxílio-Doença)</h4>
+      <p>Os <strong>primeiros 15 dias</strong> contam para o 13º (pagos pela empresa). Após o 15º dia, o INSS assume e paga o 13º proporcional ao período de afastamento.</p>
+
+      <h4>Licença-Maternidade</h4>
+      <p>Todo o período de licença-maternidade <strong>conta como tempo trabalhado</strong>. Você recebe o 13º integralmente.</p>
+
+      <h4>Mudança de Salário Durante o Ano</h4>
+      <p>Usa-se o <strong>salário de dezembro</strong> como base de cálculo do 13º, incluindo aumentos e promoções.</p>
+
+      <h4>Horas Extras Habituais</h4>
+      <p>Se você faz horas extras regularmente, a <strong>média mensal das horas extras</strong> deve ser incluída no cálculo do 13º.</p>
+
+      <h3>Adiantamento do 13º nas Férias</h3>
+      <p>
+        Você pode pedir o <strong>adiantamento da 1ª parcela</strong> junto com as férias. Para isso, é preciso fazer a solicitação <strong>por escrito ao empregador em janeiro</strong> do mesmo ano. Ao receber o adiantamento nas férias, você não receberá a 1ª parcela em novembro (só a 2ª em dezembro).
+      </p>
+
+      <h3>Rescisão e 13º Proporcional</h3>
+      <p>
+        Se você sair do emprego (ou for demitido) antes de receber o 13º, tem direito ao <strong>13º proporcional</strong> aos meses trabalhados no ano. O cálculo é o mesmo:
+      </p>
+      <pre>13º Proporcional = (Salário ÷ 12) × Meses Trabalhados</pre>
+      <p>
+        <strong>Exceção:</strong> Em demissão por <strong>justa causa</strong>, você perde o direito ao 13º proporcional.
+      </p>
+
+      <h3>Prazos de Pagamento</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Situação</th>
+            <th>1ª Parcela</th>
+            <th>2ª Parcela</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Trabalhando</td>
+            <td>Até 30/novembro</td>
+            <td>Até 20/dezembro</td>
+          </tr>
+          <tr>
+            <td>Saiu do emprego</td>
+            <td colspan="2">Proporcional na rescisão</td>
+          </tr>
+          <tr>
+            <td>Aposentado/Pensionista</td>
+            <td>Até 30/novembro</td>
+            <td>Até 20/dezembro</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        <strong>Multa por atraso:</strong> Se o empregador não pagar no prazo, está sujeito a multa administrativa e deve corrigir o valor com juros.
       </p>
     </div>
-    <CalculatorFAQ heading="Preguntas frecuentes" items={faqItems} />
+    <CalculatorFAQ heading="Perguntas frequentes sobre o 13º salário" items={faqItems} />
   </article>
   <CalculatorResource locale="pt-BR" category="labor" />
 </BaseLayout>

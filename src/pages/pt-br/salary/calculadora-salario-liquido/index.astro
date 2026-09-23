@@ -6,14 +6,75 @@ import InContentAd from '../../../../components/ads/InContentAd.astro';
 import { buildLocalePath } from '../../../../i18n/utils';
 import BrSalarioLiquidoCalculator from '../../../../components/islands/BrSalarioLiquidoCalculator';
 const locale = 'pt-BR' as const;
+
+// Schema markup for SEO
+const schemaWebApp = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Calculadora de Salário Líquido 2026",
+  "description": "Calculadora gratuita para calcular salário líquido no Brasil com INSS e IRRF 2026. Isenção até R$ 5.000.",
+  "url": "https://payrentax.me/pt-br/salary/calculadora-salario-liquido/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "BRL"
+  },
+  "inLanguage": "pt-BR",
+  "featureList": "Cálculo de INSS progressivo, IRRF 2026, dedução de dependentes, isenção até R$ 5.000"
+};
+
+const schemaFAQ = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Como é calculado o INSS progressivo em 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "O INSS é calculado por faixas progressivas: 7,5% até R$ 1.621, 9% de R$ 1.621,01 a R$ 2.902,84, 12% de R$ 2.902,85 a R$ 4.354,27, e 14% de R$ 4.354,28 até o teto de R$ 8.475,55. Cada faixa do salário é multiplicada pela alíquota correspondente."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quem está isento de IRRF em 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A partir de 2026, quem ganha até R$ 5.000 por mês está totalmente isento de Imposto de Renda (Lei 15.270/2025). Entre R$ 5.000 e R$ 7.350 há redução gradual do imposto."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Dependentes reduzem o Imposto de Renda?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim! Cada dependente deduz R$ 189,59 da base de cálculo do IRRF, reduzindo o imposto devido. Esta dedução é aplicada mensalmente."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Qual é o teto do INSS em 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "O teto de contribuição do INSS em 2026 é R$ 8.475,55. O desconto máximo é de R$ 921,51 por mês."
+      }
+    }
+  ]
+};
 ---
 
 <BaseLayout
   locale={locale}
-  title="Calculadora de Salário Líquido 2026 — PayRenTax"
-  description="Calcule o salário líquido mensal no Brasil com INSS e IRRF 2026. Inclui dedução de dependentes e detalhamento completo por faixas."
+  title="Calculadora de Salário Líquido 2026 Brasil | INSS e IRRF | PayRenTax"
+  description="Calculadora de salário líquido 2026: calcule quanto sobra do seu salário após INSS (7,5%-14%) e IRRF. Isenção até R$ 5.000. Resultado em segundos, grátis."
   canonical="/pt-br/salary/calculadora-salario-liquido/"
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schemaWebApp)} />
+    <script type="application/ld+json" set:html={JSON.stringify(schemaFAQ)} />
+  </Fragment>
   <Breadcrumbs
     locale={locale}
     trail={[{ label: 'Calculadoras de salário', href: buildLocalePath(locale, 'salary') }]}
@@ -31,27 +92,158 @@ const locale = 'pt-BR' as const;
       <InContentAd slotId="br-salario-liquido-1" />
     </div>
     <div class="mt-10 prose prose-slate max-w-none">
-      <h2>Como funciona o cálculo</h2>
+      <h2>Como Funciona a Calculadora de Salário Líquido 2026</h2>
       <p>
-        A calculadora aplica as tabelas oficiais de INSS e IRRF de 2026. O INSS é calculado 
-        progressivamente por faixas (7,5% a 14%), e o IRRF considera a nova regra de isenção 
-        até R$ 5.000 mensais com redução gradual até R$ 7.350.
+        Esta calculadora usa as <strong>tabelas oficiais de INSS e IRRF vigentes em 2026</strong>, publicadas pela Receita Federal e pelo Ministério da Previdência Social. O cálculo considera as alíquotas progressivas do INSS e a nova regra de isenção do IRRF até R$ 5.000 mensais.
       </p>
+
+      <h3>Tabela INSS 2026 (Progressiva)</h3>
       <p>
-        Cada dependente deduz R$ 189,59 mensais da base de cálculo do IRRF, reduzindo o imposto devido.
+        O desconto do INSS é calculado por faixas progressivas. Cada faixa do seu salário tem sua própria alíquota aplicada apenas sobre a parcela dentro daquela faixa:
       </p>
-      <h3>INSS 2026</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Faixa Salarial</th>
+            <th>Alíquota</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Até R$ 1.621,00</td>
+            <td>7,5%</td>
+          </tr>
+          <tr>
+            <td>R$ 1.621,01 a R$ 2.902,84</td>
+            <td>9%</td>
+          </tr>
+          <tr>
+            <td>R$ 2.902,85 a R$ 4.354,27</td>
+            <td>12%</td>
+          </tr>
+          <tr>
+            <td>R$ 4.354,28 a R$ 8.475,55</td>
+            <td>14%</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        <strong>Importante:</strong> O INSS é calculado progressivamente, não sobre o salário total. Por exemplo, em um salário de R$ 5.000, os primeiros R$ 1.621 são taxados a 7,5%, depois a próxima faixa a 9%, e assim por diante. O desconto máximo (teto) é de R$ 921,51.
+      </p>
+
+      <h3>Tabela IRRF 2026 (Com Nova Isenção)</h3>
+      <p>
+        <strong>Grande novidade de 2026:</strong> Quem ganha até R$ 5.000 por mês está <strong>totalmente isento</strong> de Imposto de Renda, conforme a Lei 15.270/2025. Esta é a maior faixa de isenção da história do Brasil.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Base de Cálculo</th>
+            <th>Alíquota</th>
+            <th>Dedução</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Até R$ 2.428,80</td>
+            <td>Isento</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>R$ 2.428,81 a R$ 2.826,65</td>
+            <td>7,5%</td>
+            <td>R$ 182,16</td>
+          </tr>
+          <tr>
+            <td>R$ 2.826,66 a R$ 3.751,05</td>
+            <td>15%</td>
+            <td>R$ 394,16</td>
+          </tr>
+          <tr>
+            <td>R$ 3.751,06 a R$ 4.664,68</td>
+            <td>22,5%</td>
+            <td>R$ 675,49</td>
+          </tr>
+          <tr>
+            <td>Acima de R$ 4.664,68</td>
+            <td>27,5%</td>
+            <td>R$ 908,73</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        <strong>Redutor especial:</strong> Entre R$ 5.000 e R$ 7.350, há uma redução gradual do imposto calculado, garantindo que quem ganha perto do limite tenha um desconto proporcional.
+      </p>
+
+      <h3>Exemplos Práticos de Cálculo</h3>
+      
+      <h4>Exemplo 1: Salário de R$ 3.000</h4>
       <ul>
-        <li>Até R$ 1.621,00: 7,5%</li>
-        <li>De R$ 1.621,01 até R$ 2.902,84: 9%</li>
-        <li>De R$ 2.902,85 até R$ 4.354,27: 12%</li>
-        <li>De R$ 4.354,28 até R$ 8.475,55 (teto): 14%</li>
+        <li><strong>INSS:</strong> R$ 283,86 (cálculo progressivo)</li>
+        <li><strong>IRRF:</strong> R$ 0 (isento até R$ 5.000)</li>
+        <li><strong>Salário líquido:</strong> R$ 2.716,14</li>
       </ul>
-      <h3>IRRF 2026</h3>
+
+      <h4>Exemplo 2: Salário de R$ 6.000</h4>
+      <ul>
+        <li><strong>INSS:</strong> R$ 642,01</li>
+        <li><strong>IRRF:</strong> ~R$ 89,50 (com redutor parcial)</li>
+        <li><strong>Salário líquido:</strong> ~R$ 5.268,49</li>
+      </ul>
+
+      <h4>Exemplo 3: Salário de R$ 10.000</h4>
+      <ul>
+        <li><strong>INSS:</strong> R$ 921,51 (teto)</li>
+        <li><strong>IRRF:</strong> ~R$ 1.150,00</li>
+        <li><strong>Salário líquido:</strong> ~R$ 7.928,49</li>
+      </ul>
+
+      <h3>Como é Calculado o INSS Progressivo?</h3>
       <p>
-        A partir de 2026, salários até R$ 5.000 mensais são isentos de IRRF. Entre R$ 5.000,01 
-        e R$ 7.350,00 há uma redução gradual do imposto. Acima disso, aplicam-se as alíquotas 
-        progressivas de 7,5% a 27,5%.
+        O cálculo progressivo significa que cada faixa do seu salário é multiplicada pela alíquota correspondente. Veja um exemplo detalhado para salário de R$ 5.000:
+      </p>
+      <ul>
+        <li>Primeiros R$ 1.621,00 × 7,5% = R$ 121,58</li>
+        <li>R$ 1.281,84 × 9% = R$ 115,37</li>
+        <li>R$ 1.451,43 × 12% = R$ 174,17</li>
+        <li>R$ 645,73 × 14% = R$ 90,40</li>
+        <li><strong>Total INSS:</strong> R$ 501,52</li>
+      </ul>
+
+      <h3>Por Que Usar Esta Calculadora?</h3>
+      <ul>
+        <li>✅ <strong>Tabelas 2026 atualizadas</strong> — Inclui a nova isenção até R$ 5.000</li>
+        <li>✅ <strong>Cálculo progressivo correto</strong> — INSS calculado por faixas conforme legislação</li>
+        <li>✅ <strong>Gratuito e sem cadastro</strong> — Resultado instantâneo, sem burocracia</li>
+        <li>✅ <strong>Preciso e confiável</strong> — Baseado em legislação oficial do governo federal</li>
+        <li>✅ <strong>Dedução de dependentes</strong> — Cada dependente reduz R$ 189,59 da base de cálculo</li>
+      </ul>
+
+      <h2 class="mt-12">Perguntas Frequentes</h2>
+      
+      <h3>Quando a isenção de R$ 5.000 vale?</h3>
+      <p>
+        A isenção considera o salário <strong>bruto mensal</strong>. Se você ganha até R$ 5.000 de salário bruto, o IRRF será zerado automaticamente. Esta regra começou a valer em 1º de janeiro de 2026.
+      </p>
+
+      <h3>Dependentes reduzem o imposto?</h3>
+      <p>
+        Sim! Cada dependente (filho menor de 21 anos, filho universitário até 24 anos, cônjuge sem renda, pais/avós com renda baixa) deduz <strong>R$ 189,59 mensais</strong> da base de cálculo do IRRF. Quanto mais dependentes, menor o imposto.
+      </p>
+
+      <h3>O que muda com a nova faixa de isenção?</h3>
+      <p>
+        Antes de 2026, apenas quem ganhava até R$ 2.824 estava isento. Agora, <strong>mais de 90% dos trabalhadores brasileiros</strong> estão isentos de Imposto de Renda, economizando até R$ 600 por mês.
+      </p>
+
+      <h3>Como funciona o redutor entre R$ 5.000 e R$ 7.350?</h3>
+      <p>
+        É um desconto especial que evita que quem ganha um pouco acima de R$ 5.000 seja prejudicado. O redutor diminui gradualmente até R$ 7.350, garantindo uma transição suave para as alíquotas normais.
+      </p>
+
+      <h3>Posso confiar nesta calculadora?</h3>
+      <p>
+        Sim! Nossos cálculos são baseados nas <strong>tabelas oficiais da Receita Federal</strong> e do Ministério da Previdência (Portaria Interministerial MPS/MF nº 26/2025). Atualizamos sempre que há mudanças na legislação.
       </p>
     </div>
   </article>
