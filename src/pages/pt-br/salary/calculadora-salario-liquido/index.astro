@@ -3,6 +3,7 @@ import CalculatorResource from '../../../../components/content/CalculatorResourc
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
 import InContentAd from '../../../../components/ads/InContentAd.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
 import { buildLocalePath } from '../../../../i18n/utils';
 import BrSalarioLiquidoCalculator from '../../../../components/islands/BrSalarioLiquidoCalculator';
 const locale = 'pt-BR' as const;
@@ -63,6 +64,29 @@ const schemaFAQ = {
     }
   ]
 };
+
+const faqItems = [
+  {
+    question: 'Como é calculado o INSS progressivo em 2026?',
+    answer: 'O INSS é calculado por faixas progressivas: 7,5% até R$ 1.621, 9% de R$ 1.621,01 a R$ 2.902,84, 12% de R$ 2.902,85 a R$ 4.354,27, e 14% de R$ 4.354,28 até o teto de R$ 8.475,55. Cada faixa do salário é multiplicada pela alíquota correspondente. Por exemplo, em um salário de R$ 5.000: primeiros R$ 1.621 × 7,5% = R$ 121,58, depois R$ 1.281,84 × 9% = R$ 115,37, e assim por diante.'
+  },
+  {
+    question: 'Quem está isento de IRRF em 2026?',
+    answer: 'A partir de 2026, quem ganha até R$ 5.000 por mês está totalmente isento de Imposto de Renda (Lei 15.270/2025). Entre R$ 5.000 e R$ 7.350 há redução gradual do imposto através de um redutor especial.'
+  },
+  {
+    question: 'Dependentes reduzem o imposto?',
+    answer: 'Sim! Cada dependente (filho menor de 21 anos, filho universitário até 24 anos, cônjuge sem renda, pais/avós com renda baixa) deduz R$ 189,59 mensais da base de cálculo do IRRF. Quanto mais dependentes, menor o imposto a pagar.'
+  },
+  {
+    question: 'O que muda com a nova faixa de isenção?',
+    answer: 'Antes de 2026, apenas quem ganhava até R$ 2.824 estava isento. Agora, mais de 90% dos trabalhadores brasileiros estão isentos de Imposto de Renda, economizando até R$ 600 por mês.'
+  },
+  {
+    question: 'Posso confiar nesta calculadora?',
+    answer: 'Sim! Nossos cálculos são baseados nas tabelas oficiais da Receita Federal e do Ministério da Previdência (Portaria Interministerial MPS/MF nº 26/2025). Atualizamos sempre que há mudanças na legislação.'
+  }
+];
 ---
 
 <BaseLayout
@@ -219,33 +243,8 @@ const schemaFAQ = {
         <li>✅ <strong>Dedução de dependentes</strong> — Cada dependente reduz R$ 189,59 da base de cálculo</li>
       </ul>
 
-      <h2 class="mt-12">Perguntas Frequentes</h2>
-      
-      <h3>Quando a isenção de R$ 5.000 vale?</h3>
-      <p>
-        A isenção considera o salário <strong>bruto mensal</strong>. Se você ganha até R$ 5.000 de salário bruto, o IRRF será zerado automaticamente. Esta regra começou a valer em 1º de janeiro de 2026.
-      </p>
-
-      <h3>Dependentes reduzem o imposto?</h3>
-      <p>
-        Sim! Cada dependente (filho menor de 21 anos, filho universitário até 24 anos, cônjuge sem renda, pais/avós com renda baixa) deduz <strong>R$ 189,59 mensais</strong> da base de cálculo do IRRF. Quanto mais dependentes, menor o imposto.
-      </p>
-
-      <h3>O que muda com a nova faixa de isenção?</h3>
-      <p>
-        Antes de 2026, apenas quem ganhava até R$ 2.824 estava isento. Agora, <strong>mais de 90% dos trabalhadores brasileiros</strong> estão isentos de Imposto de Renda, economizando até R$ 600 por mês.
-      </p>
-
-      <h3>Como funciona o redutor entre R$ 5.000 e R$ 7.350?</h3>
-      <p>
-        É um desconto especial que evita que quem ganha um pouco acima de R$ 5.000 seja prejudicado. O redutor diminui gradualmente até R$ 7.350, garantindo uma transição suave para as alíquotas normais.
-      </p>
-
-      <h3>Posso confiar nesta calculadora?</h3>
-      <p>
-        Sim! Nossos cálculos são baseados nas <strong>tabelas oficiais da Receita Federal</strong> e do Ministério da Previdência (Portaria Interministerial MPS/MF nº 26/2025). Atualizamos sempre que há mudanças na legislação.
-      </p>
     </div>
+    <CalculatorFAQ heading="Perguntas frequentes sobre salário líquido" items={faqItems} />
   </article>
   <CalculatorResource locale="pt-BR" category="salary" />
 </BaseLayout>
