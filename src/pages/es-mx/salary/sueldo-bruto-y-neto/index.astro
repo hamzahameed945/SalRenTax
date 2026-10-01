@@ -10,8 +10,8 @@ const locale = 'es-MX' as const;
 
 <BaseLayout
   locale={locale}
-  title="Sueldo Bruto y Neto 2026 — PayRenTax"
-  description="Compara sueldo bruto y sueldo neto estimado en México."
+  title="Calculadora de Salario Neto México 2026 | ISR e IMSS Gratis | PayRenTax"
+  description="Calcula tu salario neto en México 2026. Descuenta ISR (1.92%-35%) e IMSS (1.125%). Tablas actualizadas. Resultado instantáneo, 100% gratis."
   canonical="/es-mx/salary/sueldo-bruto-y-neto/"
 >
   <Breadcrumbs
@@ -19,9 +19,9 @@ const locale = 'es-MX' as const;
     trail={[{ label: 'Calculadoras de sueldo', href: buildLocalePath(locale, 'salary') }]}
   />
   <article class="mx-auto max-w-4xl px-4 py-10">
-    <h1 class="text-3xl font-bold text-slate-900">Sueldo Bruto y Neto 2026</h1>
+    <h1 class="text-3xl font-bold text-slate-900">Calculadora de Salario Neto México 2026</h1>
     <p class="mt-3 max-w-2xl text-slate-600">
-      La herramienta reutiliza el motor salarial de México y muestra ISR e IMSS estimados.
+      Calcula tu sueldo neto mensual después de ISR (Impuesto Sobre la Renta) e IMSS. Usa las tablas oficiales 2026 del SAT. Resultado instantáneo y gratis.
     </p>
     <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
       <MexicoSalaryCalculator client:load locale={locale} />
@@ -30,8 +30,202 @@ const locale = 'es-MX' as const;
       <InContentAd slotId="mx-bruto-neto-1" />
     </div>
     <div class="mt-10 prose prose-slate max-w-none">
-      <h2>Sueldo bruto y neto</h2>
-      <p>La herramienta reutiliza el motor salarial de México y muestra ISR e IMSS estimados.</p>
+      <h2>Cómo Funciona la Calculadora de Sueldo Neto 2026</h2>
+      <p>
+        Esta calculadora usa las <strong>tablas oficiales del SAT (Servicio de Administración Tributaria)</strong> actualizadas para 2026. 
+        Calcula automáticamente el ISR y la cuota obrera del IMSS para mostrarte cuánto dinero llevas a casa cada mes.
+      </p>
+
+      <h3>Tabla ISR 2026 México (Artículo 96 LISR)</h3>
+      <p>
+        El Impuesto Sobre la Renta (ISR) se calcula con tasas progresivas que van del 1.92% hasta el 35% según tu ingreso mensual:
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Ingreso Mensual</th>
+            <th>Tasa ISR</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>$0.01 – $844.59</td>
+            <td>1.92%</td>
+          </tr>
+          <tr>
+            <td>$844.60 – $7,168.51</td>
+            <td>6.40%</td>
+          </tr>
+          <tr>
+            <td>$7,168.52 – $12,598.02</td>
+            <td>10.88%</td>
+          </tr>
+          <tr>
+            <td>$12,598.03 – $14,644.64</td>
+            <td>16.00%</td>
+          </tr>
+          <tr>
+            <td>$14,644.65 – $17,382.03</td>
+            <td>17.92%</td>
+          </tr>
+          <tr>
+            <td>$17,382.04 – $20,509.02</td>
+            <td>21.36%</td>
+          </tr>
+          <tr>
+            <td>$20,509.03 – $32,736.83</td>
+            <td>23.52%</td>
+          </tr>
+          <tr>
+            <td>$32,736.84 – $62,500.00</td>
+            <td>30.00%</td>
+          </tr>
+          <tr>
+            <td>$62,500.01 – $83,333.33</td>
+            <td>32.00%</td>
+          </tr>
+          <tr>
+            <td>$83,333.34 – $250,000.00</td>
+            <td>34.00%</td>
+          </tr>
+          <tr>
+            <td>Más de $250,000.00</td>
+            <td>35.00%</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>IMSS Cuota Obrera 2026</h3>
+      <p>
+        La cuota obrera del IMSS (Cesantía y Vejez) es del <strong>1.125%</strong> de tu salario base de cotización. 
+        Este descuento financia tu pensión futura y es obligatorio para todos los trabajadores formales en México.
+      </p>
+
+      <h3>Ejemplos Prácticos de Cálculo</h3>
+
+      <h4>Ejemplo 1: Salario de $15,000 MXN mensuales</h4>
+      <ul>
+        <li><strong>Salario bruto:</strong> $15,000</li>
+        <li><strong>ISR:</strong> ~$1,800 (12% efectivo)</li>
+        <li><strong>IMSS:</strong> ~$169 (1.125%)</li>
+        <li><strong>Salario neto:</strong> <strong>~$13,031</strong></li>
+      </ul>
+      <p>Te quedas con el <strong>86.9%</strong> de tu salario bruto.</p>
+
+      <h4>Ejemplo 2: Salario de $30,000 MXN mensuales</h4>
+      <ul>
+        <li><strong>Salario bruto:</strong> $30,000</li>
+        <li><strong>ISR:</strong> ~$5,500 (18.3% efectivo)</li>
+        <li><strong>IMSS:</strong> ~$338</li>
+        <li><strong>Salario neto:</strong> <strong>~$24,162</strong></li>
+      </ul>
+      <p>Te quedas con el <strong>80.5%</strong> de tu salario bruto.</p>
+
+      <h4>Ejemplo 3: Salario de $50,000 MXN mensuales</h4>
+      <ul>
+        <li><strong>Salario bruto:</strong> $50,000</li>
+        <li><strong>ISR:</strong> ~$11,000 (22% efectivo)</li>
+        <li><strong>IMSS:</strong> ~$563</li>
+        <li><strong>Salario neto:</strong> <strong>~$38,437</strong></li>
+      </ul>
+      <p>Te quedas con el <strong>76.9%</strong> de tu salario bruto.</p>
+
+      <h3>Cálculo de Sueldo 2026: Paso a Paso</h3>
+      <p>Para calcular tu sueldo neto manualmente, sigue estos pasos:</p>
+      <ol>
+        <li><strong>Identifica tu salario bruto mensual</strong> (lo que dice tu contrato)</li>
+        <li><strong>Calcula el ISR</strong> usando la tabla del Art. 96 de la LISR</li>
+        <li><strong>Calcula la cuota IMSS</strong> (salario × 1.125%)</li>
+        <li><strong>Resta ambos descuentos</strong> del salario bruto</li>
+        <li><strong>Resultado = Salario Neto</strong> (lo que recibes en tu cuenta)</li>
+      </ol>
+
+      <h3>Diferencia entre Salario Bruto y Neto</h3>
+      <p>
+        <strong>Salario Bruto:</strong> Es el monto total que tu empleador paga antes de impuestos. 
+        Es el número que aparece en tu contrato de trabajo.
+      </p>
+      <p>
+        <strong>Salario Neto:</strong> Es el dinero real que recibes en tu cuenta bancaria después de descontar 
+        ISR, IMSS y otras deducciones. Este es tu "take-home pay" o sueldo líquido.
+      </p>
+      <p>
+        <strong>Ejemplo visual:</strong><br>
+        💰 Salario Bruto: $20,000<br>
+        ➖ ISR: $2,800<br>
+        ➖ IMSS: $225<br>
+        ➖ Otras deducciones: $500<br>
+        = <strong>Salario Neto: $16,475</strong> ✅ (esto recibes)
+      </p>
+
+      <h3>Qué No Incluye Esta Calculadora</h3>
+      <p>Esta calculadora es una <strong>estimación</strong> y no incluye:</p>
+      <ul>
+        <li>❌ Subsidio al empleo (puede reducir tu ISR si ganas poco)</li>
+        <li>❌ Otras ramas del IMSS (solo calcula Cesantía y Vejez)</li>
+        <li>❌ Deducciones personales adicionales</li>
+        <li>❌ Préstamos, infonavit o pensión alimenticia</li>
+        <li>❌ PTU (Participación de los Trabajadores en las Utilidades)</li>
+      </ul>
+      <p>
+        Para un cálculo exacto, consulta tu <strong>recibo de nómina</strong> oficial o habla con el departamento 
+        de recursos humanos de tu empresa.
+      </p>
+
+      <h3>Por Qué Usar Esta Calculadora</h3>
+      <ul>
+        <li>✅ <strong>Tablas SAT 2026 actualizadas</strong> — Información oficial y confiable</li>
+        <li>✅ <strong>Cálculo instantáneo</strong> — Resultado en menos de 1 segundo</li>
+        <li>✅ <strong>100% gratis</strong> — Sin registro, sin pagos, sin publicidad invasiva</li>
+        <li>✅ <strong>Fácil de usar</strong> — Solo ingresa tu salario bruto y listo</li>
+        <li>✅ <strong>Privado y seguro</strong> — No guardamos tu información personal</li>
+      </ul>
+
+      <h3>Preguntas Frecuentes</h3>
+      
+      <h4>¿El ISR máximo es 35%?</h4>
+      <p>
+        Sí, la tasa marginal máxima del ISR en México es del 35% para ingresos mensuales superiores a $250,000 MXN. 
+        Sin embargo, la tasa <strong>efectiva</strong> siempre es menor porque el ISR es progresivo.
+      </p>
+
+      <h4>¿Cuánto es el descuento del IMSS?</h4>
+      <p>
+        Esta calculadora descuenta el 1.125% correspondiente a Cesantía en Edad Avanzada y Vejez. 
+        Tu empleador también paga otras cuotas al IMSS que no aparecen en tu recibo.
+      </p>
+
+      <h4>¿Por qué mi salario neto es diferente al calculado?</h4>
+      <p>
+        Pueden existir otras deducciones como: préstamos personales, descuentos de caja de ahorro, 
+        Infonavit, seguro de vida, o ajustes por aguinaldo anualizado. Revisa tu recibo de nómina completo.
+      </p>
+
+      <h4>¿Qué es el subsidio al empleo?</h4>
+      <p>
+        Es un beneficio para trabajadores de bajos ingresos que <strong>reduce el ISR a pagar</strong>. 
+        Si ganas menos de $7,000 MXN mensuales, es probable que apliques para este subsidio. 
+        Tu nómina debe incluirlo automáticamente.
+      </p>
+
+      <h4>¿Cómo puedo bajar mis impuestos legalmente?</h4>
+      <p>
+        Puedes hacer <strong>deducciones personales</strong> anuales por: gastos médicos, colegiaturas, 
+        intereses hipotecarios, aportaciones voluntarias a tu Afore, seguro de gastos médicos, entre otros. 
+        Estas se aplican en tu declaración anual de impuestos.
+      </p>
+
+      <h3>Calculadoras Relacionadas</h3>
+      <div class="not-prose grid gap-4 md:grid-cols-2">
+        <a href="/es-mx/salary/calculadora-isr/" class="block p-4 rounded-lg border border-slate-200 hover:border-blue-300 hover:shadow-sm transition-all">
+          <h4 class="font-semibold text-slate-900 mb-1">Calculadora ISR México</h4>
+          <p class="text-sm text-slate-600">Calcula solo el Impuesto Sobre la Renta</p>
+        </a>
+        <a href="/es-mx/labor/calculadora-liquidacion/" class="block p-4 rounded-lg border border-slate-200 hover:border-blue-300 hover:shadow-sm transition-all">
+          <h4 class="font-semibold text-slate-900 mb-1">Calculadora de Liquidación</h4>
+          <p class="text-sm text-slate-600">Finiquito y derechos laborales</p>
+        </a>
+      </div>
     </div>
   </article>
   <CalculatorResource locale="es-MX" category="salary" />
