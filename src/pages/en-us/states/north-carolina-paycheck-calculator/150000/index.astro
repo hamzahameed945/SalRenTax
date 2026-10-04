@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../../components/seo/JsonLd.astro';
+import { getDictionary } from '../../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../../lib/seo/structuredData';
+
+const locale = 'en-US' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  '$150,000 After Tax in North Carolina (2026) \u2014 Take-Home Pay \u2014 PayRenTax',
+  'A $150,000 salary in North Carolina is $108,315 after tax in 2026. Federal, state & FICA breakdown inside.',
+  '/en-us/states/north-carolina-paycheck-calculator/150000/',
+);
+
+const faqItems = [
+  {
+    question: 'How much is $150,000 after tax in North Carolina?',
+    answer:
+      'A $150,000 salary in North Carolina leaves you $108,315 per year after federal and state taxes in 2026. That is $9,026 per month or $4,166 every two weeks, assuming a single filer with no pre-tax deductions.',
+  },
+  {
+    question: 'What is the effective tax rate on $150,000 in North Carolina?',
+    answer:
+      'The combined effective tax rate (federal income tax, FICA, and North Carolina state tax) on a $150,000 salary in North Carolina is 27.79%. Your North Carolina state income tax is $5,476 for the year.',
+  },
+  {
+    question: 'How much federal tax do you pay on $150,000 in North Carolina?',
+    answer:
+      'Federal income tax on $150,000 for a single filer in 2026 is $24,734. Social Security takes $9,300 and Medicare $2,175. Customize the numbers with the interactive calculator below.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'States', href: buildLocalePath(locale, 'states') },
+      {
+        label: 'North Carolina Paycheck Calculator',
+        href: buildLocalePath(locale, 'states/north-carolina-paycheck-calculator'),
+      },
+      { label: '$150,000 after tax', href: buildLocalePath(locale, 'states/north-carolina-paycheck-calculator/150000') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">$150,000 After Tax in North Carolina: 2026 Take-Home Pay</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      A <strong>$150,000</strong> salary in North Carolina is <strong>$108,315 per year</strong> after
+      federal income tax, FICA, and North Carolina state tax in 2026 \u2014 that is $9,026/month.
+    </p>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-semibold">2026 tax breakdown: $150,000 in North Carolina</h2>
+      <table class="mt-4 w-full text-sm">
+        <tbody>
+          <tr><td>Gross salary</td><td>$150,000</td></tr>
+          <tr><td>Federal income tax</td><td>$24,734</td></tr>
+          <tr><td>North Carolina income tax</td><td>$5,476</td></tr>
+          <tr><td>Social Security (6.2%)</td><td>$9,300</td></tr>
+          <tr><td>Medicare (1.45%)</td><td>$2,175</td></tr>
+          <tr class="font-semibold"><td>Take-home pay</td><td>$108,315</td></tr>
+        </tbody>
+      </table>
+      <p class="mt-4 text-xs text-slate-500">
+        Single filer, no pre-tax deductions, 2026 IRS brackets and North Carolina 2026 tax rules.
+        Figures are estimates \u2014 adjust inputs in the calculator below.
+      </p>
+    </div>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-semibold">Take-home per pay period</h2>
+      <table class="mt-4 w-full text-sm">
+        <tbody>
+          <tr><td>Annual</td><td>$108,315</td></tr>
+          <tr><td>Monthly</td><td>$9,026</td></tr>
+          <tr><td>Biweekly</td><td>$4,166</td></tr>
+          <tr><td>Weekly</td><td>$2,083</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="nc-paycheck-150000" />
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="$150,000 in North Carolina: FAQs" items={faqItems} />
+  </article>
+</BaseLayout>

@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../../components/seo/JsonLd.astro';
+import { getDictionary } from '../../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../../lib/seo/structuredData';
+
+const locale = 'en-US' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  '$100,000 After Tax in North Dakota (2026) \u2014 Take-Home Pay \u2014 PayRenTax',
+  'A $100,000 salary in North Dakota is $78,489 after tax in 2026. Federal, state & FICA breakdown inside.',
+  '/en-us/states/north-dakota-paycheck-calculator/100000/',
+);
+
+const faqItems = [
+  {
+    question: 'How much is $100,000 after tax in North Dakota?',
+    answer:
+      'A $100,000 salary in North Dakota leaves you $78,489 per year after federal and state taxes in 2026. That is $6,541 per month or $3,019 every two weeks, assuming a single filer with no pre-tax deductions.',
+  },
+  {
+    question: 'What is the effective tax rate on $100,000 in North Dakota?',
+    answer:
+      'The combined effective tax rate (federal income tax, FICA, and North Dakota state tax) on a $100,000 salary in North Dakota is 21.51%. Your North Dakota state income tax is $691 for the year.',
+  },
+  {
+    question: 'How much federal tax do you pay on $100,000 in North Dakota?',
+    answer:
+      'Federal income tax on $100,000 for a single filer in 2026 is $13,170. Social Security takes $6,200 and Medicare $1,450. Customize the numbers with the interactive calculator below.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'States', href: buildLocalePath(locale, 'states') },
+      {
+        label: 'North Dakota Paycheck Calculator',
+        href: buildLocalePath(locale, 'states/north-dakota-paycheck-calculator'),
+      },
+      { label: '$100,000 after tax', href: buildLocalePath(locale, 'states/north-dakota-paycheck-calculator/100000') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">$100,000 After Tax in North Dakota: 2026 Take-Home Pay</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      A <strong>$100,000</strong> salary in North Dakota is <strong>$78,489 per year</strong> after
+      federal income tax, FICA, and North Dakota state tax in 2026 \u2014 that is $6,541/month.
+    </p>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-semibold">2026 tax breakdown: $100,000 in North Dakota</h2>
+      <table class="mt-4 w-full text-sm">
+        <tbody>
+          <tr><td>Gross salary</td><td>$100,000</td></tr>
+          <tr><td>Federal income tax</td><td>$13,170</td></tr>
+          <tr><td>North Dakota income tax</td><td>$691</td></tr>
+          <tr><td>Social Security (6.2%)</td><td>$6,200</td></tr>
+          <tr><td>Medicare (1.45%)</td><td>$1,450</td></tr>
+          <tr class="font-semibold"><td>Take-home pay</td><td>$78,489</td></tr>
+        </tbody>
+      </table>
+      <p class="mt-4 text-xs text-slate-500">
+        Single filer, no pre-tax deductions, 2026 IRS brackets and North Dakota 2026 tax rules.
+        Figures are estimates \u2014 adjust inputs in the calculator below.
+      </p>
+    </div>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-semibold">Take-home per pay period</h2>
+      <table class="mt-4 w-full text-sm">
+        <tbody>
+          <tr><td>Annual</td><td>$78,489</td></tr>
+          <tr><td>Monthly</td><td>$6,541</td></tr>
+          <tr><td>Biweekly</td><td>$3,019</td></tr>
+          <tr><td>Weekly</td><td>$1,509</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="nd-paycheck-100000" />
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="$100,000 in North Dakota: FAQs" items={faqItems} />
+  </article>
+</BaseLayout>
