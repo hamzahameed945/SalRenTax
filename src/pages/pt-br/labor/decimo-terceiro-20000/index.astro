@@ -1,0 +1,110 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import BrDecimoTerceiroCalculator from '../../../../components/islands/BrDecimoTerceiroCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'pt-BR' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Décimo terceiro de R$ 20.000 em 2026: quanto você recebe? — PayRenTax',
+  'Décimo terceiro de R$ 20.000 em 2026: R$ 10.000,00 na 1ª parcela (novembro) e R$ 10.000,00 na 2ª (dezembro). Calcule o seu.',
+  '/pt-br/labor/decimo-terceiro-20000/',
+);
+
+const faqItems = [
+    {
+      question: 'Quanto recebo de décimo terceiro com salário de R$ 20.000?',
+      answer:
+        'Com salário de R$ 20.000 e 12 meses trabalhados, o décimo terceiro de 2026 é R$ 20.000,00: R$ 10.000,00 na primeira parcela e R$ 10.000,00 na segunda.'
+    },
+    {
+      question: 'Quando cai a primeira parcela do décimo terceiro em 2026?',
+      answer:
+        'A primeira parcela do décimo terceiro de 2026 deve ser paga até 30 de novembro, sem descontos de INSS ou Imposto de Renda. A segunda parcela cai até 20 de dezembro.'
+    },
+    {
+      question: 'Tem desconto no décimo terceiro de R$ 20.000?',
+      answer:
+        'Na primeira parcela (R$ 10.000,00) não há descontos. Na segunda parcela (R$ 10.000,00) incidem INSS e Imposto de Renda, conforme as tabelas oficiais de 2026.'
+    }
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Direitos trabalhistas', href: buildLocalePath(locale, 'labor') },
+      { label: 'Décimo terceiro de R$ 20.000', href: buildLocalePath(locale, 'labor/decimo-terceiro-20000') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Décimo terceiro de R$ 20.000 em 2026: quanto você recebe?</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Com salário de <strong>R$ 20.000,00</strong> por mês, seu décimo terceiro em 2026 é de
+      <strong>R$ 20.000,00</strong>: R$ 10.000,00 na 1ª parcela (até 30 de novembro) e
+      R$ 10.000,00 na 2ª parcela (até 20 de dezembro).
+    </p>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-semibold">Parcelas do décimo terceiro em 2026</h2>
+      <table class="mt-4 w-full text-sm">
+        <tbody>
+          <tr><td>1ª parcela (até 30 de novembro)</td><td>R$ 10.000,00</td></tr>
+          <tr><td>2ª parcela (até 20 de dezembro)</td><td>R$ 10.000,00</td></tr>
+          <tr class="font-semibold"><td>Total do décimo terceiro</td><td>R$ 20.000,00</td></tr>
+        </tbody>
+      </table>
+      <p class="mt-4 text-xs text-slate-500">
+        Valores brutos para 12 meses trabalhados. A 1ª parcela não tem descontos;
+        na 2ª incidem INSS e IRRF. Simule na calculadora abaixo.
+      </p>
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="br-decimo-20000" />
+    </div>
+
+    <div class="mt-10">
+      <h2 class="text-xl font-semibold">Calcule seu décimo terceiro</h2>
+      <div class="mt-4">
+        <BrDecimoTerceiroCalculator client:load />
+      </div>
+    </div>
+
+    <nav class="mt-10" aria-label="Décimo terceiro por salário">
+      <h2 class="text-xl font-semibold">Décimo terceiro por salário</h2>
+      <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/labor/decimo-terceiro-2000/">Décimo terceiro de R$ 2.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/labor/decimo-terceiro-3000/">Décimo terceiro de R$ 3.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/labor/decimo-terceiro-5000/">Décimo terceiro de R$ 5.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/labor/decimo-terceiro-8000/">Décimo terceiro de R$ 8.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/labor/decimo-terceiro-10000/">Décimo terceiro de R$ 10.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/labor/decimo-terceiro-15000/">Décimo terceiro de R$ 15.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/labor/calcular-decimo-terceiro/">Calculadora de décimo terceiro</a></li>
+      </ul>
+    </nav>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Décimo terceiro de R$ 20.000: perguntas frequentes" items={faqItems} />
+  </article>
+</BaseLayout>
