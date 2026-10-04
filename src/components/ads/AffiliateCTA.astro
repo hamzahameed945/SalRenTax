@@ -1,0 +1,49 @@
+---
+import { getAffiliateOffers } from '../../lib/monetization/affiliates';
+
+export interface Props {
+  /** Locale code, e.g. 'en-US'. Renders only for locales with configured offers. */
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const offers = getAffiliateOffers(locale);
+---
+
+{
+  offers.length > 0 && (
+    <section
+      aria-label="Sponsored tax filing options"
+      class="rounded-xl border border-amber-200 bg-amber-50 p-6"
+    >
+      <p class="text-xs font-semibold uppercase tracking-wide text-amber-700">Sponsored</p>
+      <h2 class="mt-1 text-xl font-semibold text-slate-900">
+        Ready to file? Keep more of your paycheck
+      </h2>
+      <p class="mt-2 text-sm text-slate-600">
+        You know your take-home pay — now make tax season painless. These trusted filing services
+        handle federal and state returns for you.
+      </p>
+      <ul class="mt-4 grid gap-3 sm:grid-cols-3">
+        {offers.map((offer) => (
+          <li class="rounded-lg border border-slate-200 bg-white p-4">
+            <p class="font-semibold text-slate-900">{offer.name}</p>
+            <p class="mt-1 text-sm text-slate-600">{offer.tagline}</p>
+            <a
+              href={offer.url}
+              target="_blank"
+              rel="sponsored noopener noreferrer"
+              class="mt-3 inline-block rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
+            >
+              Visit {offer.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="mt-4 text-xs text-slate-500">
+        Disclosure: the links above are affiliate links. If you sign up through them, PayRenTax may
+        earn a commission at no extra cost to you — it keeps the calculators free.
+      </p>
+    </section>
+  )
+}

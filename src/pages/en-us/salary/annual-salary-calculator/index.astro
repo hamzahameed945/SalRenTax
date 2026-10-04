@@ -3,6 +3,7 @@ import CalculatorResource from '../../../../components/content/CalculatorResourc
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
 import InContentAd from '../../../../components/ads/InContentAd.astro';
+import AffiliateCTA from '../../../../components/ads/AffiliateCTA.astro';
 import HourlyToSalaryCalculator from '../../../../components/islands/HourlyToSalaryCalculator';
 import { enUS } from '../../../../i18n/en-US';
 import { buildLocalePath } from '../../../../i18n/utils';
@@ -30,6 +31,10 @@ const locale = 'en-US' as const;
     </div>
     <div class="mt-8">
       <InContentAd slotId="annual-salary-calculator-1" />
+    </div>
+
+    <div class="mt-8">
+      <AffiliateCTA locale="en-US" />
     </div>
     <div class="mt-10 prose prose-slate max-w-none">
       <h2>How the annual salary estimate works</h2>

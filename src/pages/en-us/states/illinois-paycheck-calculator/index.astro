@@ -3,6 +3,7 @@ import CalculatorResource from '../../../../components/content/CalculatorResourc
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
 import InContentAd from '../../../../components/ads/InContentAd.astro';
+import AffiliateCTA from '../../../../components/ads/AffiliateCTA.astro';
 import { buildLocalePath } from '../../../../i18n/utils';
 import PaycheckCalculator from '../../../../components/islands/PaycheckCalculator';
 const locale = 'en-US' as const;
@@ -35,6 +36,10 @@ const locale = 'en-US' as const;
     </div>
     <div class="mt-8">
       <InContentAd slotId="illinois-paycheck-1" />
+    </div>
+
+    <div class="mt-8">
+      <AffiliateCTA locale="en-US" />
     </div>
     <div class="mt-10 prose prose-slate max-w-none">
       <h2>How Illinois paycheck taxes work</h2>

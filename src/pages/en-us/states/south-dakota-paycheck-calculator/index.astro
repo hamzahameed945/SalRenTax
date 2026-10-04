@@ -4,6 +4,7 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
 import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
 import InContentAd from '../../../../components/ads/InContentAd.astro';
+import AffiliateCTA from '../../../../components/ads/AffiliateCTA.astro';
 import JsonLd from '../../../../components/seo/JsonLd.astro';
 import PaycheckCalculator from '../../../../components/islands/PaycheckCalculator';
 import { getDictionary } from '../../../../i18n/dictionaries';
@@ -76,6 +77,10 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
 
     <div class="mt-8">
       <InContentAd slotId="sd-paycheck-1" />
+    </div>
+
+    <div class="mt-8">
+      <AffiliateCTA locale="en-US" />
     </div>
 
     <div class="mt-10 prose prose-slate max-w-none">

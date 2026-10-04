@@ -1,0 +1,5 @@
+# AdSense authorization for payrentax.me
+# IMPORTANT: replace pub-0000000000000000 with the real publisher ID from the
+# Google AdSense account (AdSense > Sites > ads.txt) once the site is approved,
+# then redeploy. Until then this placeholder authorizes nothing.
+google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
