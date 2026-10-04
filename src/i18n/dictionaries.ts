@@ -5,6 +5,8 @@ import { enIE } from './en-IE';
 import { ptBR } from './pt-BR';
 import { esES } from './es-ES';
 import { esMX } from './es-MX';
+import { esAR } from './es-AR';
+import { esCO } from './es-CO';
 import { deDE } from './de-DE';
 import { nlNL } from './nl-NL';
 
@@ -17,6 +19,8 @@ const dictionaries = {
   'pt-BR': ptBR,
   'es-ES': esES,
   'es-MX': esMX,
+  'es-AR': esAR,
+  'es-CO': esCO,
   'de-DE': deDE,
   'nl-NL': nlNL,
 } as const;
@@ -27,14 +31,16 @@ export function getDictionary(locale: 'en-IE'): typeof enIE;
 export function getDictionary(locale: 'pt-BR'): typeof ptBR;
 export function getDictionary(locale: 'es-ES'): typeof esES;
 export function getDictionary(locale: 'es-MX'): typeof esMX;
+export function getDictionary(locale: 'es-AR'): typeof esAR;
+export function getDictionary(locale: 'es-CO'): typeof esCO;
 export function getDictionary(locale: 'de-DE'): typeof deDE;
 export function getDictionary(locale: 'nl-NL'): typeof nlNL;
 export function getDictionary(
   locale: LocaleCode,
-): typeof enUS | typeof enGB | typeof enIE | typeof ptBR | typeof esES | typeof esMX | typeof deDE | typeof nlNL;
+): typeof enUS | typeof enGB | typeof enIE | typeof ptBR | typeof esES | typeof esMX | typeof esAR | typeof esCO | typeof deDE | typeof nlNL;
 export function getDictionary(
   locale: LocaleCode,
-): typeof enUS | typeof enGB | typeof enIE | typeof ptBR | typeof esES | typeof esMX | typeof deDE | typeof nlNL {
+): typeof enUS | typeof enGB | typeof enIE | typeof ptBR | typeof esES | typeof esMX | typeof esAR | typeof esCO | typeof deDE | typeof nlNL {
   const dict = dictionaries[locale as keyof typeof dictionaries];
   if (!dict) {
     throw new Error(

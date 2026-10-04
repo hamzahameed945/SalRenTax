@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getDictionary } from '../../i18n/dictionaries';
+import { buildPageMetadata } from '../../lib/seo/metadata';
+import TiltCard from '../../components/islands/TiltCard';
+import { categoryMeta } from '../../data/categoryMeta';
+
+const locale = 'es-CO' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(t.meta.localeHomeTitle, t.meta.localeHomeDescription, '/es-co/');
+
+const amountPages = [
+  { slug: 'labor/prima-servicios-1500000', amount: '$1.500.000', result: '$750.000' },
+  { slug: 'labor/prima-servicios-2000000', amount: '$2.000.000', result: '$1.000.000' },
+  { slug: 'labor/prima-servicios-2500000', amount: '$2.500.000', result: '$1.250.000' },
+  { slug: 'labor/prima-servicios-3000000', amount: '$3.000.000', result: '$1.500.000' },
+  { slug: 'labor/prima-servicios-5000000', amount: '$5.000.000', result: '$2.500.000' },
+  { slug: 'labor/prima-servicios-8000000', amount: '$8.000.000', result: '$4.000.000' },
+  { slug: 'labor/prima-servicios-12000000', amount: '$12.000.000', result: '$6.000.000' },
+];
+const cm = categoryMeta['labor'] ?? categoryMeta['salary'];
+---
+
+<BaseLayout locale={locale} title={meta.title} description={meta.description} canonical={meta.canonical}>
+  <section class="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-50">
+    <div class="relative z-10 mx-auto max-w-5xl px-4 pt-16 pb-20 text-center sm:pt-24 sm:pb-28">
+      <p class="text-sm font-semibold uppercase tracking-widest text-accent">Calculadoras 2026</p>
+      <h1 class="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
+        Calculadoras de Prima de Servicios Colombia
+      </h1>
+      <p class="mx-auto mt-5 max-w-2xl text-lg text-slate-600 leading-relaxed">
+        {t.meta.localeHomeDescription}
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-4 py-16 sm:py-20">
+    <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl mb-2">{t.common.popularCalculators}</h2>
+    <p class="text-slate-500 mb-8">Prima de servicios por salario: elegí tu rango y calculá tu cuota de diciembre.</p>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {amountPages.map((page, i) => (
+        <div class="perspective-1000" style={`animation-delay: ${i * 80}ms;`}>
+          <TiltCard client:visible href={`/es-co/${page.slug}/`} glowColor={cm.glow}>
+            <div class="p-6">
+              <div class={`mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${cm.gradient} text-xl shadow-md`}>
+                <span class="drop-shadow-sm">{cm.icon}</span>
+              </div>
+              <h3 class="text-base font-bold text-slate-900 leading-snug">
+                Prima de servicios de {page.amount}
+              </h3>
+              <p class="mt-1 text-sm text-slate-500 leading-snug">Cuota de diciembre estimada: {page.result}</p>
+              <div class="mt-4 flex items-center gap-1.5 text-sm font-semibold text-accent">
+                Calcular
+                <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                </svg>
+              </div>
+            </div>
+          </TiltCard>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-4 pb-16">
+    <h2 class="text-xl font-semibold text-slate-900 mb-4">Prima de servicios Colombia 2026</h2>
+    <div class="space-y-4 text-slate-600">
+      <p>
+        La <strong>prima de servicios</strong> equivale a un salario mensual al año, pagado en dos
+        cuotas (CST Art. 306). La cuota de diciembre de 2026 se paga hasta el
+        <strong>20 de diciembre</strong>.
+      </p>
+      <p>
+        Los valores son estimaciones — si entraste a mitad de año, te corresponde un proporcional
+        según los días trabajados entre julio y diciembre.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

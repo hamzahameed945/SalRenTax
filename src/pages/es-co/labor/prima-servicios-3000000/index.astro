@@ -1,0 +1,110 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import CoPrimaServiciosCalculator from '../../../../components/islands/CoPrimaServiciosCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'es-CO' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Prima de servicios de $3.000.000 en 2026: ¿cuánto te toca? — PayRenTax',
+  'Prima de servicios de $3.000.000 en 2026: cuota de diciembre de $1.500.000 (CST Art. 306). Se paga hasta el 20 de diciembre. Calcula la tuya.',
+  '/es-co/labor/prima-servicios-3000000/',
+);
+
+const faqItems = [
+    {
+      question: '¿Cuánto me toca de prima de servicios con salario de $3.000.000?',
+      answer:
+        'Con salario mensual de $3.000.000, tu prima de servicios de diciembre 2026 es de $1.500.000: medio salario, según el Artículo 306 del Código Sustantivo del Trabajo.'
+    },
+    {
+      question: '¿Cuándo pagan la prima de servicios de diciembre 2026?',
+      answer:
+        'La cuota de diciembre de la prima de servicios debe pagarse hasta el 20 de diciembre de 2026 (CST Art. 306).'
+    },
+    {
+      question: '¿Cómo se calcula si entré a mitad de año?',
+      answer:
+        'Te corresponde un proporcional: la cuota completa ($1.500.000 con salario de $3.000.000) se multiplica por los días trabajados entre julio y diciembre sobre 180. Por ejemplo, con 90 días recibirías $750.000.'
+    }
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Derechos laborales', href: buildLocalePath(locale, 'labor') },
+      { label: 'Prima de servicios de $3.000.000', href: buildLocalePath(locale, 'labor/prima-servicios-3000000') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Prima de servicios de $3.000.000 en 2026: ¿cuánto te toca?</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Con salario de <strong>$3.000.000</strong> al mes, tu prima de servicios
+      de diciembre 2026 es de <strong>$1.500.000</strong>.
+    </p>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-semibold">Desglose de tu prima 2026</h2>
+      <table class="mt-4 w-full text-sm">
+        <tbody>
+          <tr><td>Salario mensual</td><td>$3.000.000</td></tr>
+          <tr><td>Cuota de diciembre (50%)</td><td>$1.500.000</td></tr>
+          <tr class="font-semibold"><td>Prima que recibes</td><td>$1.500.000</td></tr>
+        </tbody>
+      </table>
+      <p class="mt-4 text-xs text-slate-500">
+        El CST (Art. 306) establece la prima de servicios como un salario mensual al año en dos
+        cuotas, pagadera la segunda hasta el 20 de diciembre. Si trabajaste menos de 180 días
+        entre julio y diciembre, el monto es proporcional. Simulá otros escenarios
+        en la calculadora.
+      </p>
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="co-prima-3000000" />
+    </div>
+
+    <div class="mt-10">
+      <h2 class="text-xl font-semibold">Calcula tu prima</h2>
+      <div class="mt-4">
+        <CoPrimaServiciosCalculator client:load initialSalary={3000000} />
+      </div>
+    </div>
+
+    <nav class="mt-10" aria-label="Prima de servicios por salario">
+      <h2 class="text-xl font-semibold">Prima de servicios por salario</h2>
+      <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-co/labor/prima-servicios-1500000/">Prima de servicios de $1.500.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-co/labor/prima-servicios-2000000/">Prima de servicios de $2.000.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-co/labor/prima-servicios-2500000/">Prima de servicios de $2.500.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-co/labor/prima-servicios-5000000/">Prima de servicios de $5.000.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-co/labor/prima-servicios-8000000/">Prima de servicios de $8.000.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-co/labor/prima-servicios-12000000/">Prima de servicios de $12.000.000</a></li>
+      </ul>
+    </nav>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} Valores estimados; tu liquidación real puede variar.
+    </p>
+
+    <CalculatorFAQ heading="Prima de servicios de $3.000.000: preguntas frecuentes" items={faqItems} />
+  </article>
+</BaseLayout>

@@ -7,7 +7,7 @@ import { ACTIVE_LOCALES } from '../i18n/types';
 const locale = 'en-US' as const;
 const meta = buildPageMetadata(
   'PayRenTax — Free Salary, Tax & Rent Calculators Worldwide',
-  'Free salary, tax, rent, and payroll calculators for the US, UK, Ireland, Germany, Spain, Mexico, Brazil, and the Netherlands.',
+  'Free salary, tax, rent, and payroll calculators for the US, UK, Ireland, Germany, Spain, Mexico, Argentina, Colombia, Brazil, and the Netherlands.',
   '/',
 );
 
@@ -88,6 +88,32 @@ const localeInfo: Record<
       'Sueldo neto mensual',
       'IMSS & retenciones',
       'Finiquito laboral',
+    ],
+  },
+  'es-AR': {
+    flag: '🇦🇷',
+    name: 'Argentina',
+    tagline: 'Aguinaldo (SAC) & sueldo',
+    img: 'https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=600&q=80&auto=format&fit=crop',
+    imgAlt: 'Obelisco, Buenos Aires',
+    features: [
+      'Aguinaldo 2026',
+      'Sueldo anual complementario',
+      'Segunda cuota diciembre',
+      'Cálculo proporcional',
+    ],
+  },
+  'es-CO': {
+    flag: '🇨🇴',
+    name: 'Colombia',
+    tagline: 'Prima de servicios & salario',
+    img: 'https://images.unsplash.com/photo-1568632234157-ce7aecd03d0d?w=600&q=80&auto=format&fit=crop',
+    imgAlt: 'Cartagena, Colombia',
+    features: [
+      'Prima de servicios 2026',
+      'Prima de diciembre',
+      'Cálculo por días laborados',
+      'Salario mensual',
     ],
   },
   'de-DE': {

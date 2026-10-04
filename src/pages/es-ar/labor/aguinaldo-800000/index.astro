@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import ArAguinaldoCalculator from '../../../../components/islands/ArAguinaldoCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'es-AR' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Aguinaldo de $800.000 en 2026: ¿cuánto te toca? — PayRenTax',
+  'Aguinaldo de $800.000 en 2026: segunda cuota de $400.000 (50% del mejor sueldo del semestre, Ley 23.073). Se paga hasta el 18 de diciembre. Calculá el tuyo.',
+  '/es-ar/labor/aguinaldo-800000/',
+);
+
+const faqItems = [
+    {
+      question: '¿Cuánto me toca de aguinaldo con sueldo de $800.000?',
+      answer:
+        'Con mejor sueldo mensual de $800.000 en el segundo semestre, tu aguinaldo (SAC) de diciembre 2026 es de $400.000: el 50% del mejor sueldo del semestre, según la Ley 23.073.'
+    },
+    {
+      question: '¿Cuándo se paga el aguinaldo de diciembre 2026?',
+      answer:
+        'La segunda cuota del aguinaldo (Sueldo Anual Complementario) debe pagarse hasta el 18 de diciembre de 2026, según la Ley 23.073.'
+    },
+    {
+      question: '¿Qué pasa si no trabajé el semestre completo?',
+      answer:
+        'Te corresponde un proporcional: la cuota completa ($400.000 con sueldo de $800.000) se multiplica por los días trabajados sobre 180. Por ejemplo, con 90 días trabajados recibirías $200.000.'
+    }
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Derechos laborales', href: buildLocalePath(locale, 'labor') },
+      { label: 'Aguinaldo de $800.000', href: buildLocalePath(locale, 'labor/aguinaldo-800000') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Aguinaldo de $800.000 en 2026: ¿cuánto te toca?</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Con mejor sueldo de <strong>$800.000</strong> en el segundo semestre, tu aguinaldo
+      (Sueldo Anual Complementario) de diciembre 2026 es de <strong>$400.000</strong>.
+    </p>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-semibold">Desglose de tu aguinaldo 2026</h2>
+      <table class="mt-4 w-full text-sm">
+        <tbody>
+          <tr><td>Mejor sueldo del semestre</td><td>$800.000</td></tr>
+          <tr><td>Segunda cuota SAC (50%)</td><td>$400.000</td></tr>
+          <tr class="font-semibold"><td>Aguinaldo que recibís</td><td>$400.000</td></tr>
+        </tbody>
+      </table>
+      <p class="mt-4 text-xs text-slate-500">
+        La Ley 23.073 establece el SAC como el 50% del mejor sueldo mensual de cada semestre,
+        pagadero hasta el 18 de diciembre (segunda cuota). Si no trabajaste el semestre completo,
+        el monto es proporcional a los días trabajados. Simulá otros escenarios
+        en la calculadora.
+      </p>
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="ar-aguinaldo-800000" />
+    </div>
+
+    <div class="mt-10">
+      <h2 class="text-xl font-semibold">Calculá tu aguinaldo</h2>
+      <div class="mt-4">
+        <ArAguinaldoCalculator client:load initialSalary={800000} />
+      </div>
+    </div>
+
+    <nav class="mt-10" aria-label="Aguinaldo por sueldo">
+      <h2 class="text-xl font-semibold">Aguinaldo por sueldo</h2>
+      <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-ar/labor/aguinaldo-500000/">Aguinaldo de $500.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-ar/labor/aguinaldo-1000000/">Aguinaldo de $1.000.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-ar/labor/aguinaldo-1500000/">Aguinaldo de $1.500.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-ar/labor/aguinaldo-2000000/">Aguinaldo de $2.000.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-ar/labor/aguinaldo-3000000/">Aguinaldo de $3.000.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-ar/labor/aguinaldo-5000000/">Aguinaldo de $5.000.000</a></li>
+      </ul>
+    </nav>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} Valores brutos estimados; el SAC puede estar alcanzado por el Impuesto
+      a las Ganancias según tu situación. Tu liquidación real puede variar.
+    </p>
+
+    <CalculatorFAQ heading="Aguinaldo de $800.000: preguntas frecuentes" items={faqItems} />
+  </article>
+</BaseLayout>

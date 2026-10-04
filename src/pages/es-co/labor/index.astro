@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/navigation/Breadcrumbs.astro';
+import { getDictionary } from '../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../i18n/utils';
+
+const locale = 'es-CO' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  `${t.labor.categoryTitle} Colombia — ${t.meta.siteTitleSuffix}`,
+  t.labor.categoryIntro,
+  '/es-co/labor/',
+);
+
+const pages = [
+  { slug: 'labor/prima-servicios-1500000', title: 'Prima de servicios de $1.500.000', desc: 'Cuota de diciembre estimada: $750.000' },
+  { slug: 'labor/prima-servicios-2000000', title: 'Prima de servicios de $2.000.000', desc: 'Cuota de diciembre estimada: $1.000.000' },
+  { slug: 'labor/prima-servicios-2500000', title: 'Prima de servicios de $2.500.000', desc: 'Cuota de diciembre estimada: $1.250.000' },
+  { slug: 'labor/prima-servicios-3000000', title: 'Prima de servicios de $3.000.000', desc: 'Cuota de diciembre estimada: $1.500.000' },
+  { slug: 'labor/prima-servicios-5000000', title: 'Prima de servicios de $5.000.000', desc: 'Cuota de diciembre estimada: $2.500.000' },
+  { slug: 'labor/prima-servicios-8000000', title: 'Prima de servicios de $8.000.000', desc: 'Cuota de diciembre estimada: $4.000.000' },
+  { slug: 'labor/prima-servicios-12000000', title: 'Prima de servicios de $12.000.000', desc: 'Cuota de diciembre estimada: $6.000.000' },
+];
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <Breadcrumbs
+    locale={locale}
+    trail={[{ label: t.navigation.labor, href: buildLocalePath(locale, 'labor') }]}
+  />
+  <section class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">{t.labor.categoryTitle} Colombia</h1>
+    <p class="mt-3 text-slate-600">{t.labor.categoryIntro}</p>
+    <ul class="mt-8 space-y-3">
+      {pages.map((page) => (
+        <li class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm hover:border-accent transition-colors">
+          <a
+            href={buildLocalePath(locale, page.slug)}
+            class="font-semibold text-accent hover:underline"
+          >
+            {page.title}
+          </a>
+          <p class="mt-1 text-sm text-slate-500">{page.desc}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>

@@ -5,6 +5,8 @@ import { enIEConfig } from './en-IE';
 import { ptBRConfig } from './pt-BR';
 import { esESConfig } from './es-ES';
 import { esMXConfig } from './es-MX';
+import { esARConfig } from './es-AR';
+import { esCOConfig } from './es-CO';
 import { deDEConfig } from './de-DE';
 import { nlNLConfig } from './nl-NL';
 
@@ -18,6 +20,8 @@ const localeConfigs: Partial<Record<LocaleCode, LocaleConfig>> = {
   'pt-BR': ptBRConfig,
   'es-ES': esESConfig,
   'es-MX': esMXConfig,
+  'es-AR': esARConfig,
+  'es-CO': esCOConfig,
   'de-DE': deDEConfig,
   'nl-NL': nlNLConfig,
 };

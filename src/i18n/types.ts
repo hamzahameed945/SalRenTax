@@ -11,6 +11,8 @@ export type LocaleCode =
   | 'pt-BR'
   | 'es-ES'
   | 'es-MX'
+  | 'es-AR'
+  | 'es-CO'
   | 'de-DE'
   | 'nl-NL';
 
@@ -22,6 +24,8 @@ export const ALL_LOCALES: LocaleCode[] = [
   'pt-BR',
   'es-ES',
   'es-MX',
+  'es-AR',
+  'es-CO',
   'de-DE',
   'nl-NL',
 ];
@@ -40,6 +44,8 @@ export const LOCALE_STATUS: Record<LocaleCode, LocaleStatus> = {
   'pt-BR': 'active',
   'es-ES': 'active',
   'es-MX': 'active',
+  'es-AR': 'active',
+  'es-CO': 'active',
   'de-DE': 'active',
   'nl-NL': 'active',
 };
