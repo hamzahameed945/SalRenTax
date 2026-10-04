@@ -1,15 +1,15 @@
 import { useState, useMemo } from 'preact/hooks';
 import { mexicoSalaryEngine } from '../../calculators/salary/engines/mx/mexicoSalary';
 
-interface Props { locale: string; }
+interface Props { locale: string; initialSalary?: number; }
 
 const fmt = (v: number) =>
   new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 2 }).format(v);
 const fmtPct = (v: number) =>
   `${(v * 100).toFixed(2).replace('.', ',')} %`;
 
-export default function MexicoSalaryCalculator(_props: Props) {
-  const [grossMonthly, setGrossMonthly] = useState('15000');
+export default function MexicoSalaryCalculator(props: Props) {
+  const [grossMonthly, setGrossMonthly] = useState(String(props.initialSalary ?? 15000));
   const [whatIfGross, setWhatIfGross]   = useState('');
   const [showWhatIf, setShowWhatIf]     = useState(false);
 

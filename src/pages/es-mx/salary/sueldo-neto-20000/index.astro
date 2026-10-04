@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import MexicoSalaryCalculator from '../../../../components/islands/MexicoSalaryCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'es-MX' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Sueldo neto de $20,000 en México 2026 — PayRenTax',
+  'Sueldo bruto de $20,000 en México 2026: te quedan $17,351.16 netos al mes (ISR $2,311.63 + IMSS $337.21). Calcula tu sueldo neto.',
+  '/es-mx/salary/sueldo-neto-20000/',
+);
+
+const faqItems = [
+    {
+      question: '¿Cuánto me queda neto con sueldo bruto de $20,000?',
+      answer:
+        'Con sueldo bruto mensual de $20,000.00 en 2026, te quedan $17,351.16 netos al mes, después de ISR ($2,311.63) y cuota obrera del IMSS ($337.21).'
+    },
+    {
+      question: '¿Cuánto me descuentan de ISR con sueldo de $20,000?',
+      answer:
+        'El ISR mensual es de $2,311.63, calculado con la tarifa progresiva del Artículo 96 de la LISR 2026 (tasa efectiva aproximada del 11.56% sobre tu sueldo bruto).'
+    },
+    {
+      question: '¿Qué es el IMSS que me descuentan?',
+      answer:
+        'Es tu cuota obrera al Instituto Mexicano del Seguro Social: cubre enfermedad, maternidad, invalidez, vida y retiro. Con sueldo de $20,000, el descuento mensual es de $337.21.'
+    }
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Salario', href: buildLocalePath(locale, 'salary') },
+      { label: 'Sueldo neto de $20,000', href: buildLocalePath(locale, 'salary/sueldo-neto-20000') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Sueldo neto de $20,000 en México 2026: ¿cuánto te queda?</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Con sueldo bruto de <strong>$20,000.00</strong> al mes, después de ISR
+      (<strong>$2,311.63</strong>) y cuota obrera del IMSS
+      (<strong>$337.21</strong>), te quedan
+      <strong>$17,351.16 netos</strong> cada mes.
+    </p>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-semibold">Desglose de tu sueldo 2026</h2>
+      <table class="mt-4 w-full text-sm">
+        <tbody>
+          <tr><td>Sueldo bruto mensual</td><td>$20,000.00</td></tr>
+          <tr><td>ISR (Art. 96 LISR, tarifa 2026)</td><td>− $2,311.63</td></tr>
+          <tr><td>IMSS (cuota obrera)</td><td>− $337.21</td></tr>
+          <tr class="font-semibold"><td>Sueldo neto mensual</td><td>$17,351.16</td></tr>
+        </tbody>
+      </table>
+      <p class="mt-4 text-xs text-slate-500">
+        El ISR se calcula con la tarifa progresiva del Artículo 96 de la LISR (1.92% a 35%) y
+        el IMSS con la cuota obrera vigente para 2026. Simula otros sueldos en la calculadora.
+      </p>
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="mx-sueldo-20000" />
+    </div>
+
+    <div class="mt-10">
+      <h2 class="text-xl font-semibold">Calcula tu sueldo neto</h2>
+      <div class="mt-4">
+        <MexicoSalaryCalculator client:load locale={locale} initialSalary={20000} />
+      </div>
+    </div>
+
+    <nav class="mt-10" aria-label="Sueldo neto por cantidad">
+      <h2 class="text-xl font-semibold">Sueldo neto por cantidad</h2>
+      <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-mx/salary/sueldo-neto-10000/">Sueldo neto de $10,000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-mx/salary/sueldo-neto-15000/">Sueldo neto de $15,000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-mx/salary/sueldo-neto-30000/">Sueldo neto de $30,000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-mx/salary/sueldo-neto-50000/">Sueldo neto de $50,000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-mx/salary/sueldo-neto-75000/">Sueldo neto de $75,000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-mx/salary/sueldo-neto-100000/">Sueldo neto de $100,000</a></li>
+      </ul>
+    </nav>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.dataSource} Valores estimados con las tablas
+      oficiales 2026; tu nómina real puede variar según deducciones y prestaciones.
+    </p>
+
+    <CalculatorFAQ heading="Sueldo neto de $20,000: preguntas frecuentes" items={faqItems} />
+  </article>
+</BaseLayout>
