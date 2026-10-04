@@ -18,9 +18,17 @@ const PAY_FREQUENCIES: PayFrequency[] = [
 ];
 const FILING_STATUSES: FilingStatus[] = ['single', 'marriedJointly'];
 
-export default function PaycheckCalculator({ stateCode }: { stateCode?: string }) {
-  const [grossPay, setGrossPay] = useState('2500');
-  const [payFrequency, setPayFrequency] = useState<PayFrequency>('biweekly');
+export default function PaycheckCalculator({
+  stateCode,
+  initialAnnualSalary,
+}: {
+  stateCode?: string;
+  initialAnnualSalary?: string;
+}) {
+  const [grossPay, setGrossPay] = useState(initialAnnualSalary ?? '2500');
+  const [payFrequency, setPayFrequency] = useState<PayFrequency>(
+    initialAnnualSalary ? 'annually' : 'biweekly',
+  );
   const [filingStatus, setFilingStatus] = useState<FilingStatus>('single');
   const [preTaxDeductions, setPreTaxDeductions] = useState('0');
   const [touched, setTouched] = useState(false);

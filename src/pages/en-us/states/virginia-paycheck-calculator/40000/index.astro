@@ -3,6 +3,7 @@ import BaseLayout from '../../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../../components/navigation/Breadcrumbs.astro';
 import CalculatorFAQ from '../../../../../components/calculator/CalculatorFAQ.astro';
 import InContentAd from '../../../../../components/ads/InContentAd.astro';
+import PaycheckCalculator from '../../../../../components/islands/PaycheckCalculator';
 import JsonLd from '../../../../../components/seo/JsonLd.astro';
 import { getDictionary } from '../../../../../i18n/dictionaries';
 import { buildPageMetadata } from '../../../../../lib/seo/metadata';
@@ -103,5 +104,12 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
     </p>
 
     <CalculatorFAQ heading="$40,000 in Virginia: FAQs" items={faqItems} />
+
+    <div class="mt-10">
+      <h2 class="text-xl font-semibold">Customize the numbers</h2>
+      <div class="mt-4">
+        <PaycheckCalculator stateCode="VA" initialAnnualSalary="40000" client:load />
+      </div>
+    </div>
   </article>
 </BaseLayout>
