@@ -1,0 +1,109 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import PaycheckCalculator from '../../../../components/islands/PaycheckCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'en-US' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Pennsylvania Paycheck Calculator 2026 \u2014 PA Take-Home Pay \u2014 PayRenTax',
+  'Estimate your Pennsylvania take-home pay for 2026 with the 3.07% state income tax plus federal deductions.',
+  '/en-us/states/pennsylvania-paycheck-calculator/',
+);
+
+const faqItems = [
+  {
+    question: 'Does Pennsylvania have a state income tax?',
+    answer:
+      'Yes. Pennsylvania levies a flat 3.07% individual income tax.',
+  },
+  {
+    question: 'What is the Pennsylvania income tax rate for 2026?',
+    answer:
+      'Pennsylvania has a single flat rate of 3.07% for 2026, applied to income after the standard deduction ($0 single / $0 married jointly).',
+  },
+  {
+    question: 'What taxes are withheld from a Pennsylvania paycheck?',
+    answer:
+      'Federal income tax (10%–37%), Social Security (6.2% up to $176,100), Medicare (1.45%), and Pennsylvania state income tax.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'States', href: buildLocalePath(locale, 'states') },
+      {
+        label: 'Pennsylvania Paycheck Calculator',
+        href: buildLocalePath(locale, 'states/pennsylvania-paycheck-calculator'),
+      },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Pennsylvania Paycheck Calculator 2026</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Estimate your Pennsylvania take-home pay for 2026 and see how state and federal payroll
+      deductions affect your paycheck.
+    </p>
+
+    <div class="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+      📊 <strong>Pennsylvania flat tax: 3.07%.</strong> Applied to your Pennsylvania-taxable income after
+      the standard deduction.
+    </div>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <PaycheckCalculator stateCode="PA" client:load />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="pa-paycheck-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Pennsylvania Paycheck & Tax Overview 2026</h2>
+      <p>
+        Pennsylvania levies a flat 3.07% individual income tax. Your 2026 payroll deductions are:
+      </p>
+      <ul>
+        <li>
+          <strong>Pennsylvania income tax:</strong> flat 3.07% of taxable income
+        </li>        <li>
+          <strong>Federal income tax</strong> (IRS 2026 brackets: 10%, 12%, 22%, 24%, 32%, 35%, 37%)
+        </li>
+        <li>
+          <strong>Social Security FICA:</strong> 6.2% on wages up to $176,100
+        </li>
+        <li>
+          <strong>Medicare FICA:</strong> 1.45% (+ 0.9% above $200,000 single/$250,000 MFJ)
+        </li>
+      </ul>
+
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Pennsylvania Paycheck FAQs" items={faqItems} />
+  </article>
+  <CalculatorResource locale="en-US" category="states" />
+</BaseLayout>

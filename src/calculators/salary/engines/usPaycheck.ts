@@ -17,10 +17,51 @@ import { ilStateEngine } from './usStates/il';
 import { azStateEngine } from './usStates/az';
 import { nyStateEngine } from './usStates/ny';
 import { flStateEngine } from './usStates/fl';
-// import { caStateEngine } from './usStates/ca'; // CA not yet supported in production
+import { caStateEngine } from './usStates/ca';
 import { njStateEngine } from './usStates/nj';
 import { paStateEngine } from './usStates/pa';
 import { waStateEngine } from './usStates/wa';
+import { alStateEngine } from './usStates/al';
+import { akStateEngine } from './usStates/ak';
+import { arStateEngine } from './usStates/ar';
+import { coStateEngine } from './usStates/co';
+import { ctStateEngine } from './usStates/ct';
+import { deStateEngine } from './usStates/de';
+import { gaStateEngine } from './usStates/ga';
+import { hiStateEngine } from './usStates/hi';
+import { idStateEngine } from './usStates/id';
+import { inStateEngine } from './usStates/in';
+import { iaStateEngine } from './usStates/ia';
+import { ksStateEngine } from './usStates/ks';
+import { kyStateEngine } from './usStates/ky';
+import { laStateEngine } from './usStates/la';
+import { meStateEngine } from './usStates/me';
+import { mdStateEngine } from './usStates/md';
+import { maStateEngine } from './usStates/ma';
+import { miStateEngine } from './usStates/mi';
+import { mnStateEngine } from './usStates/mn';
+import { msStateEngine } from './usStates/ms';
+import { moStateEngine } from './usStates/mo';
+import { mtStateEngine } from './usStates/mt';
+import { neStateEngine } from './usStates/ne';
+import { nvStateEngine } from './usStates/nv';
+import { nhStateEngine } from './usStates/nh';
+import { nmStateEngine } from './usStates/nm';
+import { ncStateEngine } from './usStates/nc';
+import { ndStateEngine } from './usStates/nd';
+import { ohStateEngine } from './usStates/oh';
+import { okStateEngine } from './usStates/ok';
+import { orStateEngine } from './usStates/or';
+import { riStateEngine } from './usStates/ri';
+import { scStateEngine } from './usStates/sc';
+import { sdStateEngine } from './usStates/sd';
+import { tnStateEngine } from './usStates/tn';
+import { utStateEngine } from './usStates/ut';
+import { vtStateEngine } from './usStates/vt';
+import { vaStateEngine } from './usStates/va';
+import { wvStateEngine } from './usStates/wv';
+import { wiStateEngine } from './usStates/wi';
+import { wyStateEngine } from './usStates/wy';
 import type { StateTaxEngine } from './usStates/types';
 
 const stateEngines: Record<string, StateTaxEngine> = {
@@ -29,10 +70,51 @@ const stateEngines: Record<string, StateTaxEngine> = {
   AZ: azStateEngine,
   NY: nyStateEngine,
   FL: flStateEngine,
-  // CA: caStateEngine, // CA not yet supported in production
+  CA: caStateEngine,
   NJ: njStateEngine,
   PA: paStateEngine,
   WA: waStateEngine,
+  AL: alStateEngine,
+  AK: akStateEngine,
+  AR: arStateEngine,
+  CO: coStateEngine,
+  CT: ctStateEngine,
+  DE: deStateEngine,
+  GA: gaStateEngine,
+  HI: hiStateEngine,
+  ID: idStateEngine,
+  IN: inStateEngine,
+  IA: iaStateEngine,
+  KS: ksStateEngine,
+  KY: kyStateEngine,
+  LA: laStateEngine,
+  ME: meStateEngine,
+  MD: mdStateEngine,
+  MA: maStateEngine,
+  MI: miStateEngine,
+  MN: mnStateEngine,
+  MS: msStateEngine,
+  MO: moStateEngine,
+  MT: mtStateEngine,
+  NE: neStateEngine,
+  NV: nvStateEngine,
+  NH: nhStateEngine,
+  NM: nmStateEngine,
+  NC: ncStateEngine,
+  ND: ndStateEngine,
+  OH: ohStateEngine,
+  OK: okStateEngine,
+  OR: orStateEngine,
+  RI: riStateEngine,
+  SC: scStateEngine,
+  SD: sdStateEngine,
+  TN: tnStateEngine,
+  UT: utStateEngine,
+  VT: vtStateEngine,
+  VA: vaStateEngine,
+  WV: wvStateEngine,
+  WI: wiStateEngine,
+  WY: wyStateEngine,
 };
 
 export type FilingStatus = 'single' | 'marriedJointly' | 'marriedSeparately' | 'headOfHousehold';

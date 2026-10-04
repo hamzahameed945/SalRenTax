@@ -1,0 +1,116 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import PaycheckCalculator from '../../../../components/islands/PaycheckCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'en-US' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Arkansas Paycheck Calculator 2026 \u2014 AR Take-Home Pay \u2014 PayRenTax',
+  'Estimate your Arkansas take-home pay for 2026 with the state’s two-bracket income tax of 2% to 3.9% plus federal deductions.',
+  '/en-us/states/arkansas-paycheck-calculator/',
+);
+
+const faqItems = [
+  {
+    question: 'Does Arkansas have a state income tax?',
+    answer:
+      'Yes. Arkansas levies a two-bracket income tax of 2% to 3.9% on taxable income.',
+  },
+  {
+    question: 'What are the Arkansas income tax brackets for 2026?',
+    answer:
+      'For single filers, Arkansas’s 2026 rates run from 2% to 3.9%. See the bracket table above for the full schedule.',
+  },
+  {
+    question: 'What taxes are withheld from a Arkansas paycheck?',
+    answer:
+      'Federal income tax (10%–37%), Social Security (6.2% up to $176,100), Medicare (1.45%), and Arkansas state income tax.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'States', href: buildLocalePath(locale, 'states') },
+      {
+        label: 'Arkansas Paycheck Calculator',
+        href: buildLocalePath(locale, 'states/arkansas-paycheck-calculator'),
+      },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Arkansas Paycheck Calculator 2026</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Estimate your Arkansas take-home pay for 2026 and see how state and federal payroll
+      deductions affect your paycheck.
+    </p>
+
+    <div class="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+      📊 <strong>Arkansas graduated tax: up to 3.9%.</strong> Higher earnings are taxed at
+      higher marginal rates.
+    </div>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <PaycheckCalculator stateCode="AR" client:load />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="ar-paycheck-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Arkansas Paycheck & Tax Overview 2026</h2>
+      <p>
+        Arkansas has a two-bracket income tax of 2% to 3.9%. Your 2026 payroll deductions are:
+      </p>
+      <ul>
+        <li>
+          <strong>Arkansas income tax:</strong> two-bracket income tax of 2% to 3.9% (single filer, 2026)
+        </li>        <li>
+          <strong>Federal income tax</strong> (IRS 2026 brackets: 10%, 12%, 22%, 24%, 32%, 35%, 37%)
+        </li>
+        <li>
+          <strong>Social Security FICA:</strong> 6.2% on wages up to $176,100
+        </li>
+        <li>
+          <strong>Medicare FICA:</strong> 1.45% (+ 0.9% above $200,000 single/$250,000 MFJ)
+        </li>
+      </ul>
+      <h3>Arkansas 2026 tax brackets (single filer)</h3>
+      <table>
+        <thead><tr><th>Taxable income</th><th>Rate</th></tr></thead>
+        <tbody>
+          <tr><td>$0 – $4,600</td><td>2%</td></tr>
+          <tr><td>$4,600 – $and up</td><td>3.9%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Arkansas Paycheck FAQs" items={faqItems} />
+  </article>
+  <CalculatorResource locale="en-US" category="states" />
+</BaseLayout>

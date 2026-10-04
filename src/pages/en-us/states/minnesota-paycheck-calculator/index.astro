@@ -1,0 +1,118 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import PaycheckCalculator from '../../../../components/islands/PaycheckCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'en-US' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Minnesota Paycheck Calculator 2026 \u2014 MN Take-Home Pay \u2014 PayRenTax',
+  'Estimate your Minnesota take-home pay for 2026 with the state’s graduated income tax of 5.35% to 9.85% plus federal deductions.',
+  '/en-us/states/minnesota-paycheck-calculator/',
+);
+
+const faqItems = [
+  {
+    question: 'Does Minnesota have a state income tax?',
+    answer:
+      'Yes. Minnesota levies a graduated income tax of 5.35% to 9.85% on taxable income.',
+  },
+  {
+    question: 'What are the Minnesota income tax brackets for 2026?',
+    answer:
+      'For single filers, Minnesota’s 2026 rates run from 5.35% to 9.85%. See the bracket table above for the full schedule.',
+  },
+  {
+    question: 'What taxes are withheld from a Minnesota paycheck?',
+    answer:
+      'Federal income tax (10%–37%), Social Security (6.2% up to $176,100), Medicare (1.45%), and Minnesota state income tax.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'States', href: buildLocalePath(locale, 'states') },
+      {
+        label: 'Minnesota Paycheck Calculator',
+        href: buildLocalePath(locale, 'states/minnesota-paycheck-calculator'),
+      },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Minnesota Paycheck Calculator 2026</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Estimate your Minnesota take-home pay for 2026 and see how state and federal payroll
+      deductions affect your paycheck.
+    </p>
+
+    <div class="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+      📊 <strong>Minnesota graduated tax: up to 9.85%.</strong> Higher earnings are taxed at
+      higher marginal rates.
+    </div>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <PaycheckCalculator stateCode="MN" client:load />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="mn-paycheck-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Minnesota Paycheck & Tax Overview 2026</h2>
+      <p>
+        Minnesota has a graduated income tax of 5.35% to 9.85%. Your 2026 payroll deductions are:
+      </p>
+      <ul>
+        <li>
+          <strong>Minnesota income tax:</strong> graduated income tax of 5.35% to 9.85% (single filer, 2026)
+        </li>        <li>
+          <strong>Federal income tax</strong> (IRS 2026 brackets: 10%, 12%, 22%, 24%, 32%, 35%, 37%)
+        </li>
+        <li>
+          <strong>Social Security FICA:</strong> 6.2% on wages up to $176,100
+        </li>
+        <li>
+          <strong>Medicare FICA:</strong> 1.45% (+ 0.9% above $200,000 single/$250,000 MFJ)
+        </li>
+      </ul>
+      <h3>Minnesota 2026 tax brackets (single filer)</h3>
+      <table>
+        <thead><tr><th>Taxable income</th><th>Rate</th></tr></thead>
+        <tbody>
+          <tr><td>$0 – $33,310</td><td>5.35%</td></tr>
+          <tr><td>$33,310 – $109,430</td><td>6.8%</td></tr>
+          <tr><td>$109,430 – $203,150</td><td>7.85%</td></tr>
+          <tr><td>$203,150 – $and up</td><td>9.85%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Minnesota Paycheck FAQs" items={faqItems} />
+  </article>
+  <CalculatorResource locale="en-US" category="states" />
+</BaseLayout>

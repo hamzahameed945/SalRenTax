@@ -300,13 +300,13 @@ describe('usPaycheckEngine.calculate', () => {
     });
 
     it('validates stateCode and rejects unsupported states', () => {
-      // CA is intentionally not modeled yet. (NY is supported, see usStates.test.ts.)
+      // XX is not a real state code and is not modeled.
       const result = usPaycheckEngine.validate({
         grossPayPerPeriod: 50_000,
         payFrequency: 'annually',
         filingStatus: 'single',
         preTaxDeductionsPerPeriod: 0,
-        stateCode: 'CA',
+        stateCode: 'XX',
       });
       expect(result.valid).toBe(false);
       if (!result.valid) {
@@ -314,7 +314,7 @@ describe('usPaycheckEngine.calculate', () => {
       }
     });
 
-    it.each(['TX', 'IL', 'AZ', 'NY', 'FL', 'ny'])(
+    it.each(['TX', 'IL', 'AZ', 'NY', 'FL', 'CA', 'ny'])(
       'accepts supported stateCode %s',
       (stateCode: string) => {
         const result = usPaycheckEngine.validate({
