@@ -1,0 +1,531 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'en-US' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Take-Home Pay on $100,000 in Every US State (2026 Study) \u2014 PayRenTax',
+  'On a $100,000 salary in 2026, take-home pay ranges from $71,004 in Oregon to $79,180 in nine no-income-tax states \u2014 a $8,176 gap. Full 50-state ranking with real 2026 tax data.',
+  '/en-us/study/take-home-pay-100k-by-state/',
+);
+
+const faqItems = [
+    {
+      question: 'How is take-home pay calculated in this study?',
+      answer:
+        'Each figure assumes a single filer with a $100,000 annual salary and no pre-tax deductions, using 2026 IRS federal brackets, the 2026 Social Security wage base ($184,500), and each state\u2019s 2026 income tax brackets. State figures are estimates.'
+    },
+    {
+      question: 'Which state has the highest take-home pay on $100,000?',
+      answer:
+        'Nine states with no individual income tax tie for first: Alaska, Florida, Nevada, New Hampshire, South Dakota, Tennessee, Texas, Washington, and Wyoming, each leaving $79,180 after federal taxes and FICA.'
+    },
+    {
+      question: 'Which state has the lowest take-home pay on $100,000?',
+      answer:
+        'Oregon, at $71,004 — $8,176 less than the top states, driven by its $8,176 state income tax bill.'
+    },
+    {
+      question: 'Does this include local taxes?',
+      answer:
+        'No. City and county income taxes (for example, New York City\u2019s) are not modeled, so actual take-home in those places is lower.'
+    }
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Study', href: buildLocalePath(locale, 'study/take-home-pay-100k-by-state') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <p class="text-sm font-semibold uppercase tracking-wide text-emerald-700">2026 Study</p>
+    <h1 class="mt-2 text-3xl font-bold text-slate-900">Take-Home Pay on $100,000 in Every US State</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      We ran a $100,000 salary through 2026 federal and state tax rules for all 50 states.
+      The result: <strong>where you live changes your paycheck by up to $8,176 a year</strong>.
+    </p>
+
+    <div class="mt-6 grid gap-4 sm:grid-cols-3">
+      <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <p class="text-sm text-slate-500">Highest take-home</p>
+        <p class="mt-1 text-2xl font-bold text-slate-900">$79,180</p>
+        <p class="text-sm text-slate-500">9 states with no income tax</p>
+      </div>
+      <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <p class="text-sm text-slate-500">Lowest take-home</p>
+        <p class="mt-1 text-2xl font-bold text-slate-900">$71,004</p>
+        <p class="text-sm text-slate-500">Oregon</p>
+      </div>
+      <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <p class="text-sm text-slate-500">Max state-tax gap</p>
+        <p class="mt-1 text-2xl font-bold text-slate-900">$8,176/yr</p>
+        <p class="text-sm text-slate-500">Same salary, different state</p>
+      </div>
+    </div>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">Full 50-state ranking</h2>
+    <p class="mt-2 text-sm text-slate-500">Single filer, $100,000 salary, no deductions, 2026 tax rules. Click a state for its full calculator.</p>
+    <div class="mt-4 overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+      <table class="w-full min-w-[640px] text-sm">
+        <thead>
+          <tr class="bg-slate-50 text-left text-slate-500">
+            <th class="py-3 pr-2 font-medium">#</th>
+            <th class="py-3 pr-2 font-medium">State</th>
+            <th class="py-3 pr-2 text-right font-medium">Take-home</th>
+            <th class="py-3 pr-2 text-right font-medium">State tax</th>
+            <th class="py-3 text-right font-medium">Eff. rate</th>
+            <th class="py-3 pl-3 font-medium"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">1</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/alaska-paycheck-calculator/">Alaska</a></td>
+            <td class="py-2 pr-2 text-right">$79,180</td>
+            <td class="py-2 pr-2 text-right">$0</td>
+            <td class="py-2 text-right">20.8%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:100.0%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">2</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/florida-paycheck-calculator/">Florida</a></td>
+            <td class="py-2 pr-2 text-right">$79,180</td>
+            <td class="py-2 pr-2 text-right">$0</td>
+            <td class="py-2 text-right">20.8%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:100.0%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">3</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/nevada-paycheck-calculator/">Nevada</a></td>
+            <td class="py-2 pr-2 text-right">$79,180</td>
+            <td class="py-2 pr-2 text-right">$0</td>
+            <td class="py-2 text-right">20.8%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:100.0%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">4</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/new-hampshire-paycheck-calculator/">New Hampshire</a></td>
+            <td class="py-2 pr-2 text-right">$79,180</td>
+            <td class="py-2 pr-2 text-right">$0</td>
+            <td class="py-2 text-right">20.8%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:100.0%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">5</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/south-dakota-paycheck-calculator/">South Dakota</a></td>
+            <td class="py-2 pr-2 text-right">$79,180</td>
+            <td class="py-2 pr-2 text-right">$0</td>
+            <td class="py-2 text-right">20.8%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:100.0%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">6</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/tennessee-paycheck-calculator/">Tennessee</a></td>
+            <td class="py-2 pr-2 text-right">$79,180</td>
+            <td class="py-2 pr-2 text-right">$0</td>
+            <td class="py-2 text-right">20.8%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:100.0%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">7</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/texas-paycheck-calculator/">Texas</a></td>
+            <td class="py-2 pr-2 text-right">$79,180</td>
+            <td class="py-2 pr-2 text-right">$0</td>
+            <td class="py-2 text-right">20.8%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:100.0%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">8</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/washington-paycheck-calculator/">Washington</a></td>
+            <td class="py-2 pr-2 text-right">$79,180</td>
+            <td class="py-2 pr-2 text-right">$0</td>
+            <td class="py-2 text-right">20.8%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:100.0%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">9</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/wyoming-paycheck-calculator/">Wyoming</a></td>
+            <td class="py-2 pr-2 text-right">$79,180</td>
+            <td class="py-2 pr-2 text-right">$0</td>
+            <td class="py-2 text-right">20.8%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:100.0%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">10</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/north-dakota-paycheck-calculator/">North Dakota</a></td>
+            <td class="py-2 pr-2 text-right">$78,489</td>
+            <td class="py-2 pr-2 text-right">$691</td>
+            <td class="py-2 text-right">21.5%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:99.1%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">11</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/ohio-paycheck-calculator/">Ohio</a></td>
+            <td class="py-2 pr-2 text-right">$77,146</td>
+            <td class="py-2 pr-2 text-right">$2,034</td>
+            <td class="py-2 text-right">22.9%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:97.4%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">12</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/arizona-paycheck-calculator/">Arizona</a></td>
+            <td class="py-2 pr-2 text-right">$77,074</td>
+            <td class="py-2 pr-2 text-right">$2,106</td>
+            <td class="py-2 text-right">22.9%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:97.3%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">13</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/louisiana-paycheck-calculator/">Louisiana</a></td>
+            <td class="py-2 pr-2 text-right">$76,566</td>
+            <td class="py-2 pr-2 text-right">$2,614</td>
+            <td class="py-2 text-right">23.4%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:96.7%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">14</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/indiana-paycheck-calculator/">Indiana</a></td>
+            <td class="py-2 pr-2 text-right">$76,230</td>
+            <td class="py-2 pr-2 text-right">$2,950</td>
+            <td class="py-2 text-right">23.8%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:96.3%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">15</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/pennsylvania-paycheck-calculator/">Pennsylvania</a></td>
+            <td class="py-2 pr-2 text-right">$76,110</td>
+            <td class="py-2 pr-2 text-right">$3,070</td>
+            <td class="py-2 text-right">23.9%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:96.1%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">16</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/iowa-paycheck-calculator/">Iowa</a></td>
+            <td class="py-2 pr-2 text-right">$75,992</td>
+            <td class="py-2 pr-2 text-right">$3,188</td>
+            <td class="py-2 text-right">24.0%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:96.0%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">17</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/kentucky-paycheck-calculator/">Kentucky</a></td>
+            <td class="py-2 pr-2 text-right">$75,798</td>
+            <td class="py-2 pr-2 text-right">$3,382</td>
+            <td class="py-2 text-right">24.2%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:95.7%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">18</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/rhode-island-paycheck-calculator/">Rhode Island</a></td>
+            <td class="py-2 pr-2 text-right">$75,782</td>
+            <td class="py-2 pr-2 text-right">$3,398</td>
+            <td class="py-2 text-right">24.2%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:95.7%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">19</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/north-carolina-paycheck-calculator/">North Carolina</a></td>
+            <td class="py-2 pr-2 text-right">$75,699</td>
+            <td class="py-2 pr-2 text-right">$3,481</td>
+            <td class="py-2 text-right">24.3%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:95.6%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">20</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/mississippi-paycheck-calculator/">Mississippi</a></td>
+            <td class="py-2 pr-2 text-right">$75,672</td>
+            <td class="py-2 pr-2 text-right">$3,508</td>
+            <td class="py-2 text-right">24.3%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:95.6%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">21</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/new-mexico-paycheck-calculator/">New Mexico</a></td>
+            <td class="py-2 pr-2 text-right">$75,611</td>
+            <td class="py-2 pr-2 text-right">$3,569</td>
+            <td class="py-2 text-right">24.4%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:95.5%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">22</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/colorado-paycheck-calculator/">Colorado</a></td>
+            <td class="py-2 pr-2 text-right">$75,488</td>
+            <td class="py-2 pr-2 text-right">$3,692</td>
+            <td class="py-2 text-right">24.5%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:95.3%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">23</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/arkansas-paycheck-calculator/">Arkansas</a></td>
+            <td class="py-2 pr-2 text-right">$75,464</td>
+            <td class="py-2 pr-2 text-right">$3,716</td>
+            <td class="py-2 text-right">24.5%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:95.3%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">24</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/missouri-paycheck-calculator/">Missouri</a></td>
+            <td class="py-2 pr-2 text-right">$75,417</td>
+            <td class="py-2 pr-2 text-right">$3,763</td>
+            <td class="py-2 text-right">24.6%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:95.2%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">25</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/west-virginia-paycheck-calculator/">West Virginia</a></td>
+            <td class="py-2 pr-2 text-right">$75,398</td>
+            <td class="py-2 pr-2 text-right">$3,782</td>
+            <td class="py-2 text-right">24.6%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:95.2%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">26</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/nebraska-paycheck-calculator/">Nebraska</a></td>
+            <td class="py-2 pr-2 text-right">$75,334</td>
+            <td class="py-2 pr-2 text-right">$3,846</td>
+            <td class="py-2 text-right">24.7%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:95.1%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">27</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/wisconsin-paycheck-calculator/">Wisconsin</a></td>
+            <td class="py-2 pr-2 text-right">$75,223</td>
+            <td class="py-2 pr-2 text-right">$3,957</td>
+            <td class="py-2 text-right">24.8%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:95.0%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">28</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/oklahoma-paycheck-calculator/">Oklahoma</a></td>
+            <td class="py-2 pr-2 text-right">$75,180</td>
+            <td class="py-2 pr-2 text-right">$4,000</td>
+            <td class="py-2 text-right">24.8%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:94.9%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">29</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/new-jersey-paycheck-calculator/">New Jersey</a></td>
+            <td class="py-2 pr-2 text-right">$75,000</td>
+            <td class="py-2 pr-2 text-right">$4,180</td>
+            <td class="py-2 text-right">25.0%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:94.7%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">30</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/michigan-paycheck-calculator/">Michigan</a></td>
+            <td class="py-2 pr-2 text-right">$74,930</td>
+            <td class="py-2 pr-2 text-right">$4,250</td>
+            <td class="py-2 text-right">25.1%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:94.6%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">31</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/montana-paycheck-calculator/">Montana</a></td>
+            <td class="py-2 pr-2 text-right">$74,891</td>
+            <td class="py-2 pr-2 text-right">$4,289</td>
+            <td class="py-2 text-right">25.1%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:94.6%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">32</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/idaho-paycheck-calculator/">Idaho</a></td>
+            <td class="py-2 pr-2 text-right">$74,733</td>
+            <td class="py-2 pr-2 text-right">$4,447</td>
+            <td class="py-2 text-right">25.3%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:94.4%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">33</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/vermont-paycheck-calculator/">Vermont</a></td>
+            <td class="py-2 pr-2 text-right">$74,690</td>
+            <td class="py-2 pr-2 text-right">$4,490</td>
+            <td class="py-2 text-right">25.3%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:94.3%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">34</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/utah-paycheck-calculator/">Utah</a></td>
+            <td class="py-2 pr-2 text-right">$74,680</td>
+            <td class="py-2 pr-2 text-right">$4,500</td>
+            <td class="py-2 text-right">25.3%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:94.3%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">35</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/maryland-paycheck-calculator/">Maryland</a></td>
+            <td class="py-2 pr-2 text-right">$74,642</td>
+            <td class="py-2 pr-2 text-right">$4,538</td>
+            <td class="py-2 text-right">25.4%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:94.3%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">36</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/georgia-paycheck-calculator/">Georgia</a></td>
+            <td class="py-2 pr-2 text-right">$74,613</td>
+            <td class="py-2 pr-2 text-right">$4,567</td>
+            <td class="py-2 text-right">25.4%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:94.2%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">37</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/connecticut-paycheck-calculator/">Connecticut</a></td>
+            <td class="py-2 pr-2 text-right">$74,430</td>
+            <td class="py-2 pr-2 text-right">$4,750</td>
+            <td class="py-2 text-right">25.6%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:94.0%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">38</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/illinois-paycheck-calculator/">Illinois</a></td>
+            <td class="py-2 pr-2 text-right">$74,375</td>
+            <td class="py-2 pr-2 text-right">$4,805</td>
+            <td class="py-2 text-right">25.6%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:93.9%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">39</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/alabama-paycheck-calculator/">Alabama</a></td>
+            <td class="py-2 pr-2 text-right">$74,370</td>
+            <td class="py-2 pr-2 text-right">$4,810</td>
+            <td class="py-2 text-right">25.6%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:93.9%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">40</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/south-carolina-paycheck-calculator/">South Carolina</a></td>
+            <td class="py-2 pr-2 text-right">$74,337</td>
+            <td class="py-2 pr-2 text-right">$4,843</td>
+            <td class="py-2 text-right">25.7%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:93.9%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">41</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/new-york-paycheck-calculator/">New York</a></td>
+            <td class="py-2 pr-2 text-right">$74,320</td>
+            <td class="py-2 pr-2 text-right">$4,860</td>
+            <td class="py-2 text-right">25.7%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:93.9%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">42</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/virginia-paycheck-calculator/">Virginia</a></td>
+            <td class="py-2 pr-2 text-right">$74,191</td>
+            <td class="py-2 pr-2 text-right">$4,989</td>
+            <td class="py-2 text-right">25.8%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:93.7%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">43</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/massachusetts-paycheck-calculator/">Massachusetts</a></td>
+            <td class="py-2 pr-2 text-right">$74,180</td>
+            <td class="py-2 pr-2 text-right">$5,000</td>
+            <td class="py-2 text-right">25.8%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:93.7%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">44</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/california-paycheck-calculator/">California</a></td>
+            <td class="py-2 pr-2 text-right">$73,957</td>
+            <td class="py-2 pr-2 text-right">$5,223</td>
+            <td class="py-2 text-right">26.0%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:93.4%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">45</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/minnesota-paycheck-calculator/">Minnesota</a></td>
+            <td class="py-2 pr-2 text-right">$73,903</td>
+            <td class="py-2 pr-2 text-right">$5,277</td>
+            <td class="py-2 text-right">26.1%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:93.3%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">46</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/kansas-paycheck-calculator/">Kansas</a></td>
+            <td class="py-2 pr-2 text-right">$73,889</td>
+            <td class="py-2 pr-2 text-right">$5,291</td>
+            <td class="py-2 text-right">26.1%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:93.3%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">47</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/delaware-paycheck-calculator/">Delaware</a></td>
+            <td class="py-2 pr-2 text-right">$73,811</td>
+            <td class="py-2 pr-2 text-right">$5,369</td>
+            <td class="py-2 text-right">26.2%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:93.2%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">48</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/maine-paycheck-calculator/">Maine</a></td>
+            <td class="py-2 pr-2 text-right">$73,147</td>
+            <td class="py-2 pr-2 text-right">$6,033</td>
+            <td class="py-2 text-right">26.9%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:92.4%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">49</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/hawaii-paycheck-calculator/">Hawaii</a></td>
+            <td class="py-2 pr-2 text-right">$73,023</td>
+            <td class="py-2 pr-2 text-right">$6,157</td>
+            <td class="py-2 text-right">27.0%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:92.2%"></div></div></td>
+          </tr>
+          <tr class="border-t border-slate-100">
+            <td class="py-2 pr-2 font-semibold">50</td>
+            <td class="py-2 pr-2"><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/states/oregon-paycheck-calculator/">Oregon</a></td>
+            <td class="py-2 pr-2 text-right">$71,004</td>
+            <td class="py-2 pr-2 text-right">$8,176</td>
+            <td class="py-2 text-right">29.0%</td>
+            <td class="py-2 pl-3 w-32"><div class="h-2 rounded bg-slate-100"><div class="h-2 rounded bg-emerald-500" style="width:89.7%"></div></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">Key findings</h2>
+    <ul class="mt-4 list-disc space-y-2 pl-6 text-slate-700">
+      <li><strong>Nine states tie for first.</strong> Alaska, Florida, Nevada, New Hampshire, South Dakota, Tennessee, Texas, Washington, and Wyoming levy no individual income tax — workers there keep $79,180 of a $100,000 salary.</li>
+      <li><strong>Oregon takes the biggest bite.</strong> Its $8,176 state tax bill leaves just $71,004 — the lowest take-home in the country.</li>
+      <li><strong>California isn\u2019t the worst.</strong> Despite its reputation, California\u2019s progressive brackets leave middle earners better off than Oregon, Hawaii, Maine, and others on $100k.</li>
+      <li><strong>Local taxes aren\u2019t counted.</strong> Places with city income taxes (e.g. New York City) would rank lower if those were included.</li>
+    </ul>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">Methodology</h2>
+    <p class="mt-3 text-slate-700">
+      Figures assume a single filer earning $100,000 in wages with no pre-tax deductions, computed with
+      2026 IRS federal brackets (Revenue Procedure 2025-32), the 2026 Social Security wage base ($184,500),
+      and each state\u2019s 2026 income tax brackets (Tax Foundation, as of January 1, 2026).
+      State personal exemptions, credits, and local taxes are not modeled; figures are estimates.
+      See our <a class="text-emerald-700 underline" href="/en-us/states/">state paycheck calculators</a> to
+      run your own numbers.
+    </p>
+    <p class="mt-3 text-sm text-slate-500">
+      Journalists and researchers: you may cite these figures with attribution and a link to this page.
+    </p>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Study FAQs" items={faqItems} />
+  </article>
+</BaseLayout>
