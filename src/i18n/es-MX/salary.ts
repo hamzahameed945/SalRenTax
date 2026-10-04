@@ -56,7 +56,7 @@ export const salary = {
   finiquito: {
     title: 'Calculadora de Finiquito y Liquidación México 2026',
     metaDescription:
-      'Calcula tu finiquito o liquidación laboral conforme a la LFT 2026. Incluye aguinaldo proporcional, vacaciones, prima vacacional, indemnización y prima de antigüedad con tope UMA.',
+      'Calcula tu finiquito o liquidación conforme a la LFT 2026: aguinaldo, vacaciones, prima vacacional e indemnización.',
     h1: 'Calculadora de Finiquito y Liquidación México 2026',
     intro:
       'Estima tu finiquito o liquidación laboral conforme a la Ley Federal del Trabajo (LFT). Prima de antigüedad con tope 2× salario mínimo (Art. 162 LFT). Vacaciones mínimas según reforma 2023 Art. 76.',

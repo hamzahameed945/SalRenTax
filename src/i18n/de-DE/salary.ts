@@ -24,7 +24,7 @@ export const salary = {
   bruttoNetto: {
     title: 'Brutto-Netto-Rechner 2026',
     metaDescription:
-      'Berechnen Sie Ihr Nettogehalt 2026 nach Lohnsteuer (§ 32a EStG), Sozialversicherung, Solidaritätszuschlag und Kirchensteuer — mit allen Steuerklassen und Kinderzahl.',
+      'Berechnen Sie Ihr Nettogehalt 2026 nach Lohnsteuer, Sozialversicherung, Solidaritätszuschlag und Kirchensteuer — mit allen Steuerklassen.',
     h1: 'Brutto-Netto-Rechner 2026 — Nettogehalt berechnen',
     intro:
       'Berechnen Sie Ihr monatliches Nettogehalt 2026 nach Lohnsteuer (§ 32a EStG), Sozialversicherungsbeiträgen, Solidaritätszuschlag und Kirchensteuer. Mit Steuerklassen I–VI, Kinderzahl und Kirchensteueroption.',

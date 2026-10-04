@@ -24,7 +24,7 @@ export const salary = {
     title: 'Bruto Netto Calculator Nederland 2026',
     h1: 'Bruto Netto Calculator Nederland 2026',
     metaDescription:
-      'Bereken uw netto salaris 2026 na box 1 inkomstenbelasting, heffingskortingen en vakantiegeld. Inclusief 30%-regeling, AOW-tarief en salarisverhoging simulatie.',
+      'Bereken uw netto salaris 2026 na box 1-belasting, heffingskortingen en vakantiegeld. Inclusief 30%-regeling en AOW-tarief.',
     intro:
       'Bereken uw netto salaris na inkomstenbelasting (box 1), arbeidskorting en algemene heffingskorting voor 2026. Inclusief 30%-regeling, vakantiegeld en uitgesplitste berekening per schijf.',
   },

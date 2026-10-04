@@ -44,7 +44,7 @@ export const salary = {
   nomina: {
     title: 'Calculadora de Nómina 2026 — IRPF + SS + Comunidad Autónoma',
     metaDescription:
-      'Calcula tu sueldo neto en España 2026 con IRPF completo (estatal + autonómico de las 15 CC.AA.), Seguridad Social (6,50%) y reducción por rendimientos del trabajo. Simulador de aumento de sueldo incluido.',
+      'Calcula tu sueldo neto en España 2026 con IRPF completo (estatal + autonómico), Seguridad Social y reducción por rendimientos del trabajo.',
     h1: 'Calculadora de Nómina 2026',
     intro:
       'Calcula tu sueldo neto para 2026 con el IRPF estatal y autonómico de tu comunidad, la cotización a la Seguridad Social completa (6,50%) y la reducción por rendimientos del trabajo (Art. 20 LIRPF). Incluye simulador de aumento de sueldo.',
@@ -96,7 +96,7 @@ export const salary = {
   finiquito: {
     title: 'Calcular Finiquito e Indemnización 2026',
     metaDescription:
-      'Calcula tu finiquito en España 2026: pagas extra proporcionales, vacaciones, indemnización por despido objetivo o improcedente. Incluye tramo pre/post 2012 (RDL 3/2012).',
+      'Calcula tu finiquito en España 2026: pagas extra, vacaciones e indemnización por despido objetivo o improcedente.',
     h1: 'Calculadora de Finiquito e Indemnización 2026',
     intro:
       'Estima tu finiquito con pagas extra proporcionales según el mes de salida, vacaciones pendientes e indemnización por despido. Incluye el doble tramo pre/post 12 feb. 2012 para despido improcedente.',
