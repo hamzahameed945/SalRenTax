@@ -17,7 +17,7 @@ import {
 //   $300k joint MAGI, $100 reduction per $1,000 over, fully gone at
 //   $275k / $550k; claimed whether itemizing or standard deduction; married
 //   must file jointly.
-// - IRS guidance summaries (Sept 2026) — 2026 W-2 Box 14 reporting; only
+// - IRS guidance (2026 fact sheet) — 2026 W-2 Box 12 Code TT reporting; only
 //   FLSA-mandated overtime qualifies (not state-law or contract extras);
 //   applies to tax years 2025–2028.
 export const OBBBA_OVERTIME_2026 = {
