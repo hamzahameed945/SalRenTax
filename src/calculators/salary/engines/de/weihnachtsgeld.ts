@@ -2,6 +2,8 @@ import type { CalculatorEngine, ValidationResult } from '../../../core/types';
 import {
   einkommensteuer2026,
   lohnsteuerPauschbetraege2026,
+  pflegeversicherungAN2026,
+  socialInsurance2026,
   solidaritaetszuschlag2026,
 } from '../../../../data/salary/de/germanPayrollData2026';
 
@@ -19,30 +21,35 @@ export interface WeihnachtsgeldResult {
   jahresBrutto: number;
   /**
    * Geschätzter Grenzsteuersatz am Jahresbrutto (Grundtarif, § 32a EStG 2026),
-   * z. B. 0.35 = 35 %.
+   * z. B. 0.35 = 35 %. Nur zur Einordnung; die Lohnsteuer wird nach der
+   * Jahrestabellen-Differenzmethode berechnet.
    */
   marginalRate: number;
-  /** Geschätzte Lohnsteuer auf das Weihnachtsgeld. */
+  /**
+   * Lohnsteuer auf das Weihnachtsgeld nach der Jahrestabellen-Differenzmethode
+   * für sonstige Bezüge: ESt(Jahresbrutto + Bonus) − ESt(Jahresbrutto).
+   */
   lohnsteuerGeschaetzt: number;
   /** Geschätzter Solidaritätszuschlag auf das Weihnachtsgeld (meist 0). */
   soliGeschaetzt: number;
+  /** Geschätzte Arbeitnehmer-Sozialversicherung auf das Weihnachtsgeld. */
+  sozialversicherungGeschaetzt: number;
   /** Weihnachtsgeld netto (Schätzung). */
   nettoGeschaetzt: number;
-  /** Immer true: Das Ergebnis ist eine grobe Schätzung, keine Lohnabrechnung. */
+  /** Immer true: Das Ergebnis ist eine Schätzung, keine Lohnabrechnung. */
   isSchaetzung: true;
   /**
-   * Hinweis an die UI: Der Arbeitgeber berechnet die Lohnsteuer auf
-   * Weihnachtsgeld nach der Jahrestabellen-Methode (sonstige Bezüge); die
-   * tatsächliche Lohnabrechnung kann abweichen.
+   * Hinweis an die UI: Annahmen (Steuerklasse I, kinderlos, Ø Zusatzbeitrag,
+   * keine Kirchensteuer) und dass die tatsächliche Lohnabrechnung maßgeblich ist.
    */
   hinweis: string;
 }
 
-// ─── § 32a EStG 2026: Steuer und Grenzsteuersatz ───────────────────────────
+// ─── § 32a EStG 2026: Steuer und Grenzsteuersatz ────────────────────────────
 // Vereinfachte Näherung: Einzelveranlagung (Grundtarif), Steuerklasse I,
 // abzüglich Arbeitnehmer-Pauschbetrag (1.230 €) und
 // Sonderausgaben-Pauschbetrag (36 €) vom Jahresbrutto. Sonderfälle
-// (Splitting, Kinder, Kirche, SV-Beiträge, tatsächliche Werbungskosten)
+// (Splitting, Kinder, Kirche, tatsächliche Werbungskosten)
 // sind bewusst nicht modelliert — siehe Hinweis unten.
 
 function zuVersteuerndesEinkommen(jahresBrutto: number): number {
@@ -96,24 +103,59 @@ function calcMarginalRate(zvE: number): number {
 
 /** Soli auf die Bonus-Lohnsteuer: fällig, sobald die tarifliche ESt die
  *  Freigrenze (Single 2026: 20.350 €) überschreitet. */
-function calcSoliOnBonus(estAnnualWithoutBonus: number, lohnsteuerBonus: number): number {
+function calcSoliOnBonus(estAnnualWithBonus: number, lohnsteuerBonus: number): number {
   const s = solidaritaetszuschlag2026;
-  if (estAnnualWithoutBonus + lohnsteuerBonus <= s.freigrenzeSingle) return 0;
+  if (estAnnualWithBonus <= s.freigrenzeSingle) return 0;
   // Außerhalb der Freigrenze: 5,5 % auf die Bonus-Lohnsteuer (einfache Näherung,
   // Milderungszone bewusst nicht modelliert).
   return lohnsteuerBonus * s.rate;
 }
 
+// ─── Sozialversicherung 2026 (Arbeitnehmer-Anteil) ──────────────────────────
+// Auf sonstige Bezüge fallen SV-Beiträge an, soweit die jährlichen
+// Beitragsbemessungsgrenzen durch das laufende Gehalt noch nicht
+// ausgeschöpft sind.
+
+const BBG_RV_AV_JAHR = socialInsurance2026.pensionUnemploymentCeilingMonthly * 12; // 101.400 €
+const BBG_KV_PV_JAHR = socialInsurance2026.healthCareCeilingMonthly * 12; // 69.750 €
+
+/** AN-Anteil RV + AlV: (18,6 % + 2,6 %) / 2. */
+const AN_SATZ_RV_AV =
+  (socialInsurance2026.pensionInsuranceRate + socialInsurance2026.unemploymentInsuranceRate) / 2;
+
+/** AN-Anteil KV + PV (kinderlos, Ø Zusatzbeitrag): (14,6 % + 2,9 %) / 2 + 2,3 %. */
+const AN_SATZ_KV_PV =
+  (socialInsurance2026.healthInsuranceGeneralRate +
+    socialInsurance2026.healthInsuranceAverageSupplementRate) /
+    2 +
+  pflegeversicherungAN2026.kinderlos;
+
+/**
+ * Geschätzte Arbeitnehmer-SV auf den Bonus. Berücksichtigt, dass das
+ * Jahresbruttogehalt die Beitragsbemessungsgrenzen bereits teilweise
+ * ausschöpft.
+ */
+function calcSozialversicherung(bonusBrutto: number, jahresBrutto: number): number {
+  const raumRvAv = Math.max(0, BBG_RV_AV_JAHR - jahresBrutto);
+  const raumKvPv = Math.max(0, BBG_KV_PV_JAHR - jahresBrutto);
+  return (
+    Math.min(bonusBrutto, raumRvAv) * AN_SATZ_RV_AV +
+    Math.min(bonusBrutto, raumKvPv) * AN_SATZ_KV_PV
+  );
+}
+
 export const weihnachtsgeldHinweis =
-  'Schätzung auf Basis des Einkommensteuertarifs 2026 (§ 32a EStG, Grundtarif, ' +
-  'Steuerklasse I). Der Arbeitgeber berechnet das Weihnachtsgeld als sonstige ' +
-  'Bezüge nach der Jahrestabellen-Methode — die tatsächliche Lohnabrechnung ' +
-  '(inkl. Sozialversicherungsbeiträgen, Steuerklasse, Kirchensteuer) ist ' +
-  'maßgeblich und kann abweichen.';
+  'Schätzung nach der Jahrestabellen-Differenzmethode für sonstige Bezüge ' +
+  '(Einkommensteuertarif 2026, § 32a EStG, Grundtarif/Steuerklasse I) inkl. ' +
+  'Arbeitnehmer-Sozialversicherung 2026 (kinderlos, Ø Zusatzbeitrag). ' +
+  'Annahmen: keine Kirchensteuer, keine weiteren Steuerklassenmerkmale. ' +
+  'Die tatsächliche Lohnabrechnung Ihres Arbeitgebers ist maßgeblich und kann abweichen.';
 
 export const weihnachtsgeldEngine: CalculatorEngine<WeihnachtsgeldInput, WeihnachtsgeldResult, never> = {
   validate(input: WeihnachtsgeldInput): ValidationResult<WeihnachtsgeldInput> {
-    const errors: Partial<Record<keyof WeihnachtsgeldInput, string>> = {};
+    const errors: Partial<Record<keyof WeihnachtsgeldInput, string>> = {} as Partial<
+      Record<keyof WeihnachtsgeldInput, string>
+    >;
 
     if (input.bonusBrutto === undefined || Number.isNaN(input.bonusBrutto)) {
       errors.bonusBrutto = 'errors.invalidNumber';
@@ -139,16 +181,24 @@ export const weihnachtsgeldEngine: CalculatorEngine<WeihnachtsgeldInput, Weihnac
   calculate(input: WeihnachtsgeldInput): WeihnachtsgeldResult {
     const { bonusBrutto, jahresBrutto } = input;
 
-    const zvE = zuVersteuerndesEinkommen(jahresBrutto);
-    const marginalRate = calcMarginalRate(zvE);
+    const zvEOhne = zuVersteuerndesEinkommen(jahresBrutto);
+    const zvEMit = zuVersteuerndesEinkommen(jahresBrutto + bonusBrutto);
+    const marginalRate = calcMarginalRate(zvEOhne);
 
-    // Schätzung: Lohnsteuer auf das Weihnachtsgeld ≈ Brutto × Grenzsteuersatz.
-    const lohnsteuerGeschaetzt = bonusBrutto * marginalRate;
+    // Jahrestabellen-Differenzmethode für sonstige Bezüge:
+    // Lohnsteuer auf den Bonus = ESt(Gehalt + Bonus) − ESt(Gehalt).
+    const estOhne = calcESt(zvEOhne);
+    const estMit = calcESt(zvEMit);
+    const lohnsteuerGeschaetzt = Math.max(0, estMit - estOhne);
 
-    const estAnnual = calcESt(zvE);
-    const soliGeschaetzt = calcSoliOnBonus(estAnnual, lohnsteuerGeschaetzt);
+    const soliGeschaetzt = calcSoliOnBonus(estMit, lohnsteuerGeschaetzt);
 
-    const nettoGeschaetzt = Math.max(0, bonusBrutto - lohnsteuerGeschaetzt - soliGeschaetzt);
+    const sozialversicherungGeschaetzt = calcSozialversicherung(bonusBrutto, jahresBrutto);
+
+    const nettoGeschaetzt = Math.max(
+      0,
+      bonusBrutto - lohnsteuerGeschaetzt - soliGeschaetzt - sozialversicherungGeschaetzt,
+    );
 
     return {
       bonusBrutto,
@@ -156,6 +206,7 @@ export const weihnachtsgeldEngine: CalculatorEngine<WeihnachtsgeldInput, Weihnac
       marginalRate,
       lohnsteuerGeschaetzt,
       soliGeschaetzt,
+      sozialversicherungGeschaetzt,
       nettoGeschaetzt,
       isSchaetzung: true,
       hinweis: weihnachtsgeldHinweis,

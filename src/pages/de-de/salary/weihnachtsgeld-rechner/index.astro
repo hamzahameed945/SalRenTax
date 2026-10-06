@@ -29,7 +29,7 @@ const faqItems = [
   {
     question: 'Warum ist das Ergebnis nur eine Schätzung?',
     answer:
-      'Die Höhe des tatsächlichen Abzugs hängt von Ihrer Steuerklasse, Kirchensteuerpflicht, tatsächlichen Werbungskosten, Ehegattensplitting und Ihrer Sozialversicherungssituation ab. Dieser Rechner nutzt eine Näherung auf Basis des Einkommensteuertarifs 2026 (Grundtarif, Steuerklasse I). Die Lohnabrechnung Ihres Arbeitgebers ist immer maßgeblich.',
+      'Die Höhe des tatsächlichen Abzugs hängt von Ihrer Steuerklasse, Kirchensteuerpflicht, tatsächlichen Werbungskosten, Ehegattensplitting und Ihrer Sozialversicherungssituation ab. Dieser Rechner nutzt die Jahrestabellen-Differenzmethode auf Basis des Einkommensteuertarifs 2026 (Grundtarif, Steuerklasse I) und zieht die Arbeitnehmer-Sozialversicherung 2026 ab (kinderlos, Ø Zusatzbeitrag). Die Lohnabrechnung Ihres Arbeitgebers ist immer maßgeblich.',
   },
   {
     question: 'Muss ich das Weihnachtsgeld in der Steuererklärung angeben?',
@@ -86,19 +86,22 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
         die Differenz ist die Steuer auf den Bonus.
       </p>
       <p>
-        Dieser Rechner bildet dieses Prinzip näherungsweise ab: Aus Ihrem Jahresbruttogehalt wird
-        der <strong>Grenzsteuersatz</strong> nach dem Einkommensteuertarif 2026 (§ 32a EStG,
-        Grundtarif) ermittelt; die geschätzte Lohnsteuer auf das Weihnachtsgeld entspricht
-        Bonus × Grenzsteuersatz. Liegt Ihre tarifliche Einkommensteuer über der
-        Soli-Freigrenze (Single 2026: 20.350 €), wird zusätzlich 5,5 % Solidaritätszuschlag
-        auf die Bonus-Steuer berücksichtigt — in der Praxis fällt der Soli bei den meisten
-        Arbeitnehmern 2026 weg.
+        Dieser Rechner bildet dieses Prinzip nach: Aus Ihrem Jahresbruttogehalt wird das zu
+        versteuernde Einkommen 2026 (§ 32a EStG, Grundtarif, abzüglich
+        Arbeitnehmer-Pauschbetrag) mit und ohne Weihnachtsgeld berechnet — die Differenz
+        der tariflichen Einkommensteuer ist die geschätzte Lohnsteuer auf den Bonus. Liegt
+        Ihre tarifliche Einkommensteuer über der Soli-Freigrenze (Single 2026: 20.350 €),
+        wird zusätzlich 5,5 % Solidaritätszuschlag auf die Bonus-Steuer berücksichtigt — in
+        der Praxis fällt der Soli bei den meisten Arbeitnehmern 2026 weg. Zusätzlich zieht
+        der Rechner die Arbeitnehmer-Sozialversicherung 2026 ab (RV 9,3 %, AlV 1,3 %,
+        KV 8,75 % inkl. Ø Zusatzbeitrag, PV 2,3 % kinderlos), soweit die
+        Beitragsbemessungsgrenzen durch Ihr Gehalt noch nicht ausgeschöpft sind.
       </p>
       <h3>Was der Rechner nicht berücksichtigt</h3>
       <p>
-        Steuerklasse (z. B. III/V), Kirchensteuer, tatsächliche Werbungskosten,
-        Ehegattensplitting und Sozialversicherungsbeiträge auf das Weihnachtsgeld sind nicht
-        modelliert. Prüfen Sie Ihr genaues Brutto-Netto-Gehalt mit unserem{' '}
+        Andere Steuerklassen als I (z. B. III/V), Kirchensteuer, tatsächliche Werbungskosten
+        über dem Pauschbetrag und Ehegattensplitting sind nicht modelliert. Prüfen Sie Ihr
+        genaues Brutto-Netto-Gehalt mit unserem{' '}
         <a href={buildLocalePath(locale, 'salary/brutto-netto-rechner')}>Brutto-Netto-Rechner</a>{' '}
         und Ihren Stundenlohn mit dem{' '}
         <a href={buildLocalePath(locale, 'salary/stundenlohn-rechner')}>Stundenlohn-Rechner</a>.

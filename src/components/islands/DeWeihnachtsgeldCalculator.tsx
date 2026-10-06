@@ -52,8 +52,9 @@ export default function DeWeihnachtsgeldCalculator({ initialBonus, initialSalary
           />
         </label>
         <p class="text-xs text-slate-500">
-          Das Ergebnis ist eine <strong>Schätzung</strong> auf Basis des Einkommensteuertarifs
-          2026 (Grundtarif, Steuerklasse I). Ihre tatsächliche Lohnabrechnung ist maßgeblich.
+          Das Ergebnis ist eine <strong>Schätzung</strong> nach der Jahrestabellen-Differenzmethode
+          (Einkommensteuertarif 2026, Steuerklasse I) inkl. Arbeitnehmer-Sozialversicherung
+          (kinderlos, Ø Zusatzbeitrag). Ihre tatsächliche Lohnabrechnung ist maßgeblich.
         </p>
       </div>
 
@@ -75,6 +76,10 @@ export default function DeWeihnachtsgeldCalculator({ initialBonus, initialSalary
             <div class="flex justify-between">
               <dt>Solidaritätszuschlag (geschätzt)</dt>
               <dd>{formatCurrency(result.soliGeschaetzt)}</dd>
+            </div>
+            <div class="flex justify-between">
+              <dt>Sozialversicherung AN (geschätzt)</dt>
+              <dd>{formatCurrency(result.sozialversicherungGeschaetzt)}</dd>
             </div>
             <div class="flex justify-between">
               <dt>Geschätzter Grenzsteuersatz</dt>
