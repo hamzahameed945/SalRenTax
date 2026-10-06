@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getDictionary } from '../../i18n/dictionaries';
+import { buildPageMetadata } from '../../lib/seo/metadata';
+import { buildLocalePath } from '../../i18n/utils';
+import TiltCard from '../../components/islands/TiltCard';
+import { categoryMeta } from '../../data/categoryMeta';
+
+const locale = 'el-GR' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(t.meta.localeHomeTitle, t.meta.localeHomeDescription, '/el-gr/');
+
+const cm = categoryMeta['labor'] ?? categoryMeta['salary'];
+const calculatorHref = buildLocalePath(locale, 'labor/doro-hristougennon-calculator');
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <section class="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-50">
+    <div class="relative z-10 mx-auto max-w-5xl px-4 pt-16 pb-20 text-center sm:pt-24 sm:pb-28">
+      <p class="text-sm font-semibold uppercase tracking-widest text-accent">Αριθμομηχανές 2026</p>
+      <h1 class="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
+        Δώρο Χριστουγέννων 2026 — Ελλάδα
+      </h1>
+      <p class="mx-auto mt-5 max-w-2xl text-lg text-slate-600 leading-relaxed">
+        {t.meta.localeHomeDescription}
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-4 py-16 sm:py-20">
+    <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl mb-2">
+      {t.common.popularCalculators}
+    </h2>
+    <p class="text-slate-500 mb-8">
+      Υπολογίστε το δώρο σας με βάση τον μισθό και τις ημέρες εργασίας σας.
+    </p>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="perspective-1000">
+        <TiltCard client:visible href={calculatorHref} glowColor={cm.glow}>
+          <div class="p-6">
+            <div
+              class={`mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${cm.gradient} text-xl shadow-md`}
+            >
+              <span class="drop-shadow-sm">{cm.icon}</span>
+            </div>
+            <h3 class="text-base font-bold text-slate-900 leading-snug">
+              Υπολογιστής Δώρου Χριστουγέννων 2026
+            </h3>
+            <p class="mt-1 text-sm text-slate-500 leading-snug">
+              Πλήρες ή αναλογικό ποσό για τον ιδιωτικό τομέα
+            </p>
+            <div class="mt-4 flex items-center gap-1.5 text-sm font-semibold text-accent">
+              Υπολογισμός
+              <svg
+                class="h-4 w-4 transition-transform group-hover:translate-x-1"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                />
+              </svg>
+            </div>
+          </div>
+        </TiltCard>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-4 pb-16">
+    <h2 class="text-xl font-semibold text-slate-900 mb-4">Δώρο Χριστουγέννων Ελλάδα 2026</h2>
+    <div class="space-y-4 text-slate-600">
+      <p>
+        Το <strong>δώρο Χριστουγέννων</strong> είναι υποχρεωτική παροχή του εργοδότη στον
+        <strong>ιδιωτικό τομέα</strong>. Όποιος εργάστηκε όλη την περίοδο από
+        <strong>1 Μαΐου έως 31 Δεκεμβρίου</strong> δικαιούται έναν ολόκληρο μηνιαίο μισθό· για
+        μικρότερο διάστημα δικαιούται τα <strong>2/25 του μισθού για κάθε 19 ημέρες</strong>{' '}
+        εργασίας.
+      </p>
+      <p>
+        Το ποσό προσαυξάνεται με συντελεστή <strong>1,041666</strong> για το επίδομα αδείας και
+        καταβάλλεται το αργότερο έως τις <strong>21 Δεκεμβρίου 2026</strong>. Οι τιμές είναι μικτές
+        εκτιμήσεις — το δώρο υπόκειται σε εισφορές ΕΦΚΑ και φόρο μισθωτών υπηρεσιών.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

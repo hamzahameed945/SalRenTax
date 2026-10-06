@@ -2,13 +2,16 @@ import type { LocaleCode, LocaleConfig } from '../../i18n/types';
 import { enUSConfig } from './en-US';
 import { enGBConfig } from './en-GB';
 import { enIEConfig } from './en-IE';
+import { enNGConfig } from './en-NG';
 import { ptBRConfig } from './pt-BR';
+import { ptPTConfig } from './pt-PT';
 import { esESConfig } from './es-ES';
 import { esMXConfig } from './es-MX';
 import { esARConfig } from './es-AR';
 import { esCOConfig } from './es-CO';
 import { deDEConfig } from './de-DE';
 import { nlNLConfig } from './nl-NL';
+import { elGRConfig } from './el-GR';
 
 /**
  * Config registry. All active locales have their LocaleConfig populated.
@@ -17,13 +20,16 @@ const localeConfigs: Partial<Record<LocaleCode, LocaleConfig>> = {
   'en-US': enUSConfig,
   'en-GB': enGBConfig,
   'en-IE': enIEConfig,
+  'en-NG': enNGConfig,
   'pt-BR': ptBRConfig,
+  'pt-PT': ptPTConfig,
   'es-ES': esESConfig,
   'es-MX': esMXConfig,
   'es-AR': esARConfig,
   'es-CO': esCOConfig,
   'de-DE': deDEConfig,
   'nl-NL': nlNLConfig,
+  'el-GR': elGRConfig,
 };
 
 export function getLocaleConfig(locale: LocaleCode): LocaleConfig {

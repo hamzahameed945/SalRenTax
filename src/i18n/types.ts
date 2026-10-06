@@ -8,26 +8,32 @@ export type LocaleCode =
   | 'en-US'
   | 'en-GB'
   | 'en-IE'
+  | 'en-NG'
   | 'pt-BR'
+  | 'pt-PT'
   | 'es-ES'
   | 'es-MX'
   | 'es-AR'
   | 'es-CO'
   | 'de-DE'
-  | 'nl-NL';
+  | 'nl-NL'
+  | 'el-GR';
 
 /** All locales planned for initial coverage. */
 export const ALL_LOCALES: LocaleCode[] = [
   'en-US',
   'en-GB',
   'en-IE',
+  'en-NG',
   'pt-BR',
+  'pt-PT',
   'es-ES',
   'es-MX',
   'es-AR',
   'es-CO',
   'de-DE',
   'nl-NL',
+  'el-GR',
 ];
 
 /**
@@ -41,13 +47,16 @@ export const LOCALE_STATUS: Record<LocaleCode, LocaleStatus> = {
   'en-US': 'active',
   'en-GB': 'active',
   'en-IE': 'active',
+  'en-NG': 'active',
   'pt-BR': 'active',
+  'pt-PT': 'active',
   'es-ES': 'active',
   'es-MX': 'active',
   'es-AR': 'active',
   'es-CO': 'active',
   'de-DE': 'active',
   'nl-NL': 'active',
+  'el-GR': 'active',
 };
 
 /** All locales with an 'active' status. */

@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import IeChristmasBonusCalculator from '../../../../components/islands/IeChristmasBonusCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'en-IE' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Christmas Bonus Ireland 2026 — Eligibility Checker — PayRenTax',
+  'Check if you qualify for Ireland\'s 2026 Christmas Bonus: 100% of your weekly social welfare payment (min €20), paid in the first week of December. Pensioners and long-term claimants qualify automatically; jobseekers need 12 months.',
+  '/en-ie/labor/christmas-bonus-checker/',
+);
+
+const faqItems = [
+  {
+    question: 'Who qualifies for the Christmas Bonus 2026?',
+    answer:
+      'The bonus goes to people on long-term social welfare payments: State Pension (Contributory and Non-Contributory), Disability Allowance, One-Parent Family Payment, Invalidity Pension, Carer\'s Allowance, Widow\'s/Widower\'s/Surviving Civil Partner\'s Pension and Farm Assist qualify with no waiting period. Around 1.5 million people received the bonus in 2025. The 2026 payment is widely expected to follow the same rules — it was flagged for confirmation with Budget 2027 on 6 October 2026, with final details to be confirmed by the Department of Social Protection.',
+  },
+  {
+    question: 'Do I need to be on the payment for 12 months?',
+    answer:
+      'It depends on the payment. Long-term schemes — State Pension, Disability Allowance, One-Parent Family Payment, Invalidity Pension, Carer\'s Allowance, Bereaved Partner\'s Pension and Farm Assist — qualify with no duration requirement. But Jobseeker\'s Allowance only qualifies after 12 months (312 claim paid days), and Illness Benefit and long-term Supplementary Welfare Allowance also require 12 months of receipt. Jobseeker\'s Benefit is a short-term scheme and never qualifies.',
+  },
+  {
+    question: 'How much is the Christmas Bonus?',
+    answer:
+      'The bonus is 100% of your normal weekly payment — an effective double week — with a statutory minimum of €20. So if your weekly payment is €254, your bonus is €254. If you receive two qualifying payments (for example, a One-Parent Family Payment and a half-rate Carer\'s Allowance), you get the bonus on both.',
+  },
+  {
+    question: 'When is it paid?',
+    answer:
+      'The bonus is paid in the first week of December, automatically with your normal weekly payment — on the same day you usually get paid. You do not need to apply for it; it is paid automatically to everyone who qualifies.',
+  },
+  {
+    question: 'Does Jobseeker\'s Allowance qualify?',
+    answer:
+      'Only after 12 months. Jobseeker\'s Allowance claimants qualify once they have been on the payment for 12 months (312 claim paid days). Shorter claims do not qualify. Jobseeker\'s Benefit, the PRSI-based short-term scheme, never qualifies for the Christmas Bonus.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Christmas Bonus Checker', href: buildLocalePath(locale, 'labor/christmas-bonus-checker') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Christmas Bonus Ireland 2026: Eligibility Checker</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Ireland's Christmas Bonus is a once-off <strong>double week</strong> for people on long-term
+      social welfare payments — <strong>100% of your normal weekly payment</strong> (minimum €20),
+      paid automatically in the <strong>first week of December</strong>. Use the checker to see if
+      you qualify and how much you'd get.
+    </p>
+    <p class="mt-2 max-w-2xl text-xs text-slate-500">
+      Expected 2026 rules: the December 2026 bonus was flagged for confirmation with Budget 2027
+      (6 October 2026). The rules below follow the confirmed 2025 payment; final details are subject
+      to Department of Social Protection confirmation.
+    </p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <IeChristmasBonusCalculator client:load />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="ie-xmas-bonus-1" />
+    </div>
+
+    <div class="mt-10">
+      <h2 class="text-xl font-semibold">Qualifying payments at a glance</h2>
+      <table class="mt-4 w-full text-sm">
+        <thead>
+          <tr>
+            <th class="text-left font-semibold text-slate-700">Payment</th>
+            <th class="text-left font-semibold text-slate-700">12-month wait?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>State Pension (Contributory / Non-Contributory)</td><td>No — qualifies automatically</td></tr>
+          <tr><td>Disability Allowance</td><td>No — qualifies automatically</td></tr>
+          <tr><td>One-Parent Family Payment</td><td>No — qualifies automatically</td></tr>
+          <tr><td>Invalidity Pension</td><td>No — qualifies automatically</td></tr>
+          <tr><td>Carer's Allowance</td><td>No — qualifies automatically</td></tr>
+          <tr><td>Widow's / Widower's / Surviving Civil Partner's Pension</td><td>No — qualifies automatically</td></tr>
+          <tr><td>Farm Assist</td><td>No — qualifies automatically</td></tr>
+          <tr><td>Jobseeker's Allowance</td><td>Yes — needs 12 months (312 claim paid days)</td></tr>
+          <tr><td>Illness Benefit</td><td>Yes — long-term recipients only (12+ months)</td></tr>
+          <tr><td>Supplementary Welfare Allowance</td><td>Yes — long-term only (12+ months)</td></tr>
+          <tr><td>Jobseeker's Benefit</td><td>Never qualifies (short-term scheme)</td></tr>
+        </tbody>
+      </table>
+      <p class="mt-4 text-xs text-slate-500">
+        The full qualifying list published by the Department of Social Protection also includes
+        Blind Pension, Guardian's Payment, Back to Education Allowance, Community Employment, Tús,
+        Rural Social Scheme and others. Short-term payments such as Child Benefit and Fuel Allowance
+        do not attract the bonus.
+      </p>
+    </div>
+
+    <RelatedCalculators
+      heading="Related calculators"
+      links={[
+        { href: '/en-ie/rent/rent-affordability/', label: 'Rent Affordability Calculator Ireland' },
+        { href: '/en-ie/salary/take-home-pay-calculator/', label: 'Take-Home Pay Calculator Ireland' },
+      ]}
+    />
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} Eligibility estimate only, based on
+      the confirmed 2025 Christmas Bonus rules (expected to be repeated for 2026). The Department of
+      Social Protection decides entitlement on your actual claim record.
+    </p>
+
+    <CalculatorFAQ heading="Christmas Bonus 2026: frequently asked questions" items={faqItems} />
+  </article>
+</BaseLayout>

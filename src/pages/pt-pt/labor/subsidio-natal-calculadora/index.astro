@@ -1,0 +1,120 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import PtSubsidioNatalCalculator from '../../../../components/islands/PtSubsidioNatalCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'pt-PT' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Subsídio de Natal 2026: quanto vai receber? — PayRenTax',
+  'Calculadora de subsídio de Natal 2026: um mês de retribuição, pago até 15 de dezembro (Código do Trabalho, art. 263.º). Calcule o valor bruto, proporcional e em duodécimos.',
+  '/pt-pt/labor/subsidio-natal-calculadora/',
+);
+
+const faqItems = [
+    {
+      question: 'Quando é pago o subsídio de Natal em 2026?',
+      answer:
+        'No setor privado, o subsídio de Natal tem de ser pago até 15 de dezembro de 2026 (Código do Trabalho, art. 263.º). Na função pública, é pago com o vencimento de novembro; os pensionistas da CGA recebem-no em novembro e os pensionistas da Segurança Social em dezembro.'
+    },
+    {
+      question: 'Como se calcula o subsídio de Natal proporcional?',
+      answer:
+        'A regra geral é simples: o subsídio de Natal equivale a um mês de retribuição. Se não trabalhou o ano civil completo — ano de admissão, ano de cessação do contrato ou suspensão do contrato não imputável ao empregador — recebe o proporcional: um mês de retribuição × (meses trabalhados / 12).'
+    },
+    {
+      question: 'O que são duodécimos?',
+      answer:
+        'Duodécimos é o pagamento do subsídio de Natal repartido em 12 partes iguais, pagas mensalmente com o salário. Cada duodécimo corresponde a 1/12 do subsídio de Natal (proporcional, se aplicável).'
+    },
+    {
+      question: 'O subsídio de Natal desconta IRS?',
+      answer:
+        'Sim. O subsídio de Natal está sujeito a retenção de IRS na fonte e a descontos para a Segurança Social, como o salário. A calculadora apresenta o valor bruto estimado para 2026; o valor líquido que recebe depende da sua taxa de retenção.'
+    }
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.labor, href: buildLocalePath(locale, 'labor') },
+      { label: 'Subsídio de Natal', href: buildLocalePath(locale, 'labor/subsidio-natal-calculadora') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Subsídio de Natal 2026: quanto vai receber?</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      O <strong>subsídio de Natal</strong> (13.º mês) equivale a um mês de retribuição e tem de ser
+      pago <strong>até 15 de dezembro</strong>, segundo o Código do Trabalho (art. 263.º).
+      Calcule abaixo o seu valor bruto estimado para 2026.
+    </p>
+
+    <div class="mt-8">
+      <h2 class="text-xl font-semibold">Calcule o seu subsídio de Natal</h2>
+      <div class="mt-4">
+        <PtSubsidioNatalCalculator client:load initialSalary={1400} />
+      </div>
+    </div>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-semibold">Como é calculado</h2>
+      <div class="mt-4 space-y-3 text-sm text-slate-600">
+        <p>
+          <strong>Ano completo (12 meses):</strong> subsídio = 1 mês de retribuição base.
+        </p>
+        <p>
+          <strong>Ano parcial:</strong> subsídio = retribuição base × (meses trabalhados ÷ 12).
+          É proporcional no ano de admissão, no ano de cessação do contrato e em caso de
+          suspensão do contrato não imputável ao empregador.
+        </p>
+        <p>
+          <strong>Duodécimos:</strong> cada prestação mensal = subsídio ÷ 12.
+        </p>
+      </div>
+      <p class="mt-4 text-xs text-slate-500">
+        Estimativa bruta para 2026. O subsídio de Natal está sujeito a retenção de IRS e a
+        descontos para a Segurança Social, tal como o salário. O recibo de vencimento do seu
+        empregador é o documento oficial.
+      </p>
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="pt-subsidio-natal-1" />
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} Valores brutos estimados para 2026; o subsídio de Natal pode estar
+      sujeito a retenção de IRS e descontos para a Segurança Social conforme a sua situação.
+      O recibo de vencimento real pode variar.
+    </p>
+
+    <CalculatorFAQ heading="Subsídio de Natal: perguntas frequentes" items={faqItems} />
+
+    <RelatedCalculators
+      heading="Calculadoras relacionadas"
+      links={[
+        { label: 'Direitos laborais em Portugal', href: '/pt-pt/labor/' },
+        { label: 'Calculadoras Portugal', href: '/pt-pt/' },
+      ]}
+    />
+  </article>
+</BaseLayout>
