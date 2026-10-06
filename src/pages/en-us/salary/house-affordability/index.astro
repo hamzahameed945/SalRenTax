@@ -1,0 +1,123 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import AffiliateCTA from '../../../../components/ads/AffiliateCTA.astro';
+import HouseAffordabilityCalculator from '../../../../components/islands/HouseAffordabilityCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { US_STATES } from '../../../../data/salary/us/effectivePropertyTaxRates2026';
+
+const locale = 'en-US' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'House Affordability Calculator: How Much House Can You Afford? (2026) — PayRenTax',
+  'Estimate the max home price on your salary in any US state. 28% rule, 7.28% 30-year rate, 20% down, state property taxes included.',
+  '/en-us/salary/house-affordability/',
+);
+
+const SALARIES = [40000, 50000, 60000, 75000, 80000, 100000, 125000, 150000];
+const slugOf = (name: string) => name.toLowerCase().replace(/ /g, '-');
+const money = (n: number) => '$' + n.toLocaleString('en-US');
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Salary', href: buildLocalePath(locale, 'salary') },
+      { label: 'House Affordability', href: buildLocalePath(locale, 'salary/house-affordability') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">
+      How Much House Can You Afford on Your Salary? (2026)
+    </h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Lenders use the <strong>28/36 rule</strong>: your total monthly housing payment
+      (principal, interest, property tax, and insurance — PITI) should not exceed 28% of
+      your <strong>gross</strong> monthly income. Pick your state and salary below for an
+      instant estimate, or browse the pre-computed state guides underneath.
+    </p>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-semibold">House affordability calculator</h2>
+      <div class="mt-4">
+        <HouseAffordabilityCalculator client:load />
+      </div>
+    </div>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-semibold">How the estimate works</h2>
+      <ul class="mt-3 list-disc space-y-2 pl-5 text-sm text-slate-700">
+        <li>
+          <strong>28% front-end ratio:</strong> max monthly PITI = 28% of gross monthly
+          income. (The back-end 36% ratio also counts your other debts.)
+        </li>
+        <li>
+          <strong>7.28% 30-year fixed rate:</strong> Freddie Mac Primary Mortgage Market
+          Survey, week ending October 1, 2026.
+        </li>
+        <li>
+          <strong>20% down payment</strong> (no private mortgage insurance).
+        </li>
+        <li>
+          <strong>State property tax:</strong> each state's effective rate on
+          owner-occupied housing (Tax Foundation, "Property Taxes by State and County,
+          2026") — from 0.29% in Hawaii to 1.88% in New Jersey and Illinois.
+        </li>
+        <li>
+          <strong>Homeowner's insurance:</strong> 0.20% of home value per year.
+        </li>
+        <li>
+          <strong>Take-home pay</strong> uses 2026 federal, FICA, and state tax rules
+          (single filer, no pre-tax deductions).
+        </li>
+      </ul>
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="house-affordability-hub" />
+    </div>
+
+    <div class="mt-8">
+      <AffiliateCTA locale="en-US" />
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.dataSource}
+    </p>
+
+    <section class="mt-10" aria-label="House affordability by state">
+      <h2 class="text-xl font-semibold">Browse by state</h2>
+      <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          US_STATES.map((st) => (
+            <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+              <h3 class="font-semibold text-slate-900">{st.name}</h3>
+              <ul class="mt-2 flex flex-wrap gap-2 text-sm">
+                {SALARIES.map((s) => (
+                  <li>
+                    <a
+                      class="text-emerald-700 underline hover:text-emerald-900"
+                      href={`/en-us/salary/house-affordability/${slugOf(st.name)}-${s}/`}
+                    >
+                      {money(s)}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </article>
+</BaseLayout>

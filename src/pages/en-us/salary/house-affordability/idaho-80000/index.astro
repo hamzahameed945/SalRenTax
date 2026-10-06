@@ -1,0 +1,144 @@
+---
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../../components/ads/InContentAd.astro';
+import AffiliateCTA from '../../../../../components/ads/AffiliateCTA.astro';
+import HouseAffordabilityCalculator from '../../../../../components/islands/HouseAffordabilityCalculator';
+import JsonLd from '../../../../../components/seo/JsonLd.astro';
+import { getDictionary } from '../../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../../lib/seo/structuredData';
+
+const locale = 'en-US' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'On $80,000 in Idaho You Can Afford a ~$308,200 Home (2026) — PayRenTax',
+  'A $80,000 salary in Idaho buys a ~$308,200 home in 2026. Max monthly PITI $1,867 (28% rule) at 7.28%, 20% down. Take-home: $5,144/mo.',
+  '/en-us/salary/house-affordability/idaho-80000/',
+);
+
+const faqItems = [
+  {
+    question: 'How much house can I afford on a $80,000 salary in Idaho?',
+    answer:
+      'On a $80,000 salary in Idaho, you can afford a home priced around $308,200 in 2026. That assumes a 30-year fixed mortgage at 7.28%, 20% down ($61,636), and Idaho\'s effective property tax rate of 0.50%. Your maximum monthly PITI payment would be $1,867.',
+  },
+  {
+    question: 'What is the maximum monthly mortgage payment on $80,000 in Idaho?',
+    answer:
+      'The 28% rule caps your monthly housing payment at $1,867 on a $80,000 salary ($1,867 is 28% of your $6,667 gross monthly income). That breaks down into roughly $1,687 principal and interest, $128 property tax, and $51 homeowner\'s insurance.',
+  },
+  {
+    question: 'How is the affordable home price in Idaho calculated?',
+    answer:
+      'Lenders use the 28/36 rule: housing costs should not exceed 28% of gross monthly income (front-end ratio), and total debts should stay under 36% (back-end ratio). We solve for the home price whose PITI equals 28% of gross, using a 7.28% 30-year fixed rate (Freddie Mac, October 2026), 20% down, Idaho\'s 0.50% effective property tax rate (Tax Foundation 2026), and 0.20%/year homeowner\'s insurance.',
+  },
+  {
+    question: 'How much take-home pay does a $80,000 salary leave in Idaho?',
+    answer:
+      'A $80,000 salary in Idaho leaves about $61,723 per year after federal income tax, FICA, and state tax in 2026 — roughly $5,144 per month for a single filer with no pre-tax deductions. The $1,867 max housing payment is about 36% of that take-home pay.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Salary', href: buildLocalePath(locale, 'salary') },
+      { label: 'House Affordability', href: buildLocalePath(locale, 'salary/house-affordability') },
+      { label: '$80,000 in Idaho', href: buildLocalePath(locale, 'salary/house-affordability/idaho-80000') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">How Much House Can You Afford on $80,000 in Idaho?</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      On a <strong>$80,000</strong> salary in Idaho, you can afford a home priced
+      around <strong>$308,200</strong> in 2026 — with a maximum monthly PITI payment of
+      <strong> $1,867</strong> under the 28% rule. Your estimated take-home pay is
+      $5,144/month.
+    </p>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-semibold">2026 affordability breakdown: $80,000 in Idaho</h2>
+      <table class="mt-4 w-full text-sm">
+        <tbody>
+          <tr><td>Gross salary</td><td>$80,000</td></tr>
+          <tr><td>Gross monthly income</td><td>$6,667</td></tr>
+          <tr><td>Max monthly housing (28% rule)</td><td>$1,867</td></tr>
+          <tr><td>Take-home pay (monthly)</td><td>$5,144</td></tr>
+          <tr class="font-semibold"><td>Max home price</td><td>$308,200</td></tr>
+          <tr><td>Down payment (20%)</td><td>$61,636</td></tr>
+          <tr><td>Principal &amp; interest</td><td>$1,687/mo</td></tr>
+          <tr><td>Property tax (0.50% effective)</td><td>$128/mo</td></tr>
+          <tr><td>Homeowner's insurance</td><td>$51/mo</td></tr>
+          <tr class="font-semibold"><td>Monthly PITI</td><td>$1,867</td></tr>
+        </tbody>
+      </table>
+      <p class="mt-4 text-xs text-slate-500">
+        Single filer, no pre-tax deductions. 30-year fixed at 7.28% (Freddie Mac PMMS, Oct 1, 2026),
+        20% down, Idaho effective property tax 0.50% (Tax Foundation 2026), insurance 0.20%/yr.
+        Figures are estimates — adjust inputs in the calculator below.
+      </p>
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="house-affordability-idaho-80000" />
+    </div>
+
+    <div class="mt-8">
+      <AffiliateCTA locale="en-US" />
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="$80,000 in Idaho: house affordability FAQs" items={faqItems} />
+
+    <div class="mt-10">
+      <h2 class="text-xl font-semibold">Customize the numbers</h2>
+      <div class="mt-4">
+        <HouseAffordabilityCalculator stateCode="ID" initialAnnualSalary="80000" client:load />
+      </div>
+    </div>
+
+    <nav class="mt-10" aria-label="Other salaries in Idaho">
+      <h2 class="text-xl font-semibold">Other salaries in Idaho</h2>
+      <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/idaho-40000/">$40,000 salary in Idaho</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/idaho-50000/">$50,000 salary in Idaho</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/idaho-60000/">$60,000 salary in Idaho</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/idaho-75000/">$75,000 salary in Idaho</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/idaho-100000/">$100,000 salary in Idaho</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/idaho-125000/">$125,000 salary in Idaho</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/idaho-150000/">$150,000 salary in Idaho</a></li>
+      </ul>
+    </nav>
+
+    <nav class="mt-10" aria-label="Same salary in other states">
+      <h2 class="text-xl font-semibold">$80,000 salary in other states</h2>
+      <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/california-80000/">$80,000 salary in California</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/florida-80000/">$80,000 salary in Florida</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/new-york-80000/">$80,000 salary in New York</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/pennsylvania-80000/">$80,000 salary in Pennsylvania</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/illinois-80000/">$80,000 salary in Illinois</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/ohio-80000/">$80,000 salary in Ohio</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/georgia-80000/">$80,000 salary in Georgia</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/north-carolina-80000/">$80,000 salary in North Carolina</a></li>
+      </ul>
+    </nav>
+  </article>
+</BaseLayout>

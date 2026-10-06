@@ -1,0 +1,143 @@
+---
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../../components/ads/InContentAd.astro';
+import AffiliateCTA from '../../../../../components/ads/AffiliateCTA.astro';
+import HouseAffordabilityCalculator from '../../../../../components/islands/HouseAffordabilityCalculator';
+import JsonLd from '../../../../../components/seo/JsonLd.astro';
+import { getDictionary } from '../../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../../lib/seo/structuredData';
+
+const locale = 'en-US' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'On $100,000 in Georgia You Can Afford a ~$370,400 Home (2026) — PayRenTax',
+  'A $100,000 salary in Georgia buys a ~$370,400 home in 2026. Max monthly PITI $2,333 (28% rule) at 7.28%, 20% down. Take-home: $6,218/mo.',
+  '/en-us/salary/house-affordability/georgia-100000/',
+);
+
+const faqItems = [
+  {
+    question: 'How much house can I afford on a $100,000 salary in Georgia?',
+    answer:
+      'On a $100,000 salary in Georgia, you can afford a home priced around $370,400 in 2026. That assumes a 30-year fixed mortgage at 7.28%, 20% down ($74,089), and Georgia\'s effective property tax rate of 0.79%. Your maximum monthly PITI payment would be $2,333.',
+  },
+  {
+    question: 'What is the maximum monthly mortgage payment on $100,000 in Georgia?',
+    answer:
+      'The 28% rule caps your monthly housing payment at $2,333 on a $100,000 salary ($2,333 is 28% of your $8,333 gross monthly income). That breaks down into roughly $2,028 principal and interest, $244 property tax, and $62 homeowner\'s insurance.',
+  },
+  {
+    question: 'How is the affordable home price in Georgia calculated?',
+    answer:
+      'Lenders use the 28/36 rule: housing costs should not exceed 28% of gross monthly income (front-end ratio), and total debts should stay under 36% (back-end ratio). We solve for the home price whose PITI equals 28% of gross, using a 7.28% 30-year fixed rate (Freddie Mac, October 2026), 20% down, Georgia\'s 0.79% effective property tax rate (Tax Foundation 2026), and 0.20%/year homeowner\'s insurance.',
+  },
+  {
+    question: 'How much take-home pay does a $100,000 salary leave in Georgia?',
+    answer:
+      'A $100,000 salary in Georgia leaves about $74,613 per year after federal income tax, FICA, and state tax in 2026 — roughly $6,218 per month for a single filer with no pre-tax deductions. The $2,333 max housing payment is about 38% of that take-home pay.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Salary', href: buildLocalePath(locale, 'salary') },
+      { label: 'House Affordability', href: buildLocalePath(locale, 'salary/house-affordability') },
+      { label: '$100,000 in Georgia', href: buildLocalePath(locale, 'salary/house-affordability/georgia-100000') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">How Much House Can You Afford on $100,000 in Georgia?</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      On a <strong>$100,000</strong> salary in Georgia, you can afford a home priced
+      around <strong>$370,400</strong> in 2026 — with a maximum monthly PITI payment of
+      <strong> $2,333</strong> under the 28% rule. Your estimated take-home pay is
+      $6,218/month.
+    </p>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-semibold">2026 affordability breakdown: $100,000 in Georgia</h2>
+      <table class="mt-4 w-full text-sm">
+        <tbody>
+          <tr><td>Gross salary</td><td>$100,000</td></tr>
+          <tr><td>Gross monthly income</td><td>$8,333</td></tr>
+          <tr><td>Max monthly housing (28% rule)</td><td>$2,333</td></tr>
+          <tr><td>Take-home pay (monthly)</td><td>$6,218</td></tr>
+          <tr class="font-semibold"><td>Max home price</td><td>$370,400</td></tr>
+          <tr><td>Down payment (20%)</td><td>$74,089</td></tr>
+          <tr><td>Principal &amp; interest</td><td>$2,028/mo</td></tr>
+          <tr><td>Property tax (0.79% effective)</td><td>$244/mo</td></tr>
+          <tr><td>Homeowner's insurance</td><td>$62/mo</td></tr>
+          <tr class="font-semibold"><td>Monthly PITI</td><td>$2,333</td></tr>
+        </tbody>
+      </table>
+      <p class="mt-4 text-xs text-slate-500">
+        Single filer, no pre-tax deductions. 30-year fixed at 7.28% (Freddie Mac PMMS, Oct 1, 2026),
+        20% down, Georgia effective property tax 0.79% (Tax Foundation 2026), insurance 0.20%/yr.
+        Figures are estimates — adjust inputs in the calculator below.
+      </p>
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="house-affordability-georgia-100000" />
+    </div>
+
+    <div class="mt-8">
+      <AffiliateCTA locale="en-US" />
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="$100,000 in Georgia: house affordability FAQs" items={faqItems} />
+
+    <div class="mt-10">
+      <h2 class="text-xl font-semibold">Customize the numbers</h2>
+      <div class="mt-4">
+        <HouseAffordabilityCalculator stateCode="GA" initialAnnualSalary="100000" client:load />
+      </div>
+    </div>
+
+    <nav class="mt-10" aria-label="Other salaries in Georgia">
+      <h2 class="text-xl font-semibold">Other salaries in Georgia</h2>
+      <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/georgia-40000/">$40,000 salary in Georgia</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/georgia-50000/">$50,000 salary in Georgia</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/georgia-60000/">$60,000 salary in Georgia</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/georgia-75000/">$75,000 salary in Georgia</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/georgia-80000/">$80,000 salary in Georgia</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/georgia-125000/">$125,000 salary in Georgia</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/georgia-150000/">$150,000 salary in Georgia</a></li>
+      </ul>
+    </nav>
+
+    <nav class="mt-10" aria-label="Same salary in other states">
+      <h2 class="text-xl font-semibold">$100,000 salary in other states</h2>
+      <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/california-100000/">$100,000 salary in California</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/florida-100000/">$100,000 salary in Florida</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/new-york-100000/">$100,000 salary in New York</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/pennsylvania-100000/">$100,000 salary in Pennsylvania</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/illinois-100000/">$100,000 salary in Illinois</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/ohio-100000/">$100,000 salary in Ohio</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-us/salary/house-affordability/north-carolina-100000/">$100,000 salary in North Carolina</a></li>
+      </ul>
+    </nav>
+  </article>
+</BaseLayout>
