@@ -1,0 +1,189 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import BrCltVsMeiCalculator from '../../../../components/islands/BrCltVsMeiCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'pt-BR' as const;
+const t = getDictionary(locale);
+const meta = {
+  title: 'CLT ou MEI: Qual Vale Mais a Pena? Calculadora 2026 | PayRenTax',
+  description: 'Compare CLT × MEI em 2026: líquido mensal após INSS e IRRF contra DAS fixo do MEI. Inclui 13º, férias + 1/3 e FGTS no total anual. Descubra a partir de qual salário compensa ser CLT.',
+  canonical: '/pt-br/labor/clt-vs-mei-calculadora/',
+};
+
+const schemaWebApp = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "CLT ou MEI: Qual Vale Mais a Pena? Calculadora 2026",
+  "description": "Comparador gratuito CLT × MEI 2026: salário líquido mensal e anualizado com 13º, férias + 1/3 e FGTS, contra a receita MEI descontada do DAS fixo.",
+  "url": "https://payrentax.me/pt-br/labor/clt-vs-mei-calculadora/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "BRL"
+  },
+  "inLanguage": "pt-BR",
+  "featureList": "Comparativo mensal CLT vs MEI, total anualizado com 13º e férias, alerta de limite R$ 81 mil, FGTS anual"
+};
+
+const faqItems = [
+  {
+    question: 'Vale a pena ser MEI?',
+    answer:
+      'Depende da sua margem. Como MEI, o desconto mensal é fixo e baixo (DAS de R$ 82,05 a R$ 87,05 em 2026), então no mês a mês o MEI quase sempre "ganha" no líquido. Mas o CLT soma direitos que o MEI não tem: 13º salário, férias + 1/3 constitucional, FGTS (8% do salário por mês) e seguro-desemprego. Na comparação anualizada, o CLT frequentemente vira o jogo — use a calculadora acima para ver o seu caso.',
+  },
+  {
+    question: 'CLT ou MEI: o que desconta mais?',
+    answer:
+      'No CLT, os descontos são progressivos: INSS de 7,5% a 14% por faixa (teto de R$ 8.475,55 em 2026) mais IRRF conforme a tabela, com isenção total para rendimentos mensais de até R$ 5.000 (Lei 15.270/2025). No MEI, o desconto é fixo: DAS de R$ 82,05 (comércio/indústria), R$ 86,05 (serviços) ou R$ 87,05 (comércio + serviços) por mês em 2026.',
+  },
+  {
+    question: 'Qual o limite do MEI em 2026?',
+    answer:
+      'O limite de faturamento do MEI em 2026 é de R$ 81.000 por ano (média de R$ 6.750 por mês). Se ultrapassar até 20% (até R$ 97.200), você paga uma guia complementar sobre o excesso e vira Microempresa no ano seguinte. Acima disso, o desenquadramento é retroativo a 1º de janeiro, com cobrança do Simples Nacional de todo o período, além de juros e multa.',
+  },
+  {
+    question: 'A partir de qual salário compensa ser CLT?',
+    answer:
+      'Não existe um valor único: depende do seu bruto e da sua atividade como MEI. A regra geral é que, no líquido mensal, o MEI sai na frente (DAS fixo baixo), mas no total anual o CLT recupera a diferença com 13º, férias + 1/3 e FGTS. Simule acima: se o valor anual do CLT ficar maior que o do MEI, a pejotização não compensa financeiramente no seu caso.',
+  },
+  {
+    question: 'MEI tem 13º, férias e FGTS?',
+    answer:
+      'Não. O MEI não tem 13º salário, não tem férias remuneradas e não recebe FGTS — esses são direitos exclusivos de quem tem carteira assinada. Para quantificar: um CLT recebe por ano 12 salários líquidos + 13º líquido + férias líquidas (salário + 1/3), além do FGTS de 8% depositado mensalmente. Em um salário de R$ 5.000, só o FGTS soma R$ 4.800 por ano.',
+  },
+  {
+    question: 'Qual o valor do DAS MEI em 2026?',
+    answer:
+      'Em 2026, com o salário mínimo de R$ 1.621, o DAS-MEI é: R$ 82,05 para comércio e indústria (INSS R$ 81,05 + ICMS R$ 1,00), R$ 86,05 para serviços (INSS R$ 81,05 + ISS R$ 5,00) e R$ 87,05 para quem exerce comércio e serviços juntos.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schemaWebApp)} />
+  </Fragment>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.labor, href: buildLocalePath(locale, 'labor') },
+      { label: t.labor.cltVsMei.title, href: buildLocalePath(locale, 'labor/clt-vs-mei-calculadora') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">CLT ou MEI: qual vale mais a pena em 2026?</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">Digite o valor bruto mensal e compare quanto sobra no bolso como CLT (descontando INSS e IRRF) e como MEI (descontando apenas o DAS fixo de 2026). O comparativo inclui o total anualizado: 13º, férias + 1/3 e FGTS no lado CLT.</p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <BrCltVsMeiCalculator client:load locale={locale} />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="br-clt-vs-mei-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Como Funciona a Comparação CLT × MEI 2026</h2>
+      <p>
+        A calculadora aplica o <strong>mesmo valor bruto mensal</strong> aos dois regimes e mostra quanto resta de verdade no bolso.
+      </p>
+
+      <h3>Lado CLT: INSS progressivo + IRRF 2026</h3>
+      <p>No regime CLT, o desconto mensal usa a tabela oficial de 2026:</p>
+      <ul>
+        <li><strong>INSS:</strong> alíquotas progressivas de 7,5% a 14% por faixa, teto de contribuição de R$ 8.475,55</li>
+        <li><strong>IRRF:</strong> tabela progressiva com isenção total para rendimentos mensais de até R$ 5.000 e redução gradual até R$ 7.350 (Lei nº 15.270/2025), desconto simplificado de R$ 607,20</li>
+      </ul>
+      <p>O total anual do CLT soma <strong>11 salários líquidos + 13º líquido + férias líquidas (salário + 1/3)</strong> — as férias substituem o salário de um mês, já com o terço constitucional.</p>
+
+      <h3>Lado MEI: DAS fixo de 2026</h3>
+      <p>O MEI paga apenas o DAS mensal, sem faixa nem progressão:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Atividade</th>
+            <th>DAS 2026</th>
+            <th>Composição</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Comércio ou indústria</td>
+            <td>R$ 82,05</td>
+            <td>INSS R$ 81,05 + ICMS R$ 1,00</td>
+          </tr>
+          <tr>
+            <td>Serviços</td>
+            <td>R$ 86,05</td>
+            <td>INSS R$ 81,05 + ISS R$ 5,00</td>
+          </tr>
+          <tr>
+            <td>Comércio + serviços</td>
+            <td>R$ 87,05</td>
+            <td>INSS R$ 81,05 + ICMS R$ 1,00 + ISS R$ 5,00</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>O total anual do MEI é simplesmente <strong>12 × (receita − DAS)</strong> — não existe 13º, férias ou FGTS para o MEI.</p>
+
+      <h3>A Conta Que Pouca Gente Faz: o "gap" anual</h3>
+      <p>O erro mais comum da pejotização é comparar só o líquido mensal. Com um salário de R$ 5.000, por exemplo, o MEI leva vantagem no mês — mas o CLT soma ao longo do ano:</p>
+      <ul>
+        <li>✅ <strong>13º salário:</strong> 1 salário líquido extra por ano</li>
+        <li>✅ <strong>Férias + 1/3:</strong> um mês de salário + terço constitucional</li>
+        <li>✅ <strong>FGTS:</strong> 8% do salário depositados todo mês (R$ 400/mês sobre R$ 5.000 = R$ 4.800/ano)</li>
+        <li>✅ <strong>Seguro-desemprego</strong> e <strong>multa de 40% do FGTS</strong> em caso de demissão</li>
+      </ul>
+      <p>A calculadora anualiza tudo isso automaticamente para você comparar o número real.</p>
+
+      <h3>O Teto do MEI: R$ 81.000 por Ano</h3>
+      <p>O MEI tem limite de faturamento de <strong>R$ 81.000 por ano</strong> em 2026. A calculadora avisa se o valor digitado estourar esse teto (média de R$ 6.750/mês). Ultrapassou até 20% (R$ 97.200)? Você paga guia complementar sobre o excesso e vira Microempresa no ano seguinte. Acima disso, o desenquadramento é retroativo a janeiro, com cobrança do Simples Nacional de todo o período.</p>
+
+      <h3>O que o Comparativo Não Inclui</h3>
+      <ul>
+        <li>Custo de contador do MEI (não obrigatório, mas comum: costuma variar de R$ 150 a R$ 300/mês)</li>
+        <li>Diferença de benefícios do INSS: o MEI contribui sobre o salário mínimo, então benefícios como aposentadoria ficam no piso</li>
+        <li>Estabilidade, férias efetivamente gozadas e outros direitos CLT além dos financeiros listados</li>
+      </ul>
+    </div>
+
+    <RelatedCalculators
+      heading="Calculadoras relacionadas"
+      links={[
+        { label: 'Calculadora de Salário Líquido 2026', href: '/pt-br/salary/calculadora-salario-liquido/' },
+        { label: 'Calculadora de 13º Salário', href: '/pt-br/labor/calcular-decimo-terceiro/' },
+        { label: 'Calculadora de Férias', href: '/pt-br/labor/calcular-ferias/' },
+        { label: 'Calculadora de Rescisão', href: '/pt-br/labor/calcular-rescisao/' },
+        { label: 'Calculadora de Horas Extras', href: '/pt-br/labor/calculadora-horas-extras/' },
+      ]}
+    />
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource} Valores de 2026 conforme INSS (Portaria MPS/MF nº 13/2026), Receita Federal (Lei nº 15.270/2025) e Portal do Empreendedor.
+    </p>
+
+    <CalculatorFAQ heading="Perguntas frequentes sobre CLT × MEI" items={faqItems} />
+  </article>
+  <CalculatorResource locale="pt-BR" category="labor" />
+</BaseLayout>

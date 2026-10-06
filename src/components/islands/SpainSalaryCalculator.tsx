@@ -2,7 +2,7 @@ import { useState, useMemo } from 'preact/hooks';
 import { spainSalaryEngine, type ComunidadAutonoma } from '../../calculators/salary/engines/es/spainSalary';
 import { comunidadNames } from '../../data/salary/es/spainPayrollData2026';
 
-interface Props { locale: string; }
+interface Props { locale: string; initialGross?: number; }
 
 const fmt = (locale: string, v: number) =>
   new Intl.NumberFormat(locale, { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 }).format(v);
@@ -11,8 +11,8 @@ const fmtPct = (v: number) =>
 
 const CCAA_OPTIONS = Object.entries(comunidadNames) as [ComunidadAutonoma, string][];
 
-export default function SpainSalaryCalculator({ locale }: Props) {
-  const [grossAnnual, setGrossAnnual]       = useState('30000');
+export default function SpainSalaryCalculator({ locale, initialGross }: Props) {
+  const [grossAnnual, setGrossAnnual]       = useState(String(initialGross ?? 30000));
   const [paymentsPerYear, setPaymentsPerYear] = useState<'12' | '14'>('14');
   const [ccaa, setCcaa]                     = useState<ComunidadAutonoma>('madrid');
   const [age, setAge]                       = useState('');

@@ -1,4 +1,4 @@
 export const labor = {
   categoryTitle: 'UK Employment Calculators',
-  categoryIntro: 'UK redundancy pay, holiday entitlement, and employment calculators coming soon.',
+  categoryIntro: 'UK employment and parental-pay calculators, including the Maternity Allowance calculator.',
 } as const;

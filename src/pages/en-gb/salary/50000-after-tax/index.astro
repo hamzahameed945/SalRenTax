@@ -1,0 +1,149 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import UkPaycheckCalculator from '../../../../components/islands/UkPaycheckCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'en-GB' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  '£50,000 After Tax (2026/27) \u2014 Take-Home Pay \u2014 PayRenTax',
+  'A £50,000 salary is £39,520 after tax in 2026/27. Income tax £7,486 + employee NI £2,994. Monthly £3,293, weekly £760.',
+  '/en-gb/salary/50000-after-tax/',
+);
+
+const faqItems = [
+  {
+    question: 'How much is £50,000 after tax in the UK?',
+    answer:
+      'A £50,000 salary leaves you £39,520 per year after income tax and National Insurance in the 2026/27 tax year. That is £3,293 per month or £760 per week, assuming you are a UK employee on a standard tax code (1257L) in England, Wales or Northern Ireland, with no pension contributions or student loan.',
+  },
+  {
+    question: 'How much income tax do I pay on £50,000?',
+    answer:
+      'Income tax (PAYE) on £50,000 is £7,486 for 2026/27. You pay no tax on the first £12,570 (Personal Allowance), then all of it at the 20% basic rate, because your taxable income of £37,430 stays below the £50,270 higher-rate threshold.',
+  },
+  {
+    question: 'How much National Insurance do I pay on a £50,000 salary?',
+    answer:
+      'National Insurance of £2,994 — that is 8% on earnings between £12,570 and £50,270. Note: the employee rate has been 8% (not 12%) since January 2024 — calculators that still show the old rate overstate NI by a third.',
+  },
+  {
+    question: 'Is this different in Scotland?',
+    answer:
+      'Yes. Scotland sets its own income tax bands — for 2026/27: 19% starter (£12,571–£16,537), 20% basic, 21% intermediate, 42% higher from £43,663, 45% advanced and 48% top rate. These figures apply to England, Wales and Northern Ireland only.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      {
+        label: t.salary.takeHomePay.title,
+        href: buildLocalePath(locale, 'salary/take-home-pay-calculator'),
+      },
+      { label: '£50,000 after tax', href: buildLocalePath(locale, 'salary/50000-after-tax') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">£50,000 After Tax: 2026/27 Take-Home Pay</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      A <strong>£50,000</strong> salary in the UK is <strong>£39,520 per year</strong> after
+      income tax and National Insurance in the 2026/27 tax year \u2014 that is £3,293/month or £760/week.
+    </p>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-semibold">2026/27 tax breakdown: £50,000</h2>
+      <table class="mt-4 w-full text-sm">
+        <tbody>
+          <tr><td>Gross salary</td><td>£50,000</td></tr>
+          <tr><td>Personal Allowance</td><td>£12,570</td></tr>
+          <tr><td>Income tax (PAYE)</td><td>£7,486</td></tr>
+          <tr><td>National Insurance (employee)</td><td>£2,994</td></tr>
+          <tr class="font-semibold"><td>Take-home pay</td><td>£39,520</td></tr>
+        </tbody>
+      </table>
+      <p class="mt-4 text-xs text-slate-500">
+        Figures are for a UK employee on a standard tax code (1257L) in England, Wales or Northern
+        Ireland: no pension contributions, no student loan, no marriage allowance. Figures are rounded
+        to the nearest pound \u2014 adjust inputs in the calculator below.
+      </p>
+    </div>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-semibold">Take-home per pay period</h2>
+      <table class="mt-4 w-full text-sm">
+        <tbody>
+          <tr><td>Annual</td><td>£39,520</td></tr>
+          <tr><td>Monthly</td><td>£3,293</td></tr>
+          <tr><td>Weekly</td><td>£760</td></tr>
+        </tbody>
+      </table>
+      <p class="mt-4 text-xs text-slate-500">
+        Combined effective tax rate (income tax + NI): 20.96% of gross salary.
+      </p>
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="gb-after-tax-50000" />
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.dataSource} Figures use the 2026/27 UK tax year
+      (6 April 2026 \u2013 5 April 2027): Personal Allowance £12,570; PAYE 20%/40%/45%;
+      employee National Insurance 8% on £12,570\u2013£50,270 and 2% above.
+    </p>
+
+    <CalculatorFAQ heading="£50,000 after tax: FAQs" items={faqItems} />
+
+    <div class="mt-10">
+      <h2 class="text-xl font-semibold">Customise the numbers</h2>
+      <div class="mt-4">
+        <UkPaycheckCalculator locale={locale} initialGrossAnnual="50000" client:load />
+      </div>
+    </div>
+
+    <nav class="mt-10" aria-label="Other salaries in the UK">
+      <h2 class="text-xl font-semibold">Other salaries in the UK</h2>
+      <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-gb/salary/20000-after-tax/">£20,000 after tax</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-gb/salary/25000-after-tax/">£25,000 after tax</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-gb/salary/30000-after-tax/">£30,000 after tax</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-gb/salary/40000-after-tax/">£40,000 after tax</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-gb/salary/60000-after-tax/">£60,000 after tax</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-gb/salary/80000-after-tax/">£80,000 after tax</a></li>
+            <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/en-gb/salary/100000-after-tax/">£100,000 after tax</a></li>
+      </ul>
+    </nav>
+
+    <RelatedCalculators
+      heading="Related calculators"
+      links={[
+        { label: "Take-home pay calculator UK", href: "/en-gb/salary/take-home-pay-calculator/" },
+        { label: "Salary to hourly calculator", href: "/en-gb/salary/salary-to-hourly/" },
+        { label: "Salary raise calculator", href: "/en-gb/salary/salary-raise/" },
+      ]}
+    />
+  </article>
+  <CalculatorResource locale="en-GB" category="salary" />
+</BaseLayout>

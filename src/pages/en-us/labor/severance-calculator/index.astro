@@ -1,0 +1,180 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import AffiliateCTA from '../../../../components/ads/AffiliateCTA.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import UsSeveranceCalculator from '../../../../components/islands/UsSeveranceCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'en-US' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  t.labor.severance.title,
+  t.labor.severance.description,
+  '/en-us/labor/severance-calculator/',
+);
+
+const faqItems = [
+  {
+    question: 'Is severance pay required by law in the US?',
+    answer:
+      'No. There is no US federal law that requires employers to offer severance pay. Severance is normally a matter of company policy, an employment contract, or a negotiated separation agreement. Some states have their own rules on final pay timing, and the federal WARN Act requires advance notice of certain mass layoffs, but neither creates a general right to severance.',
+  },
+  {
+    question: 'How is severance pay taxed?',
+    answer:
+      'Severance pay is taxed as ordinary income, just like wages. Employers usually withhold federal income tax at the flat 22% supplemental-wage rate, plus Social Security and Medicare. The 22% is only withholding — your actual tax depends on your total income for the year, so a large lump sum can push you into a higher bracket or leave you owed a refund at tax time.',
+  },
+  {
+    question: 'How many weeks of severance per year of service is typical?',
+    answer:
+      'The widely cited market benchmark is 1–2 weeks of pay per year of service, with senior staff often receiving more: roughly 1× the benchmark for individual contributors, 1.5× for managers and 2× for executives. These are market norms, not legal minimums, and actual packages vary widely by company, industry and role.',
+  },
+  {
+    question: 'Can I negotiate my severance package?',
+    answer:
+      'Yes. Severance terms are frequently negotiable, especially the non-cash parts: extended healthcare coverage, outplacement services, the wording of any non-compete or non-disparagement clause, the payment format (lump sum vs salary continuation) and the last day of employment, which can affect benefits and equity vesting.',
+  },
+  {
+    question: 'Should I take severance as a lump sum or salary continuation?',
+    answer:
+      'A lump sum gives you the full amount at once, which can be useful if you expect to find work quickly, but a large payment in one tax year may be taxed less efficiently. Salary continuation spreads payments over time and sometimes keeps benefits running longer. Which is better depends on your tax situation, benefit needs and how soon you expect new income.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="us-severance-calculator"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.labor, href: buildLocalePath(locale, 'labor') },
+      { label: t.labor.severance.breadcrumb, href: buildLocalePath(locale, 'labor/severance-calculator') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">{t.labor.severance.h1}</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      {t.labor.severance.intro}
+    </p>
+
+    <p class="mt-4 max-w-2xl rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+      <strong>Market benchmark, not legal advice.</strong> This calculator shows what severance
+      packages typically look like in the US market. It is not legal advice and does not create
+      any entitlement: no US federal law requires employers to pay severance.
+    </p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <UsSeveranceCalculator client:load />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="us-severance-1" />
+    </div>
+
+    <div class="mt-8">
+      <AffiliateCTA locale="en-US" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>How the severance benchmark works</h2>
+      <p>
+        The most widely cited rule of thumb for US severance is <strong>1–2 weeks of pay per year
+        of service</strong>. The calculator multiplies that range by a seniority factor drawn from
+        observed market practice:
+      </p>
+      <table>
+        <thead>
+          <tr><th>Seniority</th><th>Multiplier</th><th>Benchmark for 5 years of service</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Individual contributor</td>
+            <td>1.0×</td>
+            <td>5–10 weeks of pay</td>
+          </tr>
+          <tr>
+            <td>Manager</td>
+            <td>1.5×</td>
+            <td>7.5–15 weeks of pay</td>
+          </tr>
+          <tr>
+            <td>Executive</td>
+            <td>2.0×</td>
+            <td>10–20 weeks of pay</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="text-sm">
+        These multipliers describe what is typical in the market; they are not prescribed by any
+        law or regulation. Company policy, industry norms, the circumstances of the departure and
+        individual negotiation all move real packages above or below this range.
+      </p>
+
+      <h2>Severance negotiation checklist</h2>
+      <p>
+        The headline number is only part of a separation agreement. Before signing, consider
+        negotiating these items:
+      </p>
+      <ul>
+        <li>
+          <strong>Extended healthcare.</strong> Ask how long health cover continues and whether the
+          employer will pay COBRA premiums for some months after departure.
+        </li>
+        <li>
+          <strong>Outplacement support.</strong> Career coaching and job-search services cost the
+          employer relatively little but can be valuable to you.
+        </li>
+        <li>
+          <strong>Non-compete review.</strong> Have any non-compete, non-solicitation or
+          non-disparagement clause reviewed by an employment lawyer before you sign — these clauses
+          limit what you can do next.
+        </li>
+        <li>
+          <strong>Lump sum vs salary continuation.</strong> Compare the tax and benefits impact of
+          each format; continuation sometimes keeps benefits and vesting running longer.
+        </li>
+        <li>
+          <strong>Employment dates and references.</strong> Agree on your official last day and
+          what the company will say to reference checks.
+        </li>
+      </ul>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} This page provides a market
+      benchmark for general information only and is not legal advice. For decisions about a
+      separation agreement, consult a qualified employment lawyer.
+    </p>
+
+    <RelatedCalculators
+      heading="Related calculators"
+      links={[
+        { href: '/en-us/salary/paycheck-calculator/', label: 'Paycheck calculator' },
+        { href: '/en-us/salary/annual-salary-calculator/', label: 'Annual salary calculator' },
+        { href: '/en-us/salary/salary-to-hourly/', label: 'Salary to hourly calculator' },
+        { href: '/en-us/salary/hourly-to-salary/', label: 'Hourly to salary calculator' },
+        { href: '/en-us/salary/pay-frequency-converter/', label: 'Pay frequency converter' },
+      ]}
+    />
+
+    <CalculatorFAQ heading="Frequently asked questions" items={faqItems} />
+  </article>
+  <CalculatorResource locale="en-US" category="labor" />
+</BaseLayout>

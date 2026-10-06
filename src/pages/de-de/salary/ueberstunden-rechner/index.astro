@@ -1,0 +1,149 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import DeUeberstundenCalculator from '../../../../components/islands/DeUeberstundenCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'de-DE' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Überstunden Rechner 2026: Überstunden netto berechnen — PayRenTax',
+  'Überstunden auszahlen lassen und netto berechnen 2026: Schätzen Sie, was von Ihren Überstunden nach Lohnsteuer und Sozialversicherung übrig bleibt — mit Stundenlohn oder Monatsgehalt.',
+  '/de-de/salary/ueberstunden-rechner/',
+);
+
+const faqItems = [
+  {
+    question: 'Werden Überstunden anders besteuert als normales Gehalt?',
+    answer:
+      'Nein — Überstunden werden nicht mit einem höheren Steuersatz besteuert. Ausgezahlte Überstunden sind ganz normaler Arbeitslohn: Sie erhöhen Ihr zu versteuerndes Einkommen und werden deshalb zu Ihrem persönlichen Grenzsteuersatz versteuert. Je höher Ihr Einkommen, desto größer ist der prozentuale Abzug. Dazu kommen Sozialversicherungsbeiträge, solange die Beitragsbemessungsgrenzen noch nicht erreicht sind.',
+  },
+  {
+    question: 'Überstunden auszahlen lassen oder Freizeit nehmen?',
+    answer:
+      'Freizeitausgleich gibt es in der Regel 1:1 (bzw. laut Arbeits- oder Tarifvertrag) — von einer Auszahlung bleibt nach Lohnsteuer und Sozialversicherung je nach Grenzsteuersatz oft nur rund die Hälfte bis zwei Drittel übrig. Was sich mehr lohnt, hängt ab von Ihrer Steuerklasse, Ihrem Grenzsteuersatz und davon, ob Ihnen Geld oder freie Zeit gerade wichtiger ist. Prüfen Sie außerdem Ihren Arbeits- oder Tarifvertrag: Manche schreiben vor, dass Überstunden zuerst als Freizeitausgleich abgebaut werden müssen.',
+  },
+  {
+    question: 'Wie berechne ich meinen Stundenlohn aus dem Monatsgehalt?',
+    answer:
+      'Die übliche Umrechnung lautet: Monatsbruttogehalt × 3 geteilt durch (Wochenstunden × 13). Beispiel: 4.000 € Monatsbrutto bei 40 Wochenstunden ergeben 4.000 × 3 / (40 × 13) = 23,08 € Stundenlohn. Der Rechner oben auf dieser Seite führt diese Umrechnung automatisch durch, wenn Sie den Gehaltsmodus wählen.',
+  },
+  {
+    question: 'Gibt es einen gesetzlichen Zuschlag für Überstunden?',
+    answer:
+      'Nein — in Deutschland gibt es keinen gesetzlichen Mindestzuschlag für Überstunden. Ob und wie hoch ein Zuschlag gezahlt wird, steht in Ihrem Arbeitsvertrag, Tarifvertrag oder in einer Betriebsvereinbarung; üblich sind je nach Branche zum Beispiel 25 %. Ohne eine solche Regelung werden Überstunden 1:1 mit dem normalen Stundenlohn vergütet. Tragen Sie Ihren Zuschlag einfach im Rechner oben ein.',
+  },
+  {
+    question: 'Muss mein Arbeitgeber Überstunden auszahlen?',
+    answer:
+      'Nur angeordnete, geduldete oder betriebsnotwendige und nachweisbare Überstunden müssen vergütet werden — entweder als Freizeitausgleich oder als Auszahlung. Welche Variante gilt, steht in Ihrem Arbeitsvertrag, Tarifvertrag oder in einer Betriebsvereinbarung. Wichtig ist, Ihre Überstunden lückenlos zu dokumentieren. Das Arbeitszeitgesetz begrenzt die tägliche Arbeitszeit grundsätzlich auf 8 Stunden (ausnahmsweise 10 Stunden).',
+  },
+  {
+    question: 'Sind Überstunden sozialversicherungspflichtig?',
+    answer:
+      'Ja. Ausgezahlte Überstunden sind sozialversicherungspflichtiges Arbeitsentgelt: Es fallen die Arbeitnehmeranteile für Rentenversicherung (9,3 %), Arbeitslosenversicherung (1,3 %), Krankenversicherung (8,75 % inkl. durchschnittlichem Zusatzbeitrag) und Pflegeversicherung (2,3 % kinderlos) an — solange Ihr Jahresgehalt die Beitragsbemessungsgrenzen 2026 (101.400 € für RV/AlV, 69.750 € für KV/PV) noch nicht ausschöpft.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      {
+        label: 'Überstunden Rechner',
+        href: buildLocalePath(locale, 'salary/ueberstunden-rechner'),
+      },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Überstunden Netto Rechner 2026</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Lassen Sie Ihre Überstunden auszahlen und <strong>schätzen</strong> Sie, wie viel netto
+      übrig bleibt — nach geschätzter Lohnsteuer und Sozialversicherung. Geben Sie einfach
+      Ihre Überstunden und Ihren Stundenlohn ein oder lassen Sie den Stundenlohn aus Ihrem
+      Monatsgehalt berechnen. Das Ergebnis ist eine <strong>Schätzung</strong>, keine
+      Lohnabrechnung.
+    </p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <DeUeberstundenCalculator client:load />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="de-ueberstunden-1" />
+    </div>
+
+    <!-- Contextual SEO content -->
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Überstunden netto berechnen: So funktioniert die Schätzung</h2>
+      <p>
+        Ausgezahlte Überstunden sind <strong>laufender Arbeitslohn</strong> — anders als
+        Weihnachtsgeld fallen sie nicht unter die sonstigen Bezüge. Ihr Arbeitgeber
+        versteuert sie daher mit Ihrem persönlichen Steuersatz. Dieser Rechner bildet das
+        nach: Aus Ihrem Jahresbruttogehalt wird das zu versteuernde Einkommen 2026
+        (§ 32a EStG, Grundtarif, abzüglich Arbeitnehmer-Pauschbetrag) mit und ohne
+        Überstundenvergütung berechnet — die Differenz der tariflichen Einkommensteuer ist
+        die geschätzte Lohnsteuer auf die Überstunden. Liegt Ihre tarifliche
+        Einkommensteuer über der Soli-Freigrenze (Single 2026: 20.350 €), wird zusätzlich
+        5,5 % Solidaritätszuschlag auf die Zusatz-Steuer berücksichtigt — in der Praxis
+        fällt der Soli bei den meisten Arbeitnehmern 2026 weg. Zusätzlich zieht der
+        Rechner die Arbeitnehmer-Sozialversicherung 2026 ab (RV 9,3 %, AlV 1,3 %,
+        KV 8,75 % inkl. Ø Zusatzbeitrag, PV 2,3 % kinderlos), soweit die
+        Beitragsbemessungsgrenzen durch Ihr Gehalt noch nicht ausgeschöpft sind.
+      </p>
+      <p>
+        Kennen Sie Ihren Stundenlohn nicht, leitet der Rechner ihn aus Ihrem Monatsgehalt
+        ab — mit der üblichen Formel <strong>Monatsbrutto × 3 / (Wochenstunden × 13)</strong>.
+        Einen Überstundenzuschlag (z. B. 25 % laut Tarifvertrag) können Sie optional
+        einrechnen.
+      </p>
+      <h3>Was der Rechner nicht berücksichtigt</h3>
+      <p>
+        Andere Steuerklassen als I (z. B. III/V), Kirchensteuer, tatsächliche Werbungskosten
+        über dem Pauschbetrag und Ehegattensplitting sind nicht modelliert. Prüfen Sie Ihr
+        genaues Brutto-Netto-Gehalt mit unserem{' '}
+        <a href={buildLocalePath(locale, 'salary/brutto-netto-rechner')}>Brutto-Netto-Rechner</a>{' '}
+        und Ihren Stundenlohn mit dem{' '}
+        <a href={buildLocalePath(locale, 'salary/stundenlohn-rechner')}>Stundenlohn-Rechner</a>{' '}
+        — oder schätzen Sie Ihr{' '}
+        <a href={buildLocalePath(locale, 'salary/weihnachtsgeld-rechner')}>Weihnachtsgeld netto</a>.
+      </p>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.dataSource} Alle Werte sind Schätzungen für 2026;
+      die Lohnabrechnung Ihres Arbeitgebers ist maßgeblich.
+    </p>
+
+    <CalculatorFAQ heading="Häufig gestellte Fragen" items={faqItems} />
+
+    <RelatedCalculators
+      heading="Verwandte Rechner"
+      links={[
+        { label: 'Brutto-Netto Rechner', href: '/de-de/salary/brutto-netto-rechner/' },
+        { label: 'Stundenlohn Rechner', href: '/de-de/salary/stundenlohn-rechner/' },
+        { label: 'Weihnachtsgeld Rechner', href: '/de-de/salary/weihnachtsgeld-rechner/' },
+      ]}
+    />
+  </article>
+  <CalculatorResource locale="de-DE" category="salary" />
+</BaseLayout>

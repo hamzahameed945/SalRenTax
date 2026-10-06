@@ -1,0 +1,226 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import AffiliateCTA from '../../../../components/ads/AffiliateCTA.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import UsOvertimeTaxCalculator from '../../../../components/islands/UsOvertimeTaxCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'en-US' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Is Overtime Taxed at a Higher Rate? 2026 Overtime Tax Calculator — PayRenTax',
+  'No: overtime is taxed at the same marginal rate as your regular pay. Calculate the tax on your 2026 overtime plus your estimated OBBBA "no tax on overtime" deduction and savings.',
+  '/en-us/salary/overtime-tax-calculator/',
+);
+
+const faqItems = [
+  {
+    question: 'Is overtime taxed at a higher rate?',
+    answer:
+      'No. Overtime pay is taxed at exactly the same federal income tax brackets as your regular pay. When you file your return, all your earnings — regular and overtime — are added together and taxed under the same progressive brackets. The tax on your overtime is your overtime gross multiplied by your marginal tax rate, which is the same rate that applies to your last dollar of regular earnings.',
+  },
+  {
+    question: 'Why does my overtime paycheck look like it was taxed more?',
+    answer:
+      'Two reasons. First, your employer may withhold tax from overtime differently: overtime paid as a separate supplemental payment can be withheld at the flat 22% federal supplemental rate, which can be higher than your actual marginal rate — that looks like a higher tax but it is only withholding, and the difference comes back as a refund or a smaller bill at filing time. Second, any extra income on a big paycheck can push part of your pay into a higher withholding bracket for that period, even though your true annual tax uses the same rates. Compare your withholding against your actual liability with the calculator above.',
+  },
+  {
+    question: 'How does the no tax on overtime deduction work?',
+    answer:
+      'The One Big Beautiful Bill Act (OBBBA), signed in July 2025, created a federal income tax deduction for the premium portion of overtime pay — the "half" in "time-and-a-half" — for tax years 2025 through 2028. If you earn $30/hour for overtime on a $20/hour regular rate, only the $10-per-hour premium qualifies, not the full $30. You can deduct up to $12,500 of that premium per year as a single filer or $25,000 on a joint return, and you can claim it whether you take the standard deduction or itemise. The estimated tax saving is your deductible premium multiplied by your marginal tax bracket, and it arrives as a larger refund or a smaller balance due when you file — it does not show up in your paycheck.',
+  },
+  {
+    question: 'Who is eligible for the overtime tax deduction?',
+    answer:
+      'You must be a non-exempt employee under the Fair Labor Standards Act (FLSA) — generally an hourly worker entitled to overtime after 40 hours in a workweek. Exempt salaried employees and independent contractors are not eligible. The overtime must be FLSA-mandated: extra overtime required only by state law (such as daily overtime rules) or by a union agreement does not qualify. You need a Social Security number valid for employment, and married taxpayers must file jointly to claim the deduction.',
+  },
+  {
+    question: 'Is there an income limit for the overtime deduction?',
+    answer:
+      'Yes. The deduction begins to phase out once your modified adjusted gross income (MAGI) exceeds $150,000 for single filers or $300,000 for married couples filing jointly. Above those thresholds it shrinks by $100 for every $1,000 of MAGI, and disappears entirely at $275,000 (single) or $550,000 (joint). The calculator above applies this phase-out using your entered salary as a proxy for MAGI.',
+  },
+  {
+    question: 'Does the overtime deduction reduce Social Security or Medicare tax?',
+    answer:
+      'No. The OBBBA deduction applies to federal income tax only. Your overtime remains fully subject to Social Security (6.2% up to the wage base) and Medicare (1.45%), as well as any state and local income taxes. The calculator estimates your FICA on overtime separately so you can see what the deduction does and does not cover.',
+  },
+  {
+    question: 'Will the overtime deduction show on my paycheck?',
+    answer:
+      'No. The deduction does not change your payroll withholding — your employer keeps withholding as before, and for 2026 reports your qualified overtime premium on your W-2 (Box 14) for you to claim when you file. The saving only materialises at filing time as a larger refund or a smaller amount owed.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      {
+        label: 'Overtime Tax Calculator',
+        href: buildLocalePath(locale, 'salary/overtime-tax-calculator'),
+      },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">
+      Is Overtime Taxed at a Higher Rate? (2026 Overtime Tax Calculator)
+    </h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      <strong>No — overtime is taxed at the same rate as your regular pay.</strong> Enter your
+      hourly rate and overtime hours below to see the tax on your 2026 overtime at your actual
+      marginal rate, plus your estimated saving from the 2026 OBBBA "no tax on overtime"
+      deduction.
+    </p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <UsOvertimeTaxCalculator client:load />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="us-overtime-tax-1" />
+    </div>
+
+    <div class="mt-8">
+      <AffiliateCTA locale="en-US" />
+    </div>
+
+    <!-- Contextual SEO content -->
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>The short answer: no, overtime is not taxed at a higher rate</h2>
+      <p>
+        This is one of the most persistent payroll myths in the United States. The federal tax
+        code has no special "overtime tax bracket". When you file your return, your overtime
+        earnings are simply added to your other earnings and taxed under the same seven federal
+        income tax brackets (10% through 37% for 2026). The tax on an hour of overtime is
+        therefore your overtime pay rate × your marginal tax rate — the same rate that applies
+        to your last dollar of regular wages.
+      </p>
+      <p>
+        What <em>does</em> make overtime feel like it is taxed more is <strong>withholding</strong>,
+        not actual tax. Withholding is your employer's estimate, and it can differ from the
+        final liability:
+      </p>
+      <ul>
+        <li>
+          Overtime paid as a <strong>separate supplemental payment</strong> (for example, an
+          extra cheque for a busy period) can be withheld at the flat 22% federal supplemental
+          rate. If your real marginal rate is 12%, that looks like double taxation — but the
+          excess withholding comes back to you as a refund at filing time.
+        </li>
+        <li>
+          A larger-than-usual paycheck can be run through the payroll withholding tables as
+          though you earned that much <em>every</em> pay period, pushing part of it into a
+          higher withholding bracket for that one cheque.
+        </li>
+      </ul>
+      <p>
+        The only number that matters is the one on your tax return. Compare the withholding
+        shown above against your marginal rate — if more was withheld than your rate requires,
+        you are due it back in April, not losing it.
+      </p>
+
+      <h2>The 2026 "no tax on overtime" deduction explained</h2>
+      <p>
+        For tax years 2025 through 2028, the One Big Beautiful Bill Act (OBBBA) lets eligible
+        workers <strong>deduct the premium portion of their overtime</strong> — the "half" in
+        "time-and-a-half" — from their federal taxable income. Concretely:
+      </p>
+      <ul>
+        <li>
+          <strong>What qualifies:</strong> the premium half only. At $20/hour regular pay and
+          $30/hour overtime, just the $10-per-hour premium per overtime hour counts. The other
+          $20 is taxed like normal wages.
+        </li>
+        <li>
+          <strong>Caps:</strong> up to <strong>$12,500 per year</strong> of premium for single
+          filers, or <strong>$25,000</strong> for married couples filing jointly.
+        </li>
+        <li>
+          <strong>Your saving:</strong> deductible premium × your marginal tax bracket. At the
+          22% bracket, the maximum single deduction is worth about $2,750 back on your return.
+        </li>
+        <li>
+          <strong>Eligibility:</strong> non-exempt employees under the FLSA working overtime
+          beyond 40 hours a week. State-only mandated overtime (such as daily overtime rules)
+          and contract extras do not qualify; married taxpayers must file jointly.
+        </li>
+        <li>
+          <strong>Income phase-out:</strong> the deduction shrinks by $100 for every $1,000 of
+          MAGI above $150,000 (single) or $300,000 (joint), disappearing at $275,000 / $550,000.
+        </li>
+        <li>
+          <strong>What it does not touch:</strong> Social Security, Medicare, or state income
+          taxes. The deduction also does not change your paycheck withholding — the saving
+          arrives when you file, as a larger refund or a smaller balance due.
+        </li>
+      </ul>
+
+      <h2>A worked example</h2>
+      <p>
+        Take a worker on <strong>$20/hour</strong> who works <strong>200 overtime hours</strong>
+        in 2026 (overtime rate $30/hour), is single, and earns $60,000 in total wages:
+      </p>
+      <ul>
+        <li>Overtime gross: 200 × $30 = <strong>$6,000</strong></li>
+        <li>
+          Federal income tax on that overtime: $6,000 × 12% (marginal rate) =
+          <strong>$720</strong> — the same 12% rate as her regular pay, not a special higher
+          rate
+        </li>
+        <li>Social Security + Medicare on the overtime: ≈ <strong>$459</strong></li>
+        <li>
+          OBBBA deductible premium: 200 × $10 = <strong>$2,000</strong> (well under the $12,500
+          cap)
+        </li>
+        <li>
+          Estimated tax saving: $2,000 × 12% = <strong>$240</strong>, arriving at filing time
+        </li>
+      </ul>
+      <p>
+        Without the OBBBA deduction she would pay $720 of federal income tax on the overtime;
+        the deduction reduces that bill by $240 — a meaningful refund, but the overtime was
+        never taxed at a higher rate to begin with.
+      </p>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+      Federal brackets and OBBBA figures are estimates for tax year 2026. The OBBBA deduction
+      applies to FLSA-mandated overtime only; your pay stub and tax professional are
+      definitive. {t.common.dataYear}: 2026.
+    </p>
+
+    <CalculatorFAQ heading="Frequently asked questions" items={faqItems} />
+
+    <RelatedCalculators
+      heading="Related calculators"
+      links={[
+        { label: 'Paycheck Calculator', href: '/en-us/salary/paycheck-calculator/' },
+        { label: 'Hourly to Salary Calculator', href: '/en-us/salary/hourly-to-salary/' },
+        { label: 'Salary to Hourly Calculator', href: '/en-us/salary/salary-to-hourly/' },
+        { label: 'Annual Salary Calculator', href: '/en-us/salary/annual-salary-calculator/' },
+        { label: 'Pay Frequency Converter', href: '/en-us/salary/pay-frequency-converter/' },
+      ]}
+    />
+  </article>
+  <CalculatorResource locale="en-US" category="salary" />
+</BaseLayout>

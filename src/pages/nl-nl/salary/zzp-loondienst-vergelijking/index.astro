@@ -1,0 +1,133 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import NlZZPLoondienstVergelijking from '../../../../components/islands/NlZZPLoondienstVergelijking';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'nl-NL' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  t.salary.zzpLoondienstVergelijking.title,
+  t.salary.zzpLoondienstVergelijking.metaDescription,
+  '/nl-nl/salary/zzp-loondienst-vergelijking/',
+);
+
+const faqItems = [
+  {
+    question: 'Wat verdient beter: zzp of loondienst?',
+    answer:
+      'Dat hangt af van uw uurtarief, het aantal declarabele uren en uw kosten. Als vuistregel moet een zzp\'er 2 tot 3 keer het bruto uurloon van een werknemer vragen om er netto op vooruit te gaan. Dat komt doordat u als zzp\'er zelf pensioen, arbeidsongeschiktheidsverzekering, vakantiegeld en de Zvw-bijdrage (4,85%) moet regelen, terwijl een werkgever die voor u betaalt. Gebruik de calculator hierboven om beide netto-bedragen exact naast elkaar te zetten.',
+  },
+  {
+    question: 'Hoeveel uur moet ik declareren als zzp\'er om in loondienst bij te blijven?',
+    answer:
+      'De calculator berekent het omslagpunt: het uurtarief dat u bij uw aantal declarabele uren nodig heeft om hetzelfde netto te halen als in loondienst. Houd er rekening mee dat u zelden 100% van uw werkbare uren declareert — de meeste zzp\'ers declareren 1.000 tot 1.400 uur per jaar (50–70%), de rest gaat naar acquisitie, administratie en scholing.',
+  },
+  {
+    question: 'Wat is het urencriterium en waarom is het belangrijk?',
+    answer:
+      'Het urencriterium houdt in dat u minimaal 1.225 uur per kalenderjaar aan uw onderneming besteedt — dat zijn óók indirecte uren zoals administratie, reistijd, offertes en scholing. Alleen dan heeft u recht op de zelfstandigenaftrek (€1.200 in 2026). Haalt u de 1.225 uur niet, dan mist u deze aftrek, maar de MKB-winstvrijstelling (12,70%) geldt dan nog wel.',
+  },
+  {
+    question: 'Hoe wordt de Zvw-bijdrage berekend voor een zzp\'er?',
+    answer:
+      'Als zzp\'er betaalt u zelf de inkomensafhankelijke bijdrage Zorgverzekeringswet via een aanslag van de Belastingdienst. In 2026 is dat 4,85% over maximaal €79.409 aan bijdrage-inkomen. Een werknemer in loondienst betaalt deze niet zelf: de werkgever draagt de werkgeversheffing (6,10%) af. Let op: dit staat los van de maandelijkse zorgpremie, die iedereen zelf aan de zorgverzekeraar betaalt.',
+  },
+  {
+    question: 'Welke kosten vergeet een startende zzp\'er vaak in de vergelijking?',
+    answer:
+      'Pensioenopbouw (bouw zelf 10–15% van de winst op, in loondienst regelt de werkgever dit), een arbeidsongeschiktheidsverzekering (AOV), boekhouderkosten, leegloop tussen opdrachten, doorbetaling bij ziekte of vakantie, en de Zvw-bijdrage. Tel bij uw benodigde uurtarief daarom altijd een marge voor deze posten op.',
+  },
+  {
+    question: 'Telt vakantiegeld mee in de vergelijking?',
+    answer:
+      'Ja. Werknemers hebben wettelijk recht op minimaal 8% vakantiegeld over het brutoloon. In de calculator kunt u dit laten meetellen (aanbevolen) of uitzetten. Als zzp\'er bouwt u geen vakantiegeld op — u moet dit zelf reserveren uit uw omzet.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="nl-zzp-loondienst-vergelijking"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      { label: t.salary.zzpLoondienstVergelijking.title, href: buildLocalePath(locale, 'salary/zzp-loondienst-vergelijking') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">{t.salary.zzpLoondienstVergelijking.h1}</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">{t.salary.zzpLoondienstVergelijking.intro}</p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <NlZZPLoondienstVergelijking client:load locale={locale} />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="nl-zzp-loondienst-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Hoe de vergelijking werkt (2026)</h2>
+      <h3>ZZP-kant</h3>
+      <ol>
+        <li><strong>Jaaromzet</strong> = uurtarief × declarabele uren (excl. BTW), minus zakelijke kosten = <strong>brutowinst</strong></li>
+        <li>Brutowinst minus <strong>zelfstandigenaftrek</strong> (€1.200, alleen bij ≥ 1.225 uur)</li>
+        <li>Resterende winst minus <strong>MKB-winstvrijstelling</strong> (12,70%) = <strong>belastbare winst</strong></li>
+        <li>Box 1-tarieven (35,75% / 37,56% / 49,50%) minus arbeidskorting en algemene heffingskorting</li>
+        <li><strong>Zvw-bijdrage</strong> 4,85% (over max. €79.409) — als zzp'er betaalt u deze zelf via een aanslag</li>
+      </ol>
+      <h3>Loondienst-kant</h3>
+      <ol>
+        <li><strong>Bruto jaarsalaris</strong> (12 × maandsalaris), plus 8% vakantiegeld</li>
+        <li><strong>Loonheffing</strong> (box 1) minus arbeidskorting en algemene heffingskorting</li>
+        <li>De werkgever betaalt de Zvw-heffing (6,10%) en de pensioenpremie — die komen niet van uw nettoloon af</li>
+      </ol>
+
+      <h2>Aannames en beperkingen</h2>
+      <ul>
+        <li>De zelfstandigenaftrek geldt alleen bij het urencriterium van <strong>1.225 uur per jaar</strong> (inclusief indirecte uren).</li>
+        <li>De Zvw-bijdrage is indicatief berekend over de belastbare winst; de Belastingdienst stelt het definitieve bedrag vast.</li>
+        <li>Geen rekening gehouden met pensioenopbouw, AOV-premie, boekhouderkosten, leegloop en doorbetaling bij ziekte — als zzp'er moet u dit zelf reserveren.</li>
+        <li>Startersaftrek (€2.123) is niet meegenomen; in de eerste drie jaar valt het zzp-resultaat iets gunstiger uit.</li>
+      </ul>
+      <p class="text-sm">
+        Bronnen: <a href="https://www.belastingdienst.nl/wps/wcm/connect/bldcontentnl/belastingdienst/zakelijk/winst/inkomstenbelasting/veranderingen-inkomstenbelasting-2026/ondernemersaftrek-2026/zelfstandigenaftrek-2026" target="_blank" rel="noopener noreferrer">Belastingdienst — Zelfstandigenaftrek 2026</a>,
+        <a href="https://www.kvk.nl/geldzaken/belastingtarieven-2026/" target="_blank" rel="noopener noreferrer"> KVK — Belastingtarieven 2026</a>
+      </p>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+    </p>
+
+    <CalculatorFAQ heading="Veelgestelde vragen: zzp of loondienst" items={faqItems} />
+
+    <RelatedCalculators
+      heading="Gerelateerde calculators"
+      links={[
+      { label: "ZZP netto inkomen berekenen", href: "/nl-nl/salary/zzp-netto-calculator/" },
+      { label: "Bruto netto salaris berekenen", href: "/nl-nl/salary/bruto-netto-calculator/" },
+      { label: "Vakantiegeld berekenen", href: "/nl-nl/salary/vakantiegeld-calculator/" },
+      ]}
+    />
+  </article>
+  <CalculatorResource locale="nl-NL" category="salary" />
+</BaseLayout>

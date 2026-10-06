@@ -1,7 +1,11 @@
 import { useState, useMemo } from 'preact/hooks';
 import { nlZZPEngine } from '../../calculators/salary/engines/nl/nlZZP';
+import { nlZZPData2026, nlZvwData2026 } from '../../data/salary/nl/nlTaxData2026';
 
 interface Props { locale: string; }
+
+const mkbPct = `${(nlZZPData2026.mkbWinstvrijstelling * 100).toLocaleString('nl-NL', { maximumFractionDigits: 2 })}%`;
+const zvwPct = `${(nlZvwData2026.ondernemersPercentage * 100).toLocaleString('nl-NL', { maximumFractionDigits: 2 })}%`;
 
 const fmt = (locale: string, v: number) =>
   new Intl.NumberFormat(locale, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(v);
@@ -187,7 +191,7 @@ export default function NlZZPCalculator({ locale }: Props) {
                 </div>
               )}
               <div class="flex justify-between px-5 py-2 text-green-700 bg-green-50">
-                <span class="pl-4">− MKB-winstvrijstelling (13,31%)</span>
+                <span class="pl-4">− MKB-winstvrijstelling ({mkbPct})</span>
                 <span>−{fmt(locale, d.mkbWinstvrijstelling)}</span>
               </div>
               <div class="flex justify-between px-5 py-3 font-semibold text-slate-800">
@@ -253,9 +257,13 @@ export default function NlZZPCalculator({ locale }: Props) {
       )}
 
       <p class="text-xs text-slate-400">
-        Berekening op basis van box 1 loonheffing 2026, zelfstandigenaftrek €2.470, MKB-winstvrijstelling 13,31%.
-        Geen rekening gehouden met FOR (fiscale oudedagsreserve is afgeschaft per 2023), kleinschaligheidsinvesteringsaftrek,
-        of andere specifieke aftrekposten. Raadpleeg een boekhouder voor uw persoonlijke situatie.
+        Berekening op basis van box 1 loonheffing 2026, zelfstandigenaftrek €
+        {nlZZPData2026.zelfstandigenaftrek.toLocaleString('nl-NL')}, MKB-winstvrijstelling {mkbPct}.
+        Zvw-bijdrage ({zvwPct} over max. €
+        {nlZvwData2026.maxBijdrageInkomen.toLocaleString('nl-NL')} bijdrage-inkomen) is hierin niet meegenomen —
+        reserveer deze apart. Geen rekening gehouden met FOR (fiscale oudedagsreserve is afgeschaft per 2023),
+        kleinschaligheidsinvesteringsaftrek, of andere specifieke aftrekposten. Raadpleeg een boekhouder voor uw
+        persoonlijke situatie.
       </p>
     </div>
   );

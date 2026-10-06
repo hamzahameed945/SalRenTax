@@ -1,0 +1,156 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import SpainSalaryCalculator from '../../../../components/islands/SpainSalaryCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'es-ES' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  '40.000 € brutos en neto 2026: sueldo neto en España — PayRenTax',
+  '¿Cuánto es 40.000 € brutos en neto? En 2026 te quedan 30.659,44 € netos al año (2.554,95 €/mes en 12 pagas, 2.189,96 € por paga en 14 pagas) tras SS (6,5 %) e IRPF.',
+  '/es-es/salary/sueldo-neto-40000/',
+);
+
+const faqItems = [
+  {
+    question: '¿Cuánto es 40.000 € brutos en neto en 2026?',
+    answer:
+      'Con un salario bruto anual de 40.000 € en 2026 (Madrid, sin hijos), te quedan 30.659,44 € netos al año: 2.554,95 € al mes si cobras en 12 pagas, o 2.189,96 € por paga si cobras en 14 pagas (12 mensualidades + 2 pagas extra). Incluye Seguridad Social (6,5 %) y retención de IRPF estimada.'
+  },
+  {
+    question: '¿Cuánto me quitan de IRPF con 40.000 €?',
+    answer:
+      'La retención estimada de IRPF es de 6.740,56 € al año, un 16,85 % efectivo sobre el bruto. Se calcula con la escala estatal más la escala autonómica (Madrid); en otras comunidades el resultado puede variar unos cientos de euros.'
+  },
+  {
+    question: '¿Cuánto es la cotización a la Seguridad Social con 40.000 €?',
+    answer:
+      '2.600,00 € al año (6,5 %): contingencias comunes 4,70 %, desempleo 1,55 %, MEI 0,15 % y Formación Profesional 0,10 %. Orden PJC/297/2026.'
+  },
+  {
+    question: '¿Cobro más con 12 o con 14 pagas?',
+    answer:
+      'El sueldo neto anual es el mismo en ambos casos: 30.659,44 € al año. La diferencia es cuándo lo cobras: con 12 pagas recibes 2.554,95 € cada mes, y con 14 pagas recibes 2.189,96 € por paga (12 mensualidades más 2 pagas extra, normalmente en junio y diciembre).'
+  },
+  {
+    question: '¿Qué tramo marginal de IRPF pago con 40.000 €?',
+    answer:
+      'Con 40.000 € brutos, tu último euro tributa al 15 % estatal más el 12,8 % autonómico de Madrid: un 27,8 % combinado. El IRPF total estimado es de 6.740,56 € (16,85 % efectivo).'
+  }
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      { label: 'Sueldo neto de 40.000 €', href: buildLocalePath(locale, 'salary/sueldo-neto-40000') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Sueldo neto de 40.000 € en España 2026</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Con un salario bruto de <strong>40.000,00 €</strong> al año en 2026, después de la
+      cotización a la Seguridad Social (<strong>2.600,00 €</strong>, 6,5 %) y la retención
+      de IRPF (<strong>6.740,56 €</strong>), te quedan
+      <strong>30.659,44 € netos</strong> al año.
+    </p>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-semibold">Desglose de tu sueldo 2026</h2>
+      <table class="mt-4 w-full text-sm">
+        <tbody>
+          <tr><td>Salario bruto anual</td><td>40.000,00 €</td></tr>
+          <tr><td>Seguridad Social — trabajador (6,5 %)</td><td>− 2.600,00 €</td></tr>
+          <tr><td>IRPF — estatal + autonómico (Madrid)</td><td>− 6.740,56 €</td></tr>
+          <tr class="font-semibold"><td>Sueldo neto anual</td><td>30.659,44 €</td></tr>
+        </tbody>
+      </table>
+      <p class="mt-4 text-xs text-slate-500">
+        Cálculo para la Comunidad de Madrid, sin hijos ni reducciones adicionales, con la
+        escala estatal del IRPF 2026 y la escala autonómica de Madrid. La retención real
+        de tu nómina puede variar según tu situación personal y tu comunidad autónoma.
+      </p>
+    </div>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-semibold">Cuánto cobras por periodo</h2>
+      <table class="mt-4 w-full text-sm">
+        <tbody>
+          <tr><td>Neto anual</td><td>30.659,44 €</td></tr>
+          <tr><td>Neto mensual (12 pagas)</td><td>2.554,95 €</td></tr>
+          <tr><td>Neto por paga (14 pagas)</td><td>2.189,96 €</td></tr>
+          <tr><td>Bruto por paga (14 pagas)</td><td>2.857,14 €</td></tr>
+        </tbody>
+      </table>
+      <p class="mt-4 text-xs text-slate-500">
+        Con 14 pagas cobras 12 mensualidades ordinarias más 2 pagas extraordinarias
+        (normalmente en junio y diciembre). El total anual es el mismo en ambos sistemas.
+      </p>
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="es-sueldo-neto-40000" />
+    </div>
+
+    <div class="mt-10">
+      <h2 class="text-xl font-semibold">Calcula tu sueldo neto</h2>
+      <p class="mt-2 text-sm text-slate-600">
+        Cambia la cantidad, tu comunidad autónoma o las pagas para ver cómo cambia tu neto.
+      </p>
+      <div class="mt-4">
+        <SpainSalaryCalculator client:load locale={locale} initialGross={40000} />
+      </div>
+    </div>
+
+    <nav class="mt-10" aria-label="Sueldo neto por cantidad">
+      <h2 class="text-xl font-semibold">Sueldo neto por cantidad</h2>
+      <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-es/salary/sueldo-neto-18000/">Sueldo neto de 18.000 €</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-es/salary/sueldo-neto-20000/">Sueldo neto de 20.000 €</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-es/salary/sueldo-neto-22000/">Sueldo neto de 22.000 €</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-es/salary/sueldo-neto-25000/">Sueldo neto de 25.000 €</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-es/salary/sueldo-neto-28000/">Sueldo neto de 28.000 €</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-es/salary/sueldo-neto-30000/">Sueldo neto de 30.000 €</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-es/salary/sueldo-neto-35000/">Sueldo neto de 35.000 €</a></li>
+      </ul>
+    </nav>
+
+    <RelatedCalculators
+      heading="Calculadoras relacionadas"
+      links={[
+        { label: "Calculadora de nómina 2026", href: "/es-es/salary/calculadora-nomina/" },
+        { label: "Calculadora de salario por hora", href: "/es-es/salary/calculadora-salario-hora/" },
+        { label: "Calcular finiquito", href: "/es-es/labor/calcular-finiquito/" },
+      ]}
+    />
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.dataSource} Estimación para 2026 con tramos
+      oficiales estatales y autonómicos (Madrid); tu nómina real puede variar según
+      deducciones y prestaciones de tu convenio.
+    </p>
+
+    <CalculatorFAQ heading="Sueldo neto de 40.000 €: preguntas frecuentes" items={faqItems} />
+  </article>
+  <CalculatorResource locale="es-ES" category="salary" />
+</BaseLayout>

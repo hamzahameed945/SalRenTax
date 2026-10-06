@@ -1,0 +1,162 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildLocalePath } from '../../../../i18n/utils';
+import BrLicencaMaternidadeCalculator from '../../../../components/islands/BrLicencaMaternidadeCalculator';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+const locale = 'pt-BR' as const;
+const t = getDictionary(locale);
+
+const schemaWebApp = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Calculadora de Licença-Maternidade 2026",
+  "description": "Calculadora gratuita de salário-maternidade: 100% do salário CLT por 120 dias, limitado ao teto do INSS de 2026.",
+  "url": "https://payrentax.me/pt-br/labor/licenca-maternidade-calculadora/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "BRL"
+  },
+  "inLanguage": "pt-BR",
+  "featureList": "Salário-maternidade 100% do salário, teto do INSS 2026, 120 dias de licença, 4 parcelas mensais"
+};
+
+const faqItems = [
+  {
+    question: 'Quanto vou receber de licença-maternidade?',
+    answer: 'Você recebe 100% do seu salário mensal, pago em 4 parcelas mensais ao longo dos 120 dias de licença. O valor é limitado ao teto do INSS, que em 2026 é de R$ 8.475,55. Exemplo: salário de R$ 3.000 → R$ 3.000 por mês, total de R$ 12.000.',
+  },
+  {
+    question: 'Quem paga a licença-maternidade?',
+    answer: 'Para a empregada CLT, quem paga é a empresa: o salário-maternidade entra na folha e a empresa compensa o valor na guia de contribuição ao INSS (Lei nº 10.710/2003). Para empregada doméstica e mães que adotam, o benefício é pago diretamente pelo INSS.',
+  },
+  {
+    question: 'Quanto tempo dura a licença-maternidade?',
+    answer: 'A licença-maternidade dura 120 dias (CLT, art. 392). Se a empresa participa do Programa Empresa Cidadã (Lei nº 11.770/2008), a licença pode ser prorrogada por mais 60 dias, chegando a 180 dias.',
+  },
+  {
+    question: 'O que mudou com a decisão do STF em setembro de 2026?',
+    answer: 'Em 23 de setembro de 2026, o STF julgou a ADI 7495 (relator: ministro Alexandre de Moraes) e unificou os critérios da licença-maternidade para mães biológicas e adotantes: os 120 dias valem para ambas, sem distinção. A decisão também definiu critérios para o início do afastamento — parto, fim da gestação ou alta hospitalar da mãe ou do bebê, o que ocorrer por último — regra importante em casos de parto prematuro.',
+  },
+  {
+    question: 'A licença-maternidade conta para o 13º salário e o FGTS?',
+    answer: 'Sim. Durante a licença-maternidade, a empresa continua depositando o FGTS normalmente e o período do afastamento conta para o cálculo do 13º salário (os avos não são perdidos).',
+  },
+];
+---
+
+<BaseLayout
+  locale={locale}
+  title="Calculadora de Licença-Maternidade 2026: quanto vou receber? | PayRenTax"
+  description="Calcule quanto você vai receber de licença-maternidade em 2026: 100% do salário por 120 dias, até o teto do INSS. Descubra quem paga e o que mudou."
+  canonical="/pt-br/labor/licenca-maternidade-calculadora/"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schemaWebApp)} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqItems.map(item => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.answer
+        }
+      }))
+    })} />
+  </Fragment>
+  <Breadcrumbs
+    locale={locale}
+    trail={[{ label: 'Calculadoras trabalhistas', href: buildLocalePath(locale, 'labor') }]}
+  />
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Calculadora de Licença-Maternidade 2026</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Descubra quanto você vai receber de salário-maternidade: <strong>100% do salário por 120 dias</strong>, limitado ao teto do INSS. Simule abaixo.
+    </p>
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <BrLicencaMaternidadeCalculator client:load />
+    </div>
+    <div class="mt-8">
+      <InContentAd slotId="br-licenca-maternidade-1" />
+    </div>
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Como é calculada a licença-maternidade</h2>
+      <p>
+        O <strong>salário-maternidade</strong> da empregada CLT corresponde a <strong>100% do salário mensal</strong>, pago em <strong>4 parcelas mensais</strong> durante os 120 dias de licença (CLT, art. 392).
+      </p>
+
+      <h3>Fórmula</h3>
+      <pre>Benefício mensal = Salário mensal (limitado ao teto do INSS)
+Total da licença = Benefício mensal × 4</pre>
+      <p>
+        Em 2026, o <strong>teto do INSS é de R$ 8.475,55</strong>. Salários acima desse valor recebem o benefício limitado ao teto.
+      </p>
+
+      <h3>Exemplo de cálculo</h3>
+      <ul>
+        <li><strong>Salário:</strong> R$ 3.000,00</li>
+        <li><strong>Benefício mensal:</strong> R$ 3.000,00 (4 parcelas)</li>
+        <li><strong>Total da licença:</strong> R$ 12.000,00</li>
+      </ul>
+      <p>Com salário de R$ 15.000,00, o benefício mensal seria de R$ 8.475,55 (teto) e o total de R$ 33.902,20.</p>
+
+      <h2>Quem paga a licença-maternidade?</h2>
+      <p>
+        Para a <strong>empregada CLT</strong>, quem paga é a <strong>empresa</strong>: o salário-maternidade é incluído na folha de pagamento e a empresa <strong>compensa o valor</strong> nas contribuições devidas ao INSS (<strong>Lei nº 10.710/2003</strong>). Na prática, a trabalhadora recebe normalmente no dia do pagamento.
+      </p>
+      <p>
+        <strong>Exceções:</strong> para empregada doméstica e em casos de adoção, o salário-maternidade é pago <strong>diretamente pelo INSS</strong>, solicitado pela própria segurada.
+      </p>
+
+      <h2>Quanto tempo dura a licença-maternidade?</h2>
+      <p>
+        A licença-maternidade dura <strong>120 dias</strong> a partir do afastamento. Se a empresa participa do <strong>Programa Empresa Cidadã</strong> (Lei nº 11.770/2008), a licença pode ser <strong>prorrogada por mais 60 dias</strong>, chegando a <strong>180 dias</strong>.
+      </p>
+
+      <h2>O que mudou com a decisão do STF em 2026?</h2>
+      <p>
+        Em <strong>23 de setembro de 2026</strong>, o Supremo Tribunal Federal julgou a <strong>ADI 7495</strong> (relator: ministro Alexandre de Moraes) e <strong>unificou os critérios da licença-maternidade para mães biológicas e adotantes</strong>: os mesmos 120 dias valem para ambas, sem distinção.
+      </p>
+      <p>
+        A decisão também definiu critérios para o <strong>início do afastamento</strong> — considerando o parto, o fim da gestação ou a <strong>alta hospitalar da mãe ou do bebê, o que ocorrer por último</strong> — regra especialmente relevante em casos de parto prematuro e internação do bebê.
+      </p>
+
+      <h2>FGTS e 13º salário durante a licença</h2>
+      <ul>
+        <li><strong>FGTS:</strong> a empresa continua depositando o FGTS normalmente durante toda a licença-maternidade.</li>
+        <li><strong>13º salário:</strong> o período do afastamento conta para o cálculo — os avos do 13º não são perdidos durante a licença.</li>
+      </ul>
+
+      <h2>Estabilidade no emprego</h2>
+      <p>
+        A empregada tem <strong>estabilidade desde a confirmação da gravidez até 5 meses após o parto</strong> (ADCT, art. 10, II, "b"). Isso significa que não pode ser demitida sem justa causa durante esse período.
+      </p>
+    </div>
+    <CalculatorFAQ heading="Perguntas frequentes sobre licença-maternidade" items={faqItems} />
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.dataSource}
+    </p>
+
+    <RelatedCalculators
+      heading="Calculadoras relacionadas"
+      links={[
+      { label: "Calcular décimo terceiro", href: "/pt-br/labor/calcular-decimo-terceiro/" },
+      { label: "Calculadora de férias CLT", href: "/pt-br/labor/calcular-ferias/" },
+      { label: "Calculadora de horas extras", href: "/pt-br/labor/calculadora-horas-extras/" },
+      { label: "Calcular rescisão trabalhista", href: "/pt-br/labor/calcular-rescisao/" },
+      { label: "Calculadora de salário líquido", href: "/pt-br/salary/calculadora-salario-liquido/" },
+      ]}
+    />
+  </article>
+  <CalculatorResource locale="pt-BR" category="labor" />
+</BaseLayout>

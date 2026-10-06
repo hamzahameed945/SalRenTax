@@ -1,0 +1,169 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import GbRedundancyPayCalculator from '../../../../components/islands/GbRedundancyPayCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'en-GB' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Statutory Redundancy Pay Calculator UK 2026/27 — PayRenTax',
+  'Calculate your statutory redundancy pay for 2026/27: age-banded weeks of pay (½, 1 or 1½ per year) with the £751/week statutory cap — plus how the £30,000 tax-free rule works.',
+  '/en-gb/labor/redundancy-pay-calculator/',
+);
+
+const faqItems = [
+  {
+    question: 'How is redundancy pay calculated?',
+    answer:
+      'Statutory redundancy pay is worked out from three things: your age in each year of service, your length of service, and your weekly pay. For each complete year of service (counted backwards from the date your employment ends, up to a maximum of 20 years) you get half a week’s pay for each year you were under 22, one week’s pay for each year you were 22 to 40, and one and a half weeks’ pay for each year you were 41 or over. That number of weeks is multiplied by your gross weekly pay, subject to the statutory cap (£751/week in 2026/27). You must normally have 2 or more years of continuous employment to qualify.',
+  },
+  {
+    question: 'Is redundancy pay tax free?',
+    answer:
+      'The first combined £30,000 of genuine termination pay is normally free of Income Tax and employee National Insurance. That £30,000 covers your statutory redundancy pay plus any enhanced or contractual redundancy payment and non-cash termination benefits together. Only the amount above £30,000 is taxed (at your marginal Income Tax rate, with no employee National Insurance), and your employer pays employer Class 1A National Insurance on the excess. Note that pay in lieu of notice (PILON), holiday pay and bonuses are taxed as normal earnings and do not count towards the £30,000. Because statutory redundancy pay can never exceed £22,530 in 2026/27, it is tax-free on its own — tax only becomes an issue for larger enhanced packages.',
+  },
+  {
+    question: 'What is the weekly pay cap?',
+    answer:
+      'For redundancies on or after 6 April 2026, your gross weekly pay is capped at £751 when working out statutory redundancy pay (Employment Rights Act 1996, uprated every April). If you earn more than £751 a week, £751 is used instead. With the maximum 30 weeks of pay (20 years of service, all in the 41+ band), the most anyone can receive in 2026/27 is 30 × £751 = £22,530. Redundancies before 6 April 2026 used the lower £719 cap. Northern Ireland sets its own limit — £783/week from 6 April 2026.',
+  },
+  {
+    question: 'Who qualifies for statutory redundancy pay?',
+    answer:
+      'You are normally entitled if you are an employee with at least 2 years of continuous employment with the same employer and you are dismissed because of redundancy. You are not entitled if your employer offers to keep you on, offers suitable alternative work that you refuse without good reason, or if you were dismissed for misconduct (which is not redundancy). Certain groups — including share fishermen, members of the armed forces and the police — are covered by separate arrangements.',
+  },
+  {
+    question: 'What counts as a week’s pay?',
+    answer:
+      'A week’s pay is your gross pay before tax and National Insurance — usually basic pay. Bonuses and commission are not included, and overtime usually does not count unless it is guaranteed. If your pay varies, it is the average you earned per week over the 12 weeks before the day you were given your redundancy notice.',
+  },
+  {
+    question: 'Can my redundancy pay be higher than the statutory amount?',
+    answer:
+      'Yes. The statutory figure is the legal minimum — your employer cannot pay you less. Many employers offer enhanced (contractual) redundancy schemes that pay more per year of service, use a higher weekly-pay cap, or remove the 20-year service cap. Any extra on top of the statutory amount also counts towards the same £30,000 tax-free limit.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="gb-redundancy-pay-calculator"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Redundancy Pay Calculator', href: buildLocalePath(locale, 'labor/redundancy-pay-calculator') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Statutory Redundancy Pay Calculator 2026/27</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Work out the <strong>legal minimum</strong> your employer must pay you: age-banded weeks of
+      pay (½, 1 or 1½ per year of service) multiplied by your gross weekly pay, capped at{' '}
+      <strong>£751/week</strong> for redundancies on or after 6 April 2026.
+    </p>
+    <p class="mt-2 max-w-2xl text-xs text-slate-500">
+      Law-firm calculators and blogs still show old caps — this calculator uses the current
+      2026/27 statutory limit (£751/week, up from £719; maximum statutory pay £22,530), verified
+      against GOV.UK.
+    </p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <GbRedundancyPayCalculator client:load />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="gb-redundancy-pay-1" />
+    </div>
+
+    <div class="mt-10">
+      <h2 class="text-xl font-semibold">The statutory formula</h2>
+      <p class="mt-3 text-slate-600">
+        Under the Employment Rights Act 1996, years of service are counted <strong>backwards</strong>{' '}
+        from the date your employment ends (up to 20 years). Each complete year is multiplied by a
+        factor set by your age in that year:
+      </p>
+      <table class="mt-4 w-full text-sm">
+        <thead>
+          <tr>
+            <th class="text-left font-semibold text-slate-700">Your age in that year</th>
+            <th class="text-left font-semibold text-slate-700">You get</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Under 22</td><td>½ week’s pay per year</td></tr>
+          <tr><td>22 to 40</td><td>1 week’s pay per year</td></tr>
+          <tr><td>41 and over</td><td>1½ weeks’ pay per year</td></tr>
+        </tbody>
+      </table>
+      <p class="mt-4 text-slate-600">
+        Worked example: aged 45 with 12 years of service at £800/week. The last 5 years (ages
+        41–45) give 5 × 1½ = 7½ weeks; the earlier 7 years (ages 34–40) give 7 × 1 = 7 weeks;
+        total 14½ weeks × £751 (capped) = <strong>£10,889.50</strong>.
+      </p>
+
+      <h2 class="mt-8 text-xl font-semibold">The £30,000 tax-free rule</h2>
+      <p class="mt-3 text-slate-600">
+        The first combined <strong>£30,000</strong> of your termination package — statutory
+        redundancy pay plus any enhanced or contractual redundancy pay and non-cash benefits — is
+        normally free of Income Tax and employee National Insurance. Anything above £30,000 is
+        taxed at your marginal rate (no employee NI), and your employer pays Class 1A employer NI
+        on the excess. Payment in lieu of notice (PILON), holiday pay and bonuses are taxed as
+        earnings and sit outside the £30,000.
+      </p>
+      <p class="mt-3 text-slate-600">
+        In practice, statutory redundancy pay alone can never reach £30,000 (the 2026/27 maximum is
+        £22,530), so it is tax-free on its own. The £30,000 limit only matters when you receive an
+        enhanced package on top.
+      </p>
+
+      <h2 class="mt-8 text-xl font-semibold">Enhanced and contractual redundancy</h2>
+      <p class="mt-3 text-slate-600">
+        The figure above is the statutory minimum — your contract, staff handbook or redundancy
+        policy may promise more, for example a higher weekly-pay cap, more weeks per year of
+        service, or counting service beyond 20 years. Anything above the statutory amount is still
+        part of the same £30,000 tax-free allowance. If you are offered an enhanced package, it
+        will usually be conditional on signing a settlement agreement, which requires independent
+        legal advice (often paid for by the employer).
+      </p>
+      <p class="mt-4 text-xs text-slate-500">
+        Sources:{' '}
+        <a href="https://www.gov.uk/redundancy-your-rights/redundancy-pay" target="_blank" rel="noopener noreferrer">GOV.UK — Statutory redundancy pay</a>
+        {' '}·{' '}
+        <a href="https://www.gov.uk/termination-payments-and-tax-when-you-leave-a-job" target="_blank" rel="noopener noreferrer">GOV.UK — Tax on termination payments</a>
+      </p>
+    </div>
+
+    <RelatedCalculators
+      heading="Related calculators"
+      links={[
+        { href: '/en-gb/salary/take-home-pay-calculator/', label: 'Take-Home Pay Calculator UK' },
+        { href: '/en-gb/salary/salary-raise/', label: 'Salary Raise Calculator UK' },
+        { href: '/en-gb/rent/rent-affordability/', label: 'Rent Affordability Calculator UK' },
+      ]}
+    />
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} Figures use the statutory
+      redundancy rules for Great Britain for redundancies on or after 6 April 2026 (£751/week cap).
+      For employment disputes, Acas advice is free.
+    </p>
+
+    <CalculatorFAQ heading="Redundancy pay: frequently asked questions" items={faqItems} />
+  </article>
+</BaseLayout>

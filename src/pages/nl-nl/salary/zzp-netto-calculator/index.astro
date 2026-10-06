@@ -24,17 +24,17 @@ const faqItems = [
   {
     question: 'Hoe wordt het netto inkomen van een ZZP\'er berekend?',
     answer:
-      'ZZP\'ers berekenen eerst de winst (omzet minus zakelijke kosten). Daarna worden ondernemersaftrekken toegepast: de zelfstandigenaftrek (€2.470 in 2026) en eventueel de startersaftrek. Op de resterende winst na de MKB-winstvrijstelling (13,31%) wordt box 1 belasting geheven, verminderd met de arbeidskorting en algemene heffingskorting.',
+      'ZZP\'ers berekenen eerst de winst (omzet minus zakelijke kosten). Daarna worden ondernemersaftrekken toegepast: de zelfstandigenaftrek (€1.200 in 2026) en eventueel de startersaftrek. Op de resterende winst na de MKB-winstvrijstelling (12,70%) wordt box 1 belasting geheven, verminderd met de arbeidskorting en algemene heffingskorting. Daar komt de inkomensafhankelijke Zvw-bijdrage (4,85% over max. €79.409) nog bij, die via een aanslag wordt betaald.',
   },
   {
     question: 'Wat is de zelfstandigenaftrek 2026?',
     answer:
-      'De zelfstandigenaftrek is €2.470 in 2026. Het is een aftrekpost voor ondernemers die voldoen aan het urencriterium (minimaal 1.225 declarabele uren per jaar). De aftrek wordt elk jaar verder verlaagd en is in 2030 verdwenen.',
+      'De zelfstandigenaftrek is €1.200 in 2026. Het is een aftrekpost voor ondernemers die voldoen aan het urencriterium (minimaal 1.225 uur per jaar aan de onderneming besteden, dus ook indirecte uren zoals administratie). De aftrek wordt elk jaar verder verlaagd en is in 2027 nog €900. Tip: overweeg de vergelijking met loondienst op onze ZZP-of-loondienst-pagina.',
   },
   {
     question: 'Wat is de MKB-winstvrijstelling?',
     answer:
-      'De MKB-winstvrijstelling bedraagt 13,31% van de winst na ondernemersaftrek. Dit deel van de winst is vrijgesteld van belasting. De vrijstelling geldt voor alle IB-ondernemers, ongeacht het aantal gewerkte uren.',
+      'De MKB-winstvrijstelling bedraagt 12,70% van de winst na ondernemersaftrek. Dit deel van de winst is vrijgesteld van belasting. De vrijstelling geldt voor alle IB-ondernemers, ongeacht het aantal gewerkte uren.',
   },
   {
     question: 'Moet ik als ZZP\'er BTW betalen?',
@@ -88,10 +88,11 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
       <h2>Van omzet naar netto: de ZZP-berekening stap voor stap</h2>
       <ol>
         <li><strong>Omzet</strong> (excl. BTW) minus zakelijke kosten = <strong>brutowinst</strong></li>
-        <li>Brutowinst minus <strong>zelfstandigenaftrek</strong> (€2.470) en eventueel startersaftrek (€2.123)</li>
-        <li>Resterende winst minus <strong>MKB-winstvrijstelling</strong> (13,31%) = <strong>belastbare winst</strong></li>
+        <li>Brutowinst minus <strong>zelfstandigenaftrek</strong> (€1.200) en eventueel startersaftrek (€2.123)</li>
+        <li>Resterende winst minus <strong>MKB-winstvrijstelling</strong> (12,70%) = <strong>belastbare winst</strong></li>
         <li>Box 1-tarieven (35,75% / 37,56% / 49,50%) toegepast op de belastbare winst</li>
         <li>Belasting verminderd met arbeidskorting en algemene heffingskorting</li>
+        <li><strong>Zvw-bijdrage</strong> (4,85% over max. €79.409) betaalt u als zzp'er zelf via een aanslag</li>
       </ol>
 
       <h2>Ondernemersaftrekken 2026</h2>
@@ -100,9 +101,10 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
           <tr><th>Aftrek</th><th>Bedrag 2026</th><th>Voorwaarde</th></tr>
         </thead>
         <tbody>
-          <tr><td>Zelfstandigenaftrek</td><td>€2.470</td><td>Urencriterium ≥ 1.225 uur/jaar</td></tr>
+          <tr><td>Zelfstandigenaftrek</td><td>€1.200</td><td>Urencriterium ≥ 1.225 uur/jaar</td></tr>
           <tr><td>Startersaftrek</td><td>€2.123</td><td>Eerste 3 jaar als ondernemer</td></tr>
-          <tr><td>MKB-winstvrijstelling</td><td>13,31% van winst</td><td>Geen urencriterium</td></tr>
+          <tr><td>MKB-winstvrijstelling</td><td>12,70% van winst</td><td>Geen urencriterium</td></tr>
+          <tr><td>Zvw-bijdrage zzp</td><td>4,85% (max. €79.409)</td><td>Via aanslag, niet via loon</td></tr>
         </tbody>
       </table>
       <p class="text-sm">
@@ -121,6 +123,7 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
       links={[
       { label: "Vakantiegeld berekenen", href: "/nl-nl/salary/vakantiegeld-calculator/" },
       { label: "Bruto netto salaris berekenen", href: "/nl-nl/salary/bruto-netto-calculator/" },
+      { label: "ZZP of loondienst: wat verdient beter?", href: "/nl-nl/salary/zzp-loondienst-vergelijking/" },
       ]}
     />
   </article>

@@ -136,12 +136,30 @@ export const nlDertigProcentRegeling2026 = {
 } as const;
 
 // ─── ZZP tax data ─────────────────────────────────────────────────────────
-// Zelfstandigenaftrek 2026: €2.470
-// MKB-winstvrijstelling 2026: 13.31% of profit after zelfstandigenaftrek
-// SOURCE: Belastingdienst — Zelfstandigenaftrek
-// https://www.belastingdienst.nl/wps/wcm/connect/bldcontentnl/belastingdienst/zakelijk/winst/zelfstandigenaftrek/
+// Zelfstandigenaftrek 2026: €1.200 (declining — was €2.470 in 2025, €900 in 2027)
+// MKB-winstvrijstelling 2026: 12.70% of profit after ondernemersaftrek
+// Startersaftrek 2026: €2.123
+// SOURCE: Belastingdienst — Zelfstandigenaftrek 2026
+// https://www.belastingdienst.nl/wps/wcm/connect/bldcontentnl/belastingdienst/zakelijk/winst/inkomstenbelasting/veranderingen-inkomstenbelasting-2026/ondernemersaftrek-2026/zelfstandigenaftrek-2026
+// Cross-checked: KVK Belastingtarieven 2026 (https://www.kvk.nl/geldzaken/belastingtarieven-2026/)
+// Verified: 2026-10-06
 export const nlZZPData2026 = {
-  zelfstandigenaftrek:    2_470,
-  mkbWinstvrijstelling:   0.1331,  // 13.31%
+  zelfstandigenaftrek:    1_200,
+  mkbWinstvrijstelling:   0.127,    // 12.70%
   startersaftrek:         2_123,   // Extra deduction for starters (first 3 years)
+} as const;
+
+// ─── Bijdrage Zvw (inkomensafhankelijke bijdrage zorgverzekeringswet) ─────
+// For entrepreneurs/self-employed: the "verlaagde" rate, paid via
+// Belastingdienst assessment on top of income tax (NOT deducted from loon).
+// 2026: 4.85% over max. €79.409 bijdrage-inkomen (max. bijdrage €3.851,34)
+// SOURCE: KVK — Belastingtarieven 2026
+// https://www.kvk.nl/geldzaken/belastingtarieven-2026/
+// Verified: 2026-10-06
+export const nlZvwData2026 = {
+  /** Verlaagde bijdrage for ondernemers (self-paid via assessment). */
+  ondernemersPercentage: 0.0485,
+  maxBijdrageInkomen:    79_409,
+  /** Normale werkgeversheffing Zvw — paid by the employer, not the employee. */
+  werkgeversheffing:     0.061,
 } as const;

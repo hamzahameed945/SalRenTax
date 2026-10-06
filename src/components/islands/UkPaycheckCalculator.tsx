@@ -4,9 +4,15 @@ import { enGB } from '../../i18n/en-GB';
 
 const PAY_FREQUENCIES = ['annually', 'monthly', 'biweekly', 'weekly'] as const;
 
-export default function UkPaycheckCalculator({ locale }: { locale: string }) {
+export default function UkPaycheckCalculator({
+  locale,
+  initialGrossAnnual,
+}: {
+  locale: string;
+  initialGrossAnnual?: string;
+}) {
   const t = enGB.salary.takeHomePay;
-  const [grossAnnual, setGrossAnnual] = useState('35000');
+  const [grossAnnual, setGrossAnnual] = useState(initialGrossAnnual ?? '35000');
   const [payFrequency, setPayFrequency] = useState<'annually' | 'monthly' | 'biweekly' | 'weekly'>('monthly');
 
   const result = useMemo(() => {

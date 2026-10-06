@@ -1,0 +1,177 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import GbMaternityAllowanceCalculator from '../../../../components/islands/GbMaternityAllowanceCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'en-GB' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Maternity Allowance Calculator UK 2026 — Check Eligibility & Payment — PayRenTax',
+  'Check your Maternity Allowance eligibility and estimate your 2026/27 payment: up to £194.32 a week for 39 weeks. Covers the 26-week test period, the £30/week earnings rule, and reduced self-employed rates from £27/week.',
+  '/en-gb/labor/maternity-allowance-calculator/',
+);
+
+const faqItems = [
+  {
+    question: 'Who can get Maternity Allowance in the UK?',
+    answer:
+      'You can get Maternity Allowance if you are employed but cannot get Statutory Maternity Pay (SMP), are self-employed, have recently stopped working, or do unpaid work for your spouse or civil partner\u2019s business. You cannot get it if you are entitled to SMP from another job. You can claim as soon as you have been pregnant for 26 weeks, and payments can start from the 11th week before your baby is due.',
+  },
+  {
+    question: 'How many weeks do I need to have worked?',
+    answer:
+      'You must have been employed or registered as self-employed for at least 26 weeks in the 66 weeks before your baby\u2019s due date — this is the "test period". The weeks do not have to be together, part-weeks count, and it does not matter if you had different jobs or periods of unemployment.',
+  },
+  {
+    question: 'What is the £30 a week earnings rule?',
+    answer:
+      'If you have been employed, you must have earned (or been classed as earning) at least £30 a week in at least 13 weeks of your employment. The 13 weeks do not need to be consecutive. Earnings are assessed per week, so even a week with a single shift can count as long as it reaches £30.',
+  },
+  {
+    question: 'How much is Maternity Allowance in 2026/27?',
+    answer:
+      'For the 2026/27 tax year (5 April 2026 to 3 April 2027) the standard rate is £194.32 a week, or 90% of your average weekly earnings from your 13 highest-earning weeks — whichever is lower — paid for up to 39 weeks. That is up to £7,578.48 in total. The rate was £187.18 in 2025/26.',
+  },
+  {
+    question: 'How much Maternity Allowance do self-employed women get?',
+    answer:
+      'Self-employed claimants can get between £27 and £194.32 a week for up to 39 weeks, depending on how many Class 2 National Insurance contributions they have made in the 66-week test period. With 13 or more weeks of Class 2 contributions paid (or treated as paid), you get the full rate you are entitled to. With fewer than 13 weeks, the rate is reduced pro-rata — for example, 6 weeks of contributions at the full rate gives £89.69 a week. With no Class 2 contributions at all, you get £27 a week.',
+  },
+  {
+    question: 'Can I increase my Maternity Allowance if I have paid too little Class 2 NI?',
+    answer:
+      'Yes. After you apply, HMRC will contact you if you have paid less than 13 weeks of Class 2 National Insurance and tell you how many extra contributions you need to reach the maximum rate you are entitled to. Your payments can then be increased and backdated. Class 2 NI costs £3.65 a week in 2026/27, so topping up is usually worth it.',
+  },
+  {
+    question: 'Can I get Maternity Allowance if I recently stopped working?',
+    answer:
+      'Yes — you may still qualify if you recently stopped working, as long as you meet the 26-week test and the £30-a-week earnings test from your employment. If you do unpaid work for your spouse or civil partner\u2019s business instead, you can get £27 a week for up to 14 weeks (your partner must be registered self-employed and paying Class 2 NI in the same 26 weeks).',
+  },
+  {
+    question: 'Is Maternity Allowance taxable?',
+    answer:
+      'No. Maternity Allowance is paid tax-free, every 2 or 4 weeks, straight into your bank account. However, claiming it can affect other benefits: Universal Credit is reduced by an amount equal to your Maternity Allowance, and Jobseeker\u2019s Allowance stops when you get Maternity Allowance.',
+  },
+  {
+    question: 'How do I claim Maternity Allowance?',
+    answer:
+      'You can apply online or by completing the MA1 claim form on GOV.UK, from 26 weeks into your pregnancy. You will need your MATB1 certificate (issued by your midwife or doctor around 20 weeks), proof of your earnings or self-employment, and your National Insurance number. You can ask for your claim to be backdated by up to 3 months.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Maternity Allowance Calculator', href: buildLocalePath(locale, 'labor/maternity-allowance-calculator') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Maternity Allowance Calculator 2026</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Maternity Allowance is the DWP payment for pregnant women who cannot get Statutory Maternity
+      Pay — including the <strong>self-employed</strong>. For 2026/27 the standard rate is
+      <strong>£194.32 a week</strong> (or 90% of your average weekly earnings, whichever is lower),
+      paid for up to <strong>39 weeks</strong>. Check your eligibility and estimate your total below.
+    </p>
+    <p class="mt-2 max-w-2xl text-xs text-slate-500">
+      2026/27 figures: £194.32/week applies to payment periods between 5 April 2026 and 3 April 2027.
+      Earlier periods used £187.18/week.
+    </p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <GbMaternityAllowanceCalculator client:load />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="gb-maternity-1" />
+    </div>
+
+    <div class="mt-10">
+      <h2 class="text-xl font-semibold">Worked examples (2026/27)</h2>
+      <table class="mt-4 w-full text-sm">
+        <thead>
+          <tr>
+            <th class="text-left font-semibold text-slate-700">Situation</th>
+            <th class="text-left font-semibold text-slate-700">Weekly rate</th>
+            <th class="text-left font-semibold text-slate-700">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Employed, average weekly earnings £400 (13 best weeks)</td>
+            <td>£194.32 (90% = £360, so the cap applies)</td>
+            <td>£7,578.48 over 39 weeks</td>
+          </tr>
+          <tr>
+            <td>Employed, average weekly earnings £200</td>
+            <td>£180.00 (90% of £200 is below the cap)</td>
+            <td>£7,020.00 over 39 weeks</td>
+          </tr>
+          <tr>
+            <td>Self-employed, 13+ weeks of Class 2 NI paid</td>
+            <td>£194.32 (full rate)</td>
+            <td>£7,578.48 over 39 weeks</td>
+          </tr>
+          <tr>
+            <td>Self-employed, only 6 weeks of Class 2 NI paid</td>
+            <td>£89.69 (£194.32 × 6 ÷ 13)</td>
+            <td>£3,497.91 over 39 weeks</td>
+          </tr>
+          <tr>
+            <td>Self-employed, no Class 2 NI paid</td>
+            <td>£27.00</td>
+            <td>£1,053.00 over 39 weeks</td>
+          </tr>
+          <tr>
+            <td>Unpaid work for spouse/partner's business</td>
+            <td>£27.00</td>
+            <td>£378.00 over 14 weeks</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="mt-4 text-xs text-slate-500">
+        To find your average weekly earnings, take your 13 highest-earning weeks in the 66-week
+        test period before your due date, add them up and divide by 13. If you were paid monthly,
+        multiply the monthly gross by 12 and divide by 52 — but note DWP assesses earnings week by
+        week, so use payslips for the exact figure.
+      </p>
+    </div>
+
+    <RelatedCalculators
+      heading="Related calculators"
+      links={[
+        { href: '/en-gb/salary/take-home-pay-calculator/', label: 'Take-Home Pay Calculator UK' },
+        { href: '/en-gb/salary/salary-raise/', label: 'Salary Raise Calculator UK' },
+        { href: '/en-gb/salary/pay-frequency-converter/', label: 'Pay Frequency Converter UK' },
+        { href: '/en-gb/salary/salary-to-hourly/', label: 'Salary to Hourly Calculator UK' },
+      ]}
+    />
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} Figures are the 2026/27
+      Maternity Allowance rates published on GOV.UK (£194.32/week standard, £27/week reduced,
+      Class 2 NI £3.65/week). Jobcentre Plus decides entitlement on your actual claim record.
+    </p>
+
+    <CalculatorFAQ heading="Maternity Allowance 2026: frequently asked questions" items={faqItems} />
+  </article>
+</BaseLayout>

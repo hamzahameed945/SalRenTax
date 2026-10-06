@@ -53,6 +53,14 @@ export const salary = {
     metaDescription:
       'Bereken uw netto inkomen als ZZP\'er in 2026. Van omzet naar netto na zelfstandigenaftrek, MKB-winstvrijstelling en box 1 belasting.',
     intro:
-      'Bereken hoeveel u netto overhoudt als zelfstandige in 2026. Inclusief zelfstandigenaftrek (€2.470), startersaftrek, MKB-winstvrijstelling (13,31%) en heffingskortingen.',
+      'Bereken hoeveel u netto overhoudt als zelfstandige in 2026. Inclusief zelfstandigenaftrek (€1.200), startersaftrek, MKB-winstvrijstelling (12,70%) en heffingskortingen.',
+  },
+  zzpLoondienstVergelijking: {
+    title: 'ZZP of Loondienst: Wat Verdient Beter? Vergelijking 2026',
+    h1: 'ZZP of loondienst: wat verdient beter in 2026?',
+    metaDescription:
+      'Vergelijk netto inkomen als ZZP\'er (uurtarief × declarabele uren) met loondienst (bruto maandsalaris) in 2026. Inclusief zelfstandigenaftrek, MKB-winstvrijstelling, Zvw en box 1.',
+    intro:
+      'Wat houdt u meer netto over: als zelfstandige of in loondienst? Vul uw uurtarief, declarabele uren en het bruto maandsalaris in en vergelijk beide netto per maand naast elkaar — met de 2026-regels voor zelfstandigenaftrek (€1.200), MKB-winstvrijstelling (12,70%) en Zvw-bijdrage (4,85%).',
   },
 } as const;
