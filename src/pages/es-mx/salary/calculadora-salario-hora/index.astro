@@ -1,5 +1,6 @@
 ---
 import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
 import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
@@ -97,6 +98,14 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
     </p>
 
     <CalculatorFAQ heading="Preguntas frecuentes sobre el salario por hora en México" items={faqItems} />
+
+    <RelatedCalculators
+      heading="Calculadoras relacionadas"
+      links={[
+      { label: "Calculadora de ISR 2026", href: "/es-mx/salary/calculadora-isr/" },
+      { label: "Sueldo bruto y neto", href: "/es-mx/salary/sueldo-bruto-y-neto/" },
+      ]}
+    />
   </article>
   <CalculatorResource locale="es-MX" category="salary" />
 </BaseLayout>

@@ -1,5 +1,6 @@
 ---
 import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
 import InContentAd from '../../../../components/ads/InContentAd.astro';
@@ -329,6 +330,14 @@ Total = Férias + Abono</pre>
             <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/labor/ferias-20000/">Férias de R$ 20.000</a></li>
       </ul>
     </nav>
+
+    <RelatedCalculators
+      heading="Calculadoras relacionadas"
+      links={[
+      { label: "Calculadora de horas extras", href: "/pt-br/labor/calculadora-horas-extras/" },
+      { label: "Calcular décimo terceiro", href: "/pt-br/labor/calcular-decimo-terceiro/" },
+      ]}
+    />
   </article>
   <CalculatorResource locale="pt-BR" category="labor" />
 </BaseLayout>

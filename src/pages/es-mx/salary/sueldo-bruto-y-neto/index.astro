@@ -1,5 +1,6 @@
 ---
 import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
 import InContentAd from '../../../../components/ads/InContentAd.astro';
@@ -227,6 +228,14 @@ const locale = 'es-MX' as const;
         </a>
       </div>
     </div>
+
+    <RelatedCalculators
+      heading="Calculadoras relacionadas"
+      links={[
+      { label: "Calculadora de ISR 2026", href: "/es-mx/salary/calculadora-isr/" },
+      { label: "Calculadora de salario por hora", href: "/es-mx/salary/calculadora-salario-hora/" },
+      ]}
+    />
   </article>
   <CalculatorResource locale="es-MX" category="salary" />
 </BaseLayout>

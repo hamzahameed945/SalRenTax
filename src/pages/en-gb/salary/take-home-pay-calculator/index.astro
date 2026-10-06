@@ -1,5 +1,6 @@
 ---
 import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
 import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
@@ -137,6 +138,14 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
     </p>
 
     <CalculatorFAQ heading="Frequently asked questions about UK take-home pay" items={faqItems} />
+
+    <RelatedCalculators
+      heading="Related calculators"
+      links={[
+      { label: "Salary to hourly calculator", href: "/en-gb/salary/salary-to-hourly/" },
+      { label: "Salary raise calculator", href: "/en-gb/salary/salary-raise/" },
+      ]}
+    />
   </article>
   <CalculatorResource locale="en-GB" category="salary" />
 </BaseLayout>

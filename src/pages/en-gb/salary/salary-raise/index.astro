@@ -1,5 +1,6 @@
 ---
 import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
 import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
@@ -98,6 +99,14 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
     </p>
 
     <CalculatorFAQ heading="Frequently asked questions" items={faqItems} />
+
+    <RelatedCalculators
+      heading="Related calculators"
+      links={[
+      { label: "Salary to hourly calculator", href: "/en-gb/salary/salary-to-hourly/" },
+      { label: "Take-home pay calculator", href: "/en-gb/salary/take-home-pay-calculator/" },
+      ]}
+    />
   </article>
   <CalculatorResource locale="en-GB" category="salary" />
 </BaseLayout>

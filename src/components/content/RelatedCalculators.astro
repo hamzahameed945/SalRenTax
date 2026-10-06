@@ -1,0 +1,13 @@
+---
+export interface RelatedLink { href: string; label: string; }
+export interface Props { heading: string; links: RelatedLink[]; }
+const { heading, links } = Astro.props;
+---
+<nav class="mt-10" aria-label={heading}>
+  <h2 class="text-xl font-semibold text-slate-900">{heading}</h2>
+  <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+    {links.map((l) => (
+      <li><a class="font-medium text-accent hover:underline" href={l.href}>{l.label}</a></li>
+    ))}
+  </ul>
+</nav>

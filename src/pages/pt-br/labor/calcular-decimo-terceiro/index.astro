@@ -1,5 +1,6 @@
 ---
 import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
 import InContentAd from '../../../../components/ads/InContentAd.astro';
@@ -325,6 +326,15 @@ const faqItems = [
             <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/labor/decimo-terceiro-20000/">Décimo terceiro de R$ 20.000</a></li>
       </ul>
     </nav>
+
+    <RelatedCalculators
+      heading="Calculadoras relacionadas"
+      links={[
+      { label: "Calculadora de horas extras", href: "/pt-br/labor/calculadora-horas-extras/" },
+      { label: "Calcular férias", href: "/pt-br/labor/calcular-ferias/" },
+      { label: "Calcular rescisão", href: "/pt-br/labor/calcular-rescisao/" },
+      ]}
+    />
   </article>
   <CalculatorResource locale="pt-BR" category="labor" />
 </BaseLayout>

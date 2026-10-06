@@ -1,5 +1,6 @@
 ---
 import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
 import InContentAd from '../../../../components/ads/InContentAd.astro';
@@ -33,6 +34,14 @@ const locale = 'de-DE' as const;
       <h2>Teilzeitgehalt</h2>
       <p>Der Rechner skaliert das Vollzeit-Bruttogehalt proportional zu den Arbeitsstunden.</p>
     </div>
+
+    <RelatedCalculators
+      heading="Verwandte Rechner"
+      links={[
+      { label: "Stundenlohn Rechner", href: "/de-de/salary/stundenlohn-rechner/" },
+      { label: "Brutto-Netto Rechner", href: "/de-de/salary/brutto-netto-rechner/" },
+      ]}
+    />
   </article>
   <CalculatorResource locale="de-DE" category="salary" />
 </BaseLayout>
