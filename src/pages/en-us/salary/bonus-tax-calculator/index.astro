@@ -1,0 +1,193 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import AffiliateCTA from '../../../../components/ads/AffiliateCTA.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import UsBonusTaxCalculator from '../../../../components/islands/UsBonusTaxCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'en-US' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Bonus Tax Calculator 2026: How Much Tax Is Taken From a Bonus? — PayRenTax',
+  'A $10,000 bonus (Texas, single) nets about $7,035 after withholding — and for a 12% bracket earner roughly $1,000 of the 22% withheld comes back at filing time. Calculate your 2026 bonus take-home by state.',
+  '/en-us/salary/bonus-tax-calculator/',
+);
+
+const faqItems = [
+  {
+    question: 'Why was my bonus taxed so high?',
+    answer:
+      'It probably was not taxed more — it was withheld more. The IRS lets employers withhold federal income tax on separately paid bonuses at a flat 22% (37% above $1 million in supplemental wages), regardless of your tax bracket. On top of that come Social Security (6.2%) and Medicare (1.45%). So a bonus cheque can look 30–40% smaller even though your actual tax on that bonus, settled when you file, is just your marginal rate. For example, a single filer earning $40,000 who gets a $10,000 bonus has about $2,965 withheld, but only owes about $1,200 of federal income tax on the bonus at filing time — roughly $1,000 of the withholding comes back as part of the refund.',
+  },
+  {
+    question: 'Do I get bonus tax back at tax time?',
+    answer:
+      'Often, yes — if more was withheld from your bonus than you actually owe. When you file your return, your bonus is added to your total income and taxed at your marginal rate. If the flat 22% withheld was higher than your bracket (say you are in the 10% or 12% bracket), the difference adds to your refund. If you are in a higher bracket than 22% — or if too little was withheld for another reason — you could owe a little extra instead. The calculator above shows the over- or under-withheld amount for your inputs.',
+  },
+  {
+    question: 'How are bonuses taxed compared to regular pay?',
+    answer:
+      'At filing time, identically. Bonuses are "supplemental wages" to the IRS, but there is no special bonus tax bracket. Your bonus, salary, overtime, and commissions are all pooled together and run through the same seven federal income tax brackets (10% to 37% for 2026). The only difference is withholding: regular pay uses your W-4 and payroll tables, while bonuses can be withheld at the flat 22% supplemental rate. That flat rate is what creates the illusion that bonuses are "taxed more".',
+  },
+  {
+    question: 'How does state tax work on bonuses?',
+    answer:
+      'It depends on the state. Many states let employers withhold a flat supplemental rate on bonuses (for example, California 10.23% and Illinois 4.95%), while others run the bonus through the normal payroll tables. Nine states — Alaska, Florida, Nevada, New Hampshire, South Dakota, Tennessee, Texas, Washington, and Wyoming — have no wage income tax at all, so no state tax comes out of a bonus there. This calculator estimates the state income tax actually attributable to your bonus using your state\u2019s marginal rate (state tax on salary + bonus, minus state tax on salary alone), which matches what you will owe at filing.',
+  },
+  {
+    question: 'What is the 22% vs 37% rule for bonus withholding?',
+    answer:
+      'Under IRS Publication 15 (2026), an employer may withhold federal income tax on separately paid supplemental wages at a flat 22% — but only while the employee\u2019s total supplemental wages for the year are at or below $1 million. Once supplemental wages cross $1 million in a calendar year, every dollar above that must be withheld at 37%, with no exceptions. Both rates are withholding only; your final liability is still computed at your actual marginal rate when you file.',
+  },
+  {
+    question: 'Are bonuses subject to Social Security and Medicare tax?',
+    answer:
+      'Yes. Bonuses are wages for FICA purposes: 6.2% Social Security applies up to the 2026 wage base of $184,500 of total wages, and 1.45% Medicare applies with no cap. If your total wages including the bonus exceed $200,000, the extra 0.9% Additional Medicare Tax is withheld on the portion above $200,000. Unlike the 22% federal withholding, these payroll taxes are actual tax, not an estimate — they are not refunded at filing time.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      {
+        label: 'Bonus Tax Calculator',
+        href: buildLocalePath(locale, 'salary/bonus-tax-calculator'),
+      },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">
+      Bonus Tax Calculator 2026: How Much of Your Bonus Do You Keep?
+    </h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      <strong>The 22% taken from your bonus is withholding, not your actual tax.</strong> Enter
+      your bonus, salary, filing status, and state below to see your estimated net bonus — and how
+      much of the withholding you are likely to get back (or owe) when you file your 2026 return.
+    </p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <UsBonusTaxCalculator client:load />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="us-bonus-tax-1" />
+    </div>
+
+    <div class="mt-8">
+      <AffiliateCTA locale="en-US" />
+    </div>
+
+    <!-- Contextual SEO content -->
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>The short answer: your bonus is not taxed at 22% — it is <em>withheld</em> at 22%</h2>
+      <p>
+        This distinction is the single most misunderstood fact about bonus pay. The IRS treats
+        bonuses as <strong>supplemental wages</strong>, and lets your employer withhold federal
+        income tax at a flat <strong>22%</strong> when the bonus is paid separately from your
+        regular wages (37% on any supplemental wages above $1 million in a year). But that flat
+        rate is just your employer's best estimate, sent to the IRS on your behalf. When you file
+        your 2026 return, your bonus is simply added to all your other income and taxed through
+        the normal brackets at <strong>your marginal rate</strong>.
+      </p>
+      <ul>
+        <li>
+          <strong>If your marginal rate is below 22%</strong> (for example, the 12% bracket), the
+          22% withholding overshoots your real tax — the excess flows into your refund. A single
+          filer on a $40,000 salary with a $10,000 bonus has about $1,000 more withheld than owed,
+          which comes back at filing time.
+        </li>
+        <li>
+          <strong>If your marginal rate is above 22%</strong> (the 24%, 32%, 35%, or 37%
+          brackets), the 22% withholding undershoots — you will owe the difference in April.
+        </li>
+      </ul>
+      <p>
+        The calculator above compares the two side by side so the surprise disappears before
+        April does.
+      </p>
+
+      <h2>A worked example: $10,000 bonus in Texas</h2>
+      <p>
+        Take a single filer with a $40,000 salary who receives a <strong>$10,000 bonus</strong>
+        in Texas (no state income tax):
+      </p>
+      <ul>
+        <li>Federal income tax withheld: $10,000 × 22% = <strong>$2,200</strong></li>
+        <li>Social Security (6.2%, below the $184,500 wage base): <strong>$620</strong></li>
+        <li>Medicare (1.45%): <strong>$145</strong></li>
+        <li>Texas state income tax: <strong>$0</strong></li>
+        <li>Total withheld: <strong>$2,965</strong> — net bonus: <strong>$7,035</strong></li>
+      </ul>
+      <p>
+        But the real federal income tax on that bonus is only about <strong>$1,200</strong>
+        ($10,000 × her 12% marginal rate). The $1,000 difference between the $2,200 withheld and
+        the $1,200 owed is not lost — it increases her refund at filing time.
+      </p>
+
+      <h2>What else comes out of a bonus</h2>
+      <ul>
+        <li>
+          <strong>Social Security — 6.2%</strong> on total wages up to the 2026 wage base of
+          <strong>$184,500</strong>. Earn above that and the Social Security piece of your bonus
+          drops to zero.
+        </li>
+        <li>
+          <strong>Medicare — 1.45%</strong> with no cap, plus an <strong>additional 0.9%</strong>
+          on the bonus slice above $200,000 of total wages.
+        </li>
+        <li>
+          <strong>State income tax</strong> — method and rate vary by state. Nine states have no
+          wage income tax; others use flat supplemental rates or normal payroll tables. Our
+          calculator estimates the state liability your bonus actually adds, computed marginally
+          from your state's 2026 tax schedule.
+        </li>
+      </ul>
+      <p>
+        One more thing: bonuses, like overtime, are taxed at exactly the same federal brackets as
+        your regular salary. There is no special bonus bracket — only special bonus
+        <em>withholding</em>.
+      </p>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+      Federal supplemental withholding per IRS Publication 15 (2026): 22% up to $1M of
+      supplemental wages, 37% above. State figures are marginal liability estimates using 2026
+      state schedules; actual withholding methods vary by employer. {t.common.dataYear}: 2026.
+    </p>
+
+    <CalculatorFAQ heading="Frequently asked questions" items={faqItems} />
+
+    <RelatedCalculators
+      heading="Related calculators"
+      links={[
+        { label: 'Paycheck Calculator', href: '/en-us/salary/paycheck-calculator/' },
+        { label: 'Overtime Tax Calculator', href: '/en-us/salary/overtime-tax-calculator/' },
+        { label: 'Hourly to Salary Calculator', href: '/en-us/salary/hourly-to-salary/' },
+        { label: 'Salary to Hourly Calculator', href: '/en-us/salary/salary-to-hourly/' },
+        { label: 'Annual Salary Calculator', href: '/en-us/salary/annual-salary-calculator/' },
+      ]}
+    />
+  </article>
+  <CalculatorResource locale="en-US" category="salary" />
+</BaseLayout>
