@@ -1,0 +1,130 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import NlTransitievergoedingCalculator from '../../../../components/islands/NlTransitievergoedingCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'nl-NL' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Transitievergoeding berekenen 2026',
+  'Bereken uw transitievergoeding 2026: ⅓ bruto maandsalaris per dienstjaar, naar rato. Wettelijk maximum €102.000. Gratis online calculator.',
+  '/nl-nl/salary/transitievergoeding-calculator/',
+);
+
+const faqItems = [
+  {
+    question: 'Wanneer heb ik recht op een transitievergoeding?',
+    answer:
+      'Bijna elke werknemer wiens arbeidsovereenkomst op initiatief van de werkgever wordt beëindigd of niet wordt verlengd, heeft recht op een transitievergoeding — vanaf de eerste werkdag, ook tijdens de proeftijd. Er is géén recht bij ernstig verwijtbaar handelen van de werknemer, bij ontslag wegens het bereiken van de AOW-leeftijd, of bij faillissement van de werkgever.',
+  },
+  {
+    question: 'Hoe wordt de transitievergoeding berekend?',
+    answer:
+      'De formule sinds 2020: per volledig dienstjaar ontvangt u ⅓ van het bruto maandsalaris; resterende maanden tellen naar rato mee. Voorbeeld: €4.000 bruto per maand en 6 jaar in dienst → 6 × (€4.000 / 3) = €8.000 bruto. Let op: in het maandsalaris tellen vakantiegeld, een vaste eindejaarsuitkering en andere vaste en variabele looncomponenten mee.',
+  },
+  {
+    question: 'Wat is het maximum in 2026?',
+    answer:
+      'In 2026 is de transitievergoeding wettelijk gemaximeerd op €102.000 bruto. Verdient u meer dan €102.000 bruto per jaar, dan geldt uw bruto jaarsalaris als maximum. In 2025 lag het maximum nog op €98.000.',
+  },
+  {
+    question: 'Is de transitievergoeding belast?',
+    answer:
+      'Ja. De transitievergoeding is loon uit (vroegere) dienstbetrekking en er wordt loonheffing over ingehouden. Het nettobedrag dat u ontvangt is dus lager dan het brutobedrag in deze calculator. De werkgever moet de vergoeding binnen één maand na het einde van het dienstverband betalen.',
+  },
+  {
+    question: 'Tellen vakantiegeld en bonus mee?',
+    answer:
+      'Ja. Naast het kale basisloon tellen de vakantiebijslag (8%), een vaste eindejaarsuitkering, vaste componenten zoals een ploegentoeslag en variabele componenten zoals bonus of winstuitkering mee in het maandsalaris voor de berekening. Wie alleen het kale maandsalaris invult, komt vrijwel altijd te laag uit.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="nl-transitievergoeding-calculator"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      { label: 'Transitievergoeding berekenen', href: buildLocalePath(locale, 'salary/transitievergoeding-calculator') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Transitievergoeding berekenen 2026</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Bereken uw wettelijke transitievergoeding bij ontslag: ⅓ bruto maandsalaris per dienstjaar,
+      naar rato voor resterende maanden, met het wettelijk maximum van 2026.
+    </p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <NlTransitievergoedingCalculator client:load locale={locale} />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="nl-transitievergoeding-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>De wettelijke formule</h2>
+      <p>
+        Sinds de Wet arbeidsmarkt in balans (2020) geldt één eenvoudige regel: per <strong>volledig
+        dienstjaar</strong> ontvangt u <strong>⅓ van het bruto maandsalaris</strong>. Voor het resterende
+        deel van een jaar wordt de vergoeding naar rato berekend (maanden / 12 × ⅓ maandsalaris).
+      </p>
+      <p>
+        Rekenvoorbeeld: bruto maandsalaris €4.000 (inclusief vakantiegeld) en 6 jaar in dienst →
+        6 × (€4.000 / 3) = <strong>€8.000 bruto transitievergoeding</strong>.
+      </p>
+      <h2>Wat telt mee in het maandsalaris?</h2>
+      <p>
+        Onderschat dit niet: het kale maandsalaris is maar een deel. Volgens het Besluit loonbegrip
+        transitievergoeding tellen ook mee: de vakantiebijslag (8%), vaste eindejaarsuitkeringen gedeeld
+        door twaalf, vaste componenten zoals een ploegentoeslag, en variabele componenten zoals bonus
+        of winstuitkering (gemiddeld over de laatste drie jaar).
+      </p>
+      <h2>Wettelijk maximum 2026</h2>
+      <p>
+        De transitievergoeding is gemaximeerd op <strong>€102.000 bruto</strong> in 2026 (in 2025: €98.000).
+        Is uw bruto jaarsalaris hoger dan €102.000, dan geldt dat jaarsalaris als maximum.
+      </p>
+      <p class="text-sm">
+        Bron: <a href="https://www.rijksoverheid.nl/onderwerpen/ontslag/vraag-en-antwoord/transitievergoeding" target="_blank" rel="noopener noreferrer">Rijksoverheid — Transitievergoeding</a>
+      </p>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+      {' '}Berekeningen gaan uit van de wettelijke regeling per 1 januari 2026. Bij ontslag met wederzijds goedvinden
+      kan in een vaststellingsovereenkomst een afwijkende vergoeding worden afgesproken.
+    </p>
+
+    <CalculatorFAQ heading="Veelgestelde vragen over de transitievergoeding" items={faqItems} />
+
+    <RelatedCalculators
+      heading="Gerelateerde calculators"
+      links={[
+      { label: "Bruto netto calculator", href: "/nl-nl/salary/bruto-netto-calculator/" },
+      { label: "Vakantiegeld berekenen", href: "/nl-nl/salary/vakantiegeld-calculator/" },
+      ]}
+    />
+  </article>
+  <CalculatorResource locale="nl-NL" category="salary" />
+</BaseLayout>

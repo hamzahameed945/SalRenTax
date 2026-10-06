@@ -1,0 +1,124 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import DeWeihnachtsgeldCalculator from '../../../../components/islands/DeWeihnachtsgeldCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'de-DE' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Weihnachtsgeld Netto Rechner 2026 — PayRenTax',
+  'Weihnachtsgeld netto berechnen 2026: Schätzen Sie, was von Ihrem Weihnachtsgeld nach Lohnsteuer und Soli übrig bleibt — mit Ihrem Jahresbruttogehalt.',
+  '/de-de/salary/weihnachtsgeld-rechner/',
+);
+
+const faqItems = [
+  {
+    question: 'Wie wird das Weihnachtsgeld versteuert?',
+    answer:
+      'Weihnachtsgeld zählt als „sonstige Bezüge": Der Arbeitgeber vergleicht die Lohnsteuer am voraussichtlichen Jahreslohn mit und ohne Weihnachtsgeld (Jahrestabellen-Methode). Der Unterschied ist die Lohnsteuer auf das Weihnachtsgeld — zuzüglich Solidaritätszuschlag und ggf. Kirchensteuer. Außerdem fallen Sozialversicherungsbeiträge an, solange die Beitragsbemessungsgrenzen nicht erreicht sind.',
+  },
+  {
+    question: 'Warum ist das Ergebnis nur eine Schätzung?',
+    answer:
+      'Die Höhe des tatsächlichen Abzugs hängt von Ihrer Steuerklasse, Kirchensteuerpflicht, tatsächlichen Werbungskosten, Ehegattensplitting und Ihrer Sozialversicherungssituation ab. Dieser Rechner nutzt eine Näherung auf Basis des Einkommensteuertarifs 2026 (Grundtarif, Steuerklasse I). Die Lohnabrechnung Ihres Arbeitgebers ist immer maßgeblich.',
+  },
+  {
+    question: 'Muss ich das Weihnachtsgeld in der Steuererklärung angeben?',
+    answer:
+      'Nein, das Weihnachtsgeld steht bereits auf Ihrer Lohnsteuerbescheinigung und ist beim Arbeitgeber versteuert — Sie müssen es nicht zusätzlich angeben. Eine Steuererklärung kann sich trotzdem lohnen, wenn insgesamt zu viel Lohnsteuer abgezogen wurde; eine Pflicht besteht nur in den üblichen Fällen (z. B. Nebeneinkünfte über 410 €).',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      {
+        label: 'Weihnachtsgeld Rechner',
+        href: buildLocalePath(locale, 'salary/weihnachtsgeld-rechner'),
+      },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Weihnachtsgeld Netto Rechner 2026</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Geben Sie Ihr Weihnachtsgeld (brutto) und Ihr Jahresbruttogehalt ein, um zu
+      <strong> schätzen</strong>, wie viel netto übrig bleibt — nach geschätzter Lohnsteuer und
+      Solidaritätszuschlag. Das Ergebnis ist eine <strong>Schätzung</strong>, keine
+      Lohnabrechnung.
+    </p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <DeWeihnachtsgeldCalculator client:load />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="de-weihnachtsgeld-1" />
+    </div>
+
+    <!-- Contextual SEO content -->
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Weihnachtsgeld netto berechnen: So funktioniert die Schätzung</h2>
+      <p>
+        Weihnachtsgeld ist kein laufender Arbeitslohn, sondern eine <strong>sonstige
+        Bezug</strong>. Ihr Arbeitgeber wendet dafür die sogenannte Jahrestabellen-Methode an:
+        Er vergleicht die Lohnsteuer am voraussichtlichen Jahreslohn mit und ohne Weihnachtsgeld —
+        die Differenz ist die Steuer auf den Bonus.
+      </p>
+      <p>
+        Dieser Rechner bildet dieses Prinzip näherungsweise ab: Aus Ihrem Jahresbruttogehalt wird
+        der <strong>Grenzsteuersatz</strong> nach dem Einkommensteuertarif 2026 (§ 32a EStG,
+        Grundtarif) ermittelt; die geschätzte Lohnsteuer auf das Weihnachtsgeld entspricht
+        Bonus × Grenzsteuersatz. Liegt Ihre tarifliche Einkommensteuer über der
+        Soli-Freigrenze (Single 2026: 20.350 €), wird zusätzlich 5,5 % Solidaritätszuschlag
+        auf die Bonus-Steuer berücksichtigt — in der Praxis fällt der Soli bei den meisten
+        Arbeitnehmern 2026 weg.
+      </p>
+      <h3>Was der Rechner nicht berücksichtigt</h3>
+      <p>
+        Steuerklasse (z. B. III/V), Kirchensteuer, tatsächliche Werbungskosten,
+        Ehegattensplitting und Sozialversicherungsbeiträge auf das Weihnachtsgeld sind nicht
+        modelliert. Prüfen Sie Ihr genaues Brutto-Netto-Gehalt mit unserem{' '}
+        <a href={buildLocalePath(locale, 'salary/brutto-netto-rechner')}>Brutto-Netto-Rechner</a>{' '}
+        und Ihren Stundenlohn mit dem{' '}
+        <a href={buildLocalePath(locale, 'salary/stundenlohn-rechner')}>Stundenlohn-Rechner</a>.
+      </p>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.dataSource} Alle Werte sind Schätzungen für 2026;
+      die Lohnabrechnung Ihres Arbeitgebers ist maßgeblich.
+    </p>
+
+    <CalculatorFAQ heading="Häufig gestellte Fragen" items={faqItems} />
+
+    <RelatedCalculators
+      heading="Verwandte Rechner"
+      links={[
+        { label: 'Brutto-Netto Rechner', href: '/de-de/salary/brutto-netto-rechner/' },
+        { label: 'Stundenlohn Rechner', href: '/de-de/salary/stundenlohn-rechner/' },
+      ]}
+    />
+  </article>
+  <CalculatorResource locale="de-DE" category="salary" />
+</BaseLayout>

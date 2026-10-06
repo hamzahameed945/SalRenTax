@@ -1,0 +1,120 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import NlOverurenCalculator from '../../../../components/islands/NlOverurenCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'nl-NL' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Overuren berekenen 2026',
+  'Bereken uw overwerkvergoeding 2026: uurloon uit bruto maandsalaris, overurentarief en toeslag (125%, 150% of 200%). Gratis online calculator.',
+  '/nl-nl/salary/overuren-calculator/',
+);
+
+const faqItems = [
+  {
+    question: 'Hoe bereken je overuren?',
+    answer:
+      'Eerst bepaalt u uw uurloon: bruto maandsalaris × 12 / 52 / contracturen per week. Daarna vermenigvuldigt u het uurloon met het aantal overuren en de overwerkfactor. Bij een toeslag van 50% is de factor 1,5×: 8 overuren × €20 × 1,5 = €240 bruto overwerkvergoeding.',
+  },
+  {
+    question: 'Krijg ik overuren uitbetaald of tijd-voor-tijd?',
+    answer:
+      'Dat hangt af van uw CAO of arbeidsovereenkomst. In veel sectoren wordt overwerk niet uitbetaald maar omgezet in tijd-voor-tijd: extra vrije uren die u later kunt opnemen. Soms geldt een combinatie — bijvoorbeeld uitbetaling tegen een hogere toeslag in piekperiodes. Controleer uw contract of vraag het uw werkgever.',
+  },
+  {
+    question: 'Hoe bereken je je uurloon uit maandsalaris?',
+    answer:
+      'Deel het bruto maandsalaris door het aantal gewerkte uren per maand: bruto maandsalaris × 12 maanden / 52 weken / contracturen per week. Voorbeeld: €3.500 × 12 / 52 / 40 = €20,19 per uur.',
+  },
+  {
+    question: 'Wat is de gebruikelijke toeslag voor overwerk?',
+    answer:
+      'De toeslag staat in uw CAO of arbeidsovereenkomst en verschilt per sector. Veel CAO\'s kennen 25% toeslag (125% uitbetaling) voor de eerste overuren en 50% (150%) of 100% (200%) voor avond-, nacht- en weekendwerk. Is er niets afgesproken, dan geldt het normale uurloon.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="nl-overuren-calculator"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      { label: 'Overuren berekenen', href: buildLocalePath(locale, 'salary/overuren-calculator') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Overuren berekenen 2026</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Bereken uw bruto overwerkvergoeding: leidt uw uurloon af uit uw bruto maandsalaris,
+      kies de overwerktoeslag en zie direct hoeveel uw overuren waard zijn.
+    </p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <NlOverurenCalculator client:load locale={locale} />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="nl-overuren-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Hoe wordt de overwerkvergoeding berekend?</h2>
+      <p>
+        De vergoeding bestaat uit twee delen: het <strong>basisbedrag</strong> (uurloon × aantal overuren)
+        plus de <strong>toeslag</strong> die in uw CAO of contract staat. Samen: uurloon × overuren × (1 + toeslag/100).
+      </p>
+      <p>
+        Rekenvoorbeeld: bruto maandsalaris €3.500 bij 40 uur per week → uurloon €20,19.
+        Bij 8 overuren met 50% toeslag (150% uitbetaling): 8 × €20,19 × 1,5 = <strong>€242,28 bruto</strong>.
+      </p>
+      <h2>Toeslagpercentages per sector</h2>
+      <p>
+        De hoogte van de toeslag is niet wettelijk vastgelegd en verschilt sterk per CAO: 25% is gebruikelijk
+        voor de eerste overuren, terwijl voor werk in de avond, nacht of het weekend vaak 50% of 100% geldt.
+        Sommige CAO's schrijven juist tijd-voor-tijd voor in plaats van uitbetaling. Raadpleeg daarom altijd
+        uw eigen arbeidsovereenkomst.
+      </p>
+      <h2>Bruto of netto?</h2>
+      <p>
+        De overwerkvergoeding is loon en wordt als zodanig belast: er wordt loonheffing over ingehouden,
+        waardoor het nettobedrag op uw bankrekening lager is dan het brutobedrag in deze calculator.
+      </p>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+      {' '}Berekeningen gaan uit van 2026. Toeslagpercentages zijn CAO-afhankelijk; deze calculator geeft een indicatie.
+    </p>
+
+    <CalculatorFAQ heading="Veelgestelde vragen over overuren" items={faqItems} />
+
+    <RelatedCalculators
+      heading="Gerelateerde calculators"
+      links={[
+      { label: "Bruto netto calculator", href: "/nl-nl/salary/bruto-netto-calculator/" },
+      { label: "Vakantiegeld berekenen", href: "/nl-nl/salary/vakantiegeld-calculator/" },
+      ]}
+    />
+  </article>
+  <CalculatorResource locale="nl-NL" category="salary" />
+</BaseLayout>

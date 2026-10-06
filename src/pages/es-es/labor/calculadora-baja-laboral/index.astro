@@ -1,0 +1,152 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import EsBajaLaboralCalculator from '../../../../components/islands/EsBajaLaboralCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'es-ES' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  'Calculadora de baja laboral 2026',
+  'Calcula tu prestación por incapacidad temporal por enfermedad común en España: base reguladora diaria, tramos del 60% y 75% y quién paga cada día de la baja. Estimación orientativa 2026.',
+  '/es-es/labor/calculadora-baja-laboral/',
+);
+
+const faqItems = [
+  {
+    question: '¿Cuánto se cobra de baja por enfermedad común?',
+    answer:
+      'En España la baja por enfermedad común (contingencias comunes) no paga los 3 primeros días (periodo de carencia). Del día 4 al 20 se cobra el 60% de la base reguladora diaria y desde el día 21 el 75%. La base reguladora se calcula dividiendo la base de cotización del mes anterior entre 30.',
+  },
+  {
+    question: '¿Quién paga los primeros días de la baja laboral?',
+    answer:
+      'Del día 4 al 15 la prestación la abona la empresa (pago delegado), aunque se descuenta de sus cuotas a la Seguridad Social. Desde el día 16 la paga directamente la Mutua colaboradora o el INSS. Los días 1 a 3 no generan prestación.',
+  },
+  {
+    question: '¿Los convenios colectivos mejoran la prestación por baja?',
+    answer:
+      'Sí. Muchos convenios colectivos complementan la prestación de la Seguridad Social hasta el 100% del salario durante la baja, o mejoran los porcentajes de los primeros tramos. Conviene revisar el convenio aplicable, porque la calculadora muestra solo la prestación legal mínima.',
+  },
+  {
+    question: '¿Qué es la base reguladora de la baja?',
+    answer:
+      'La base reguladora es la cantidad sobre la que se aplican los porcentajes del 60% y 75%. Se obtiene dividiendo la base de cotización por contingencias comunes del mes anterior a la baja entre 30 días. Por ejemplo, con una base de cotización de 2.400 €, la base reguladora diaria es de 80 €.',
+  },
+  {
+    question: '¿La baja por accidente de trabajo se cobra igual?',
+    answer:
+      'No. En la incapacidad temporal por contingencias profesionales (accidente de trabajo o enfermedad profesional) no hay periodo de carencia: se cobra el 75% de la base reguladora desde el día siguiente al de la baja. Esta calculadora está pensada para contingencias comunes.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="es-baja-laboral-calculator"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.labor, href: buildLocalePath(locale, 'labor') },
+      { label: 'Calculadora de baja laboral', href: buildLocalePath(locale, 'labor/calculadora-baja-laboral') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Calculadora de baja laboral 2026</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Calcula tu prestación por incapacidad temporal por enfermedad común o accidente no laboral
+      en España: introduce tu base de cotización del mes anterior y los días de baja para ver la
+      base reguladora diaria, los tramos del 60% y 75% y quién paga cada parte.
+    </p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <EsBajaLaboralCalculator client:load />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="es-baja-laboral-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Tramos de la prestación por incapacidad temporal — España 2026</h2>
+      <table>
+        <thead>
+          <tr><th>Días de baja</th><th>% de la base reguladora</th><th>Quién paga</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Días 1–3</td>
+            <td>0% (periodo de carencia)</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>Días 4–15</td>
+            <td>60%</td>
+            <td>La empresa (pago delegado)</td>
+          </tr>
+          <tr>
+            <td>Días 16–20</td>
+            <td>60%</td>
+            <td>Mutua colaboradora / INSS</td>
+          </tr>
+          <tr>
+            <td>Desde el día 21</td>
+            <td>75%</td>
+            <td>Mutua colaboradora / INSS</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="text-sm">
+        Fuente: Ley General de la Seguridad Social, Arts. 128 y ss. (incapacidad temporal por
+        contingencias comunes).
+      </p>
+
+      <h2>¿Cómo se calcula la base reguladora?</h2>
+      <p>
+        La base reguladora diaria es la base de cotización por contingencias comunes del mes
+        anterior a la fecha de la baja dividida entre 30 días. Si en el mes anterior no hubo
+        cotización completa, se toman las bases de los meses anteriores hasta completar un mes.
+        Sobre esa cantidad se aplican los porcentajes del 60% y del 75% según el tramo.
+      </p>
+
+      <h2>Mejoras por convenio colectivo</h2>
+      <p>
+        La prestación legal descrita arriba es el mínimo. Muchos convenios colectivos la mejoran:
+        es habitual el complemento hasta el 100% del salario desde el primer día de baja o desde
+        el cuarto. Revisa el convenio de tu sector, porque puede cambiar sustancialmente lo que
+        realmente cobras.
+      </p>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+    </p>
+
+    <RelatedCalculators
+      heading="Calculadoras laborales relacionadas"
+      links={[
+        { href: '/es-es/labor/calcular-finiquito/', label: 'Calculadora de finiquito' },
+        { href: '/es-es/labor/calculadora-despido-improcedente/', label: 'Calculadora de despido improcedente' },
+      ]}
+    />
+
+    <CalculatorFAQ heading="Preguntas frecuentes sobre la baja laboral" items={faqItems} />
+  </article>
+  <CalculatorResource locale="es-ES" category="labor" />
+</BaseLayout>

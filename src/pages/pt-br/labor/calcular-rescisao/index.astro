@@ -14,16 +14,16 @@ import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
 const locale = 'pt-BR' as const;
 const t = getDictionary(locale);
 const meta = {
-  title: 'Calcular Rescisão Trabalhista 2026 | CLT Atualizada | PayRenTax',
-  description: 'Calculadora de rescisão trabalhista 2026: calcule aviso prévio, férias, 13º e multa FGTS 40%. Conforme CLT. Resultado instantâneo e preciso.',
+  title: 'Quanto Vou Receber se Pedir Demissão? Calculadora de Rescisão 2026 | PayRenTax',
+  description: 'Descubra quanto você vai receber se pedir demissão: saldo de salário, férias + 1/3 e 13º proporcional. Sem multa de 40% do FGTS nem seguro-desemprego. Calculadora de rescisão 2026 pela CLT.',
   canonical: '/pt-br/labor/calcular-rescisao/',
 };
 
 const schemaWebApp = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Calculadora de Rescisão Trabalhista 2026",
-  "description": "Calculadora gratuita para cálculo de rescisão trabalhista no Brasil: aviso prévio, férias, 13º e multa FGTS.",
+  "name": "Quanto Vou Receber se Pedir Demissão? Calculadora de Rescisão 2026",
+  "description": "Calculadora gratuita de rescisão trabalhista no Brasil: descubra quanto você recebe se pedir demissão — saldo de salário, férias, 13º proporcional. Conforme a CLT em 2026.",
   "url": "https://payrentax.me/pt-br/labor/calcular-rescisao/",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Any",
@@ -37,6 +37,16 @@ const schemaWebApp = {
 };
 
 const faqItems = [
+  {
+    question: 'Quanto vou receber se pedir demissão?',
+    answer:
+      'No pedido de demissão, você recebe: saldo de salário (dias trabalhados no mês), férias vencidas + 1/3 constitucional (se houver período completo não gozado), férias proporcionais + 1/3 e 13º salário proporcional. Atenção: no pedido de demissão NÃO há multa de 40% do FGTS (que só existe na demissão sem justa causa) e nem direito ao seguro-desemprego. Use a calculadora acima para estimar o valor exato da sua rescisão.',
+  },
+  {
+    question: 'O que recebo na rescisão por pedido de demissão?',
+    answer:
+      'As verbas rescisórias do pedido de demissão são: 1) saldo de salário, 2) férias vencidas + 1/3 (se houver), 3) férias proporcionais + 1/3 e 4) 13º salário proporcional. Você perde a multa do FGTS, o saque do FGTS e o seguro-desemprego — esses direitos existem apenas na demissão sem justa causa. Os valores são estimativas conforme a CLT em 2026.',
+  },
   {
     question: 'Quais são os tipos de rescisão trabalhista?',
     answer:
@@ -86,8 +96,8 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
   />
 
   <article class="mx-auto max-w-4xl px-4 py-10">
-    <h1 class="text-3xl font-bold text-slate-900">{t.labor.rescisao.h1}</h1>
-    <p class="mt-3 max-w-2xl text-slate-600">{t.labor.rescisao.intro}</p>
+    <h1 class="text-3xl font-bold text-slate-900">Quanto vou receber se pedir demissão?</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">Use a calculadora de rescisão 2026 abaixo para descobrir o valor exato das suas verbas rescisórias no pedido de demissão — saldo de salário, férias vencidas e proporcionais + 1/3 e 13º salário proporcional.</p>
 
     <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
       <BrRescisaoCalculator client:load locale={locale} />
