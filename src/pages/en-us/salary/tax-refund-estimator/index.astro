@@ -1,0 +1,198 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import AffiliateCTA from '../../../../components/ads/AffiliateCTA.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import UsTaxRefundCalculator from '../../../../components/islands/UsTaxRefundCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'en-US' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  '2026 Tax Refund Calculator — Estimate Your Federal Refund or Amount Owed',
+  'Estimate your 2026 federal tax refund with 2026 brackets, standard deduction, the $2,200 Child Tax Credit and OBBBA overtime/tips deductions. Example: a single filer earning $75,000 with $9,000 withheld gets an estimated $1,330 refund.',
+  '/en-us/salary/tax-refund-estimator/',
+);
+
+const faqItems = [
+  {
+    question: 'Is a big tax refund a good thing?',
+    answer:
+      'A big refund means you overpaid throughout the year and gave the IRS an interest-free loan — you are getting your own money back. Financially, the ideal is a small refund or a small amount owed (roughly $0 to $500 either way), which means your withholding matched your actual tax. That said, many people use a large refund as forced savings; if that is your strategy, know it is costing you the interest you could have earned. If you consistently get refunds over $1,500 or owe more than $1,000, it is worth adjusting your W-4.',
+  },
+  {
+    question: 'Why is my withholding different from my actual tax?',
+    answer:
+      'Withholding is your employer\'s estimate, not your final bill. Your employer cannot see your full picture: bonuses can be withheld at the flat 22% federal supplemental rate, the payroll tables assume you earn the same every pay period, and your employer does not know about your spouse\'s income, freelance earnings, or the deductions and credits you will claim. The calculator above works out your true 2026 liability using the actual 2026 brackets and standard deduction ($16,100 single, $32,200 joint), then compares it against what has actually been withheld — the difference is your estimated refund or amount owed.',
+  },
+  {
+    question: 'When should I adjust my W-4?',
+    answer:
+      'Adjust your W-4 when the inputs to your tax return change: starting or leaving a job, getting married or divorced, having a child, your spouse\'s employment changing, taking on freelance or side income, or buying a house. Also revisit it after a year in which you owed more than $1,000 or received an unexpectedly large refund. The IRS expects enough tax paid during the year — if you owe $1,000 or more at filing time you may face an underpayment penalty, which is another reason a large amount owed is riskier than a large refund.',
+  },
+  {
+    question: 'Does this calculator include Social Security and Medicare taxes?',
+    answer:
+      'No — deliberately. Your refund or amount owed on your return is an income-tax calculation: withholding versus your income tax liability. Social Security (6.2%) and Medicare (1.45%) are separate payroll taxes that are not part of the refund equation — they are withheld at fixed rates and never refunded through your tax return. The calculator above excludes them so the refund/owed estimate reflects what will actually change when you file.',
+  },
+  {
+    question: 'How do the 2026 OBBBA overtime and tips deductions affect my refund?',
+    answer:
+      'For tax years 2025 through 2028, the One Big Beautiful Bill Act lets eligible workers deduct the premium half of FLSA overtime (up to $12,500 single / $25,000 joint) and qualified tips (up to $25,000) from federal taxable income. Both deductions phase out above $150,000 MAGI (single) or $300,000 (joint), shrinking by $100 per $1,000 over. Lower taxable income means a lower liability, which shows up as a larger refund or a smaller amount owed — the saving arrives at filing time, not in your paychecks. Enter them under "Optional" in the calculator to see the effect.',
+  },
+  {
+    question: 'What is the 2026 Child Tax Credit and how does it change my refund?',
+    answer:
+      'For 2026 the Child Tax Credit is $2,200 per qualifying child under 17, made permanent by the OBBBA. Up to $1,700 of that is refundable through the Additional Child Tax Credit, meaning it can be paid out to you even if you owe no tax — that is why parents with little liability can still receive a large refund. The credit phases out at $200,000 MAGI (single) or $400,000 (joint), reduced by $50 for every $1,000 above the threshold. This calculator applies the full credit first against your tax, then adds any refundable portion to your refund.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      {
+        label: 'Tax Refund Estimator',
+        href: buildLocalePath(locale, 'salary/tax-refund-estimator'),
+      },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">
+      2026 Tax Refund Calculator: Estimate Your Federal Refund or Amount Owed
+    </h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      <strong>Enter what you earned and what was withheld to see your estimated 2026 federal
+      refund — or how much you will owe.</strong> The calculator uses the real 2026 federal
+      income tax brackets, the 2026 standard deduction ($16,100 single, $32,200 joint), the
+      $2,200 Child Tax Credit, and the optional OBBBA overtime and tips deductions.
+    </p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <UsTaxRefundCalculator client:load />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="us-tax-refund-1" />
+    </div>
+
+    <div class="mt-8">
+      <AffiliateCTA locale="en-US" />
+    </div>
+
+    <!-- Contextual SEO content -->
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>How the estimate is built</h2>
+      <p>
+        Your refund (or amount owed) comes down to one subtraction: <strong>what you paid
+        during the year versus what you actually owe</strong>. This estimator works out both
+        sides for 2026:
+      </p>
+      <ol>
+        <li>
+          <strong>Your actual 2026 tax:</strong> your income minus the 2026 standard deduction
+          ($16,100 single, $32,200 married filing jointly) — plus any OBBBA overtime or tips
+          deduction you claim — run through the seven 2026 federal income tax brackets (10%
+          through 37%), minus the 2026 Child Tax Credit of $2,200 per qualifying child under
+          17 (up to $1,700 of it refundable).
+        </li>
+        <li>
+          <strong>What you already paid:</strong> the federal income tax withheld from your
+          paychecks so far this year — that is what your employer has been sending the IRS on
+          your behalf.
+        </li>
+      </ol>
+      <p>
+        If withholding exceeds your true liability, the difference is your estimated{' '}
+        <strong>refund</strong>. If your liability is larger, the difference is your estimated{' '}
+        <strong>amount owed</strong> when you file. Social Security and Medicare taxes are
+        deliberately excluded: they are separate payroll taxes and never enter the
+        refund equation.
+      </p>
+
+      <h2>A worked example</h2>
+      <p>
+        Take a single filer who earned <strong>$75,000</strong> in 2026 and had{' '}
+        <strong>$9,000</strong> of federal income tax withheld:
+      </p>
+      <ul>
+        <li>Taxable income: $75,000 − $16,100 standard deduction = <strong>$58,900</strong></li>
+        <li>
+          Federal tax: 10% on the first $12,400 ($1,240) + 12% on the next $38,000 ($4,560) +
+          22% on the remaining $8,500 ($1,870) = <strong>$7,670</strong>
+        </li>
+        <li>
+          Withholding ($9,000) − tax ($7,670) = <strong>$1,330 estimated refund</strong>
+        </li>
+      </ul>
+      <p>
+        And a married couple earning <strong>$120,000</strong> with two children under 17 and{' '}
+        <strong>$8,000</strong> withheld: taxable income is $87,800, the tax before credits is{' '}
+        <strong>$10,040</strong>, the Child Tax Credit of <strong>$4,400</strong> (2 × $2,200)
+        brings the liability to <strong>$5,640</strong>, for an estimated refund of{' '}
+        <strong>$2,360</strong>.
+      </p>
+
+      <h2>What this estimate does not cover</h2>
+      <ul>
+        <li>
+          <strong>State and local taxes</strong> — these are separate returns with their own
+          rules; this estimate is federal only.
+        </li>
+        <li>
+          <strong>Itemized deductions</strong> — the estimate uses the standard deduction. If
+          you itemize (mortgage interest, charitable giving, SALT up to the 2026 cap), your
+          real liability may differ.
+        </li>
+        <li>
+          <strong>The Earned Income Tax Credit</strong> — not modelled here because it depends
+          on earned-income bands and investment-income limits beyond a simple estimator.
+        </li>
+        <li>
+          <strong>Pre-tax contributions</strong> — 401(k), HSA, and similar contributions
+          reduce the income your tax is computed on; the income box expects your gross, so
+          enter a slightly lower figure if you want to approximate them.
+        </li>
+      </ul>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource}
+      Federal brackets, standard deduction, Child Tax Credit and OBBBA figures are for tax
+      year 2026. The OBBBA deduction applies to FLSA-mandated overtime and qualified tips
+      only; your W-2 and tax professional are definitive. {t.common.dataYear}: 2026.
+    </p>
+
+    <CalculatorFAQ heading="Frequently asked questions" items={faqItems} />
+
+    <RelatedCalculators
+      heading="Related calculators"
+      links={[
+        { label: 'Paycheck Calculator', href: '/en-us/salary/paycheck-calculator/' },
+        { label: 'Overtime Tax Calculator', href: '/en-us/salary/overtime-tax-calculator/' },
+        { label: 'Annual Salary Calculator', href: '/en-us/salary/annual-salary-calculator/' },
+        { label: 'Hourly to Salary Calculator', href: '/en-us/salary/hourly-to-salary/' },
+        { label: 'Pay Frequency Converter', href: '/en-us/salary/pay-frequency-converter/' },
+      ]}
+    />
+  </article>
+  <CalculatorResource locale="en-US" category="salary" />
+</BaseLayout>
