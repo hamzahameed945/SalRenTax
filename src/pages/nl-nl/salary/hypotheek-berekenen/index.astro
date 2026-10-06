@@ -1,0 +1,179 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import NlHypotheekCalculator from '../../../../components/islands/NlHypotheekCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+import { nlHypotheekEngine } from '../../../../calculators/salary/engines/nl/nlHypotheek';
+
+const locale = 'nl-NL' as const;
+const t = getDictionary(locale);
+
+// Voorbeeldscenario voor de metadata: €4.000 bruto per maand, 4% rente, 30 jaar.
+const voorbeeld = nlHypotheekEngine.calculate({ grossMonthly: 4000 }, {} as never, 2026);
+const voorbeeldHypotheek = Math.round(voorbeeld.maxHypotheek).toLocaleString('nl-NL');
+const voorbeeldMaandlast = Math.round(voorbeeld.maxBrutoMaandlast).toLocaleString('nl-NL');
+
+const meta = buildPageMetadata(
+  `Hypotheek berekenen 2026: hoeveel kan ik lenen met €4.000 salaris? (€${voorbeeldHypotheek})`,
+  `Hoeveel hypotheek kan ik krijgen? Met €4.000 bruto per maand (toetsinkomen €51.840) leent u in 2026 circa €${voorbeeldHypotheek} — bruto maandlast €${voorbeeldMaandlast}. Bereken uw maximale hypotheek met de Nibud-normen 2026.`,
+  '/nl-nl/salary/hypotheek-berekenen/',
+);
+
+const faqItems = [
+  {
+    question: 'Hoeveel hypotheek kan ik krijgen met mijn salaris?',
+    answer:
+      `Dat hangt af van uw toetsinkomen: uw bruto jaarsalaris inclusief 8% vakantiegeld. Het Nibud bepaalt per inkomensgroep welk percentage daarvan maximaal naar hypotheeklasten mag (de financieringslastpercentages 2026). Die maximale maandlast wordt via de annuïteitenformule omgerekend naar een leenbedrag. Voorbeeld: €4.000 bruto per maand is een toetsinkomen van €51.840; met 21,70% financieringslast en 4% rente (30 jaar) komt dat uit op circa €${voorbeeldHypotheek} maximale hypotheek.`,
+  },
+  {
+    question: 'Telt mijn studieschuld mee voor de hypotheek?',
+    answer:
+      'Ja. Ook als u (tijdelijk) niet aflost, rekent de bank met een fictieve maandlast van ongeveer 0,45% van het oorspronkelijke leenbedrag per maand. Een studieschuld van €30.000 telt dus als circa €135 maandlast en verlaagt uw maximale hypotheek met ongeveer €25.000 tot €30.000. Vul uw werkelijke maandlast in bij "Overige maandlasten" in de calculator hierboven.',
+  },
+  {
+    question: 'Wordt mijn vakantiegeld meegerekend bij de hypotheek?',
+    answer:
+      'Ja. Geldverstrekkers rekenen met het toetsinkomen: uw bruto jaarsalaris inclusief 8% vakantiegeld, plus een eventuele 13e maand en vaste toeslagen. Deze calculator telt het vakantiegeld automatisch mee (maandsalaris × 12 × 1,08).',
+  },
+  {
+    question: 'Kan ik als alleenstaande minder hypotheek krijgen?',
+    answer:
+      'Met één inkomen leent u inderdaad minder dan een stel met hetzelfde gezamenlijke inkomen. Als tegemoetkoming mogen alleenstaanden in 2026 €17.000 extra lenen bovenop de standaard Nibud-norm. Vink "Ik koop alleen" aan in de calculator om dit mee te nemen.',
+  },
+  {
+    question: 'Telt het inkomen van mijn partner volledig mee?',
+    answer:
+      'Ja. Sinds 2023 mag het tweede inkomen volledig meetellen bij het bepalen van het toetsinkomen. Huishoudens met hetzelfde totale bruto inkomen kunnen daardoor dezelfde hypotheek krijgen, ongeacht hoe het inkomen over de partners is verdeeld.',
+  },
+  {
+    question: 'Wat is de NHG-grens in 2026?',
+    answer:
+      'De NHG-grens is in 2026 vastgesteld op €470.000 (was €450.000 in 2025). Met energiebesparende voorzieningen is de grens €498.200. De eenmalige NHG-premie (borgtochtprovisie) blijft 0,4% van het leenbedrag. Een hypotheek met NHG levert doorgaans een lagere rente op.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="nl-hypotheek-berekenen"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      { label: 'Hypotheek berekenen', href: buildLocalePath(locale, 'salary/hypotheek-berekenen') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Hypotheek berekenen 2026</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Hoeveel hypotheek kunt u krijgen met uw salaris? Vul uw bruto maandsalaris in en bereken direct uw
+      <strong> maximale hypotheek 2026</strong> op basis van de Nibud-financieringslastpercentages, inclusief
+      8% vakantiegeld, studieschuldcorrectie en een indicatie van uw netto maandlast na hypotheekrenteaftrek.
+    </p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <NlHypotheekCalculator client:load locale={locale} initialGrossMonthly={4000} />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="nl-hypotheek-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Hoe wordt de maximale hypotheek berekend?</h2>
+      <p>
+        Nederlandse geldverstrekkers gebruiken de <strong>Nibud-normen</strong> om te bepalen hoeveel u
+        verantwoord kunt lenen. De berekening verloopt in drie stappen:
+      </p>
+      <ol>
+        <li>
+          <strong>Toetsinkomen:</strong> uw bruto jaarsalaris inclusief 8% vakantiegeld
+          (maandsalaris × 12 × 1,08). Het inkomen van een partner telt sinds 2023 volledig mee.
+        </li>
+        <li>
+          <strong>Financieringslastpercentage:</strong> het Nibud stelt per inkomensgroep vast welk deel
+          van het toetsinkomen maximaal naar hypotheeklasten mag — in 2026 van 19,30% tot 26,50%.
+          Overige vaste lasten (zoals een studieschuld) gaan van dit bedrag af.
+        </li>
+        <li>
+          <strong>Annuïteit:</strong> de maximale bruto maandlast wordt met de annuïteitenformule
+          omgerekend naar een leenbedrag, op basis van de hypotheekrente en looptijd.
+        </li>
+      </ol>
+      <p>
+        Rekenvoorbeeld: €4.000 bruto per maand → toetsinkomen €51.840 → 21,70% financieringslast →
+        maximaal €{voorbeeldMaandlast} bruto per maand → bij 4% rente en 30 jaar looptijd een
+        <strong> maximale hypotheek van circa €{voorbeeldHypotheek}</strong>.
+      </p>
+      <h2>Belangrijke aandachtspunten</h2>
+      <ul>
+        <li>
+          <strong>Rente:</strong> deze pagina rekent met een indicatieve rente van 4,0% (10 jaar vast).
+          Eind september 2026 lagen de laagste NHG-tarieven voor 10 jaar vast rond 3,6% en het gemiddelde
+          rond 4,1%. Pas de rente in de calculator aan om het effect te zien.
+        </li>
+        <li>
+          <strong>NHG:</strong> hypotheken tot €470.000 komen in 2026 in aanmerking voor Nationale
+          Hypotheek Garantie — met een rentekorting en een vangnet bij betalingsproblemen.
+        </li>
+        <li>
+          <strong>Niet alleen inkomen telt:</strong> ook de woningwaarde (maximaal 100% lenen),
+          uw leeftijd en de acceptatievoorwaarden van de geldverstrekker bepalen het uiteindelijke aanbod.
+        </li>
+      </ul>
+      <p class="text-sm">
+        Bronnen:{' '}
+        <a href="https://www.hypotheker.nl/media/3venb13y/woonquote_2026.pdf" target="_blank" rel="noopener noreferrer">Nibud woonquote 2026 (via De Hypotheker)</a>,{' '}
+        <a href="https://www.nibud.nl/download/22171/?tmstv=1783104578" target="_blank" rel="noopener noreferrer">Nibud — Advies hypotheeknormen 2026</a>,{' '}
+        <a href="https://www.nhg.nl/nhg-actueel/nhg-grens-in-2026-vastgesteld-op-470000/" target="_blank" rel="noopener noreferrer">NHG — grens 2026</a>
+      </p>
+      <p class="text-xs text-slate-500">
+        Methodenotitie: de officiële Nibud-tabellen zijn rentetabellen (per toetsrente). Deze pagina gebruikt
+        de gepubliceerde 2026-tabel als referentie en een aparte, aanpasbare renteaanname voor de
+        annuïteitenberekening. Een hypotheekadviseur toetst met de rentetabel van uw geldverstrekker.
+      </p>
+    </div>
+
+    <nav class="mt-10" aria-label="Hypotheek per salaris">
+      <h2 class="text-xl font-semibold">Hypotheek per salaris</h2>
+      <ul class="mt-4 grid gap-2 sm:grid-cols-3">
+        <li><a class="text-blue-700 underline hover:text-blue-900" href="/nl-nl/salary/hypotheek-3000-salaris/">Hypotheek met €3.000 salaris</a></li>
+        <li><a class="text-blue-700 underline hover:text-blue-900" href="/nl-nl/salary/hypotheek-4000-salaris/">Hypotheek met €4.000 salaris</a></li>
+        <li><a class="text-blue-700 underline hover:text-blue-900" href="/nl-nl/salary/hypotheek-5000-salaris/">Hypotheek met €5.000 salaris</a></li>
+      </ul>
+    </nav>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional} {t.disclaimers.dataSource} Indicatie voor 2026
+      op basis van de Nibud-financieringslastpercentages; geen hypotheekadvies.
+    </p>
+
+    <CalculatorFAQ heading="Veelgestelde vragen over hypotheek berekenen" items={faqItems} />
+
+    <RelatedCalculators
+      heading="Gerelateerde calculators"
+      links={[
+        { label: "Bruto netto calculator 2026", href: "/nl-nl/salary/bruto-netto-calculator/" },
+        { label: "ZZP of loondienst vergelijken", href: "/nl-nl/salary/zzp-loondienst-vergelijking/" },
+        { label: "Vakantiegeld berekenen", href: "/nl-nl/salary/vakantiegeld-calculator/" },
+      ]}
+    />
+  </article>
+  <CalculatorResource locale="nl-NL" category="salary" />
+</BaseLayout>

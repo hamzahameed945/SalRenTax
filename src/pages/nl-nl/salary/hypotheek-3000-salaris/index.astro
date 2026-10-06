@@ -1,0 +1,151 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import NlHypotheekCalculator from '../../../../components/islands/NlHypotheekCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+import { nlHypotheekEngine } from '../../../../calculators/salary/engines/nl/nlHypotheek';
+
+const locale = 'nl-NL' as const;
+const t = getDictionary(locale);
+
+// Scenario: €3.000 bruto per maand, 4% rente, 30 jaar, geen partner, geen schulden.
+const r = nlHypotheekEngine.calculate({ grossMonthly: 3000 }, {} as never, 2026);
+const eur = (v: number) => Math.round(v).toLocaleString('nl-NL');
+const hyp = eur(r.maxHypotheek);
+const maandlast = eur(r.maxBrutoMaandlast);
+const netto = eur(r.nettoMaandlastIndicatie);
+const toets = eur(r.toetsinkomenAnnual);
+const pct = r.financieringslastPercentage.toLocaleString('nl-NL', { minimumFractionDigits: 2 });
+
+const meta = buildPageMetadata(
+  `Hoeveel hypotheek met €3.000 salaris? €${hyp} in 2026`,
+  `Hoeveel hypotheek kan ik krijgen met €3.000 bruto per maand? In 2026 leent u circa €${hyp} (toetsinkomen €${toets}, bruto maandlast €${maandlast}). Bereken uw maximale hypotheek met de Nibud-normen.`,
+  '/nl-nl/salary/hypotheek-3000-salaris/',
+);
+
+const faqItems = [
+  {
+    question: 'Hoeveel hypotheek kan ik krijgen met €3.000 bruto per maand?',
+    answer:
+      `Met €3.000 bruto per maand is uw toetsinkomen €${toets} per jaar (inclusief 8% vakantiegeld). Volgens de Nibud-financieringslastpercentages 2026 mag ${pct}% daarvan naar hypotheeklasten: maximaal €${maandlast} bruto per maand. Bij 4% rente en 30 jaar looptijd komt dat neer op een maximale hypotheek van circa €${hyp}.`,
+  },
+  {
+    question: 'Wat betaal ik per maand bij een hypotheek van €' + hyp + '?',
+    answer:
+      `Bij de maximale hypotheek betaalt u €${maandlast} bruto per maand (annuïteit, eerste maand: €${eur(r.eersteMaandRente)} rente en €${eur(r.eersteMaandAflossing)} aflossing). Na hypotheekrenteaftrek tegen het marginale box-1-tarief van 35,75% is de indicatieve netto maandlast circa €${netto}. Let op: het rentedeel daalt naarmate u aflost.`,
+  },
+  {
+    question: 'Telt mijn studieschuld mee bij €3.000 salaris?',
+    answer:
+      'Ja, en bij dit inkomen tikt dat hard aan. De bank rekent met een fictieve maandlast van 0,45% van uw oorspronkelijke studieschuld per maand — ook als u niet aflost. Een schuld van €20.000 kost u €90 maandlast en daarmee ruim €18.000 aan maximale hypotheek. Vul uw maandlast in bij "Overige maandlasten" in de calculator.',
+  },
+  {
+    question: 'Kan ik met €3.000 salaris een NHG-hypotheek krijgen?',
+    answer:
+      `Zeker. De maximale hypotheek van circa €${hyp} ligt ruim onder de NHG-grens 2026 van €470.000. Met Nationale Hypotheek Garantie betaalt u een eenmalige premie van 0,4% en krijgt u doorgaans een lagere rente plus een vangnet bij betalingsproblemen.`,
+  },
+  {
+    question: 'Hoeveel meer hypotheek krijg ik met een partnerinkomen erbij?',
+    answer:
+      'Sinds 2023 telt het tweede inkomen volledig mee. Verdient uw partner bijvoorbeeld €2.000 bruto per maand extra, dan stijgt het toetsinkomen naar circa €64.800 en de maximale hypotheek naar ongeveer €249.000. Alleenstaanden krijgen in 2026 juist €17.000 extra leenruimte bovenop de norm.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="nl-hypotheek-3000-salaris"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      { label: 'Hypotheek berekenen', href: buildLocalePath(locale, 'salary/hypotheek-berekenen') },
+      { label: 'Hypotheek met €3.000 salaris', href: buildLocalePath(locale, 'salary/hypotheek-3000-salaris') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Hypotheek met €3.000 bruto salaris 2026</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Met een bruto maandsalaris van <strong>€3.000</strong> (toetsinkomen <strong>€{toets}</strong> per jaar,
+      inclusief vakantiegeld) kunt u in 2026 circa <strong>€{hyp} hypotheek</strong> krijgen.
+      Dat volgt uit het Nibud-financieringslastpercentage van <strong>{pct}%</strong>: maximaal
+      <strong> €{maandlast} bruto per maand</strong> aan hypotheeklasten.
+    </p>
+
+    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-semibold">Uw maximale hypotheek in 2026</h2>
+      <table class="mt-4 w-full text-sm">
+        <tbody>
+          <tr><td>Toetsinkomen (incl. 8% vakantiegeld)</td><td>€{toets}</td></tr>
+          <tr><td>Nibud financieringslastpercentage</td><td>{pct}%</td></tr>
+          <tr><td>Maximale bruto maandlast</td><td>€{maandlast}</td></tr>
+          <tr><td>Waarvan rente (eerste maand)</td><td>€{eur(r.eersteMaandRente)}</td></tr>
+          <tr><td>Waarvan aflossing (eerste maand)</td><td>€{eur(r.eersteMaandAflossing)}</td></tr>
+          <tr class="font-semibold"><td>Maximale hypotheek (4%, 30 jaar)</td><td>€{hyp}</td></tr>
+          <tr><td>Indicatieve netto maandlast (na renteaftrek)</td><td>€{netto}</td></tr>
+        </tbody>
+      </table>
+      <p class="mt-4 text-xs text-slate-500">
+        Berekend met de Nibud-financieringslastpercentages 2026 en een indicatieve rente van 4% (10 jaar vast),
+        annuïtair, 30 jaar. De netto-indicatie trekt de rente af tegen het marginale box-1-tarief van 35,75%.
+        Geldverstrekkers toetsen met hun eigen rentetabel; dit is een indicatie, geen advies.
+      </p>
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="nl-hypotheek-3000" />
+    </div>
+
+    <div class="mt-10">
+      <h2 class="text-xl font-semibold">Pas het scenario aan</h2>
+      <p class="mt-2 text-sm text-slate-600">
+        Voeg een partnerinkomen of studieschuld toe, of wijzig de rente om te zien wat het met uw maximale hypotheek doet.
+      </p>
+      <div class="mt-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <NlHypotheekCalculator client:load locale={locale} initialGrossMonthly={3000} />
+      </div>
+    </div>
+
+    <nav class="mt-10" aria-label="Hypotheek per salaris">
+      <h2 class="text-xl font-semibold">Hypotheek per salaris</h2>
+      <ul class="mt-4 grid gap-2 sm:grid-cols-3">
+        <li><a class="text-blue-700 underline hover:text-blue-900" href="/nl-nl/salary/hypotheek-berekenen/">Hypotheek berekenen (alle salarissen)</a></li>
+        <li><a class="text-blue-700 underline hover:text-blue-900" href="/nl-nl/salary/hypotheek-4000-salaris/">Hypotheek met €4.000 salaris</a></li>
+        <li><a class="text-blue-700 underline hover:text-blue-900" href="/nl-nl/salary/hypotheek-5000-salaris/">Hypotheek met €5.000 salaris</a></li>
+      </ul>
+    </nav>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.dataSource} Indicatie voor 2026 op basis van de
+      Nibud-financieringslastpercentages; geen hypotheekadvies.
+    </p>
+
+    <CalculatorFAQ heading="Hypotheek met €3.000 salaris: vragen" items={faqItems} />
+
+    <RelatedCalculators
+      heading="Gerelateerde calculators"
+      links={[
+        { label: "Bruto netto calculator 2026", href: "/nl-nl/salary/bruto-netto-calculator/" },
+        { label: "ZZP of loondienst vergelijken", href: "/nl-nl/salary/zzp-loondienst-vergelijking/" },
+        { label: "Vakantiegeld berekenen", href: "/nl-nl/salary/vakantiegeld-calculator/" },
+      ]}
+    />
+  </article>
+  <CalculatorResource locale="nl-NL" category="salary" />
+</BaseLayout>
