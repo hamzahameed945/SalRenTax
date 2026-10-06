@@ -77,13 +77,19 @@ export default function MxAguinaldoCalculator({ initialSalary }: Props) {
               <dd>{formatCurrency(result.montoExento)}</dd>
             </div>
             <div class="flex justify-between">
+              <dt>Base gravada (ISR)</dt>
+              <dd>{formatCurrency(result.baseGravada)}</dd>
+            </div>
+            <div class="flex justify-between">
               <dt>ISR estimado</dt>
               <dd>{formatCurrency(result.isrEstimado)}</dd>
             </div>
           </dl>
         )}
         <p class="mt-4 text-xs text-slate-500">
-          Estimación con tarifa ISR 2026. El patrón debe pagar el aguinaldo antes del 20 de diciembre.
+          Estimación con la tarifa ISR mensual 2026 (Art. 96 LISR). La retención real
+          depende del procedimiento de nómina de tu patrón y de tu ingreso total de
+          diciembre. El patrón debe pagar el aguinaldo antes del 20 de diciembre.
         </p>
       </div>
     </div>

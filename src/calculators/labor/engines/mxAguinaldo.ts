@@ -24,8 +24,22 @@ export interface MxAguinaldoResult {
   aguinaldoNeto: number;
 }
 
-/** 30 UMAs diarias 2026 — exención de ISR para aguinaldo. */
+/** 30 UMAs diarias 2026 — exención de ISR para aguinaldo.
+ * Fuente: INEGI — UMA diaria 2026 = $117.31 (vigente desde el 1-feb-2026, DOF);
+ * 30 × 117.31 = $3,519.30. */
 export const AGUINALDO_EXENTO_UMA_2026 = 30 * umaDaily2026; // $3,519.30
+
+/**
+ * ISR estimado sobre la parte gravada del aguinaldo, usando el procedimiento
+ * de retención mensual del Art. 96 LISR (tarifa mensual 2026 — Anexo 8 RMF 2026,
+ * DOF 28-12-2025, SAT). Es una estimación: la retención real que aplica el
+ * patrón depende de su procedimiento de nómina y del ingreso total del
+ * trabajador en diciembre.
+ */
+export function calculateAguinaldoIsrEstimado(baseGravada: number): number {
+  if (baseGravada <= 0) return 0;
+  return calculateProgressiveTax(baseGravada, isrMonthlyBrackets2026).totalTax;
+}
 
 /**
  * Mexican aguinaldo (Christmas bonus) calculator.
@@ -68,7 +82,7 @@ export const mxAguinaldoEngine: CalculatorEngine<MxAguinaldoInput, MxAguinaldoRe
     const aguinaldoBruto = salarioDiario * input.diasAguinaldo * (input.mesesTrabajados / 12);
     const montoExento = Math.min(aguinaldoBruto, AGUINALDO_EXENTO_UMA_2026);
     const baseGravada = Math.max(0, aguinaldoBruto - montoExento);
-    const isrEstimado = baseGravada > 0 ? calculateProgressiveTax(baseGravada, isrMonthlyBrackets2026).totalTax : 0;
+    const isrEstimado = calculateAguinaldoIsrEstimado(baseGravada);
     const aguinaldoNeto = aguinaldoBruto - isrEstimado;
 
     return { salarioDiario, aguinaldoBruto, montoExento, baseGravada, isrEstimado, aguinaldoNeto };

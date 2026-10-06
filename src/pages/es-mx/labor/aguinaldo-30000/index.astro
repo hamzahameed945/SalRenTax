@@ -33,6 +33,11 @@ const faqItems = [
       question: '¿El aguinaldo paga ISR?',
       answer:
         'Sí, parcialmente. El aguinaldo está exento de ISR hasta 30 UMAs ($3,519.30 en 2026) y solo el excedente paga ISR. Con sueldo de $30,000, el ISR de tu aguinaldo es de $890.11.'
+    },
+    {
+      question: '¿Cuánto ISR me quitan del aguinaldo con sueldo de $30,000?',
+      answer:
+        'Aproximadamente $890.11. De los $15,000.00 brutos, $3,519.30 están exentos (30 UMAs de 2026) y solo la parte gravada ($11,480.70) paga ISR con la tarifa mensual del Artículo 96 de la LISR. Es una estimación: la retención real depende del procedimiento de tu patrón y de tu ingreso total de diciembre.'
     }
 ];
 
@@ -104,7 +109,7 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
 
     <p class="mt-8 text-xs text-slate-500">
       {t.disclaimers.general} {t.disclaimers.dataSource} Valores estimados con las tablas
-      oficiales 2026; tu nómina real puede variar.
+      oficiales 2026; tu nómina real puede variar. La retención real de ISR depende del procedimiento de tu patrón y de tu ingreso total de diciembre.
     </p>
 
     <CalculatorFAQ heading="Aguinaldo de $30,000: preguntas frecuentes" items={faqItems} />
