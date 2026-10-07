@@ -2,8 +2,31 @@ import { describe, expect, it } from 'vitest';
 import { getActivePages, getIndexablePages } from '../../src/seo/page-registry';
 import { ALL_LOCALES } from '../../src/i18n/types';
 import { buildLocalePath, isLocaleActive } from '../../src/i18n/utils';
-import { existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
+import { join, relative } from 'node:path';
+
+const REPO_ROOT = join(__dirname, '..', '..');
+const PAGES_ROOT = join(REPO_ROOT, 'src', 'pages');
+
+function* walkAstroFiles(dir: string): Generator<string> {
+  for (const entry of readdirSync(dir)) {
+    const full = join(dir, entry);
+    if (statSync(full).isDirectory()) {
+      yield* walkAstroFiles(full);
+    } else if (entry.endsWith('.astro')) {
+      yield full;
+    }
+  }
+}
+
+function pageFileExists(urlPath: string): boolean {
+  const p = urlPath.replace(/^\/+|\/+$/g, '');
+  if (!p) return true; // homepage
+  return (
+    existsSync(join(PAGES_ROOT, p, 'index.astro')) ||
+    existsSync(join(PAGES_ROOT, `${p}.astro`))
+  );
+}
 
 describe('page registry routes', () => {
   it('every active page resolves to a well-formed locale-prefixed path', () => {
@@ -69,6 +92,47 @@ describe('nav category link safety', () => {
           `${config.locale}: category '${category}' has no page at src/pages/${localeSlug}/${category}/`,
         ).toBe(true);
       }
+    }
+  });
+});
+
+describe('internal link integrity', () => {
+  it('every static internal href in .astro pages resolves to a real page file', () => {
+    // Guards against hardcoded dead links (e.g. a stale slug in a content page).
+    // Dynamic hrefs (template literals) are not statically resolvable and are skipped.
+    const dead: string[] = [];
+    let checked = 0;
+    for (const file of walkAstroFiles(PAGES_ROOT)) {
+      const src = readFileSync(file, 'utf-8');
+      for (const match of src.matchAll(/href="([^"]+)"/g)) {
+        const href = match[1];
+        if (!href.startsWith('/') || href.startsWith('//')) continue;
+        if (href.includes('{') || href.includes('}')) continue;
+        const path = href.split('?')[0].split('#')[0];
+        checked++;
+        if (!pageFileExists(path)) {
+          dead.push(`${relative(REPO_ROOT, file)} -> ${href}`);
+        }
+      }
+    }
+    expect(checked).toBeGreaterThan(0);
+    expect(dead, `dead internal links:\n${dead.join('\n')}`).toEqual([]);
+  });
+
+  it('every slug listed in the pt-br blog index has a matching post page', () => {
+    // The blog index hand-maintains its post list; a typo'd slug once 404'd
+    // /pt-br/blog/salario-liquido-2026-guia-completo/ (real page: salario-liquido-2026).
+    const indexSrc = readFileSync(
+      join(PAGES_ROOT, 'pt-br', 'blog', 'index.astro'),
+      'utf-8',
+    );
+    const slugs = [...indexSrc.matchAll(/slug:\s*'([^']+)'/g)].map((m) => m[1]);
+    expect(slugs.length).toBeGreaterThan(0);
+    for (const slug of slugs) {
+      expect(
+        existsSync(join(PAGES_ROOT, 'pt-br', 'blog', slug, 'index.astro')),
+        `blog slug '${slug}' has no page at src/pages/pt-br/blog/${slug}/`,
+      ).toBe(true);
     }
   });
 });
