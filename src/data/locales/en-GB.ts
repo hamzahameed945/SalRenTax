@@ -12,7 +12,7 @@ export const enGBConfig: LocaleConfig = {
   dateLocale: 'en-GB',
   dateFormat: 'd MMMM yyyy',
   direction: 'ltr',
-  categories: ['salary', 'tax'],
+  categories: ['salary'],
   availableYears: [2026],
   defaultYear: 2026,
 };

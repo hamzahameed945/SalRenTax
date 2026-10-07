@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { getActivePages, getIndexablePages } from '../../src/seo/page-registry';
 import { ALL_LOCALES } from '../../src/i18n/types';
 import { buildLocalePath, isLocaleActive } from '../../src/i18n/utils';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 
 describe('page registry routes', () => {
   it('every active page resolves to a well-formed locale-prefixed path', () => {
@@ -46,5 +48,27 @@ describe('locale switcher link safety', () => {
 
   it('at least one locale (en-US) is active, so the switcher is never all-disabled', () => {
     expect(ALL_LOCALES.some(isLocaleActive)).toBe(true);
+  });
+});
+
+describe('nav category link safety', () => {
+  it('every category listed in a locale config has a real category page (no dead nav links)', async () => {
+    // Regression test: stale locale-config categories once rendered site-wide
+    // header links to /en-gb/tax/, /en-ie/tax/, /es-ar/salary/ and /es-co/salary/,
+    // all of which 404'd and were flagged by Search Console ("Not found (404)").
+    // The header renders config.categories verbatim, so each entry must resolve
+    // to a real page directory.
+    const { getActiveLocaleConfigs } = await import('../../src/data/locales');
+    const pagesRoot = join(__dirname, '..', '..', 'src', 'pages');
+    for (const config of getActiveLocaleConfigs()) {
+      const localeSlug = config.locale.toLowerCase();
+      for (const category of config.categories) {
+        const dir = join(pagesRoot, localeSlug, category);
+        expect(
+          existsSync(join(dir, 'index.astro')),
+          `${config.locale}: category '${category}' has no page at src/pages/${localeSlug}/${category}/`,
+        ).toBe(true);
+      }
+    }
   });
 });

@@ -12,7 +12,7 @@ export const esCOConfig: LocaleConfig = {
   dateLocale: 'es-CO',
   dateFormat: 'd MMMM yyyy',
   direction: 'ltr',
-  categories: ['salary', 'labor'],
+  categories: ['labor'],
   availableYears: [2026],
   defaultYear: 2026,
 };

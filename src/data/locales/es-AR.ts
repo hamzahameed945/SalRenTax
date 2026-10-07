@@ -12,7 +12,7 @@ export const esARConfig: LocaleConfig = {
   dateLocale: 'es-AR',
   dateFormat: 'd MMMM yyyy',
   direction: 'ltr',
-  categories: ['salary', 'labor'],
+  categories: ['labor'],
   availableYears: [2026],
   defaultYear: 2026,
 };
