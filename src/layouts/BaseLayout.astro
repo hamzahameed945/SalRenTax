@@ -26,9 +26,6 @@ const siteUrl = resolveSiteUrl(import.meta.env as unknown as Record<string, stri
 const canonicalUrl = new URL(canonical, siteUrl).toString();
 const resolvedOgImage = new URL(ogImage, siteUrl).toString();
 const hreflangLinks = buildHreflangLinks(equivalentPageGroup);
-// Set PUBLIC_ADSENSE_CLIENT=ca-pub-XXXXXXXXXXXXXXXX once Google AdSense approves
-// the site. Until then the AdSense script tag is omitted entirely.
-const adsenseClient = (import.meta.env.PUBLIC_ADSENSE_CLIENT as string | undefined)?.trim();
 
 const jsonLdEntries = [
   buildWebSiteJsonLd(t.common.siteName, siteUrl),
@@ -70,15 +67,9 @@ const jsonLdEntries = [
       gtag('js', new Date());
       gtag('config', 'G-29HDGNV1R3');
     </script>
-    {
-      adsenseClient && (
-        <script
-          async
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`}
-          crossorigin="anonymous"
-        />
-      )
-    }
+    
+    {/* Google AdSense Code Snippet */}
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3924946370902693" crossorigin="anonymous"></script>
   </head>
   <body>
     <a href="#main-content" class="skip-link">
@@ -89,7 +80,7 @@ const jsonLdEntries = [
       <slot />
     </main>
     <Footer locale={locale} />
-    <!-- 100% privacy-first analytics -->
+    {/* 100% privacy-first analytics */}
     <script async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
   </body>
 </html>
