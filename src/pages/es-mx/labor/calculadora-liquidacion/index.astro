@@ -2,10 +2,38 @@
 import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
 import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
 import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
 import MexicoFiniquitoCalculator from '../../../../components/islands/MexicoFiniquitoCalculator';
 const locale = 'es-MX' as const;
+
+const faqItems = [
+  {
+    question: '¿Cuánto me toca de prima de antigüedad si renuncio?',
+    answer:
+      'La prima de antigüedad equivale a 12 días de salario por cada año de servicio (Artículo 162 de la LFT). Pero ojo: en una renuncia voluntaria solo tienes derecho a ella si cumpliste 15 años o más en la empresa. Ejemplo: 20 años de antigüedad con salario diario de $500.00 → 12 × 20 × 500 = $120,000.00.'
+  },
+  {
+    question: '¿Y si renuncio con menos de 15 años de antigüedad?',
+    answer:
+      'Entonces no te corresponde prima de antigüedad: la ley (Artículo 162, fracción III de la LFT) la reserva para renuncias voluntarias con 15 años o más de servicio. Tu finiquito en ese caso incluye solo aguinaldo proporcional, vacaciones no disfrutadas y prima vacacional.'
+  },
+  {
+    question: '¿Hay un tope de salario para calcular la prima de antigüedad?',
+    answer:
+      'Sí. Si tu salario diario rebasa el doble del salario mínimo, el cálculo se hace con ese tope y no con tu salario real. En la zona general 2026 el tope es de $630.08 diarios (2 × $315.04). Ejemplo: con salario diario de $1,000.00 y 20 años, se usa $630.08 → 12 × 20 × 630.08 = $151,219.20.'
+  },
+  {
+    question: '¿La prima de antigüedad también aplica si me despiden?',
+    answer:
+      'Sí. En caso de despido, sea justificado o injustificado, la prima de antigüedad se paga sin importar los años que lleves; también corresponde a los beneficiarios si el trabajador fallece. El requisito de los 15 años aplica únicamente a la renuncia voluntaria.'
+  }
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
 ---
 
 <BaseLayout
@@ -14,6 +42,7 @@ const locale = 'es-MX' as const;
   description="Estima la liquidación laboral en México para escenarios de terminación."
   canonical="/es-mx/labor/calculadora-liquidacion/"
 >
+  <JsonLd entries={[faqJsonLd]} />
   <Breadcrumbs
     locale={locale}
     trail={[{ label: 'Calculadoras laborales', href: buildLocalePath(locale, 'labor') }]}
@@ -37,6 +66,7 @@ const locale = 'es-MX' as const;
         estimada.
       </p>
     </div>
+    <CalculatorFAQ heading="Liquidación laboral: preguntas frecuentes" items={faqItems} />
   </article>
   <CalculatorResource locale="es-MX" category="labor" />
 </BaseLayout>

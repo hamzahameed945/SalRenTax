@@ -50,6 +50,16 @@ const faqItems = [
     answer:
       'Yes. The statutory figure is the legal minimum — your employer cannot pay you less. Many employers offer enhanced (contractual) redundancy schemes that pay more per year of service, use a higher weekly-pay cap, or remove the 20-year service cap. Any extra on top of the statutory amount also counts towards the same £30,000 tax-free limit.',
   },
+  {
+    question: 'What happens if my redundancy package is over £30,000?',
+    answer:
+      'The first £30,000 of genuine termination pay stays free of Income Tax; the excess is added to your income for the tax year and taxed at your marginal rate. So on a £45,000 package, £15,000 is taxable — at 20% that is £3,000 of tax, at 40% it is £6,000. You pay no employee National Insurance on the excess (your employer pays employer Class 1A instead), which makes it slightly more tax-efficient than ordinary salary. One warning: if the taxable excess pushes your total income towards £100,000, your Personal Allowance starts tapering — £1 lost for every £2 over £100,000, gone entirely by £125,140 in 2026/27 — which can make the effective tax rate on the excess higher than 40%.',
+  },
+  {
+    question: 'Why is my payment in lieu of notice (PILON) taxed in full?',
+    answer:
+      'This is the most common source of confusion in a redundancy package. Since 6 April 2018, the post-employment notice pay (PENP) rules mean every payment in lieu of notice is taxed as ordinary earnings — Income Tax plus employee National Insurance — no matter what your contract says. HMRC works out what you would have earned had you worked your notice, and that amount is carved out of the £30,000 tax-free allowance entirely. Before April 2018, a non-contractual PILON could share the £30,000 exemption; that loophole is now closed. Accrued holiday pay and outstanding bonuses are treated the same way: taxed as earnings from the first pound, with no share of the £30,000.',
+  },
 ];
 
 const faqJsonLd = buildFaqJsonLd(faqItems);

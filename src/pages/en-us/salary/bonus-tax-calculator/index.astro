@@ -52,6 +52,31 @@ const faqItems = [
     answer:
       'Yes. Bonuses are wages for FICA purposes: 6.2% Social Security applies up to the 2026 wage base of $184,500 of total wages, and 1.45% Medicare applies with no cap. If your total wages including the bonus exceed $200,000, the extra 0.9% Additional Medicare Tax is withheld on the portion above $200,000. Unlike the 22% federal withholding, these payroll taxes are actual tax, not an estimate — they are not refunded at filing time.',
   },
+  {
+    question: 'How much tax do I pay on a bonus of $5,000?',
+    answer:
+      'Take a $5,000 bonus paid separately, with no state income tax. Your employer withholds 22% for federal income tax ($1,100) plus 7.65% for FICA — $310 of Social Security and $72.50 of Medicare — for $1,482.50 withheld in total and $3,517.50 in your pocket. But your real tax on the bonus is your marginal rate, not 22%: in the 12% bracket you truly owe $600 of federal income tax plus $382.50 of FICA ($982.50 total), so the $500 gap between the $1,100 withheld and the $600 owed comes back to you as part of your refund.',
+  },
+  {
+    question: 'How much of a $5,000 bonus will I actually take home?',
+    answer:
+      'Right away, $3,517.50 lands in your bank account if there is no state tax ($5,000 minus the $1,482.50 withheld for federal income tax and FICA). What you truly keep is settled at filing time: in the 12% bracket you get about $500 of that withholding back and keep roughly $4,017.50; in the 22% bracket the withholding is about right; in the 24% bracket you owe about $100 more ($1,200 owed minus $1,100 withheld) and keep roughly $3,417.50. The $382.50 of Social Security and Medicare tax is real tax either way — it never comes back. Any state income tax comes out on top of all of this.',
+  },
+  {
+    question: 'Does my employer have to withhold 22% from my bonus?',
+    answer:
+      'No. IRS Publication 15 gives employers two choices for separately paid bonuses: the percentage method — a flat 22% (37% on supplemental wages above $1 million in a year) — or the aggregate method, where the bonus is added to your regular wages and withheld according to your W-4. Most employers choose 22% because it is simple, but the choice changes nothing about your actual tax: the bonus is taxed at your marginal rate when you file.',
+  },
+  {
+    question: 'Does a $5,000 bonus cost extra tax if my total pay is over $200,000?',
+    answer:
+      'Only through the Additional Medicare Tax: 0.9% applies to the slice of total wages above $200,000 ($250,000 for married filing jointly), which adds $45 to a $5,000 bonus that sits entirely above the threshold. There is no extra federal income tax surcharge — the bonus is still withheld at 22% and taxed at your marginal rate. There is one break at high incomes: Social Security tax (6.2%) stops at the 2026 wage base of $184,500, so if your wages are already past that, the $310 Social Security piece of the bonus drops to zero.',
+  },
+  {
+    question: 'Can I reduce the withholding taken from my bonus?',
+    answer:
+      'Partly. You can ask your payroll department to use the aggregate method instead of the flat 22%, which withholds according to your W-4 — useful if you are in the 10% or 12% bracket and would rather have a bigger bonus cheque now than a bigger refund later. You can also submit a new W-4 at any time to adjust withholding on your regular pay. The caution: if these changes leave you under-withheld for the year, you will owe the difference when you file, possibly with underpayment penalties.',
+  },
 ];
 
 const faqJsonLd = buildFaqJsonLd(faqItems);

@@ -38,7 +38,27 @@ const faqItems = [
       question: '¿Cuánto ISR me quitan del aguinaldo con sueldo de $100,000?',
       answer:
         'Aproximadamente $8,280.08. De los $50,000.00 brutos, $3,519.30 están exentos (30 UMAs de 2026) y solo la parte gravada ($46,480.70) paga ISR con la tarifa mensual del Artículo 96 de la LISR. Es una estimación: la retención real depende del procedimiento de tu patrón y de tu ingreso total de diciembre.'
-    }
+    },
+    {
+      question: '¿Cómo calculo el aguinaldo proporcional si trabajé menos de un año?',
+      answer:
+        'Divide los 15 días legales entre los 12 meses del año: te corresponden 1.25 días de salario por cada mes trabajado (Artículo 87 de la LFT). Con sueldo de $100,000 ($3,333.33 diarios), tu aguinaldo completo es de $50,000.00; cada mes trabajado te tocan $4,166.67. Ejemplo: si trabajaste 6 meses, 6 × $4,166.67 = $25,000.00.'
+    },
+    {
+      question: '¿Me toca aguinaldo proporcional aunque ya no trabaje ahí?',
+      answer:
+        'Sí. La LFT establece que quienes no hayan cumplido un año de servicios tienen derecho a la parte proporcional conforme al tiempo trabajado, aunque ya no laboren en la empresa al 20 de diciembre. Si renunciaste o te despidieron, este monto debe incluirse en tu finiquito.'
+    },
+    {
+      question: '¿Cómo saco mi salario diario para calcular el aguinaldo?',
+      answer:
+        'Si tu sueldo es mensual y fijo, divide tu sueldo bruto entre 30 (la LFT usa meses de 30 días). Con sueldo de $100,000, tu salario diario es $3,333.33. Si tu ingreso es variable (comisiones o destajo), se usa el promedio diario de lo que percibiste en el periodo.'
+    },
+    {
+      question: '¿El aguinaldo proporcional también paga ISR?',
+      answer:
+        'Aplica la misma regla que al aguinaldo completo: está exento de ISR hasta 30 UMAs ($3,519.30 en 2026) y solo el excedente paga ISR. Si tu parte proporcional no rebasa los $3,519.30, no te retienen ISR por este concepto.'
+    },
 ];
 
 const faqJsonLd = buildFaqJsonLd(faqItems);

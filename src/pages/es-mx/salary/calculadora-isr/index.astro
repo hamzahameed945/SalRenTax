@@ -40,6 +40,16 @@ const faqItems = [
     answer:
       'No. El subsidio al empleo reduce el ISR a pagar para trabajadores de bajos ingresos, pero no está calculado en esta herramienta. Tu sueldo neto real puede ser mayor si aplica el subsidio.',
   },
+  {
+    question: '¿Cuánto ISR me quitan del aguinaldo en 2026?',
+    answer:
+      'El aguinaldo está exento de ISR hasta 30 UMAs, equivalentes a $3,519.30 en 2026 (UMA diaria de $117.31 según el INEGI, vigente desde el 1 de febrero de 2026; Artículo 93, fracción XIV de la LISR). Solo la parte que exceda ese monto paga ISR. Ejemplo: con un aguinaldo de $6,000, los primeros $3,519.30 quedan exentos y solo $2,480.70 son gravables, lo que da una retención estimada de $120.93 y un neto de $5,879.07. La retención real la calcula tu patrón con su procedimiento de nómina.',
+  },
+  {
+    question: '¿Qué pasa si mi aguinaldo no rebasa los $3,519.30?',
+    answer:
+      'No te retienen ISR por ese concepto: lo recibes íntegro. Ten en cuenta que si recibes aguinaldo de dos patrones en el mismo año, la exención de 30 UMAs se considera sobre el total que recibas, no por cada empleo.',
+  },
 ];
 
 const faqJsonLd = buildFaqJsonLd(faqItems);

@@ -33,7 +33,27 @@ const faqItems = [
       question: 'Tem desconto no décimo terceiro de R$ 15.000?',
       answer:
         'Na primeira parcela (R$ 7.500,00) não há descontos. Na segunda parcela (R$ 7.500,00) incidem INSS e Imposto de Renda, conforme as tabelas oficiais de 2026.'
-    }
+    },
+    {
+      question: 'Como calcular o décimo terceiro proporcional?',
+      answer:
+        'A fórmula é: salário bruto ÷ 12 × meses trabalhados. Exemplo com salário de R$ 15.000: se você trabalhou 8 meses em 2026, o cálculo é R$ 15.000 ÷ 12 × 8 = R$ 10.000,00 brutos. Só entra na conta o mês em que você trabalhou 15 dias ou mais (Lei 4.090/1962). INSS e IRRF incidem sobre o valor total e são descontados apenas na 2ª parcela.'
+    },
+    {
+      question: 'Trabalhei menos de 12 meses em 2026: como conto os meses para o 13º?',
+      answer:
+        'Conte como mês inteiro todo mês em que você trabalhou 15 dias ou mais; meses com menos de 15 dias ficam de fora. Exemplo: contratado em 20 de maio — maio não conta (apenas 12 dias), então junho a dezembro somam 7 meses: R$ 15.000 ÷ 12 × 7 = R$ 8.750,00 brutos de 13º proporcional.'
+    },
+    {
+      question: 'Fui demitido antes de dezembro: recebo o 13º proporcional?',
+      answer:
+        'Sim. Na demissão sem justa causa (ou no pedido de demissão) você recebe o 13º proporcional aos meses trabalhados no ano, pago junto com as demais verbas na rescisão. Exemplo: salário de R$ 15.000 com 5 meses trabalhados = R$ 15.000 ÷ 12 × 5 = R$ 6.250,00 brutos. A exceção é a demissão por justa causa, que faz você perder o 13º proporcional.'
+    },
+    {
+      question: 'Quando a empresa tem que pagar o 13º em 2026?',
+      answer:
+        'A 1ª parcela (metade do valor bruto, sem descontos) deve ser paga até 30 de novembro de 2026. A 2ª parcela (o restante, com descontos de INSS e IRRF calculados sobre o total) vence em 20 de dezembro — como em 2026 essa data cai num domingo, na prática o pagamento deve sair até sexta-feira, 18 de dezembro.'
+    },
 ];
 
 const faqJsonLd = buildFaqJsonLd(faqItems);

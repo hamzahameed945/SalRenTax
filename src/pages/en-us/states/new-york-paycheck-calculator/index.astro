@@ -36,6 +36,11 @@ const faqItems = [
     answer:
       'This calculator includes a simplified 2026 New York State income-tax estimate. New York City local income tax and payroll-specific withholding allowances are not modeled.',
   },
+  {
+    question: 'How much tax is taken out of my paycheck in New York in 2026?',
+    answer:
+      'Every American paycheck loses the same federal taxes first: federal income tax at your marginal rate (the 2026 brackets run 10% to 37%), Social Security at 6.2% on wages up to the 2026 wage base of $184,500, and Medicare at 1.45% with no cap. On top of that, New York withholds graduated state income tax of 4% to 10.9% from your wages. Use the calculator above with your salary and pay frequency to see the exact dollar amounts for your paycheck.',
+  },
 ];
 
 const faqJsonLd = buildFaqJsonLd(faqItems);
@@ -108,7 +113,7 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
           <tr>
             <td>Social Security</td>
             <td>6.2%</td>
-            <td>Up to $176,100</td>
+            <td>Up to $184,500</td>
           </tr>
           <tr>
             <td>Medicare</td>

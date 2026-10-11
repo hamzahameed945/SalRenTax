@@ -41,6 +41,26 @@ const faqItems = [
     answer:
       'Yes. Scotland sets its own income tax bands — for 2026/27: 19% starter (£12,571–£16,537), 20% basic, 21% intermediate, 42% higher from £43,663, 45% advanced and 48% top rate. These figures apply to England, Wales and Northern Ireland only.',
   },
+  {
+    question: 'Is overtime taxed more than normal pay in the UK?',
+    answer:
+      'No — there is no separate overtime tax rate at HMRC. Overtime goes through PAYE exactly like your salary and is taxed at your marginal rate: 20% if you are a basic-rate taxpayer, 40% if you are a higher-rate taxpayer (2026/27 bands in England, Wales and Northern Ireland: £12,570 Personal Allowance, 20% to £50,270, 40% to £125,140, 45% above). It only feels heavier because your base salary has already used up the tax-free £12,570, so the first pound of overtime is fully taxable — and extra shifts can push you into a higher band. Tax is progressive: only the income above each threshold is taxed at the higher rate, never your whole pay.',
+  },
+  {
+    question: 'Why did PAYE take so much tax from my overtime this month?',
+    answer:
+      'PAYE is cumulative, so payroll treats a heavy-overtime month as if you will earn at that level all year and deducts accordingly. Over the full tax year this usually balances out: if you were overtaxed, the extra is repaid automatically through later payslips, and HMRC issues a P800 calculation after the tax year ends if a refund is still due. Note that a one-off bonus or a large overtime lump can also prompt HMRC to revise your tax code as if it were a permanent pay rise — so check your payslip after an unusual month.',
+  },
+  {
+    question: 'What do emergency tax codes mean for overtime pay?',
+    answer:
+      'Emergency tax codes — for example 1257L W1/M1 or 0T — apply when payroll does not have your tax history, typically when you start a job without a P45, not to overtime specifically. They withhold tax without allocating your full Personal Allowance, so any pay in that period, overtime included, can look heavily taxed. The BR, D0 and D1 codes carry no Personal Allowance at all (flat 20%, 40% and 45%) and are normally used for second jobs. If you spot one of these on your payslip, check your code in your Personal Tax Account or contact HMRC — once the correct code is issued, overpaid tax is normally refunded automatically through payroll.',
+  },
+  {
+    question: 'Does overtime increase my National Insurance and student loan payments?',
+    answer:
+      'Yes. Overtime counts as earnings for both. Employee National Insurance in 2026/27 is 8% on earnings between £12,570 and £50,270 and 2% above — so overtime over the allowance attracts NI just like ordinary pay. If you have a student loan, overtime also increases repayments: 9% of income above your plan threshold (for example £29,385 for Plan 2 in 2026/27), or 6% above £21,000 for a Postgraduate loan. The real take-home on an overtime hour is your hourly rate minus your marginal income tax, NI and any student loan deduction.',
+  },
 ];
 
 const faqJsonLd = buildFaqJsonLd(faqItems);

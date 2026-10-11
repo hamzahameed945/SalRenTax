@@ -57,6 +57,31 @@ const faqItems = [
     answer:
       'No. The deduction does not change your payroll withholding — your employer keeps withholding as before, and for 2026 reports your qualified overtime premium on your W-2 (Box 12, Code TT) for you to claim when you file. The saving only materialises at filing time as a larger refund or a smaller amount owed.',
   },
+  {
+    question: 'How are tips taxed in 2026?',
+    answer:
+      'Tips are wages, and they are taxed like the rest of your pay: federal income tax at your marginal rate (10% to 37% for 2026), Social Security at 6.2%, and Medicare at 1.45%. You must report tips of $20 or more received in any month to your employer, and any tips you did not report get declared on Form 4137 when you file. The OBBBA "no tax on tips" provision does not change any of this — it adds a deduction on top; it is not an exemption.',
+  },
+  {
+    question: 'How does the no tax on tips deduction work?',
+    answer:
+      'The One Big Beautiful Bill Act created a federal income tax deduction for qualified tips for tax years 2025 through 2028. You can deduct up to $25,000 of reported tips per year from your taxable income, and you can claim it whether you take the standard deduction or itemise. Qualified tips are voluntary cash or charged tips — including credit-card tips and tip-pool shares — earned in an occupation that customarily received tips as of December 31, 2024, such as servers, bartenders, and hair stylists. Mandatory service charges and automatic gratuities do not qualify; those count as regular wages.',
+  },
+  {
+    question: 'Is there an income limit for the tips deduction?',
+    answer:
+      'Yes. The deduction starts shrinking once your modified adjusted gross income (MAGI) passes $150,000 for single filers or $300,000 for married couples filing jointly — it falls by $100 for every $1,000 of MAGI above the threshold, and disappears entirely at $400,000 (single) or $550,000 (joint). Married taxpayers must file jointly to claim it, and you need a Social Security number valid for employment.',
+  },
+  {
+    question: 'Do I still pay Social Security and Medicare tax on tips?',
+    answer:
+      'Yes. The OBBBA tips deduction applies to federal income tax only. Your tips remain fully subject to Social Security (6.2%) and Medicare (1.45%), plus any state and local income taxes. The deduction shrinks your income tax bill when you file; it does not reduce a dollar of payroll tax.',
+  },
+  {
+    question: 'How much of my tips do I actually keep?',
+    answer:
+      'Take $10,000 in reported tips for a single filer in the 12% bracket. FICA takes $765 (6.2% Social Security plus 1.45% Medicare) — that is real tax and it stays. Federal income tax on the tips would be $1,200 at 12%, but the OBBBA deduction wipes out up to $25,000 of tips, so the federal income tax on these tips drops to about $0. You keep roughly $9,235 of the $10,000. Like the overtime deduction, the saving arrives when you file — as a larger refund or a smaller balance due — not in any individual paycheck.',
+  },
 ];
 
 const faqJsonLd = buildFaqJsonLd(faqItems);

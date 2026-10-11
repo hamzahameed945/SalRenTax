@@ -2,11 +2,24 @@
 import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
 import InContentAd from '../../../../components/ads/InContentAd.astro';
 import AffiliateCTA from '../../../../components/ads/AffiliateCTA.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
 import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
 import PaycheckCalculator from '../../../../components/islands/PaycheckCalculator';
 const locale = 'en-US' as const;
+
+const faqItems = [
+  {
+    question: 'How much tax is taken out of my paycheck in Illinois in 2026?',
+    answer:
+      'Every American paycheck loses the same federal taxes first: federal income tax at your marginal rate (the 2026 brackets run 10% to 37%), Social Security at 6.2% on wages up to the 2026 wage base of $184,500, and Medicare at 1.45% with no cap. On top of that, Illinois withholds a flat 4.95% state income tax from your wages. Use the calculator above with your salary and pay frequency to see the exact dollar amounts for your paycheck.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
 ---
 
 <BaseLayout
@@ -15,6 +28,7 @@ const locale = 'en-US' as const;
   description="Estimate your Illinois take-home pay for 2026 using the state's 4.95% flat individual income-tax rate along with the federal deductions supported by the calculator."
   canonical="/en-us/states/illinois-paycheck-calculator/"
 >
+  <JsonLd entries={[faqJsonLd]} />
   <Breadcrumbs
     locale={locale}
     trail={[
@@ -54,6 +68,8 @@ const locale = 'en-US' as const;
         plans around it.
       </p>
     </div>
+    <CalculatorFAQ heading="Illinois Paycheck FAQs" items={faqItems} />
+
     <nav class="mt-10" aria-label="Popular salaries in Illinois">
       <h2 class="text-xl font-semibold">Popular salaries in Illinois</h2>
       <ul class="mt-4 grid gap-2 sm:grid-cols-2">
