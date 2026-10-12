@@ -1,5 +1,6 @@
 export const salary = {
   categoryTitle: 'Gehaltsrechner Deutschland',
+  seoTitle: 'Gehaltsrechner 2026: Brutto-Netto & Stundenlohn',
   categoryIntro: 'Berechnen Sie Ihr Nettogehalt, den Mindestlohn und Ihre Sozialversicherungsbeiträge für 2026.',
 
   mindestlohn: {

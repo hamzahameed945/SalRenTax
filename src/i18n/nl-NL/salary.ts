@@ -21,7 +21,7 @@ export const salary = {
   },
 
   bruttoNetto: {
-    title: 'Bruto Netto Calculator Nederland 2026',
+    title: 'Bruto Netto 2026: Bereken je Netto Salaris — PayRenTax',
     h1: 'Bruto Netto Calculator Nederland 2026',
     metaDescription:
       'Bereken uw netto salaris 2026 na box 1-belasting, heffingskortingen en vakantiegeld. Inclusief 30%-regeling en AOW-tarief.',

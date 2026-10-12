@@ -5,7 +5,7 @@ export const meta = {
   localeHomeDescription:
     'Kostenlose Gehaltsrechner für Deutschland 2026: Mindestlohn-Rechner, Brutto-Netto-Rechner mit Sozialversicherungsbeiträgen und mehr.',
   siteTitleSuffix: 'PayRenTax',
-  paycheckTitle: 'Mindestlohn-Rechner 2026 — PayRenTax',
+  paycheckTitle: 'Mindestlohn-Rechner 2026: 13,90 €/Stunde — PayRenTax',
   paycheckDescription:
     'Berechnen Sie Ihren Lohn zum gesetzlichen Mindestlohn 2026 (13,90 € pro Stunde) — wöchentlich, monatlich und jährlich.',
 } as const;

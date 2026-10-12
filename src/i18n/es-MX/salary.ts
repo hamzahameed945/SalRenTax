@@ -1,5 +1,6 @@
 export const salary = {
   categoryTitle: 'Calculadoras de sueldo México 2026',
+  seoTitle: 'Calculadora de Sueldo Neto 2026 — ISR e IMSS',
   categoryIntro:
     'Calcula tu ISR, cuotas IMSS, subsidio para el empleo y sueldo neto mensual con las tablas oficiales del SAT 2026.',
 
