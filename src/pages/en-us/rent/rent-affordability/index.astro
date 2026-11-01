@@ -34,6 +34,11 @@ const faqItems = [
       'No. This calculator estimates a starting rent budget from income alone. Utilities, renters insurance, parking, debt payments, and savings are not included, so compare the result with your complete monthly budget before committing to a lease.',
   },
   {
+    question: 'What rent can I afford on 50k?',
+    answer:
+      'At 30% of gross income, a $50,000 salary supports about $1,250 a month in rent: $50,000 / 12 = about $4,167 a month, times 0.30 = $1,250. On $60,000 it is about $1,500, on $70,000 about $1,750, and on $80,000 about $2,000 a month. Use take-home pay instead of gross pay for a more conservative figure.',
+  },
+  {
     question: 'What if rent in my city is above the 30% guideline?',
     answer:
       'High-cost cities often push households above 30%. In that case, look at the full budget: a lower rent share helps, but so do lower transport costs, shared housing, or a shorter lease while income grows. Do not stretch to a rent that leaves no room for essentials or an emergency fund.',
@@ -79,10 +84,26 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
       </p>
       <h2>Rent affordability examples by salary</h2>
       <p>
-        At 30% of gross income, a $60,000 salary supports about $1,500 a month, an $80,000 salary
-        about $2,000 a month, and a $100,000 salary about $2,500 a month. These are starting
+        At 30% of gross income, the formula is (annual income / 12) x 0.30. These are starting
         ranges from gross income — if you use take-home pay instead, the affordable rent will be
         lower, which is the safer figure for a tight budget.
+      </p>
+      <h3>What rent can I afford on 50k?</h3>
+      <p>
+        About $1,250 a month: $50,000 / 12 = about $4,167 a month, times 0.30 = $1,250.
+      </p>
+      <h3>What rent can I afford on 60k?</h3>
+      <p>
+        About $1,500 a month: $60,000 / 12 = $5,000 a month, times 0.30 = $1,500.
+      </p>
+      <h3>What rent can I afford on 70k?</h3>
+      <p>
+        About $1,750 a month: $70,000 / 12 = about $5,833 a month, times 0.30 = $1,750.
+      </p>
+      <h3>What rent can I afford on 80k?</h3>
+      <p>
+        About $2,000 a month: $80,000 / 12 = about $6,667 a month, times 0.30 = $2,000. A $100,000
+        salary supports about $2,500 a month by the same formula.
       </p>
       <h2>Using the 30% guideline sensibly</h2>
       <p>
