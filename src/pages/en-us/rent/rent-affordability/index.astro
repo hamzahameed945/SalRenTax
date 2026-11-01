@@ -1,15 +1,46 @@
 ---
 import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
 import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+import { buildLocalePath } from '../../../../i18n/utils';
 import RentAffordabilityCalculator from '../../../../components/islands/RentAffordabilityCalculator';
 
 const locale = 'en-US' as const;
 const meta = buildPageMetadata(
-  'Rent Affordability Calculator — PayRenTax',
-  'Estimate a starting rent budget based on your income and the percentage of income you want to put toward housing.',
+  'What Rent Can I Afford Calculator 2026 | PayRenTax',
+  'What rent can I afford in 2026? Use the 30% rule with your income to get a free, instant rent budget — plus examples by salary and what else to check before signing a lease.',
   '/en-us/rent/rent-affordability/',
 );
+
+const faqItems = [
+  {
+    question: 'What rent can I afford on my salary?',
+    answer:
+      'A common starting point is the 30% rule: divide your annual gross income by 12 to get monthly income, then multiply by 0.30. On a $60,000 salary that is $5,000 a month, so about $1,500 a month in rent. On $100,000 it is about $2,500 a month. Treat that as a planning range, not a hard limit — debt, savings goals, and local prices matter too.',
+  },
+  {
+    question: 'Is the 30% rule for rent before or after tax?',
+    answer:
+      'It is usually applied to gross (pre-tax) income, which is why it is only a starting point. If your take-home pay is much lower than your gross pay, check the result against your actual monthly budget and use the take-home pay figure for a more conservative estimate.',
+  },
+  {
+    question: 'Does rent affordability include utilities and other costs?',
+    answer:
+      'No. This calculator estimates a starting rent budget from income alone. Utilities, renters insurance, parking, debt payments, and savings are not included, so compare the result with your complete monthly budget before committing to a lease.',
+  },
+  {
+    question: 'What if rent in my city is above the 30% guideline?',
+    answer:
+      'High-cost cities often push households above 30%. In that case, look at the full budget: a lower rent share helps, but so do lower transport costs, shared housing, or a shorter lease while income grows. Do not stretch to a rent that leaves no room for essentials or an emergency fund.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
 ---
 
 <BaseLayout
@@ -18,16 +49,41 @@ const meta = buildPageMetadata(
   description={meta.description}
   canonical={meta.canonical}
 >
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Rent', href: buildLocalePath(locale, 'rent') },
+      {
+        label: 'What Rent Can I Afford Calculator',
+        href: buildLocalePath(locale, 'rent/rent-affordability'),
+      },
+    ]}
+  />
   <section class="mx-auto max-w-4xl px-4 py-12">
-    <h1 class="text-3xl font-bold text-slate-900 mb-6">Rent Affordability Calculator</h1>
+    <h1 class="text-3xl font-bold text-slate-900 mb-6">What Rent Can I Afford Calculator</h1>
     <p class="mb-8 text-slate-600">
       Estimate a starting rent budget based on your income and the percentage of income you want
-      to put toward housing.
+      to put toward housing. Enter your income, pick a percentage, and get an instant range you
+      can check against your full monthly budget.
     </p>
     <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
       <RentAffordabilityCalculator client:load locale={locale} />
     </div>
     <div class="mt-10 prose prose-slate max-w-none">
+      <h2>How to calculate what rent you can afford</h2>
+      <p>
+        Take your annual gross income, divide it by 12 for monthly income, then multiply by your
+        target rent share. At 30%, the formula is: (annual income / 12) x 0.30 = affordable
+        monthly rent.
+      </p>
+      <h2>Rent affordability examples by salary</h2>
+      <p>
+        At 30% of gross income, a $60,000 salary supports about $1,500 a month, an $80,000 salary
+        about $2,000 a month, and a $100,000 salary about $2,500 a month. These are starting
+        ranges from gross income — if you use take-home pay instead, the affordable rent will be
+        lower, which is the safer figure for a tight budget.
+      </p>
       <h2>Using the 30% guideline sensibly</h2>
       <p>
         The common 30% guideline can be useful as a starting point, but it does not work equally well for every household. Your other expenses, debt, savings goals, location, and income stability all matter.
@@ -35,7 +91,36 @@ const meta = buildPageMetadata(
       <p>
         Use the calculator to create a starting range, then compare that range with your complete monthly budget.
       </p>
+      <h2>What else to check before signing a lease</h2>
+      <p>
+        Check utilities, renters insurance, parking, and any fees on top of rent, and leave room
+        for essentials and an emergency fund. A rent that looks affordable on income alone can
+        still be tight once those costs are added, so run the full monthly budget before you
+        commit.
+      </p>
     </div>
+    <CalculatorFAQ heading="Rent affordability FAQs" items={faqItems} />
+    <RelatedCalculators
+      heading="Related calculators"
+      links={[
+        {
+          label: 'Paycheck Calculator',
+          href: buildLocalePath(locale, 'salary/paycheck-calculator'),
+        },
+        {
+          label: 'House Affordability Calculator',
+          href: buildLocalePath(locale, 'salary/house-affordability'),
+        },
+        {
+          label: 'Salary to Hourly Calculator',
+          href: buildLocalePath(locale, 'salary/salary-to-hourly'),
+        },
+        {
+          label: 'Rent Calculators',
+          href: buildLocalePath(locale, 'rent'),
+        },
+      ]}
+    />
   </section>
   <CalculatorResource locale="en-US" category="rent" />
 </BaseLayout>
