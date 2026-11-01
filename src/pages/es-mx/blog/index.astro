@@ -1,0 +1,113 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/navigation/Breadcrumbs.astro';
+const locale = 'es-MX' as const;
+
+const blogPosts = [
+  {
+    title: 'Cómo Calcular tu Salario Neto en México 2026',
+    slug: 'como-calcular-tu-salario-neto-en-mexico-2026',
+    excerpt: 'Guía paso a paso para entender tu recibo de nómina: ISR progresivo del 1.92% al 35%, cuota IMSS del 1.125%, subsidio al empleo y deducciones personales anuales.',
+    date: '2026-11-02',
+    category: 'Salario',
+    readTime: '10 min',
+    image: '/og-default.png'
+  }
+];
+
+const schemaWebPage = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Blog PayRenTax México",
+  "description": "Guías completas sobre salario neto, ISR, IMSS y derechos laborales en México",
+  "url": "https://payrentax.me/es-mx/blog/",
+  "inLanguage": "es-MX"
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title="Blog PayRenTax México | Guías de Salario Neto, ISR e IMSS"
+  description="Guías completas sobre cálculo de salario neto en México, ISR, IMSS, subsidio al empleo y deducciones personales. Información actualizada para 2026."
+  canonical="/es-mx/blog/"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schemaWebPage)} />
+  </Fragment>
+
+  <Breadcrumbs locale={locale} trail={[]} />
+
+  <div class="mx-auto max-w-6xl px-4 py-10">
+    <header class="mb-12">
+      <h1 class="text-4xl font-bold text-slate-900 mb-4">Blog PayRenTax México</h1>
+      <p class="text-xl text-slate-600 max-w-3xl">
+        Guías completas y actualizadas sobre salario neto, ISR, IMSS y derechos laborales en México.
+      </p>
+    </header>
+
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {blogPosts.map((post) => (
+        <article class="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+          <img
+            src={post.image}
+            alt={post.title}
+            class="w-full h-48 object-cover"
+          />
+          <div class="p-6">
+            <div class="flex items-center gap-3 text-sm text-slate-500 mb-3">
+              <span class="font-medium text-blue-600">{post.category}</span>
+              <span>•</span>
+              <time datetime={post.date}>
+                {new Date(post.date).toLocaleDateString('es-MX', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </time>
+              <span>•</span>
+              <span>{post.readTime}</span>
+            </div>
+            <h2 class="text-xl font-bold text-slate-900 mb-3">
+              <a href={`/es-mx/blog/${post.slug}/`} class="hover:text-blue-600 transition-colors">
+                {post.title}
+              </a>
+            </h2>
+            <p class="text-slate-600 mb-4">
+              {post.excerpt}
+            </p>
+            <a
+              href={`/es-mx/blog/${post.slug}/`}
+              class="inline-flex items-center text-blue-600 font-medium hover:text-blue-700 transition-colors"
+            >
+              Leer artículo completo
+              <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="mt-16 rounded-xl bg-blue-50 border border-blue-100 p-8">
+      <h2 class="text-2xl font-bold text-slate-900 mb-4">Calculadoras Gratis</h2>
+      <p class="text-slate-600 mb-6">
+        Usa nuestras calculadoras para verificar tu salario neto y tus derechos:
+      </p>
+      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <a href="/es-mx/salary/sueldo-bruto-y-neto/" class="block p-4 bg-white rounded-lg border border-slate-200 hover:border-blue-300 hover:shadow-sm transition-all">
+          <h3 class="font-semibold text-slate-900 mb-1">Salario Neto México 2026</h3>
+          <p class="text-sm text-slate-600">Calcula ISR e IMSS</p>
+        </a>
+        <a href="/es-mx/salary/calculadora-isr/" class="block p-4 bg-white rounded-lg border border-slate-200 hover:border-blue-300 hover:shadow-sm transition-all">
+          <h3 class="font-semibold text-slate-900 mb-1">Calculadora ISR México</h3>
+          <p class="text-sm text-slate-600">Solo el Impuesto Sobre la Renta</p>
+        </a>
+        <a href="/es-mx/labor/calculadora-liquidacion/" class="block p-4 bg-white rounded-lg border border-slate-200 hover:border-blue-300 hover:shadow-sm transition-all">
+          <h3 class="font-semibold text-slate-900 mb-1">Calculadora de Liquidación</h3>
+          <p class="text-sm text-slate-600">Finiquito y derechos laborales</p>
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
