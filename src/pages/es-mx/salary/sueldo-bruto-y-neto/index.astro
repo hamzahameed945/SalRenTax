@@ -3,10 +3,21 @@ import CalculatorResource from '../../../../components/content/CalculatorResourc
 import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
 import InContentAd from '../../../../components/ads/InContentAd.astro';
 import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
 import MexicoSalaryCalculator from '../../../../components/islands/MexicoSalaryCalculator';
 const locale = 'es-MX' as const;
+const faqItems = [
+  { question: '¿El ISR máximo es 35%?', answer: 'Sí, la tasa marginal máxima del ISR en México es del 35% para ingresos mensuales superiores a $250,000 MXN. Sin embargo, la tasa efectiva siempre es menor porque el ISR es progresivo.' },
+  { question: '¿Cuánto es el descuento del IMSS?', answer: 'Esta calculadora descuenta el 1.125% correspondiente a Cesantía en Edad Avanzada y Vejez. Tu empleador también paga otras cuotas al IMSS que no aparecen en tu recibo.' },
+  { question: '¿Por qué mi salario neto es diferente al calculado?', answer: 'Pueden existir otras deducciones como: préstamos personales, descuentos de caja de ahorro, Infonavit, seguro de vida, o ajustes por aguinaldo anualizado. Revisa tu recibo de nómina completo.' },
+  { question: '¿Qué es el subsidio al empleo?', answer: 'Es un beneficio para trabajadores de bajos ingresos que reduce el ISR a pagar. Si ganas menos de $7,000 MXN mensuales, es probable que apliques para este subsidio. Tu nómina debe incluirlo automáticamente.' },
+  { question: '¿Cómo puedo bajar mis impuestos legalmente?', answer: 'Puedes hacer deducciones personales anuales por: gastos médicos, colegiaturas, intereses hipotecarios, aportaciones voluntarias a tu Afore, seguro de gastos médicos, entre otros. Estas se aplican en tu declaración anual de impuestos.' },
+];
+const faqJsonLd = buildFaqJsonLd(faqItems);
 ---
 
 <BaseLayout
@@ -15,6 +26,7 @@ const locale = 'es-MX' as const;
   description="Calcula tu salario neto en México 2026. Descuenta ISR (1.92%-35%) e IMSS (1.125%). Tablas actualizadas. Resultado instantáneo, 100% gratis."
   canonical="/es-mx/salary/sueldo-bruto-y-neto/"
 >
+<JsonLd entries={[faqJsonLd]} />
   <Breadcrumbs
     locale={locale}
     trail={[{ label: 'Calculadoras de sueldo', href: buildLocalePath(locale, 'salary') }]}
@@ -182,40 +194,6 @@ const locale = 'es-MX' as const;
         <li>✅ <strong>Privado y seguro</strong> — No guardamos tu información personal</li>
       </ul>
 
-      <h3>Preguntas Frecuentes</h3>
-      
-      <h4>¿El ISR máximo es 35%?</h4>
-      <p>
-        Sí, la tasa marginal máxima del ISR en México es del 35% para ingresos mensuales superiores a $250,000 MXN. 
-        Sin embargo, la tasa <strong>efectiva</strong> siempre es menor porque el ISR es progresivo.
-      </p>
-
-      <h4>¿Cuánto es el descuento del IMSS?</h4>
-      <p>
-        Esta calculadora descuenta el 1.125% correspondiente a Cesantía en Edad Avanzada y Vejez. 
-        Tu empleador también paga otras cuotas al IMSS que no aparecen en tu recibo.
-      </p>
-
-      <h4>¿Por qué mi salario neto es diferente al calculado?</h4>
-      <p>
-        Pueden existir otras deducciones como: préstamos personales, descuentos de caja de ahorro, 
-        Infonavit, seguro de vida, o ajustes por aguinaldo anualizado. Revisa tu recibo de nómina completo.
-      </p>
-
-      <h4>¿Qué es el subsidio al empleo?</h4>
-      <p>
-        Es un beneficio para trabajadores de bajos ingresos que <strong>reduce el ISR a pagar</strong>. 
-        Si ganas menos de $7,000 MXN mensuales, es probable que apliques para este subsidio. 
-        Tu nómina debe incluirlo automáticamente.
-      </p>
-
-      <h4>¿Cómo puedo bajar mis impuestos legalmente?</h4>
-      <p>
-        Puedes hacer <strong>deducciones personales</strong> anuales por: gastos médicos, colegiaturas, 
-        intereses hipotecarios, aportaciones voluntarias a tu Afore, seguro de gastos médicos, entre otros. 
-        Estas se aplican en tu declaración anual de impuestos.
-      </p>
-
       <h3>Calculadoras Relacionadas</h3>
       <div class="not-prose grid gap-4 md:grid-cols-2">
         <a href="/es-mx/salary/calculadora-isr/" class="block p-4 rounded-lg border border-slate-200 hover:border-blue-300 hover:shadow-sm transition-all">
@@ -229,7 +207,8 @@ const locale = 'es-MX' as const;
       </div>
     </div>
 
-    <RelatedCalculators
+    <CalculatorFAQ heading="Preguntas Frecuentes" items={faqItems} />
+<RelatedCalculators
       heading="Calculadoras relacionadas"
       links={[
       { label: "Calculadora de ISR 2026", href: "/es-mx/salary/calculadora-isr/" },
