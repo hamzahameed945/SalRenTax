@@ -3,6 +3,7 @@ import CalculatorResource from '../../../../components/content/CalculatorResourc
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
 import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
 import InContentAd from '../../../../components/ads/InContentAd.astro';
 import AffiliateCTA from '../../../../components/ads/AffiliateCTA.astro';
 import JsonLd from '../../../../components/seo/JsonLd.astro';
@@ -90,6 +91,16 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
     </p>
 
     <CalculatorFAQ heading="Frequently asked questions" items={faqItems} />
+    <RelatedCalculators
+      heading="Related calculators"
+      links={[
+        { label: 'Paystub Calculator', href: buildLocalePath(locale, 'salary/paystub-calculator') },
+        { label: 'Salary to Hourly Calculator', href: buildLocalePath(locale, 'salary/salary-to-hourly') },
+        { label: 'Hourly to Salary Calculator', href: buildLocalePath(locale, 'salary/hourly-to-salary') },
+        { label: 'What Rent Can I Afford Calculator', href: buildLocalePath(locale, 'rent/rent-affordability') },
+        { label: 'US State Paycheck Calculators', href: buildLocalePath(locale, 'states') },
+      ]}
+    />
   </article>
   <CalculatorResource locale="en-US" category="salary" />
 </BaseLayout>
