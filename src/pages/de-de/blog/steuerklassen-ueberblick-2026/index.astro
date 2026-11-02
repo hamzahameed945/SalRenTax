@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import { buildLocalePath } from '../../../../i18n/utils';
+
+const locale = 'de-DE' as const;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Steuerklassen im Überblick 2026: Welche Klasse passt zu Ihnen?",
+  "description": "Steuerklasse I bis VI erklärt: Ledige, Alleinerziehende, Ehepaare mit ähnlichem oder unterschiedlichem Einkommen, Zweitjobs — und wie das Ehegattensplitting bei Klasse III das Netto verändert.",
+  "datePublished": "2026-11-02",
+  "dateModified": "2026-11-02",
+  "author": {
+    "@type": "Organization",
+    "name": "PayRenTax"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PayRenTax",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://payrentax.me/logo.svg"
+    }
+  },
+  "inLanguage": "de-DE",
+  "keywords": "steuerklasse 2026, steuerklassen übersicht, ehegattensplitting, steuerklasse III, brutto netto rechner"
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title="Steuerklassen im Überblick 2026: Welche Klasse passt zu Ihnen? | PayRenTax"
+  description="Steuerklasse I bis VI erklärt: Wer welche Klasse erhält, wie das Ehegattensplitting bei Klasse III funktioniert und was das für Ihr Netto bedeutet."
+  canonical="/de-de/blog/steuerklassen-ueberblick-2026/"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Blog', href: buildLocalePath(locale, 'blog') },
+      { label: 'Steuerklassen im Überblick 2026', href: buildLocalePath(locale, 'blog/steuerklassen-ueberblick-2026') }
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <header class="mb-10">
+      <h1 class="text-4xl font-bold text-slate-900">
+        Steuerklassen im Überblick 2026: Welche Klasse passt zu Ihnen?
+      </h1>
+      <p class="mt-4 text-lg text-slate-600">
+        Letzte Aktualisierung: November 2026. Dieser Ratgeber nutzt dieselben Angaben wie der Brutto-Netto-Rechner von PayRenTax Deutschland.
+      </p>
+    </header>
+
+    <div class="prose prose-slate prose-lg max-w-none">
+      <h2>Was die Steuerklasse bestimmt</h2>
+      <p>
+        Die Steuerklasse bestimmt, welche Freibeträge auf die Lohnsteuer angerechnet werden.
+        Sie hängt vor allem vom Familienstand ab und bei Ehepaaren zusätzlich von der Verteilung
+        des Einkommens zwischen den Partnern.
+      </p>
+
+      <h2>Alle sechs Steuerklassen auf einen Blick</h2>
+      <table>
+        <thead><tr><th>Steuerklasse</th><th>Wer sie erhält</th></tr></thead>
+        <tbody>
+          <tr><td>I</td><td>Ledige</td></tr>
+          <tr><td>II</td><td>Alleinerziehende</td></tr>
+          <tr><td>III</td><td>Besserverdiener in einer Ehe (mit Klasse V beim Partner)</td></tr>
+          <tr><td>IV</td><td>Ehepaare mit ähnlichem Einkommen</td></tr>
+          <tr><td>V</td><td>Geringverdiener in einer Ehe</td></tr>
+          <tr><td>VI</td><td>Zweitjobs</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Warum Klasse III und V oft zusammen auftreten</h2>
+      <p>
+        Bei Steuerklasse III wird die Lohnsteuer nach dem Splitting-Verfahren berechnet: Das gemeinsame
+        Einkommen wird halbiert, die Steuer berechnet und dann verdoppelt. Das führt zu einer deutlichen
+        Steuerersparnis für Ehepaare mit unterschiedlichem Einkommen. Der Partner mit dem geringeren
+        Einkommen erhält in dieser Kombination die Klasse V.
+      </p>
+      <p>
+        Verdienen beide Partner ähnlich viel, ist die Kombination IV/IV in der Regel die passende Wahl —
+        sie vermeidet, dass ein Partner monatlich deutlich zu viel oder zu wenig Lohnsteuer zahlt.
+      </p>
+
+      <h2>Was die Steuerklasse nicht ändert</h2>
+      <p>
+        Die Steuerklasse ändert nur den monatlichen Lohnsteuerabzug, nicht die endgültige Steuerlast:
+        Die wird erst mit der Steuererklärung festgestellt. Wer in Bayern oder Nordrhein-Westfalen wohnt,
+        kann die jeweils passende Brutto-Netto-Variante über die verwandten Rechner öffnen.
+      </p>
+
+      <h2>Rechner ausprobieren</h2>
+      <p>
+        Geben Sie Ihr Brutto und Ihre Steuerklasse in den
+        <a href="/de-de/salary/brutto-netto-rechner/">Brutto-Netto-Rechner 2026</a> ein,
+        um Ihr Netto mit den aktuellen Sätzen zu berechnen.
+      </p>
+    </div>
+  </article>
+</BaseLayout>
