@@ -1,0 +1,126 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import ItLordoNettoCalculator from '../../../../components/islands/ItLordoNettoCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'it-IT' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  t.salary.itLordoNetto.title,
+  t.salary.itLordoNetto.metaDescription,
+  '/it-it/salary/stipendio-lordo-netto/',
+);
+
+const faqItems = [
+  {
+    question: 'Qual è la differenza tra stipendio lordo e stipendio netto?',
+    answer:
+      'Lo stipendio lordo è la retribuzione prima di qualsiasi trattenuta. Lo stipendio netto è ciò che resta dopo i contributi INPS a carico del dipendente e l’IRPEF nazionale. Le addizionali regionali e comunali non sono ancora dedotte a questo punto, perché variano in base alla residenza.',
+  },
+  {
+    question: 'Quali sono gli scaglioni IRPEF 2026?',
+    answer:
+      'Per il 2026: 23% fino a €28.000, 33% da €28.001 a €50.000 (ridotto dal 35% dalla Legge di Bilancio 2026, L. 199/2025) e 43% sopra €50.000. Si tratta di aliquote marginali: l’aliquota più alta si applica solo alla parte di reddito sopra la soglia.',
+  },
+  {
+    question: 'Quanto si paga di INPS come dipendente?',
+    answer:
+      'Il dipendente paga il 9,19% della retribuzione lorda, più un contributo aggiuntivo dell’1% sulla parte di retribuzione annua sopra €56.224. La base contributiva è limitata dal massimale di €122.295 all’anno. I contributi INPS sono deducibili dal reddito imponibile IRPEF.',
+  },
+  {
+    question: 'Le addizionali regionali e comunali sono incluse?',
+    answer:
+      'No. Le addizionali variano in base alla regione e al comune di residenza (regionale circa 1,23–3,33%, comunale fino a circa 0,8–0,9%) e quindi non sono incluse nel calcolo. Anche la detrazione per lavoro dipendente non è inclusa: la busta paga reale sarà diversa.',
+  },
+  {
+    question: 'Perché il calcolatore mostra anche un netto mensile su 12 mensilità?',
+    answer:
+      'In Italia la retribuzione annua lorda (RAL) è spesso corrisposta in 13 o 14 mensilità a seconda del contratto collettivo (CCNL). Il netto mensile mostrato è l’equivalente su 12 mensilità; se il tuo contratto prevede 13 o 14 mensilità, dividi il netto annuo per quel numero.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="it-lordo-netto"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      { label: t.salary.itLordoNetto.title, href: buildLocalePath(locale, 'salary/stipendio-lordo-netto') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">{t.salary.itLordoNetto.h1}</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">{t.salary.itLordoNetto.intro}</p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <ItLordoNettoCalculator client:load locale={locale} />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="it-lordonetto-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Contributi INPS e scaglioni IRPEF 2026</h2>
+      <table>
+        <thead>
+          <tr><th>Voce</th><th>Base</th><th>Aliquota dipendente</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Contributi INPS</td><td>Fino al massimale di €122.295</td><td>9,19 %</td></tr>
+          <tr><td>Contributo INPS aggiuntivo</td><td>Parte sopra €56.224</td><td>+1 %</td></tr>
+          <tr><td>IRPEF — 1° scaglione</td><td>Fino a €28.000 di imponibile</td><td>23 %</td></tr>
+          <tr><td>IRPEF — 2° scaglione</td><td>Da €28.001 a €50.000</td><td>33 %</td></tr>
+          <tr><td>IRPEF — 3° scaglione</td><td>Sopra €50.000</td><td>43 %</td></tr>
+        </tbody>
+      </table>
+      <p>
+        I contributi INPS sono deducibili: il reddito imponibile IRPEF è la RAL meno i contributi INPS.
+      </p>
+
+      <h2>Due esempi verificati</h2>
+      <ul>
+        <li><strong>RAL €30.000:</strong> INPS €2.757,00 → imponibile €27.243,00 → IRPEF €6.265,89 → netto <strong>€20.977,11</strong> all’anno (€1.748,09 al mese su 12 mensilità).</li>
+        <li><strong>RAL €60.000:</strong> INPS €5.514,00 + contributo aggiuntivo €37,76 → imponibile €54.448,24 → IRPEF €15.612,74 → netto <strong>€38.835,50</strong> all’anno (€3.236,29 al mese su 12 mensilità).</li>
+      </ul>
+
+      <h2>Cosa non è incluso — e perché</h2>
+      <p>
+        Le addizionali regionali e comunali dipendono dal comune e dalla regione di residenza e non
+        possono essere calcolate senza quei dati. La detrazione per lavoro dipendente (che crea
+        un’area di esenzione intorno a €8.500 per i dipendenti) segue una formula che decresce con
+        il reddito e non è modellata qui. Il risultato è quindi una stima trasparente, non la busta paga esatta.
+      </p>
+    </div>
+
+    <CalculatorFAQ heading="Domande frequenti sullo stipendio netto" items={faqItems} />
+    <RelatedCalculators
+      heading="Calcolatori correlati"
+      links={[
+        { label: 'Stipendio annuo in tariffa oraria', href: buildLocalePath(locale, 'salary/stipendio-annuo-in-tariffa-oraria') },
+        { label: 'Convertitore di periodo di pagamento', href: buildLocalePath(locale, 'salary/convertitore-periodo-di-pagamento') },
+        { label: 'Blog stipendio Italia', href: buildLocalePath(locale, 'blog') },
+      ]}
+    />
+  </article>
+  <CalculatorResource locale="it-IT" category="salary" />
+</BaseLayout>
