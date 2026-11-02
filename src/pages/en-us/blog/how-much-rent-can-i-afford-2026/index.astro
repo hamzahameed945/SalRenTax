@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import { buildLocalePath } from '../../../../i18n/utils';
+
+const locale = 'en-US' as const;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How Much Rent Can I Afford in 2026?",
+  "description": "Use the 30% rule to turn your salary into a rent budget: $1,250 a month on $50k, $1,500 on $60k, $1,750 on $70k, $2,000 on $80k and $2,500 on $100k — and why take-home pay gives the safer figure.",
+  "datePublished": "2026-11-02",
+  "dateModified": "2026-11-02",
+  "author": {
+    "@type": "Organization",
+    "name": "PayRenTax"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PayRenTax",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://payrentax.me/logo.svg"
+    }
+  },
+  "inLanguage": "en-US",
+  "keywords": "how much rent can i afford, rent affordability 2026, 30 percent rule rent, rent on 50k, rent on 60k"
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title="How Much Rent Can I Afford in 2026? | PayRenTax"
+  description="Use the 30% rule to turn your salary into a rent budget, with examples from $50k to $100k, and check it against your full monthly budget before signing a lease."
+  canonical="/en-us/blog/how-much-rent-can-i-afford-2026/"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Blog', href: buildLocalePath(locale, 'blog') },
+      { label: 'How Much Rent Can I Afford in 2026?', href: buildLocalePath(locale, 'blog/how-much-rent-can-i-afford-2026') }
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <header class="mb-10">
+      <h1 class="text-4xl font-bold text-slate-900">
+        How Much Rent Can I Afford in 2026?
+      </h1>
+      <p class="mt-4 text-lg text-slate-600">
+        Last updated: November 2026. This guide uses the same 30% rule as the PayRenTax rent affordability calculator.
+      </p>
+    </header>
+
+    <div class="prose prose-slate prose-lg max-w-none">
+      <h2>The 30% rule, in one formula</h2>
+      <p>
+        Take your annual gross income, divide it by 12 for monthly income, then multiply by 0.30.
+        The formula is: (annual income / 12) × 0.30 = affordable monthly rent.
+        Treat the result as a planning range, not a hard limit — debt, savings goals and local prices matter too.
+      </p>
+
+      <h2>Rent affordability examples by salary</h2>
+      <ul>
+        <li><strong>On $50,000:</strong> about $1,250 a month ($50,000 / 12 = about $4,167, times 0.30).</li>
+        <li><strong>On $60,000:</strong> about $1,500 a month ($60,000 / 12 = $5,000, times 0.30).</li>
+        <li><strong>On $70,000:</strong> about $1,750 a month ($70,000 / 12 = about $5,833, times 0.30).</li>
+        <li><strong>On $80,000:</strong> about $2,000 a month ($80,000 / 12 = about $6,667, times 0.30).</li>
+        <li><strong>On $100,000:</strong> about $2,500 a month by the same formula.</li>
+      </ul>
+
+      <h2>Gross pay or take-home pay?</h2>
+      <p>
+        The 30% rule is usually applied to gross (pre-tax) income, which is why it is only a starting point.
+        If your take-home pay is much lower than your gross pay, check the result against your actual monthly
+        budget and use the take-home pay figure for a more conservative estimate.
+      </p>
+
+      <h2>What the rent budget does not include</h2>
+      <p>
+        The calculator estimates a starting rent budget from income alone. Utilities, renters insurance, parking,
+        debt payments and savings are not included, so compare the result with your complete monthly budget
+        before committing to a lease. High-cost cities often push households above 30% — in that case, look at
+        the full budget: lower transport costs, shared housing, or a shorter lease while income grows can all help.
+        Do not stretch to a rent that leaves no room for essentials or an emergency fund.
+      </p>
+
+      <h2>Try the calculator</h2>
+      <p>
+        Enter your income in the
+        <a href="/en-us/rent/rent-affordability/">What Rent Can I Afford Calculator</a>
+        to get your starting rent budget instantly.
+      </p>
+    </div>
+  </article>
+</BaseLayout>
