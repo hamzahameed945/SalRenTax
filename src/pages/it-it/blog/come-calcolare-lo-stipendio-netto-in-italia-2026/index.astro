@@ -1,0 +1,106 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import { buildLocalePath } from '../../../../i18n/utils';
+
+const locale = 'it-IT' as const;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Come Calcolare lo Stipendio Netto in Italia 2026",
+  "description": "Guida passo passo per calcolare lo stipendio netto in Italia 2026: contributi INPS 9,19% più 1% sopra €56.224, scaglioni IRPEF 23% / 33% / 43%, con due esempi verificati.",
+  "datePublished": "2026-11-02",
+  "dateModified": "2026-11-02",
+  "author": {
+    "@type": "Organization",
+    "name": "PayRenTax"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PayRenTax",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://payrentax.me/logo.svg"
+    }
+  },
+  "inLanguage": "it-IT",
+  "keywords": "stipendio lordo netto italia 2026, calcolare stipendio netto, contributi INPS, scaglioni IRPEF, RAL"
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title="Come Calcolare lo Stipendio Netto in Italia 2026 | PayRenTax"
+  description="Guida passo passo per calcolare lo stipendio netto in Italia 2026: INPS, scaglioni IRPEF e addizionali, con le aliquote 2026 e due esempi verificati."
+  canonical="/it-it/blog/come-calcolare-lo-stipendio-netto-in-italia-2026/"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Blog', href: buildLocalePath(locale, 'blog') },
+      { label: 'Come Calcolare lo Stipendio Netto in Italia 2026', href: buildLocalePath(locale, 'blog/come-calcolare-lo-stipendio-netto-in-italia-2026') }
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <header class="mb-10">
+      <h1 class="text-4xl font-bold text-slate-900">
+        Come Calcolare lo Stipendio Netto in Italia 2026
+      </h1>
+      <p class="mt-4 text-lg text-slate-600">
+        Ultimo aggiornamento: novembre 2026. Questa guida usa le stesse aliquote del calcolatore PayRenTax Italia: contributi INPS e scaglioni IRPEF 2026.
+      </p>
+    </header>
+
+    <div class="prose prose-slate prose-lg max-w-none">
+      <h2>Lordo, contributi, IRPEF: in che ordine si calcola</h2>
+      <p>
+        In Italia lo stipendio netto si ottiene così: dalla retribuzione annua lorda (RAL) si sottraggono
+        i contributi INPS a carico del dipendente; sul reddito imponibile così ottenuto (RAL meno INPS,
+        perché i contributi sono deducibili) si applica l’IRPEF nazionale per scaglioni. Le addizionali
+        regionali e comunali si aggiungono dopo, in base alla residenza.
+      </p>
+
+      <h2>I contributi INPS 2026 a carico del dipendente</h2>
+      <ul>
+        <li><strong>Contributo base:</strong> 9,19% della retribuzione lorda, fino al massimale di €122.295 all’anno.</li>
+        <li><strong>Contributo aggiuntivo:</strong> +1% solo sulla parte di retribuzione annua sopra €56.224.</li>
+      </ul>
+
+      <h2>Gli scaglioni IRPEF 2026</h2>
+      <ul>
+        <li><strong>23%</strong> fino a €28.000 di reddito imponibile.</li>
+        <li><strong>33%</strong> da €28.001 a €50.000 (ridotto dal 35% dalla Legge di Bilancio 2026, L. 199/2025; risparmio massimo €440 all’anno).</li>
+        <li><strong>43%</strong> sopra €50.000.</li>
+      </ul>
+      <p>
+        Le aliquote sono marginali: l’aliquota più alta si applica solo alla parte di reddito sopra la soglia.
+      </p>
+
+      <h2>Due esempi verificati</h2>
+      <ul>
+        <li><strong>RAL €30.000:</strong> INPS €2.757,00 → imponibile €27.243,00 → IRPEF €6.265,89 → netto <strong>€20.977,11</strong> all’anno.</li>
+        <li><strong>RAL €60.000:</strong> INPS €5.514,00 + contributo aggiuntivo €37,76 → imponibile €54.448,24 → IRPEF €15.612,74 → netto <strong>€38.835,50</strong> all’anno.</li>
+      </ul>
+
+      <h2>Cosa manca in questa stima</h2>
+      <p>
+        Le addizionali regionali (circa 1,23–3,33%) e comunali (fino a circa 0,8–0,9%) variano in base
+        alla residenza e non sono incluse. Anche la detrazione per lavoro dipendente, che crea un’area
+        di esenzione intorno a €8.500 per i dipendenti, non è modellata. La busta paga reale sarà quindi diversa.
+      </p>
+
+      <h2>Prova il calcolatore</h2>
+      <p>
+        Inserisci la tua RAL nel
+        <a href="/it-it/salary/stipendio-lordo-netto/">calcolatore stipendio lordo netto Italia 2026</a>
+        per ottenere il tuo netto e il dettaglio completo delle trattenute.
+      </p>
+    </div>
+  </article>
+</BaseLayout>
