@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import { buildLocalePath } from '../../../../i18n/utils';
+
+const locale = 'en-US' as const;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "What Is Take-Home Pay? Gross Pay vs Net Pay Explained",
+  "description": "Take-home pay is what remains after payroll deductions are taken from gross pay. Learn what is usually deducted, why two jobs with the same salary can pay differently, and how to check your own figure.",
+  "datePublished": "2026-11-03",
+  "dateModified": "2026-11-03",
+  "author": {
+    "@type": "Organization",
+    "name": "PayRenTax"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PayRenTax",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://payrentax.me/logo.svg"
+    }
+  },
+  "inLanguage": "en-US",
+  "keywords": "take home pay, gross pay vs net pay, what is take home pay, net pay calculator"
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title="What Is Take-Home Pay? Gross Pay vs Net Pay Explained | PayRenTax"
+  description="Take-home pay is what remains after payroll deductions. Learn what is usually deducted, why the same salary can pay differently in different states, and how to check your own figure."
+  canonical="/en-us/blog/take-home-pay-explained-2026/"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Blog', href: buildLocalePath(locale, 'blog') },
+      { label: 'What Is Take-Home Pay? Gross Pay vs Net Pay Explained', href: buildLocalePath(locale, 'blog/take-home-pay-explained-2026') }
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-4xl font-bold text-slate-900">What Is Take-Home Pay? Gross Pay vs Net Pay Explained</h1>
+    <p class="mt-4 text-lg text-slate-600 leading-relaxed">
+      A job offer says one number, but your bank account shows a smaller one. The gap between
+      them is not a mistake — it is payroll deductions. Understanding the two numbers, gross
+      pay and take-home pay, is the single most useful habit before you accept an offer,
+      sign a lease, or set a monthly budget.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">Gross pay: the headline number</h2>
+    <p class="mt-3 text-slate-600 leading-relaxed">
+      Gross pay is the full amount you earn before anything is taken out: your salary or
+      hourly rate multiplied by the hours you work, plus any bonuses or overtime your
+      employer pays. It is the number in the job advertisement and the number most people
+      quote when they say what they earn. It is also the number you cannot spend in full.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">Take-home pay: what you actually keep</h2>
+    <p class="mt-3 text-slate-600 leading-relaxed">
+      Take-home pay, also called net pay, is what remains after deductions. The usual
+      deductions from a US paycheck include federal income tax, state income tax where it
+      applies, Social Security, and Medicare. On top of those, many workers have voluntary
+      deductions: health insurance premiums, retirement contributions, and similar
+      benefits they chose when they joined. Each deduction is small on its own; together
+      they are the reason net pay is noticeably lower than gross pay.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">Why the same salary pays differently</h2>
+    <p class="mt-3 text-slate-600 leading-relaxed">
+      Two people on the same salary can take home different amounts. Location is one reason:
+      state tax rules differ, so the same gross pay gives a different net figure in
+      different states. Benefits choices are another: someone putting more into retirement
+      or paying for a family health plan takes home less each month, even though the gross
+      salary is identical. Pay frequency matters too — the same annual salary split into
+      weekly, biweekly, or monthly checks gives different amounts per check, even though
+      the yearly total is the same.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">How to check your own figure</h2>
+    <p class="mt-3 text-slate-600 leading-relaxed">
+      Start with your most recent payslip: it lists gross pay, each deduction, and net pay
+      for that period. If you are comparing offers or planning a move, a paycheck
+      calculator does the same breakdown for a salary and location you enter, so you can
+      see the take-home figure before you commit. Then use that net figure — not the gross
+      salary — for rent and budgeting decisions. A rent budget built on gross pay
+      overstates what you can afford every single month.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">The one rule to remember</h2>
+    <p class="mt-3 text-slate-600 leading-relaxed">
+      Compare offers on take-home pay, budget on take-home pay, and treat gross pay as what
+      it is: the starting point of the calculation, not the money you get. Once you make
+      that switch, salary negotiations, rent decisions, and monthly budgets all get more
+      honest — because they are built on the number that actually reaches your account.
+    </p>
+    <p class="mt-6">
+      <a href="/en-us/salary/paycheck-calculator/" class="font-semibold text-accent">Paycheck calculator</a>
+      <span class="text-slate-400"> · </span>
+      <a href="/en-us/salary/salary-to-hourly/" class="font-semibold text-accent">Salary to hourly calculator</a>
+    </p>
+  </article>
+</BaseLayout>
