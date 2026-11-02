@@ -1,6 +1,8 @@
-# Keep the temporary *.workers.dev address out of search results.
-# The real domain (payrentax.me) is not matched by these rules, so it stays indexable.
-# Do NOT block crawling in robots.txt for this: search engines must be able to
-# fetch the page to see the noindex header.
-https://:worker.:account.workers.dev/*
-  X-Robots-Tag: noindex, nofollow
+# No host rules are needed here.
+# Non-canonical hosts (including any *.workers.dev address) are permanently
+# redirected to https://payrentax.me by src/worker.ts, which runs first on
+# every request (see wrangler.jsonc: run_worker_first, workers_dev: false).
+# That redirect happens before any static asset is served, so a noindex
+# header rule for a staging host would never be reached. Do NOT block
+# crawling in robots.txt for this: search engines must be able to fetch
+# the page to see the redirect.
