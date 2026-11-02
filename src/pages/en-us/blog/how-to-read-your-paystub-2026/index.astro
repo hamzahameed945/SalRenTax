@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import { buildLocalePath } from '../../../../i18n/utils';
+
+const locale = 'en-US' as const;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How to Read Your Paystub: Gross Pay, Deductions, and Net Pay",
+  "description": "A paystub lists gross pay, each deduction, and net pay for the period, plus year-to-date totals. Learn what each section means and which three numbers to check every payday.",
+  "datePublished": "2026-11-03",
+  "dateModified": "2026-11-03",
+  "author": {
+    "@type": "Organization",
+    "name": "PayRenTax"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PayRenTax",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://payrentax.me/logo.svg"
+    }
+  },
+  "inLanguage": "en-US",
+  "keywords": "how to read a paystub, paystub explained, paystub deductions, gross pay net pay paystub"
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title="How to Read Your Paystub: Gross Pay, Deductions, and Net Pay | PayRenTax"
+  description="A paystub lists gross pay, each deduction, and net pay for the period, plus year-to-date totals. Learn what each section means and which numbers to check every payday."
+  canonical="/en-us/blog/how-to-read-your-paystub-2026/"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Blog', href: buildLocalePath(locale, 'blog') },
+      { label: 'How to Read Your Paystub: Gross Pay, Deductions, and Net Pay', href: buildLocalePath(locale, 'blog/how-to-read-your-paystub-2026') }
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-4xl font-bold text-slate-900">How to Read Your Paystub: Gross Pay, Deductions, and Net Pay</h1>
+    <p class="mt-4 text-lg text-slate-600 leading-relaxed">
+      Most people glance at one number on their paystub — the amount that arrived — and
+      ignore the rest. But the rest of the page is where overpayments, wrong deductions,
+      and budgeting mistakes hide. It takes two minutes to read properly once you know
+      what each section means.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">The header: who, when, and how often</h2>
+    <p class="mt-3 text-slate-600 leading-relaxed">
+      The top of the stub shows your name, your employer, the pay period the stub covers,
+      and the payday. Check the pay period first: if it does not match the days you
+      actually worked, every number below it is suspect. The header also usually shows
+      your pay rate and hours for the period, which is the starting point for everything
+      else.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">Gross pay: what you earned</h2>
+    <p class="mt-3 text-slate-600 leading-relaxed">
+      Gross pay is your earnings before anything is taken out: regular hours at your rate,
+      plus overtime, bonuses, or commissions if they apply to this period. If your hours
+      or rate changed recently, this is the first place the change should show up. A
+      gross figure that does not match your hours times your rate is worth querying
+      before payday confusion becomes a budgeting problem.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">Deductions: where the gap goes</h2>
+    <p class="mt-3 text-slate-600 leading-relaxed">
+      The deductions section lists everything taken out of gross pay. The usual entries
+      on a US stub are federal income tax, state income tax where it applies, Social
+      Security, and Medicare, followed by voluntary deductions such as health insurance
+      premiums and retirement contributions. Each line should show the amount for this
+      period and, separately, the year-to-date total. A deduction you do not recognise,
+      or one that suddenly changed size, is the most common paystub error — flag it with
+      payroll rather than assuming it will correct itself.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">Net pay and year-to-date totals</h2>
+    <p class="mt-3 text-slate-600 leading-relaxed">
+      Net pay, or take-home pay, is gross pay minus all deductions — the amount that
+      actually reaches your account. Below it, the year-to-date columns add up every
+      stub so far this year: year-to-date gross, year-to-date deductions, and
+      year-to-date net. Those totals are the numbers that matter at tax time and the
+      quickest way to spot a problem early, because a mistake repeated across stubs
+      shows up as a year-to-date figure that does not match your own records.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">The three numbers to check every payday</h2>
+    <p class="mt-3 text-slate-600 leading-relaxed">
+      First, gross pay against your hours and rate. Second, each deduction line against
+      what you expect — especially any voluntary benefit you changed recently. Third,
+      net pay against the deposit that actually arrived. If all three line up, file the
+      stub and move on. If any one of them does not, you have caught the problem in the
+      period it happened, when it is easiest to fix.
+    </p>
+    <p class="mt-6">
+      <a href="/en-us/salary/paycheck-calculator/" class="font-semibold text-accent">Paycheck calculator</a>
+      <span class="text-slate-400"> · </span>
+      <a href="/en-us/salary/paystub-calculator/" class="font-semibold text-accent">Paystub calculator</a>
+    </p>
+  </article>
+</BaseLayout>
