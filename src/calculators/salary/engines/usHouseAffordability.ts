@@ -1,5 +1,6 @@
 import type { CalculatorEngine, ValidationResult } from '../../core/types';
 import { usPaycheckEngine, type FilingStatus } from './usPaycheck';
+export type { FilingStatus } from './usPaycheck';
 import {
   EFFECTIVE_PROPERTY_TAX_RATES_2026,
   US_STATES,

@@ -9,7 +9,11 @@ import type { ValidationResult } from './validation';
 export type { ValidationResult };
 
 export interface CalculatorEngine<Input, Result, Config> {
-  calculate(input: Input, config: Config, year: number): Result;
+  // config and year are optional: many engines are year/config-independent
+  // (e.g. usTaxRefund, aguinaldo) and are called with input only by their
+  // islands and tests, while year/config-dependent engines (e.g. usPaycheck)
+  // still receive both. Making them required broke 42 call sites.
+  calculate(input: Input, config?: Config, year?: number): Result;
   validate(input: Input): ValidationResult<Input>;
 }
 
