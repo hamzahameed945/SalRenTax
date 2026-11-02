@@ -17,7 +17,8 @@ export type LocaleCode =
   | 'es-CO'
   | 'de-DE'
   | 'nl-NL'
-  | 'el-GR';
+  | 'el-GR'
+  | 'fr-FR';
 
 /** All locales planned for initial coverage. */
 export const ALL_LOCALES: LocaleCode[] = [
@@ -34,6 +35,7 @@ export const ALL_LOCALES: LocaleCode[] = [
   'de-DE',
   'nl-NL',
   'el-GR',
+  'fr-FR',
 ];
 
 /**
@@ -57,6 +59,7 @@ export const LOCALE_STATUS: Record<LocaleCode, LocaleStatus> = {
   'de-DE': 'active',
   'nl-NL': 'active',
   'el-GR': 'active',
+  'fr-FR': 'active',
 };
 
 /** All locales with an 'active' status. */
@@ -86,7 +89,8 @@ export type CalculatorType =
   | 'esFiniquito'
   | 'mxFiniquito'
   | 'dePartTimeSalary'
-  | 'deMinijob';
+  | 'deMinijob'
+  | 'frBruttoNetto';
 
 export type Category = 'salary' | 'tax' | 'rent' | 'labor' | 'states' | 'guides';
 
