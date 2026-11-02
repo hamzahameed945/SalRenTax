@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import { buildLocalePath } from '../../../../i18n/utils';
+
+const locale = 'en-US' as const;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Salary to Hourly: How to Convert Your Pay in 2026",
+  "description": "Convert an annual salary to an hourly rate by dividing by your actual working hours: $50,000 a year is about $24.04 an hour on a 40-hour week, and $60,000 is about $28.85 — plus how part-time hours and take-home pay change the figure.",
+  "datePublished": "2026-11-03",
+  "dateModified": "2026-11-03",
+  "author": {
+    "@type": "Organization",
+    "name": "PayRenTax"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PayRenTax",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://payrentax.me/logo.svg"
+    }
+  },
+  "inLanguage": "en-US",
+  "keywords": "salary to hourly, salary to hourly calculator, convert salary to hourly rate, annual salary to hourly"
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title="Salary to Hourly: How to Convert Your Pay in 2026 | PayRenTax"
+  description="Convert an annual salary to an hourly rate using your real working hours, with examples from $40,000 to $100,000, and remember that the result is gross pay, not take-home pay."
+  canonical="/en-us/blog/salary-to-hourly-conversion-2026/"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Blog', href: buildLocalePath(locale, 'blog') },
+      { label: 'Salary to Hourly: How to Convert Your Pay in 2026', href: buildLocalePath(locale, 'blog/salary-to-hourly-conversion-2026') }
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-4xl font-bold text-slate-900">Salary to Hourly: How to Convert Your Pay in 2026</h1>
+    <p class="mt-4 text-lg text-slate-600 leading-relaxed">
+      Job offers rarely use the same language. One quotes an annual salary, another quotes an
+      hourly rate, and comparing them in your head is harder than it looks. The conversion
+      itself is simple arithmetic — the trick is using your real working hours instead of
+      assuming a standard week you do not work.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">The basic formula</h2>
+    <p class="mt-3 text-slate-600 leading-relaxed">
+      Divide your annual salary by the number of hours you work in a year. For a standard
+      full-time schedule of 40 hours a week for 52 weeks, that is 2,080 hours a year, so the
+      formula is: hourly rate = annual salary / 2,080. If your schedule is different, use
+      your own figure instead: weekly hours multiplied by the number of weeks you work in
+      the year.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">Example conversions on a 40-hour week</h2>
+    <p class="mt-3 text-slate-600 leading-relaxed">
+      On 2,080 hours a year, the conversions work out like this:
+    </p>
+    <ul class="mt-3 list-disc pl-6 text-slate-600 leading-relaxed">
+      <li>$40,000 a year is about $19.23 an hour</li>
+      <li>$50,000 a year is about $24.04 an hour</li>
+      <li>$60,000 a year is about $28.85 an hour</li>
+      <li>$75,000 a year is about $36.06 an hour</li>
+      <li>$100,000 a year is about $48.08 an hour</li>
+    </ul>
+    <p class="mt-3 text-slate-600 leading-relaxed">
+      The same table in reverse is just as useful: an hourly rate multiplied by 2,080 gives
+      the equivalent annual salary on a full-time schedule.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">If you do not work 40 hours</h2>
+    <p class="mt-3 text-slate-600 leading-relaxed">
+      Part-time schedules change the result completely, because the same salary spread over
+      fewer hours is a higher hourly rate — and the same hourly rate over fewer hours is a
+      lower annual salary. A $50,000 salary on a 30-hour week, for example, is 1,560 hours a
+      year, which works out to about $32.05 an hour, not $24.04. Always convert with the
+      hours you actually work, including any regular unpaid time off, rather than the
+      textbook 2,080.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">Gross pay is not take-home pay</h2>
+    <p class="mt-3 text-slate-600 leading-relaxed">
+      This conversion gives you gross pay — the figure before payroll deductions. What you
+      actually keep is smaller, and it depends on your location and pay details. So use the
+      hourly conversion to compare offers, then run the winning figure through a paycheck
+      calculator to see the take-home amount before you decide. An offer that looks better
+      per hour can still lose once deductions are counted.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">Try it with your own numbers</h2>
+    <p class="mt-3 text-slate-600 leading-relaxed">
+      If your schedule is not a neat 40 hours, or you want the reverse conversion, use the
+      salary-to-hourly calculator and the hourly-to-salary calculator on this site instead
+      of doing the division by hand. Enter your own hours and weeks, and compare the result
+      with the offer in front of you before you accept it.
+    </p>
+    <p class="mt-6">
+      <a href="/en-us/salary/salary-to-hourly/" class="font-semibold text-accent">Salary to hourly calculator</a>
+      <span class="text-slate-400"> · </span>
+      <a href="/en-us/salary/hourly-to-salary/" class="font-semibold text-accent">Hourly to salary calculator</a>
+      <span class="text-slate-400"> · </span>
+      <a href="/en-us/salary/paycheck-calculator/" class="font-semibold text-accent">Paycheck calculator</a>
+    </p>
+  </article>
+</BaseLayout>
