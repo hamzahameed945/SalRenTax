@@ -2,6 +2,18 @@ export const salary = {
   categoryTitle: 'Calculateurs de salaire France 2026',
   categoryIntro: 'Calculez votre salaire net 2026 avec les données officielles françaises.',
 
+  salaryToHourly: {
+    title: 'Salaire Annuel vers Taux Horaire France 2026 — PayRenTax',
+    h1: 'Salaire Annuel vers Taux Horaire',
+    intro: 'Convertissez votre salaire annuel brut en équivalent horaire, selon vos heures hebdomadaires et vos semaines travaillées par an.',
+  },
+
+  payFrequency: {
+    title: 'Convertisseur de Période de Paiement France — PayRenTax',
+    h1: 'Convertisseur de Période de Paiement',
+    intro: 'Convertissez votre salaire entre hebdomadaire, bimensuel, mensuel et annuel.',
+  },
+
   frBruttoNetto: {
     title: 'Calculateur Salaire Brut Net France 2026 | PayRenTax',
     metaDescription:
