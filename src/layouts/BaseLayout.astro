@@ -9,6 +9,9 @@ import { buildWebPageJsonLd, buildWebSiteJsonLd } from '../lib/seo/structuredDat
 import { buildHreflangLinks } from '../lib/seo/hreflang';
 import { resolveSiteUrl } from '../lib/seo/site';
 import type { LocaleCode } from '../i18n/types';
+import { ACTIVE_LOCALES } from '../i18n/types';
+import { buildLocalePath } from '../i18n/utils';
+import { buildCanonical } from '../lib/seo/metadata';
 
 export interface Props {
   locale: LocaleCode;
@@ -18,14 +21,24 @@ export interface Props {
   /** Set only for pages registered with an equivalentPageGroup, to emit real (never fake) hreflang links. */
   equivalentPageGroup?: string;
   ogImage?: string;
+  robots?: string;
 }
-const { locale, title, description, canonical, equivalentPageGroup, ogImage = '/og-default.png' } = Astro.props;
+const { locale, title, description, canonical, equivalentPageGroup, ogImage = '/og-default.png', robots } = Astro.props;
 const t = getDictionary(locale);
 const config = getLocaleConfig(locale);
 const siteUrl = resolveSiteUrl(import.meta.env as unknown as Record<string, string | undefined>);
 const canonicalUrl = new URL(canonical, siteUrl).toString();
 const resolvedOgImage = new URL(ogImage, siteUrl).toString();
-const hreflangLinks = buildHreflangLinks(equivalentPageGroup);
+const canonicalPathname = new URL(canonical, siteUrl).pathname;
+const isLocaleHomepage = /^\/[a-z]{2}-[a-z]{2}\/$/.test(canonicalPathname);
+const hreflangLinks = equivalentPageGroup
+  ? buildHreflangLinks(equivalentPageGroup)
+  : isLocaleHomepage
+    ? [
+        ...ACTIVE_LOCALES.map((loc) => ({ hreflang: loc.toLowerCase(), href: buildCanonical(buildLocalePath(loc))) })),
+        { hreflang: 'x-default', href: buildCanonical('/') },
+      ]
+    : [];
 
 const jsonLdEntries = [
   buildWebSiteJsonLd(t.common.siteName, siteUrl),
@@ -42,6 +55,7 @@ const jsonLdEntries = [
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
+{robots && (<meta name="robots" content={robots} />)}
     {hreflangLinks.map((link) => (
       <link rel="alternate" hreflang={link.hreflang} href={link.href} />
     ))}
