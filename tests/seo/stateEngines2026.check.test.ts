@@ -4,9 +4,10 @@ import { wiStateEngine } from '../../src/calculators/salary/engines/usStates/wi'
 import { txStateEngine } from '../../src/calculators/salary/engines/usStates/tx';
 import { coStateEngine } from '../../src/calculators/salary/engines/usStates/co';
 import { alStateEngine } from '../../src/calculators/salary/engines/usStates/al';
+import type { UsPaycheckInput } from '../../src/calculators/salary/engines/usPaycheck';
 
-const single = { filingStatus: 'single' } as any;
-const mfj = { filingStatus: 'marriedJointly' } as any;
+const single = { filingStatus: 'single' } as UsPaycheckInput;
+const mfj = { filingStatus: 'marriedJointly' } as UsPaycheckInput;
 
 describe('2026 state engines sanity', () => {
   it('CA $100k single', () => {

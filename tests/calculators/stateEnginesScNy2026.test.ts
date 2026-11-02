@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { scStateEngine, calculateSciad } from '../../src/calculators/salary/engines/usStates/sc';
 import { nyStateEngine } from '../../src/calculators/salary/engines/usStates/ny';
+import type { UsPaycheckInput } from '../../src/calculators/salary/engines/usPaycheck';
 
-const single = { filingStatus: 'single' } as any;
-const mfj = { filingStatus: 'marriedJointly' } as any;
+const single = { filingStatus: 'single' } as UsPaycheckInput;
+const mfj = { filingStatus: 'marriedJointly' } as UsPaycheckInput;
 
 describe('SC 2026 engine (Act 110: 1.99% to $30k, 5.21% above + SCIAD)', () => {
   it('SCIAD is full below the phase-out start', () => {
@@ -34,7 +35,7 @@ describe('SC 2026 engine (Act 110: 1.99% to $30k, 5.21% above + SCIAD)', () => {
     expect(scStateEngine.calculate(mfj, 100000, 0).annualStateIncomeTax).toBeCloseTo(2964.95, 1);
   });
   it('SC same schedule for every filing status', () => {
-    const mfs = { filingStatus: 'marriedSeparately' } as any;
+    const mfs = { filingStatus: 'marriedSeparately' } as UsPaycheckInput;
     expect(scStateEngine.calculate(mfs, 100000, 0).annualStateIncomeTax).toBeCloseTo(4244, 1);
   });
 });
