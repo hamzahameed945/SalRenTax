@@ -1,16 +1,16 @@
 ---
-import CalculatorResource from '../../../../../components/content/CalculatorResource.astro';
-import RelatedCalculators from '../../../../../components/content/RelatedCalculators.astro';
-import BaseLayout from '../../../../../layouts/BaseLayout.astro';
-import Breadcrumbs from '../../../../../components/navigation/Breadcrumbs.astro';
-import CalculatorFAQ from '../../../../../components/calculator/CalculatorFAQ.astro';
-import InContentAd from '../../../../../components/ads/InContentAd.astro';
-import JsonLd from '../../../../../components/seo/JsonLd.astro';
-import FrBruttoNettoCalculator from '../../../../../components/islands/FrBruttoNettoCalculator';
-import { getDictionary } from '../../../../../i18n/dictionaries';
-import { buildPageMetadata } from '../../../../../lib/seo/metadata';
-import { buildLocalePath } from '../../../../../i18n/utils';
-import { buildFaqJsonLd } from '../../../../../lib/seo/structuredData';
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import FrBruttoNettoCalculator from '../../../../components/islands/FrBruttoNettoCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
 
 const locale = 'fr-FR' as const;
 const t = getDictionary(locale);
@@ -128,7 +128,7 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
       </table>
       <p class="text-sm">
         Sources : URSSAF, Agirc-Arrco, loi de finances 2026 (promulguée le 19 février 2026).
-        Voir la page <a href="/fr-fr/data-sources/">Sources de données</a> pour les liens officiels.
+        Voir la page <a href="/data-sources/">Sources de données</a> pour les liens officiels.
       </p>
 
       <h2>Exemples vérifiés</h2>
