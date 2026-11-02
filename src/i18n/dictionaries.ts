@@ -13,6 +13,7 @@ import { deDE } from './de-DE';
 import { nlNL } from './nl-NL';
 import { elGR } from './el-GR';
 import { frFR } from './fr-FR';
+import { itIT } from './it-IT';
 
 export type Dictionary = typeof enUS;
 
@@ -31,6 +32,7 @@ const dictionaries = {
   'nl-NL': nlNL,
   'el-GR': elGR,
   'fr-FR': frFR,
+  'it-IT': itIT,
 } as const;
 
 export function getDictionary(locale: 'en-US'): typeof enUS;
@@ -47,6 +49,7 @@ export function getDictionary(locale: 'de-DE'): typeof deDE;
 export function getDictionary(locale: 'nl-NL'): typeof nlNL;
 export function getDictionary(locale: 'el-GR'): typeof elGR;
 export function getDictionary(locale: 'fr-FR'): typeof frFR;
+export function getDictionary(locale: 'it-IT'): typeof itIT;
 export function getDictionary(
   locale: LocaleCode,
 ): typeof enUS | typeof enGB | typeof enIE | typeof enNG | typeof ptBR | typeof ptPT | typeof esES | typeof esMX | typeof esAR | typeof esCO | typeof deDE | typeof nlNL | typeof elGR | typeof frFR;
