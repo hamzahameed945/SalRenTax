@@ -6,12 +6,9 @@ import JsonLd from '../components/seo/JsonLd.astro';
 import { getDictionary } from '../i18n/dictionaries';
 import { getLocaleConfig } from '../data/locales';
 import { buildWebPageJsonLd, buildWebSiteJsonLd } from '../lib/seo/structuredData';
-import { buildHreflangLinks } from '../lib/seo/hreflang';
+import { buildHreflangLinks, buildLocaleHomepageHreflangLinks } from '../lib/seo/hreflang';
 import { resolveSiteUrl } from '../lib/seo/site';
 import type { LocaleCode } from '../i18n/types';
-import { ACTIVE_LOCALES } from '../i18n/types';
-import { buildLocalePath } from '../i18n/utils';
-import { buildCanonical } from '../lib/seo/metadata';
 
 export interface Props {
   locale: LocaleCode;
@@ -30,16 +27,9 @@ const siteUrl = resolveSiteUrl(import.meta.env as unknown as Record<string, stri
 const canonicalUrl = new URL(canonical, siteUrl).toString();
 const resolvedOgImage = new URL(ogImage, siteUrl).toString();
 const canonicalPathname = new URL(canonical, siteUrl).pathname;
-const isLocaleHomepage = /^\/[a-z]{2}-[a-z]{2}\/$/.test(canonicalPathname);
 const hreflangLinks = equivalentPageGroup
   ? buildHreflangLinks(equivalentPageGroup)
-  : isLocaleHomepage
-    ? [
-        ...ACTIVE_LOCALES.map((loc) => ({ hreflang: loc.toLowerCase(), href: buildCanonical(buildLocalePath(loc))) })),
-        { hreflang: 'x-default', href: buildCanonical('/') },
-      ]
-    : [];
-
+  : buildLocaleHomepageHreflangLinks(canonicalPathname);
 const jsonLdEntries = [
   buildWebSiteJsonLd(t.common.siteName, siteUrl),
   buildWebPageJsonLd({ name: title, description, url: canonicalUrl, inLanguage: config.language }),
