@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import { buildLocalePath } from '../../../../i18n/utils';
+
+const locale = 'en-US' as const;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Overtime Pay Explained: How Extra Hours Change Your Paycheck",
+  "description": "Overtime is pay for hours worked beyond your standard schedule, usually at a higher rate than regular hours. Learn how overtime is counted, why it changes take-home pay, and what to check before counting on it.",
+  "datePublished": "2026-11-03",
+  "dateModified": "2026-11-03",
+  "author": {
+    "@type": "Organization",
+    "name": "PayRenTax"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PayRenTax",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://payrentax.me/logo.svg"
+    }
+  },
+  "inLanguage": "en-US",
+  "keywords": "overtime pay, how does overtime pay work, overtime hours paycheck, overtime calculator"
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title="Overtime Pay Explained: How Extra Hours Change Your Paycheck | PayRenTax"
+  description="Overtime is pay for hours beyond your standard schedule, usually at a higher rate. Learn how it is counted, why it changes take-home pay, and what to check before counting on it."
+  canonical="/en-us/blog/overtime-pay-explained-2026/"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Blog', href: buildLocalePath(locale, 'blog') },
+      { label: 'Overtime Pay Explained: How Extra Hours Change Your Paycheck', href: buildLocalePath(locale, 'blog/overtime-pay-explained-2026') }
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-4xl font-bold text-slate-900">Overtime Pay Explained: How Extra Hours Change Your Paycheck</h1>
+    <p class="mt-4 text-lg text-slate-600 leading-relaxed">
+      An extra shift can look like easy money — until the paycheck arrives and the amount
+      is not what you expected. Overtime changes both gross pay and deductions, so the
+      extra hours are worth more than regular hours but less than a simple multiplication
+      suggests. Here is how to think about it.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">What counts as overtime</h2>
+    <p class="mt-3 text-slate-600 leading-relaxed">
+      Overtime generally means hours worked beyond your standard schedule in a given
+      period — most commonly beyond 40 hours in a week for hourly workers. Whether a
+      particular worker qualifies, and exactly how the extra hours are counted, depends on
+      employment type, employer policy, and local rules, so the first thing to check is
+      your own contract or handbook, not a general rule. Salaried roles and some job
+      categories are treated differently from hourly roles.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">Why overtime hours pay more</h2>
+    <p class="mt-3 text-slate-600 leading-relaxed">
+      Overtime hours are usually paid at a higher rate than regular hours, because the
+      extra time costs the worker evenings, weekends, or rest days. That premium is the
+      whole point: the employer pays more per hour for hours beyond the standard
+      schedule, and the worker earns more for the same hour of work. The exact premium
+      depends on the rules that apply to your job, which is why an overtime calculator
+      asks for your rate and hours rather than assuming one figure for everyone.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">Why the paycheck gain is smaller than it looks</h2>
+    <p class="mt-3 text-slate-600 leading-relaxed">
+      Extra gross pay also means extra deductions. A bigger paycheck in an overtime week
+      has more tax and payroll deductions taken from it, so the take-home gain is smaller
+      than the gross gain. That is normal, not an error — but it matters for planning.
+      If you pick up overtime to cover a specific bill, run the overtime figure through a
+      paycheck calculator first, so you budget on the take-home amount rather than the
+      headline hours-times-rate figure.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">Should you count on overtime?</h2>
+    <p class="mt-3 text-slate-600 leading-relaxed">
+      Overtime is best treated as a bonus, not as base income. It depends on workload,
+      season, and employer need, so it can shrink or disappear without warning. A budget
+      built on regular hours, with overtime months used to pay down debt or build
+      savings, is far safer than a rent or loan commitment that only works if the extra
+      hours keep coming. Count overtime when it arrives; do not sign contracts that
+      require it.
+    </p>
+    <p class="mt-6">
+      <a href="/en-us/salary/overtime-tax-calculator/" class="font-semibold text-accent">Overtime tax calculator</a>
+      <span class="text-slate-400"> · </span>
+      <a href="/en-us/salary/paycheck-calculator/" class="font-semibold text-accent">Paycheck calculator</a>
+    </p>
+  </article>
+</BaseLayout>
