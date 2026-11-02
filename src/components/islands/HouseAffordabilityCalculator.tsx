@@ -8,11 +8,13 @@ import { getLocaleConfig } from '../../data/locales';
 import { formatCurrency, formatPercent } from '../../lib/formatting/format';
 
 const config = getLocaleConfig('en-US');
-const FILING_STATUSES: FilingStatus[] = ['single', 'marriedJointly'];
+const FILING_STATUSES: FilingStatus[] = ['single', 'marriedJointly', 'marriedSeparately', 'headOfHousehold'];
 
 const filingStatusLabel: Record<FilingStatus, string> = {
   single: 'Single',
   marriedJointly: 'Married filing jointly',
+  marriedSeparately: 'Married filing separately',
+  headOfHousehold: 'Head of household',
 };
 
 export default function HouseAffordabilityCalculator({
