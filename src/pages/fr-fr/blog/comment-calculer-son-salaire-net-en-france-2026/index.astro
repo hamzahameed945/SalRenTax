@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import { buildLocalePath } from '../../../../i18n/utils';
+
+const locale = 'fr-FR' as const;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Comment Calculer son Salaire Net en France 2026",
+  "description": "Guide pas à pas pour calculer son salaire net en France 2026 : vieillesse 6,90 % / 0,40 %, Agirc-Arrco 3,15 % / 8,64 %, CEG, CET et CSG/CRDS 9,70 %, avec deux exemples vérifiés.",
+  "datePublished": "2026-11-02",
+  "dateModified": "2026-11-02",
+  "author": {
+    "@type": "Organization",
+    "name": "PayRenTax"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PayRenTax",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://payrentax.me/logo.svg"
+    }
+  },
+  "inLanguage": "fr-FR",
+  "keywords": "salaire brut net france 2026, calculer salaire net, cotisations salariales, Agirc-Arrco, CSG CRDS, plafond sécurité sociale"
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title="Comment Calculer son Salaire Net en France 2026 | PayRenTax"
+  description="Guide pas à pas pour calculer son salaire net en France 2026 : vieillesse, Agirc-Arrco, CEG, CET et CSG/CRDS, avec les taux 2026 et deux exemples vérifiés."
+  canonical="/fr-fr/blog/comment-calculer-son-salaire-net-en-france-2026/"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: 'Blog', href: buildLocalePath(locale, 'blog') },
+      { label: 'Comment Calculer son Salaire Net en France 2026', href: buildLocalePath(locale, 'blog/comment-calculer-son-salaire-net-en-france-2026') }
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <header class="mb-10">
+      <h1 class="text-4xl font-bold text-slate-900">
+        Comment Calculer son Salaire Net en France 2026
+      </h1>
+      <p class="mt-4 text-lg text-slate-600">
+        Dernière mise à jour : novembre 2026. Ce guide utilise les mêmes taux que le calculateur PayRenTax France : cotisations salariales URSSAF et Agirc-Arrco 2026.
+      </p>
+    </header>
+
+    <div class="prose prose-slate prose-lg max-w-none">
+      <h2>Brut, net, net après impôt : ne pas confondre</h2>
+      <p>
+        En France, le salaire net est le brut moins les cotisations salariales, <strong>avant</strong> le prélèvement à la source.
+        L’impôt sur le revenu est calculé annuellement par foyer fiscal (quotient familial) et prélevé à la source à un taux propre à chaque foyer.
+        Un calculateur qui déduirait l’impôt du brut mensuel sans connaître votre foyer donnerait donc un faux résultat.
+      </p>
+
+      <h2>Les cotisations salariales 2026, une par une</h2>
+      <p>
+        Le plafond mensuel de la Sécurité sociale (PMSS) 2026 est de <strong>4 005 €</strong> (48 060 € par an).
+        Il sépare la tranche 1 (jusqu’au plafond) de la tranche 2 (au-delà) pour la retraite complémentaire.
+      </p>
+      <ul>
+        <li><strong>Vieillesse plafonnée :</strong> 6,90 % sur la tranche 1.</li>
+        <li><strong>Vieillesse déplafonnée :</strong> 0,40 % sur la totalité du brut.</li>
+        <li><strong>Agirc-Arrco :</strong> 3,15 % en tranche 1, 8,64 % en tranche 2 (part salariale du taux d’appel : 7,87 % / 21,59 %).</li>
+        <li><strong>CEG :</strong> 0,86 % en tranche 1, 1,08 % en tranche 2.</li>
+        <li><strong>CET :</strong> 0,14 % sur la totalité du brut, seulement si le brut dépasse 4 005 €.</li>
+        <li><strong>CSG / CRDS :</strong> 9,70 % sur 98,25 % du brut (CSG 9,2 % dont 6,80 points déductibles, CRDS 0,5 %).</li>
+      </ul>
+      <p>
+        Les cotisations maladie et chômage à la charge du salarié sont nulles ; elles ne figurent donc pas dans le calcul.
+      </p>
+
+      <h2>Deux exemples vérifiés</h2>
+      <ul>
+        <li><strong>3 000 € brut :</strong> cotisations 625,21 € → net <strong>2 374,79 €</strong> (79,2 % du brut, tout en tranche 1).</li>
+        <li><strong>6 000 € brut :</strong> cotisations 1 235,07 € → net <strong>4 764,93 €</strong> (dont CET, le brut dépassant le plafond).</li>
+      </ul>
+
+      <h2>Le barème de l’impôt 2026, à titre informatif</h2>
+      <p>
+        Pour les revenus 2025, par part : 0 % jusqu’à 11 600 €, 11 % de 11 601 € à 29 579 €, 30 % de 29 580 € à 84 577 €,
+        41 % de 84 578 € à 181 917 €, 45 % au-delà. Ce barème ne se déduit pas directement du brut mensuel :
+        il s’applique au revenu imposable annuel du foyer, après déductions.
+      </p>
+
+      <h2>Essayez le calculateur</h2>
+      <p>
+        Entrez votre brut mensuel dans le <a href="/fr-fr/salary/salaire-brut-net/">calculateur salaire brut net France 2026</a>
+        pour obtenir votre net et le détail complet de vos cotisations.
+      </p>
+    </div>
+  </article>
+</BaseLayout>
