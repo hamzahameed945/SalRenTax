@@ -1,6 +1,7 @@
 import { getIndexablePages, findEquivalentPages } from '../../seo/page-registry';
 import { buildLocalePath } from '../../i18n/utils';
 import { buildCanonical } from './metadata';
+import { ACTIVE_LOCALES } from '../../i18n/types';
 
 export interface HreflangLink {
   hreflang: string;
@@ -34,5 +35,20 @@ export function buildHreflangLinks(equivalentPageGroup: string | undefined): Hre
   // x-default points at the first active member in registry order.
   links.push({ hreflang: 'x-default', href: links[0].href });
 
+  return links;
+}
+
+/**
+ * Hreflang alternates for locale homepages (canonical path like /en-us/).
+ * Returns one alternate per active locale plus x-default pointing at the
+ * language-selector root homepage. Returns an empty array for any other path.
+ */
+export function buildLocaleHomepageHreflangLinks(canonicalPathname: string): HreflangLink[] {
+  if (!/^\/[a-z]{2}-[a-z]{2}\/$/.test(canonicalPathname)) return [];
+  const links: HreflangLink[] = ACTIVE_LOCALES.map((loc) => ({
+    hreflang: loc.toLowerCase(),
+    href: buildCanonical(buildLocalePath(loc)),
+  }));
+  links.push({ hreflang: 'x-default', href: buildCanonical('/') });
   return links;
 }
