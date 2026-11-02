@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/navigation/Breadcrumbs.astro';
+const locale = 'de-DE' as const;
+
+const blogPosts = [
+  {
+    title: 'Steuerklassen im Überblick 2026: Welche Klasse passt zu Ihnen?',
+    slug: 'steuerklassen-ueberblick-2026',
+    excerpt: 'Steuerklasse I bis VI erklärt: Wer welche Klasse erhält, wie das Ehegattensplitting bei Klasse III funktioniert und was die Steuerklasse für Ihr Netto bedeutet.',
+    date: '2026-11-02',
+    category: 'Gehalt',
+    readTime: '8 min',
+    image: '/og-default.png'
+  }
+];
+
+const schemaWebPage = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Blog PayRenTax Deutschland",
+  "description": "Ratgeber zu Brutto-Netto, Steuerklassen und Sozialversicherung in Deutschland",
+  "url": "https://payrentax.me/de-de/blog/",
+  "inLanguage": "de-DE"
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title="Blog PayRenTax Deutschland | Steuerklassen, Brutto-Netto, Sozialversicherung"
+  description="Ratgeber zu Steuerklassen, Brutto-Netto-Berechnung und Sozialversicherung in Deutschland."
+  canonical="/de-de/blog/"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schemaWebPage)} />
+  </Fragment>
+
+  <Breadcrumbs locale={locale} trail={[]} />
+
+  <div class="mx-auto max-w-6xl px-4 py-10">
+    <header class="mb-12">
+      <h1 class="text-4xl font-bold text-slate-900 mb-4">Blog PayRenTax Deutschland</h1>
+      <p class="text-xl text-slate-600 max-w-3xl">
+        Ratgeber zu Steuerklassen, Brutto-Netto und Sozialversicherung in Deutschland.
+      </p>
+    </header>
+
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {blogPosts.map((post) => (
+        <article class="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+          <img
+            src={post.image}
+            alt={post.title}
+            class="w-full h-48 object-cover"
+          />
+          <div class="p-6">
+            <div class="flex items-center gap-3 text-sm text-slate-500 mb-3">
+              <span class="font-medium text-blue-600">{post.category}</span>
+              <span>•</span>
+              <time datetime={post.date}>
+                {new Date(post.date).toLocaleDateString('de-DE', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </time>
+              <span>•</span>
+              <span>{post.readTime}</span>
+            </div>
+            <h2 class="text-xl font-bold text-slate-900 mb-3">
+              <a href={`/de-de/blog/${post.slug}/`} class="hover:text-blue-600 transition-colors">
+                {post.title}
+              </a>
+            </h2>
+            <p class="text-slate-600 mb-4">
+              {post.excerpt}
+            </p>
+            <a
+              href={`/de-de/blog/${post.slug}/`}
+              class="inline-flex items-center text-blue-600 font-medium hover:text-blue-700 transition-colors"
+            >
+              Ratgeber lesen →
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
