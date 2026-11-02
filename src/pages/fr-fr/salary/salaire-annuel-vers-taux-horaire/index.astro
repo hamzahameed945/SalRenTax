@@ -1,0 +1,111 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import JsonLd from '../../../../components/seo/JsonLd.astro';
+import SalaryToHourlyCalculator from '../../../../components/islands/SalaryToHourlyCalculator';
+import { getDictionary } from '../../../../i18n/dictionaries';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { buildLocalePath } from '../../../../i18n/utils';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+
+const locale = 'fr-FR' as const;
+const t = getDictionary(locale);
+const meta = buildPageMetadata(
+  t.salary.salaryToHourly.title,
+  t.salary.salaryToHourly.intro,
+  '/fr-fr/salary/salaire-annuel-vers-taux-horaire/',
+);
+
+const faqItems = [
+  {
+    question: 'Comment calculer mon taux horaire à partir de mon salaire annuel ?',
+    answer:
+      'Divisez votre salaire annuel brut par le nombre d’heures travaillées par an. À 35 heures par semaine et 52 semaines, cela fait 1 820 heures. Exemple : 36 000 € ÷ 1 820 = environ 19,78 € par heure.',
+  },
+  {
+    question: 'Quelle est la durée légale du travail en France ?',
+    answer:
+      'La durée légale du travail est de 35 heures par semaine pour un temps plein. Le SMIC horaire est de 12,31 € depuis le 1er juin 2026, soit 1 867,02 € par mois à 35 heures.',
+  },
+  {
+    question: 'S’agit-il d’un taux horaire brut ou net ?',
+    answer:
+      'Ce calculateur part de votre salaire annuel brut et donne un taux horaire brut. Le taux horaire net est inférieur, après cotisations salariales. Utilisez le calculateur salaire brut net pour le calcul net.',
+  },
+];
+
+const faqJsonLd = buildFaqJsonLd(faqItems);
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  equivalentPageGroup="salary-to-hourly"
+>
+  <JsonLd entries={[faqJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      { label: t.salary.salaryToHourly.title, href: buildLocalePath(locale, 'salary/salaire-annuel-vers-taux-horaire') },
+    ]}
+  />
+
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">{t.salary.salaryToHourly.h1}</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">{t.salary.salaryToHourly.intro}</p>
+
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <SalaryToHourlyCalculator
+        client:load
+        locale={locale}
+        currency="EUR"
+        labels={{
+          annualSalary: 'Salaire annuel brut (€)',
+          hoursPerWeek: 'Heures par semaine',
+          weeksPerYear: 'Semaines par an',
+          resultsHeading: 'Équivalents horaires',
+          hourlyWage: 'Taux horaire',
+          daily: 'Quotidien',
+          weekly: 'Hebdomadaire',
+          biweekly: 'Bimensuel',
+          monthly: 'Mensuel',
+          placeholder: 'Entrez votre salaire annuel et vos heures pour voir les équivalents.',
+        }}
+      />
+    </div>
+
+    <div class="mt-8">
+      <InContentAd slotId="fr-salaryhourly-1" />
+    </div>
+
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Formule</h2>
+      <p>
+        Taux horaire = salaire annuel brut ÷ (heures par semaine × semaines par an).
+        À 35 heures par semaine, une année compte 1 820 heures ; à 39 heures, 2 028 heures.
+      </p>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-500">
+      {t.disclaimers.general} {t.disclaimers.verifyProfessional}
+    </p>
+
+    <CalculatorFAQ heading="Questions fréquentes sur le taux horaire" items={faqItems} />
+
+    <RelatedCalculators
+      heading="Calculateurs associés"
+      links={[
+        { label: 'Calculateur salaire brut net France', href: buildLocalePath(locale, 'salary/salaire-brut-net') },
+        { label: 'Convertisseur de période de paiement', href: buildLocalePath(locale, 'salary/convertisseur-periode-de-paiement') },
+      ]}
+    />
+  </article>
+  <CalculatorResource locale="fr-FR" category="salary" />
+</BaseLayout>
