@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/navigation/Breadcrumbs.astro';
+const locale = 'fr-FR' as const;
+
+const blogPosts = [
+  {
+    title: 'Comment Calculer son Salaire Net en France 2026',
+    slug: 'comment-calculer-son-salaire-net-en-france-2026',
+    excerpt: 'Guide pas à pas pour comprendre votre fiche de paie : cotisations vieillesse, retraite complémentaire Agirc-Arrco, CEG, CET et CSG/CRDS, avec les taux 2026 et deux exemples vérifiés.',
+    date: '2026-11-02',
+    category: 'Salaire',
+    readTime: '10 min',
+    image: '/og-default.png'
+  }
+];
+
+const schemaWebPage = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Blog PayRenTax France",
+  "description": "Guides complets sur le salaire net, les cotisations salariales et le barème de l’impôt en France",
+  "url": "https://payrentax.me/fr-fr/blog/",
+  "inLanguage": "fr-FR"
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title="Blog PayRenTax France | Guides Salaire Net, Cotisations, Impôt"
+  description="Guides complets sur le calcul du salaire net en France, les cotisations salariales URSSAF et Agirc-Arrco et le barème de l’impôt 2026."
+  canonical="/fr-fr/blog/"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schemaWebPage)} />
+  </Fragment>
+
+  <Breadcrumbs locale={locale} trail={[]} />
+
+  <div class="mx-auto max-w-6xl px-4 py-10">
+    <header class="mb-12">
+      <h1 class="text-4xl font-bold text-slate-900 mb-4">Blog PayRenTax France</h1>
+      <p class="text-xl text-slate-600 max-w-3xl">
+        Guides complets et actualisés sur le salaire net, les cotisations salariales et l’impôt en France.
+      </p>
+    </header>
+
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {blogPosts.map((post) => (
+        <article class="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+          <img
+            src={post.image}
+            alt={post.title}
+            class="w-full h-48 object-cover"
+          />
+          <div class="p-6">
+            <div class="flex items-center gap-3 text-sm text-slate-500 mb-3">
+              <span class="font-medium text-blue-600">{post.category}</span>
+              <span>•</span>
+              <time datetime={post.date}>
+                {new Date(post.date).toLocaleDateString('fr-FR', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </time>
+              <span>•</span>
+              <span>{post.readTime}</span>
+            </div>
+            <h2 class="text-xl font-bold text-slate-900 mb-3">
+              <a href={`/fr-fr/blog/${post.slug}/`} class="hover:text-blue-600 transition-colors">
+                {post.title}
+              </a>
+            </h2>
+            <p class="text-slate-600 mb-4">
+              {post.excerpt}
+            </p>
+            <a
+              href={`/fr-fr/blog/${post.slug}/`}
+              class="inline-flex items-center text-blue-600 font-medium hover:text-blue-700 transition-colors"
+            >
+              Lire le guide →
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
