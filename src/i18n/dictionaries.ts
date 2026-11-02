@@ -52,10 +52,10 @@ export function getDictionary(locale: 'fr-FR'): typeof frFR;
 export function getDictionary(locale: 'it-IT'): typeof itIT;
 export function getDictionary(
   locale: LocaleCode,
-): typeof enUS | typeof enGB | typeof enIE | typeof enNG | typeof ptBR | typeof ptPT | typeof esES | typeof esMX | typeof esAR | typeof esCO | typeof deDE | typeof nlNL | typeof elGR | typeof frFR;
+): typeof enUS | typeof enGB | typeof enIE | typeof enNG | typeof ptBR | typeof ptPT | typeof esES | typeof esMX | typeof esAR | typeof esCO | typeof deDE | typeof nlNL | typeof elGR | typeof frFR | typeof itIT;
 export function getDictionary(
   locale: LocaleCode,
-): typeof enUS | typeof enGB | typeof enIE | typeof enNG | typeof ptBR | typeof ptPT | typeof esES | typeof esMX | typeof esAR | typeof esCO | typeof deDE | typeof nlNL | typeof elGR | typeof frFR {
+): typeof enUS | typeof enGB | typeof enIE | typeof enNG | typeof ptBR | typeof ptPT | typeof esES | typeof esMX | typeof esAR | typeof esCO | typeof deDE | typeof nlNL | typeof elGR | typeof frFR | typeof itIT {
   const dict = dictionaries[locale as keyof typeof dictionaries];
   if (!dict) {
     throw new Error(
