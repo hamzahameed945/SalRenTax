@@ -1,54 +1,52 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
-import Breadcrumbs from '../../../../components/Breadcrumbs.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import { buildLocalePath } from '../../../../i18n/utils';
 
-const title = 'How to Convert Your Hourly Wage to an Annual Salary';
-const description = 'Learn how to convert an hourly wage to an annual salary, with the simple formula, a worked example, and the details to check before you compare job offers.';
-const canonical = 'https://www.payrentax.com/en-us/blog/hourly-to-salary-conversion-2026/';
-const image = 'https://www.payrentax.com/og-default.png';
-const published = '2026-11-03';
-const modified = '2026-11-03';
-const alternates = {
-  'en-US': 'https://www.payrentax.com/en-us/blog/hourly-to-salary-conversion-2026/',
-  'x-default': 'https://www.payrentax.com/en-us/blog/hourly-to-salary-conversion-2026/',
-};
+const locale = 'en-US' as const;
+
 const schema = {
-  '@context': 'https://schema.org',
-  '@type': 'BlogPosting',
-  headline: title,
-  description,
-  image: [image],
-  datePublished: published,
-  dateModified: modified,
-  author: { '@type': 'Organization', name: 'PayRenTax', url: 'https://www.payrentax.com/' },
-  publisher: {
-    '@type': 'Organization',
-    name: 'PayRenTax',
-    url: 'https://www.payrentax.com/',
-    logo: { '@type': 'ImageObject', url: 'https://www.payrentax.com/og-default.png' },
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How to Convert Your Hourly Wage to an Annual Salary",
+  "description": "Learn how to convert an hourly wage to an annual salary, with the simple formula, a worked example, and the details to check before you compare job offers.",
+  "datePublished": "2026-11-03",
+  "dateModified": "2026-11-03",
+  "author": {
+    "@type": "Organization",
+    "name": "PayRenTax"
   },
-  mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PayRenTax",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://payrentax.me/logo.svg"
+    }
+  },
+  "inLanguage": "en-US",
+  "keywords": "hourly to salary, convert hourly wage to annual salary, hourly wage calculator"
 };
 ---
 
 <BaseLayout
-  title={title}
-  description={description}
-  canonical={canonical}
-  image={image}
-  type="article"
-  lang="en-US"
-  alternates={alternates}
-  schema={schema}
+  locale={locale}
+  title="How to Convert Your Hourly Wage to an Annual Salary | PayRenTax"
+  description="Learn how to convert an hourly wage to an annual salary, with the simple formula, a worked example, and the details to check before you compare job offers."
+  canonical="/en-us/blog/hourly-to-salary-conversion-2026/"
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
   <Breadcrumbs
-    items={[
-      { label: 'Home', href: '/en-us/' },
-      { label: 'Blog', href: '/en-us/blog/' },
-      { label: 'How to Convert Your Hourly Wage to an Annual Salary' },
-    ]}
+    locale={locale}
+    trail=[
+      { label: 'Blog', href: buildLocalePath(locale, 'blog') },
+      { label: 'How to Convert Your Hourly Wage to an Annual Salary', href: buildLocalePath(locale, 'blog/hourly-to-salary-conversion-2026') }
+    ]
   />
-  <article class="article">
+<article class="article">
     <header class="article-header">
       <p class="eyebrow">PayRenTax Blog · Salary Guides</p>
       <h1>How to Convert Your Hourly Wage to an Annual Salary</h1>
@@ -91,7 +89,7 @@ const schema = {
         Dividing the annual figure by 12 gives a monthly average. It is an average because months have
         different numbers of weeks, so individual monthly paychecks may vary if you are paid weekly
         or biweekly. For a closer look at what actually lands in your paycheck, see our
-        <a href="/en-us/salary/paycheck/">paycheck calculator</a>.
+        <a href="/en-us/salary/paycheck-calculator/">paycheck calculator</a>.
       </p>
     </section>
 
@@ -122,7 +120,7 @@ const schema = {
       <ul>
         <li><strong>Variable hours:</strong> if your hours change from week to week, use a typical week, and treat the result as an estimate.</li>
         <li><strong>Time off:</strong> unpaid time off reduces the total you actually earn in a year.</li>
-        <li><strong>Overtime:</strong> hours beyond your usual schedule may be paid differently; see our <a href="/en-us/salary/overtime/">overtime calculator</a> for a separate check.</li>
+        <li><strong>Overtime:</strong> hours beyond your usual schedule may be paid differently; see our <a href="/en-us/salary/overtime-tax-calculator/">overtime calculator</a> for a separate check.</li>
         <li><strong>Gross vs. take-home pay:</strong> the converted figure is gross pay, before any deductions. It is not the amount you take home.</li>
       </ul>
       <p>
@@ -141,7 +139,7 @@ const schema = {
       <h3>Is the annual figure my take-home pay?</h3>
       <p>
         No. The conversion gives gross annual pay, before deductions. Use the
-        <a href="/en-us/salary/paycheck/">paycheck calculator</a> to explore what a paycheck may look like after deductions.
+        <a href="/en-us/salary/paycheck-calculator/">paycheck calculator</a> to explore what a paycheck may look like after deductions.
       </p>
       <h3>What if I work part-time?</h3>
       <p>
