@@ -2,9 +2,12 @@
 import CategoryResource from '../../../components/content/CategoryResource.astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../components/calculator/CalculatorFAQ.astro';
+import JsonLd from '../../../components/seo/JsonLd.astro';
 import { getDictionary } from '../../../i18n/dictionaries';
 import { getActivePagesForLocale } from '../../../seo/page-registry';
 import { buildPageMetadata } from '../../../lib/seo/metadata';
+import { buildFaqJsonLd } from '../../../lib/seo/structuredData';
 import { buildLocalePath } from '../../../i18n/utils';
 
 const locale = 'pt-BR' as const;
@@ -17,6 +20,29 @@ const meta = buildPageMetadata(
 const calculators = getActivePagesForLocale(locale).filter(
   (p) => (p.category === 'salary' || p.category === 'labor') && p.pageType === 'calculator',
 );
+const faqItems = [
+  {
+    question: 'O que é salário líquido?',
+    answer:
+      'Salário líquido é o salário bruto menos descontos como o INSS e o IRRF. É o valor que efetivamente chega ao trabalhador após esses descontos.',
+  },
+  {
+    question: 'O que desconta do meu salário?',
+    answer:
+      'Em termos gerais, os principais descontos são o INSS e o IRRF. Outros descontos podem se aplicar dependendo do seu caso, e o contracheque mostra o detalhamento final.',
+  },
+  {
+    question: 'Como calcular férias e décimo terceiro?',
+    answer:
+      'Use as calculadoras específicas desta página para férias e para décimo terceiro. Informe o salário e o período correspondente, e a calculadora estimará o valor, que pode variar conforme o seu caso.',
+  },
+  {
+    question: 'Os resultados são exatos?',
+    answer:
+      'Não. As calculadoras oferecem estimativas para orientação geral. O valor final depende das suas circunstâncias e dos descontos aplicados, por isso confira o contracheque para o valor definitivo.',
+  },
+];
+const faqJsonLd = buildFaqJsonLd(faqItems);
 ---
 
 <BaseLayout
@@ -25,6 +51,7 @@ const calculators = getActivePagesForLocale(locale).filter(
   description={meta.description}
   canonical={meta.canonical}
 >
+  <JsonLd entries={[faqJsonLd]} />
   <Breadcrumbs
     locale={locale}
     trail={[{ label: t.navigation.salary, href: buildLocalePath(locale, 'salary') }]}
@@ -48,15 +75,20 @@ const calculators = getActivePagesForLocale(locale).filter(
     <nav class="mt-10" aria-label="Salários populares">
       <h2 class="text-2xl font-bold text-slate-900">Salários populares</h2>
       <ul class="mt-4 grid gap-2 sm:grid-cols-2">
-        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/salary/salario-liquido-2000/">Salário de R$ 2.000 líquido</a></li>
-        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/salary/salario-liquido-3000/">Salário de R$ 3.000 líquido</a></li>
-        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/salary/salario-liquido-5000/">Salário de R$ 5.000 líquido</a></li>
-        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/salary/salario-liquido-8000/">Salário de R$ 8.000 líquido</a></li>
-        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/salary/salario-liquido-10000/">Salário de R$ 10.000 líquido</a></li>
-        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/salary/salario-liquido-15000/">Salário de R$ 15.000 líquido</a></li>
-        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/salary/salario-liquido-20000/">Salário de R$ 20.000 líquido</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/salary/salario-liquido-2000">Salário líquido de R$ 2.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/salary/salario-liquido-3000">Salário líquido de R$ 3.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/salary/salario-liquido-5000">Salário líquido de R$ 5.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/salary/salario-liquido-8000">Salário líquido de R$ 8.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/salary/salario-liquido-10000">Salário líquido de R$ 10.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/salary/salario-liquido-15000">Salário líquido de R$ 15.000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/pt-br/salary/salario-liquido-20000">Salário líquido de R$ 20.000</a></li>
       </ul>
     </nav>
-  </section>
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">Sobre estas calculadoras</h2>
+    <p class="mt-3 text-slate-600">Salário líquido é o valor que sobra do salário bruto após os descontos. Em termos gerais, isso significa o bruto menos o INSS e o IRRF, além de outros descontos que possam se aplicar ao seu caso. As calculadoras desta página abrangem rescisão, décimo terceiro, férias e salário líquido, para ajudar você a entender cada um desses valores.</p>
+    <p class="mt-3 text-slate-600">Comece pela pergunta que você quer responder e escolha a calculadora correspondente. Informe o salário bruto e os demais dados pedidos, e compare os resultados no mesmo período, para não misturar valores mensais com valores anuais ou de um único pagamento.</p>
+    <p class="mt-3 text-slate-600">Use os resultados para planejar o orçamento e comparar cenários, lembrando que a frequência de pagamento e os descontos afetam o valor que chega à sua conta em cada mês. Um valor anual, por si só, não mostra quanto estará disponível para as despesas regulares.</p>
+    <CalculatorFAQ heading="Perguntas frequentes" items={faqItems} />
+</section>
   <CategoryResource locale="pt-BR" category="salary" />
 </BaseLayout>
