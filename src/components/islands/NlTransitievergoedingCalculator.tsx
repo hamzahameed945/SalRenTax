@@ -10,20 +10,29 @@ export default function NlTransitievergoedingCalculator({ locale }: Props) {
   const [brutoMaandsalaris, setBrutoMaandsalaris] = useState('4000');
   const [dienstjaren, setDienstjaren] = useState('6');
   const [dienstmaandenExtra, setDienstmaandenExtra] = useState('0');
+  const [submitted, setSubmitted] = useState({ brutoMaandsalaris: '4000', dienstjaren: '6', dienstmaandenExtra: '0' });
 
   const result = useMemo(() => {
     const input = {
-      brutoMaandsalaris: parseFloat(brutoMaandsalaris) || 0,
-      dienstjaren: parseInt(dienstjaren, 10) || 0,
-      dienstmaandenExtra: parseInt(dienstmaandenExtra, 10) || 0,
+      brutoMaandsalaris: parseFloat(submitted.brutoMaandsalaris) || 0,
+      dienstjaren: parseInt(submitted.dienstjaren, 10) || 0,
+      dienstmaandenExtra: parseInt(submitted.dienstmaandenExtra, 10) || 0,
     };
     const v = transitievergoedingEngine.validate(input);
     if (!v.valid) return { data: null, errors: v.errors };
     return { data: transitievergoedingEngine.calculate(v.data, {} as never, 2026), errors: null };
-  }, [brutoMaandsalaris, dienstjaren, dienstmaandenExtra]);
+  }, [submitted]);
 
   const d = result.data;
   const jarenFmt = d ? new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(d.dienstverbandJaren) : '';
+
+  const handleCalculate = () => setSubmitted({ brutoMaandsalaris, dienstjaren, dienstmaandenExtra });
+  const handleReset = () => {
+    setBrutoMaandsalaris('4000');
+    setDienstjaren('6');
+    setDienstmaandenExtra('0');
+    setSubmitted({ brutoMaandsalaris: '4000', dienstjaren: '6', dienstmaandenExtra: '0' });
+  };
 
   return (
     <div class="space-y-6">
@@ -69,6 +78,10 @@ export default function NlTransitievergoedingCalculator({ locale }: Props) {
               ))}
             </select>
           </div>
+        </div>
+        <div class="mt-6 flex gap-3">
+          <button type="button" class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark" onClick={handleCalculate}>Bereken</button>
+          <button type="button" class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50" onClick={handleReset}>Opnieuw instellen</button>
         </div>
       </div>
 
