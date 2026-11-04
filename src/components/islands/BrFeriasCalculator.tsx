@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'preact/hooks';
 import PayBreakdownChart from './PayBreakdownChart';
-import { brFeriasEngine } from '../../calculators/salary/engines/brFerias';
+import { brFeriasEngine } from '../../calculators/labor/engines/brFerias';
 
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
