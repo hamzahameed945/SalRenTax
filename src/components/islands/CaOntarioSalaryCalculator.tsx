@@ -89,6 +89,7 @@ export default function CaOntarioSalaryCalculator() {
                 { label: 'EI', value: result.ei, color: '#7c3aed' },
               ]}
               format={format}
+                          title="Annual pay breakdown"
             />
           </>
         ) : (
