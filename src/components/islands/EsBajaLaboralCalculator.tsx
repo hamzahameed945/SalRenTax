@@ -149,8 +149,8 @@ export default function EsBajaLaboralCalculator() {
           <PayBreakdownChart
             title="Desglose de la prestación"
             segments={[
-              { label: 'Días 4–20: 60%', value: result.desglose.tramo60.importe },
-              { label: 'Desde el día 21: 75%', value: result.desglose.tramo75.importe },
+              { label: 'Días 4–20: 60%', value: result.desglose.tramo60.importe, color: '#0d9488'},
+              { label: 'Desde el día 21: 75%', value: result.desglose.tramo75.importe, color: '#2563eb'},
             ]}
             format={(value) => fmt(value)}
           />
