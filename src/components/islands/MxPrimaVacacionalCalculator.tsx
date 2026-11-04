@@ -120,8 +120,8 @@ export default function MxPrimaVacacionalCalculator({ initialSalary }: Props) {
           <PayBreakdownChart
             title="Desglose de la prima bruta"
             segments={[
-              { label: 'Prima neta', value: result.primaNeta },
-              { label: 'ISR estimado', value: result.isrEstimado },
+              { label: 'Prima neta', value: result.primaNeta, color: '#0d9488'},
+              { label: 'ISR estimado', value: result.isrEstimado, color: '#2563eb'},
             ]}
             format={(value) => formatCurrency(value)}
           />
