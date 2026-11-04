@@ -227,9 +227,9 @@ export default function SpainSalaryCalculator({ locale, initialGross }: Props) {
           <PayBreakdownChart
             title="Desglose del salario bruto"
             segments={[
-              { label: 'Sueldo neto anual', value: d.netAnnual },
-              { label: 'Total SS trabajador', value: d.ssTotalEmployee },
-              { label: 'IRPF total', value: d.irpfTotalAnnual },
+              { label: 'Sueldo neto anual', value: d.netAnnual, color: '#0d9488'},
+              { label: 'Total SS trabajador', value: d.ssTotalEmployee, color: '#2563eb'},
+              { label: 'IRPF total', value: d.irpfTotalAnnual, color: '#7c3aed'},
             ]}
             format={(value) => fmt(locale, value)}
           />
