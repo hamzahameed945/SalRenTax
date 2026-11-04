@@ -262,6 +262,7 @@ export default function DeUeberstundenCalculator({
         {result && (
           <PayBreakdownChart
             title="Aufteilung des Überstunden-Bruttos"
+            format={formatCurrency}
             segments={[
               { label: 'Netto', value: result.nettoGeschaetzt, color: '#0f766e' },
               { label: 'Lohnsteuer', value: result.lohnsteuerGeschaetzt, color: '#b45309' },
