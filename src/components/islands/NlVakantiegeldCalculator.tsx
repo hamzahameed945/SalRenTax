@@ -1,30 +1,41 @@
 import { useState, useMemo } from 'preact/hooks';
 import { nlVakantiegeldEngine } from '../../calculators/salary/engines/nl/nlVakantiegeld';
+import PayBreakdownChart from './PayBreakdownChart';
 
 interface Props { locale: string; }
 
 const fmt = (locale: string, v: number) =>
   new Intl.NumberFormat(locale, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(v);
+
 const fmtPct = (locale: string, v: number) =>
   new Intl.NumberFormat(locale, { style: 'percent', minimumFractionDigits: 1 }).format(v);
 
 export default function NlVakantiegeldCalculator({ locale }: Props) {
-  const [grossAnnual, setGrossAnnual]     = useState('45000');
-  const [monthsWorked, setMonthsWorked]   = useState('12');
-  const [customRate, setCustomRate]       = useState('8');
+  const [grossAnnual, setGrossAnnual] = useState('45000');
+  const [monthsWorked, setMonthsWorked] = useState('12');
+  const [customRate, setCustomRate] = useState('8');
+  const [submitted, setSubmitted] = useState({ grossAnnual: '45000', monthsWorked: '12', customRate: '8' });
 
   const result = useMemo(() => {
     const input = {
-      grossAnnual:  parseFloat(grossAnnual) || 0,
-      monthsWorked: parseInt(monthsWorked, 10) || 12,
-      customRate:   parseFloat(customRate) / 100 || 0.08,
+      grossAnnual: parseFloat(submitted.grossAnnual) || 0,
+      monthsWorked: parseInt(submitted.monthsWorked, 10) || 12,
+      customRate: parseFloat(submitted.customRate) / 100 || 0.08,
     };
     const v = nlVakantiegeldEngine.validate(input);
     if (!v.valid) return { data: null, errors: v.errors };
     return { data: nlVakantiegeldEngine.calculate(v.data, {} as never, 2026), errors: null };
-  }, [grossAnnual, monthsWorked, customRate]);
+  }, [submitted]);
 
   const d = result.data;
+
+  const handleCalculate = () => setSubmitted({ grossAnnual, monthsWorked, customRate });
+  const handleReset = () => {
+    setGrossAnnual('45000');
+    setMonthsWorked('12');
+    setCustomRate('8');
+    setSubmitted({ grossAnnual: '45000', monthsWorked: '12', customRate: '8' });
+  };
 
   return (
     <div class="space-y-6">
@@ -46,7 +57,6 @@ export default function NlVakantiegeldCalculator({ locale }: Props) {
             </div>
             {result.errors?.grossAnnual && <p class="mt-1 text-xs text-red-600">Ongeldig bedrag</p>}
           </div>
-
           <div>
             <label class="block text-sm font-medium text-slate-700 mb-1">Gewerkte maanden</label>
             <select
@@ -59,83 +69,84 @@ export default function NlVakantiegeldCalculator({ locale }: Props) {
               ))}
             </select>
           </div>
-
           <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1">
-              Vakantiegeld % <span class="text-slate-400 font-normal">(min. 8%)</span>
-            </label>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Vakantiegeld %</label>
             <div class="relative">
               <input
-                type="number" min="8" max="25" step="0.5"
+                type="number" min="0" max="50" step="0.5"
                 class="w-full rounded-md border border-slate-300 px-3 py-2 pr-8 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 value={customRate}
                 onInput={e => setCustomRate((e.target as HTMLInputElement).value)}
               />
               <span class="absolute inset-y-0 right-3 flex items-center text-slate-400 text-sm">%</span>
             </div>
+            {result.errors?.customRate && <p class="mt-1 text-xs text-red-600">Ongeldig percentage</p>}
           </div>
+        </div>
+        <div class="mt-6 flex gap-3">
+          <button type="button" class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark" onClick={handleCalculate}>Bereken</button>
+          <button type="button" class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50" onClick={handleReset}>Opnieuw instellen</button>
         </div>
       </div>
 
-      {/* Results */}
       {d && (
         <div role="region" aria-live="polite">
-          {/* Hero */}
-          <div class="rounded-xl bg-gradient-to-br from-emerald-600 to-emerald-700 p-6 text-white mb-4">
-            <p class="text-sm font-medium text-emerald-200">Vakantiegeld uitbetaling</p>
+          <div class="rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 p-6 text-white mb-4">
+            <p class="text-sm font-medium text-amber-100">Vakantiegeld (pro-rata)</p>
             <p class="mt-1 text-5xl font-bold tracking-tight">{fmt(locale, d.vakantiegeldProRata)}</p>
-            <p class="mt-2 text-sm text-emerald-100">
-              Opgebouwd over {d.monthsWorked} {d.monthsWorked === 1 ? 'maand' : 'maanden'} · tarief {fmtPct(locale, d.rate)}
+            <p class="mt-2 text-sm text-amber-50">
+              {d.monthsWorked} {d.monthsWorked === 1 ? 'maand' : 'maanden'} × {fmtPct(locale, d.appliedRate)} van {fmt(locale, d.grossAnnual)} bruto jaarsalaris
             </p>
           </div>
 
-          {/* Detail cards */}
           <div class="grid gap-3 sm:grid-cols-2">
             <div class="rounded-xl border border-slate-200 bg-white p-5 space-y-3 text-sm">
-              <h3 class="font-semibold text-slate-700">Vakantiegeld overzicht</h3>
+              <h3 class="font-semibold text-slate-700">Berekening</h3>
               <div class="space-y-2 divide-y divide-slate-100">
                 <div class="flex justify-between pt-2 text-slate-600">
                   <span>Bruto jaarsalaris</span>
                   <span>{fmt(locale, d.grossAnnual)}</span>
                 </div>
                 <div class="flex justify-between pt-2 text-slate-600">
-                  <span>Volledig jaarlijks vakantiegeld</span>
-                  <span class="font-medium">{fmt(locale, d.vakantiegeldAnnual)}</span>
+                  <span>Vakantiegeld (12 maanden)</span>
+                  <span>{fmt(locale, d.vakantiegeldAnnual)}</span>
                 </div>
                 <div class="flex justify-between pt-2 text-slate-600">
-                  <span>Pro-rata ({d.monthsWorked}/12)</span>
-                  <span class="font-medium text-emerald-700">{fmt(locale, d.vakantiegeldProRata)}</span>
+                  <span>Pro-rata factor</span>
+                  <span>{d.monthsWorked}/12</span>
+                </div>
+                <div class="flex justify-between pt-2 text-slate-600">
+                  <span>Vakantiegeld pro-rata</span>
+                  <span class="font-medium text-amber-700">{fmt(locale, d.vakantiegeldProRata)}</span>
+                </div>
+                <div class="flex justify-between pt-2 text-slate-600">
+                  <span>Vakantiegeld per maand</span>
+                  <span>{fmt(locale, d.vakantiegeldMonthly)}</span>
                 </div>
                 <div class="flex justify-between pt-2 text-slate-700 font-semibold">
-                  <span>Totaal pakket (jaar + vakantiegeld)</span>
+                  <span>Totaalpakket (salaris + vakantiegeld)</span>
                   <span>{fmt(locale, d.totalPackage)}</span>
                 </div>
               </div>
             </div>
-
-            <div class="rounded-xl border border-slate-200 bg-white p-5 space-y-3 text-sm">
-              <h3 class="font-semibold text-slate-700">Maandelijkse opbouw</h3>
-              <div class="space-y-2 divide-y divide-slate-100">
-                <div class="flex justify-between pt-2 text-slate-600">
-                  <span>Opbouw per maand</span>
-                  <span class="font-medium">{fmt(locale, d.monthlyAccrual)}</span>
-                </div>
-                <div class="flex justify-between pt-2 text-slate-600">
-                  <span>Effectief maandloon (incl. opbouw)</span>
-                  <span class="font-medium text-blue-700">{fmt(locale, d.effectiveMonthlyGross)}</span>
-                </div>
-              </div>
-              <p class="text-xs text-slate-400 pt-2">
-                Werkgevers betalen vakantiegeld doorgaans in mei, of bij uitdiensttreding.
+            <div class="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm">
+              <h3 class="font-semibold text-amber-800">Let op</h3>
+              <p class="mt-2 text-amber-900">
+                Vakantiegeld wordt vaak in mei uitbetaald en is belast. Dit bedrag is bruto. Voor het nettobedrag
+                moet loonheffing worden berekend — gebruik daarvoor de bruto-netto calculator.
               </p>
             </div>
           </div>
+
+          <PayBreakdownChart title="Verdeling totaalpakket" format={(v) => fmt(locale, v)} segments={[
+            { label: 'Bruto jaarsalaris', value: d.grossAnnual, color: '#4f46e5' },
+            { label: 'Vakantiegeld (pro-rata)', value: d.vakantiegeldProRata, color: '#f59e0b' },
+          ]} />
         </div>
       )}
 
       <p class="text-xs text-slate-400">
-        De wettelijke minimumvakantiebijslag is 8% van het bruto jaarsalaris (Wet minimumloon en minimumvakantiebijslag).
-        CAO-afspraken kunnen een hoger percentage voorschrijven.
+        Wettelijk minimum is 8% van het bruto loon. Het vakantiegeld wordt meestal in mei uitbetaald en is bruto.
       </p>
     </div>
   );
