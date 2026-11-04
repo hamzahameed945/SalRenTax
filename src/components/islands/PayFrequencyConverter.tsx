@@ -50,11 +50,17 @@ export default function PayFrequencyConverter({
   const [frequency, setFrequency] = useState<PayFrequency>('biweekly');
   const [hoursPerWeek, setHoursPerWeek] = useState('40');
 
+  const [submitted, setSubmitted] = useState({
+    amount,
+    frequency,
+    hoursPerWeek,
+  });
+
   const result = useMemo(() => {
     const input = {
-      amount: parseFloat(amount),
-      frequency,
-      hoursPerWeek: parseFloat(hoursPerWeek),
+      amount: parseFloat(submitted.amount),
+      frequency: submitted.frequency,
+      hoursPerWeek: parseFloat(submitted.hoursPerWeek),
     };
     const validation = payFrequencyConverterEngine.validate(input);
     if (validation.valid) {
@@ -64,7 +70,7 @@ export default function PayFrequencyConverter({
       };
     }
     return { data: null, error: validation.errors };
-  }, [amount, frequency, hoursPerWeek]);
+  }, [submitted]);
 
   const formatCurrency = (value: number) =>
     new Intl.NumberFormat(locale, { style: 'currency', currency }).format(value);
@@ -125,6 +131,27 @@ export default function PayFrequencyConverter({
             )}
           </div>
         )}
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ amount, frequency, hoursPerWeek })}
+          >
+            Calculate
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setAmount('');
+              setFrequency('biweekly');
+              setHoursPerWeek('40');
+              setSubmitted({ amount: '', frequency: 'biweekly', hoursPerWeek: '40' });
+            }}
+          >
+            Reset
+          </button>
+        </div>
       </div>
 
       <div class="rounded-xl bg-slate-50 p-6">
