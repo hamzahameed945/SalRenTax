@@ -8,13 +8,18 @@ export default function DeMinijobCalculator() {
   const [hourlyWage, setHourlyWage] = useState('13.90');
   const [hoursPerMonth, setHoursPerMonth] = useState('40');
 
+  const [submitted, setSubmitted] = useState({
+    hourlyWage,
+    hoursPerMonth,
+  });
+
   const result = useMemo(() => {
     const validation = deMinijobEngine.validate({
-      hourlyWage: Number(hourlyWage),
-      hoursPerMonth: Number(hoursPerMonth),
+      hourlyWage: Number(submitted.hourlyWage),
+      hoursPerMonth: Number(submitted.hoursPerMonth),
     });
     return validation.valid ? deMinijobEngine.calculate(validation.data, {} as never, 2026) : null;
-  }, [hourlyWage, hoursPerMonth]);
+  }, [submitted]);
 
   return (
     <div class="grid gap-6 md:grid-cols-2">
@@ -43,14 +48,34 @@ export default function DeMinijobCalculator() {
             onInput={(event) => setHoursPerMonth((event.target as HTMLInputElement).value)}
           />
         </label>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ hourlyWage, hoursPerMonth })}
+          >
+            Berechnen
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setHourlyWage('13.90');
+              setHoursPerMonth('40');
+              setSubmitted({ hourlyWage: '13.90', hoursPerMonth: '40' });
+            }}
+          >
+            Zurücksetzen
+          </button>
+        </div>
       </div>
-
       <div class="rounded-xl bg-slate-50 p-6" aria-live="polite">
         <p class="text-sm text-slate-500">Monatlicher Bruttolohn</p>
         <p class="text-3xl font-bold text-accent">{result ? formatCurrency(result.monthlyGross) : '—'}</p>
         {result && (
           <p class={result.withinLimit ? 'mt-3 text-sm text-emerald-700' : 'mt-3 text-sm text-red-700'}>
-            {result.withinLimit ? 'Innerhalb der 603-€-Grenze.' : 'Über der 603-€-Grenze.'} Max. Stunden bei diesem Lohn: {result.hoursAtLimit.toFixed(1)}
+            {result.withinLimit ? 'Innerhalb der 603-€-Grenze.' : 'Über der 603-€-Grenze.'}
+            Max. Stunden bei diesem Lohn: {result.hoursAtLimit.toFixed(1)}
           </p>
         )}
       </div>
