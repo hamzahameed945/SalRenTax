@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'preact/hooks';
+import PayBreakdownChart from './PayBreakdownChart';
 import {
   usBonusTaxEngine,
   US_BONUS_STATE_OPTIONS,
@@ -7,7 +8,6 @@ import {
 
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
-
 const formatPercent = (value: number) =>
   new Intl.NumberFormat('en-US', { style: 'percent', maximumFractionDigits: 1 }).format(value);
 
@@ -29,19 +29,30 @@ export default function UsBonusTaxCalculator({
   const [ytdSupplementalWages, setYtdSupplementalWages] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(false);
 
+  const [submitted, setSubmitted] = useState({
+    bonusGross,
+    filingStatus,
+    stateCode,
+    annualSalary,
+    ytdSupplementalWages,
+  });
+
   const result = useMemo(() => {
     const validation = usBonusTaxEngine.validate({
-      bonusGross: Number(bonusGross),
-      filingStatus,
-      stateCode,
-      annualSalary: Number(annualSalary),
-      ytdSupplementalWages: ytdSupplementalWages === '' ? 0 : Number(ytdSupplementalWages),
+      bonusGross: Number(submitted.bonusGross),
+      filingStatus: submitted.filingStatus,
+      stateCode: submitted.stateCode,
+      annualSalary: Number(submitted.annualSalary),
+      ytdSupplementalWages:
+        submitted.ytdSupplementalWages === '' ? 0 : Number(submitted.ytdSupplementalWages),
     });
     return validation.valid ? usBonusTaxEngine.calculate(validation.data) : null;
-  }, [bonusGross, filingStatus, stateCode, annualSalary, ytdSupplementalWages]);
+  }, [submitted]);
 
   const inputClass = 'mt-1 w-full rounded border p-2';
-  const stateName = US_BONUS_STATE_OPTIONS.find((s) => s.code === stateCode)?.name ?? stateCode;
+  const stateName =
+    US_BONUS_STATE_OPTIONS.find((s) => s.code === submitted.stateCode)?.name ??
+    submitted.stateCode;
 
   return (
     <div class="grid gap-6 md:grid-cols-2">
@@ -58,6 +69,35 @@ export default function UsBonusTaxCalculator({
             onInput={(e) => setBonusGross((e.target as HTMLInputElement).value)}
           />
         </label>
+        <label class="block text-sm font-medium" for="us-bonus-filing">
+          Filing status
+          <select
+            id="us-bonus-filing"
+            class={inputClass}
+            value={filingStatus}
+            onChange={(e) =>
+              setFilingStatus((e.target as HTMLSelectElement).value as 'single' | 'marriedJointly')
+            }
+          >
+            <option value="single">Single</option>
+            <option value="marriedJointly">Married filing jointly</option>
+          </select>
+        </label>
+        <label class="block text-sm font-medium" for="us-bonus-state">
+          State
+          <select
+            id="us-bonus-state"
+            class={inputClass}
+            value={stateCode}
+            onChange={(e) => setStateCode((e.target as HTMLSelectElement).value)}
+          >
+            {US_BONUS_STATE_OPTIONS.map((state) => (
+              <option key={state.code} value={state.code}>
+                {state.name}
+              </option>
+            ))}
+          </select>
+        </label>
         <label class="block text-sm font-medium" for="us-bonus-salary">
           Your 2026 salary from the same employer ($)
           <input
@@ -65,49 +105,22 @@ export default function UsBonusTaxCalculator({
             class={inputClass}
             type="number"
             min="0"
-            step="1000"
+            step="100"
             value={annualSalary}
             onInput={(e) => setAnnualSalary((e.target as HTMLInputElement).value)}
           />
         </label>
-        <label class="block text-sm font-medium" for="us-bonus-status">
-          Filing status
-          <select
-            id="us-bonus-status"
-            class={inputClass}
-            value={filingStatus}
-            onChange={(e) => setFilingStatus((e.target as HTMLSelectElement).value as 'single' | 'marriedJointly')}
-          >
-            <option value="single">Single</option>
-            <option value="marriedJointly">Married filing jointly</option>
-          </select>
-        </label>
-        <label class="block text-sm font-medium" for="us-bonus-state">
-          State (for the state tax estimate)
-          <select
-            id="us-bonus-state"
-            class={inputClass}
-            value={stateCode}
-            onChange={(e) => setStateCode((e.target as HTMLSelectElement).value)}
-          >
-            {US_BONUS_STATE_OPTIONS.map((s) => (
-              <option key={s.code} value={s.code}>
-                {s.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <div>
-          <button
-            type="button"
-            class="text-sm text-blue-700 underline"
-            onClick={() => setShowAdvanced(!showAdvanced)}
-          >
-            {showAdvanced ? 'Hide' : 'Show'} advanced options
-          </button>
-          {showAdvanced && (
-            <label class="mt-2 block text-sm font-medium" for="us-bonus-ytd">
-              Supplemental wages already paid to you in 2026 ($)
+        <button
+          type="button"
+          class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-50"
+          onClick={() => setShowAdvanced(!showAdvanced)}
+        >
+          {showAdvanced ? 'Hide' : 'Show'} advanced options
+        </button>
+        {showAdvanced && (
+          <div class="space-y-4 rounded border border-slate-200 bg-slate-50 p-4">
+            <label class="block text-sm font-medium" for="us-bonus-ytd">
+              YTD supplemental wages already paid in 2026 ($)
               <input
                 id="us-bonus-ytd"
                 class={inputClass}
@@ -115,110 +128,123 @@ export default function UsBonusTaxCalculator({
                 min="0"
                 step="100"
                 value={ytdSupplementalWages}
-                placeholder="0"
                 onInput={(e) => setYtdSupplementalWages((e.target as HTMLInputElement).value)}
               />
-              <span class="mt-1 block text-xs font-normal text-slate-500">
-                Needed only if your 2026 supplemental wages (bonuses, commissions, payouts) from
-                this employer are near or above $1,000,000 — the excess is withheld at 37%.
-              </span>
             </label>
-          )}
-        </div>
+            <p class="text-xs text-slate-500">
+              Supplemental wages above $1,000,000 in a year are withheld at 37% (aggregated
+              supplemental rate).
+            </p>
+          </div>
+        )}
         <p class="text-xs text-slate-500">
-          The 22% is <strong>withholding, not your actual tax</strong>. When you file your 2026
-          return, this bonus is taxed at your marginal rate — you may get some of the withholding
-          back, or owe a little more. See the comparison on the right.
+          Note: For most employees, the bonus is withheld at the {formatPercent(FEDERAL_SUPPLEMENTAL_WITHHOLDING_2026)} federal supplemental rate, plus Social
+          Security and Medicare. Actual tax on the bonus may differ at filing time.
         </p>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() =>
+              setSubmitted({ bonusGross, filingStatus, stateCode, annualSalary, ytdSupplementalWages })
+            }
+          >
+            Calculate
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setBonusGross(String(initialBonus));
+              setFilingStatus('single');
+              setStateCode(initialStateCode);
+              setAnnualSalary(String(initialSalary));
+              setYtdSupplementalWages('');
+              setShowAdvanced(false);
+              setSubmitted({
+                bonusGross: String(initialBonus),
+                filingStatus: 'single',
+                stateCode: initialStateCode,
+                annualSalary: String(initialSalary),
+                ytdSupplementalWages: '',
+              });
+            }}
+          >
+            Reset
+          </button>
+        </div>
       </div>
 
-      <div class="rounded-xl bg-slate-50 p-6" aria-live="polite">
-        <p class="text-sm text-slate-500">Net bonus after withholding</p>
-        <p class="text-3xl font-bold text-accent">
-          {result ? formatCurrency(result.netBonus) : '—'}
-        </p>
-        {result && (
-          <>
-            <dl class="mt-4 space-y-2 text-sm">
-              <div class="flex justify-between">
-                <dt>
-                  Federal income tax withheld
-                  <span class="block text-xs text-slate-500">
-                    {formatPercent(FEDERAL_SUPPLEMENTAL_WITHHOLDING_2026.flatRate)} supplemental
-                    rate
-                    {result.bonusWithheldAt37 > 0 &&
-                      `; ${formatCurrency(result.bonusWithheldAt37)} at 37% above $1M`}
-                  </span>
-                </dt>
-                <dd>{formatCurrency(result.federalWithholding)}</dd>
+      <div class="space-y-4">
+        <h3 class="text-lg font-semibold">Bonus breakdown</h3>
+        {result ? (
+          <div class="space-y-4">
+            <div>
+              <span class="text-sm text-slate-500">Net bonus</span>
+              <p class="text-3xl font-bold text-accent">{formatCurrency(result.netBonus)}</p>
+            </div>
+            <dl class="space-y-2 text-sm">
+              <div class="flex justify-between border-b pb-1">
+                <dt>Gross bonus</dt>
+                <dd>{formatCurrency(result.bonusGross)}</dd>
               </div>
-              <div class="flex justify-between">
-                <dt>
-                  Social Security (6.2%)
-                  <span class="block text-xs text-slate-500">
-                    on wages below the $184,500 wage base
-                  </span>
-                </dt>
-                <dd>{formatCurrency(result.socialSecurity)}</dd>
+              <div class="flex justify-between border-b pb-1">
+                <dt>Federal withholding</dt>
+                <dd>-{formatCurrency(result.federalWithholding)}</dd>
               </div>
-              <div class="flex justify-between">
-                <dt>
-                  Medicare (1.45%)
-                  {result.additionalMedicare > 0 && (
-                    <span class="block text-xs text-slate-500">
-                      + {formatCurrency(result.additionalMedicare)} additional 0.9% above $200k wages
-                    </span>
-                  )}
-                </dt>
-                <dd>{formatCurrency(roundToCents(result.medicare + result.additionalMedicare))}</dd>
+              <div class="flex justify-between border-b pb-1">
+                <dt>Social Security</dt>
+                <dd>-{formatCurrency(result.socialSecurity)}</dd>
               </div>
-              <div class="flex justify-between">
-                <dt>
-                  {stateName} state tax (estimated)
-                  <span class="block text-xs text-slate-500">
-                    marginal state liability on the bonus
-                  </span>
-                </dt>
-                <dd>{formatCurrency(result.stateTax)}</dd>
+              <div class="flex justify-between border-b pb-1">
+                <dt>Medicare</dt>
+                <dd>-{formatCurrency(result.medicare + result.additionalMedicare)}</dd>
               </div>
-              <div class="flex justify-between font-semibold">
-                <dt>Total withheld</dt>
-                <dd>{formatCurrency(result.totalWithholding)}</dd>
+              <div class="flex justify-between border-b pb-1">
+                <dt>State tax ({stateName})</dt>
+                <dd>-{formatCurrency(result.stateTax)}</dd>
               </div>
-              <hr class="border-slate-200" />
-              <div class="flex justify-between">
-                <dt>
-                  Actual federal tax on this bonus (estimate)
-                  <span class="block text-xs text-slate-500">
-                    {formatPercent(result.marginalRate)} — your marginal rate, not 22%
-                  </span>
-                </dt>
-                <dd>{formatCurrency(result.actualFederalTaxOnBonus)}</dd>
-              </div>
-              <div
-                class={`flex justify-between font-semibold ${
-                  result.withholdingVsActual >= 0 ? 'text-emerald-700' : 'text-amber-700'
-                }`}
-              >
-                <dt>
-                  {result.withholdingVsActual >= 0
-                    ? 'Over-withheld: likely back in your refund'
-                    : 'Under-withheld: likely owed at filing time'}
-                </dt>
-                <dd>
-                  {formatCurrency(Math.abs(result.withholdingVsActual))}
-                </dd>
+              <div class="flex justify-between border-b pb-1">
+                <dt>Total withholding</dt>
+                <dd>-{formatCurrency(result.totalWithholding)}</dd>
               </div>
             </dl>
-            <p class="mt-4 text-xs text-slate-500">
-              Estimate only. Federal supplemental withholding per IRS Publication 15 (2026): 22% up
-              to $1M, 37% above. Your pay stub and tax professional are definitive.
-            </p>
-          </>
+            <PayBreakdownChart
+              title="Bonus breakdown"
+              format={(value) => formatCurrency(value)}
+              segments={[
+                { label: 'Net bonus', value: result.netBonus, color: '#0d9488' },
+                { label: 'Federal withholding', value: result.federalWithholding, color: '#2563eb' },
+                { label: 'Social Security', value: result.socialSecurity, color: '#7c3aed' },
+                {
+                  label: 'Medicare',
+                  value: result.medicare + result.additionalMedicare,
+                  color: '#db2777',
+                },
+                { label: `State tax (${stateName})`, value: result.stateTax, color: '#ea580c' },
+              ]}
+            />
+            <div class="space-y-1 text-sm text-slate-600">
+              <p>Withholding on bonus: {formatPercent(result.withholdingRate)}</p>
+              <p>
+                Estimated actual tax on the bonus:{' '}
+                {formatCurrency(result.actualFederalTaxOnBonus)}
+                {result.withholdingVsActual > 0
+                  ? ` (${formatCurrency(result.withholdingVsActual)} more withheld than estimated actual tax)`
+                  : result.withholdingVsActual < 0
+                    ? ` (${formatCurrency(-result.withholdingVsActual)} less withheld than estimated actual tax)`
+                    : ' (matches estimated actual tax)'}
+              </p>
+              {result.bonusWithheldAt37 && (
+                <p>Withheld at the 37% rate because supplemental wages exceed $1,000,000.</p>
+              )}
+              <p>Marginal rate on the bonus: {formatPercent(result.marginalRate)}</p>
+            </div>
+          </div>
+        ) : (
+          <p class="text-sm text-slate-500">No valid bonus breakdown to show.</p>
         )}
       </div>
     </div>
   );
 }
-
-const roundToCents = (n: number) => Math.round(n * 100) / 100;
