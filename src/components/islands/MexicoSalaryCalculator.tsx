@@ -163,9 +163,9 @@ export default function MexicoSalaryCalculator(props: Props) {
           <PayBreakdownChart
             title="Desglose del salario bruto"
             segments={[
-              { label: 'Salario neto mensual', value: d.netMonthly },
-              { label: 'Total IMSS obrero', value: d.totalImssObrero },
-              { label: 'ISR neto a retener', value: d.isrNeto },
+              { label: 'Salario neto mensual', value: d.netMonthly, color: '#0d9488'},
+              { label: 'Total IMSS obrero', value: d.totalImssObrero, color: '#2563eb'},
+              { label: 'ISR neto a retener', value: d.isrNeto, color: '#7c3aed'},
             ]}
             format={(value) => fmt(value)}
           />
