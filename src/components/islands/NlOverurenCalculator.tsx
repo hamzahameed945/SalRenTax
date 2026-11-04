@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'preact/hooks';
 import { nlOverurenEngine } from '../../calculators/salary/engines/nl/nlOveruren';
+import PayBreakdownChart from './PayBreakdownChart';
 
 interface Props { locale: string; }
 
@@ -19,21 +20,33 @@ export default function NlOverurenCalculator({ locale }: Props) {
   const [uurloon, setUurloon] = useState('20');
   const [overuren, setOveruren] = useState('8');
   const [toeslagPercent, setToeslagPercent] = useState('50');
+  const [submitted, setSubmitted] = useState({ mode: 'salaris' as 'salaris' | 'uurloon', brutoMaandsalaris: '3500', urenPerWeek: '40', uurloon: '20', overuren: '8', toeslagPercent: '50' });
 
   const result = useMemo(() => {
     const input = {
-      brutoMaandsalaris: mode === 'salaris' ? parseFloat(brutoMaandsalaris) || 0 : undefined,
-      urenPerWeek: mode === 'salaris' ? parseFloat(urenPerWeek) || 0 : undefined,
-      uurloon: mode === 'uurloon' ? parseFloat(uurloon) || 0 : undefined,
-      overuren: parseFloat(overuren) || 0,
-      toeslagPercent: parseFloat(toeslagPercent) || 0,
+      brutoMaandsalaris: submitted.mode === 'salaris' ? parseFloat(submitted.brutoMaandsalaris) || 0 : undefined,
+      urenPerWeek: submitted.mode === 'salaris' ? parseFloat(submitted.urenPerWeek) || 0 : undefined,
+      uurloon: submitted.mode === 'uurloon' ? parseFloat(submitted.uurloon) || 0 : undefined,
+      overuren: parseFloat(submitted.overuren) || 0,
+      toeslagPercent: parseFloat(submitted.toeslagPercent) || 0,
     };
     const v = nlOverurenEngine.validate(input);
     if (!v.valid) return { data: null, errors: v.errors };
     return { data: nlOverurenEngine.calculate(v.data, {} as never, 2026), errors: null };
-  }, [mode, brutoMaandsalaris, urenPerWeek, uurloon, overuren, toeslagPercent]);
+  }, [submitted]);
 
   const d = result.data;
+
+  const handleCalculate = () => setSubmitted({ mode, brutoMaandsalaris, urenPerWeek, uurloon, overuren, toeslagPercent });
+  const handleReset = () => {
+    setMode('salaris');
+    setBrutoMaandsalaris('3500');
+    setUrenPerWeek('40');
+    setUurloon('20');
+    setOveruren('8');
+    setToeslagPercent('50');
+    setSubmitted({ mode: 'salaris', brutoMaandsalaris: '3500', urenPerWeek: '40', uurloon: '20', overuren: '8', toeslagPercent: '50' });
+  };
 
   return (
     <div class="space-y-6">
@@ -147,6 +160,11 @@ export default function NlOverurenCalculator({ locale }: Props) {
             </div>
           </div>
         </div>
+
+        <div class="mt-6 flex gap-3">
+          <button type="button" class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark" onClick={handleCalculate}>Bereken</button>
+          <button type="button" class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50" onClick={handleReset}>Opnieuw instellen</button>
+        </div>
       </div>
 
       {d && (
@@ -155,7 +173,7 @@ export default function NlOverurenCalculator({ locale }: Props) {
             <p class="text-sm font-medium text-indigo-200">Bruto overwerkvergoeding</p>
             <p class="mt-1 text-5xl font-bold tracking-tight">{fmt(locale, d.brutoOverwerkvergoeding)}</p>
             <p class="mt-2 text-sm text-indigo-100">
-              {Number(overuren) || 0} overuren × {fmt(locale, d.overurentarief)} per uur
+              {Number(submitted.overuren) || 0} overuren × {fmt(locale, d.overurentarief)} per uur
               {d.uurloonAfgeleid && ` (uurloon ${fmt(locale, d.uurloon)} afgeleid uit maandsalaris)`}
             </p>
           </div>
@@ -169,7 +187,7 @@ export default function NlOverurenCalculator({ locale }: Props) {
                   <span>{fmt(locale, d.uurloon)}</span>
                 </div>
                 <div class="flex justify-between pt-2 text-slate-600">
-                  <span>Overurentarief ({Number(toeslagPercent) + 100}%)</span>
+                  <span>Overurentarief ({Number(submitted.toeslagPercent) + 100}%)</span>
                   <span>{fmt(locale, d.overurentarief)}</span>
                 </div>
                 <div class="flex justify-between pt-2 text-slate-600">
@@ -195,6 +213,11 @@ export default function NlOverurenCalculator({ locale }: Props) {
               </p>
             </div>
           </div>
+
+          <PayBreakdownChart title="Verdeling overwerkvergoeding" format={(v) => fmt(locale, v)} segments={[
+            { label: 'Basiscomponent', value: d.basisComponent, color: '#4f46e5' },
+            { label: 'Toeslagcomponent', value: d.toeslagComponent, color: '#0ea5e9' },
+          ]} />
         </div>
       )}
 
