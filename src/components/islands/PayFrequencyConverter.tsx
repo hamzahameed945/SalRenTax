@@ -88,7 +88,7 @@ export default function PayFrequencyConverter({
           />
           {result.error?.amount && (
             <p class="mt-1 text-sm text-red-600">
-              {t.errors?.[result.error.amount] || result.error.amount}
+              {t.errors?.[result.error.amount.split('.').pop() ?? result.error.amount] || result.error.amount}
             </p>
           )}
         </div>
@@ -110,7 +110,7 @@ export default function PayFrequencyConverter({
           </select>
           {result.error?.frequency && (
             <p class="mt-1 text-sm text-red-600">
-              {t.errors?.[result.error.frequency] || result.error.frequency}
+              {t.errors?.[result.error.frequency.split('.').pop() ?? result.error.frequency] || result.error.frequency}
             </p>
           )}
         </div>
@@ -126,7 +126,7 @@ export default function PayFrequencyConverter({
             />
             {result.error?.hoursPerWeek && (
               <p class="mt-1 text-sm text-red-600">
-                {t.errors?.[result.error.hoursPerWeek] || result.error.hoursPerWeek}
+                {t.errors?.[result.error.hoursPerWeek.split('.').pop() ?? result.error.hoursPerWeek] || result.error.hoursPerWeek}
               </p>
             )}
           </div>
