@@ -32,14 +32,19 @@ export default function IeChristmasBonusCalculator() {
   const [paymentType, setPaymentType] = useState<IeChristmasBonusPaymentType>('statePensionContributory');
   const [duration, setDuration] = useState<IeChristmasBonusDuration>('12plus');
   const [weekly, setWeekly] = useState('254');
+  const [submitted, setSubmitted] = useState({
+    paymentType,
+    duration,
+    weekly,
+  });
 
-  const weeklyAmount = parseFloat(weekly) || 0;
+  const weeklyAmount = parseFloat(submitted.weekly) || 0;
 
   const result = useMemo(() => {
-    const v = ieChristmasBonusEngine.validate({ paymentType, duration, weeklyAmount });
+    const v = ieChristmasBonusEngine.validate({ paymentType: submitted.paymentType, duration: submitted.duration, weeklyAmount });
     if (!v.valid) return null;
     return ieChristmasBonusEngine.calculate(v.data, {} as never, 2026);
-  }, [paymentType, duration, weeklyAmount]);
+  }, [submitted]);
 
   const needsDuration = ['jobseekersAllowance', 'illnessBenefit', 'supplementaryWelfareAllowance'].includes(paymentType);
 
@@ -121,6 +126,27 @@ export default function IeChristmasBonusCalculator() {
             </p>
           )}
         </fieldset>
+        <div class="mt-4 flex gap-3">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ paymentType, duration, weekly })}
+          >
+            Calculate
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setPaymentType('statePensionContributory');
+              setDuration('12plus');
+              setWeekly('254');
+              setSubmitted({ paymentType: 'statePensionContributory', duration: '12plus', weekly: '254' });
+            }}
+          >
+            Reset
+          </button>
+        </div>
       </div>
 
       {/* ── Results ────────────────────────────────────────────────── */}
@@ -149,13 +175,13 @@ export default function IeChristmasBonusCalculator() {
               <div class="flex justify-between px-5 py-3">
                 <span class="text-slate-600">Payment checked</span>
                 <span class="font-medium text-slate-900 text-right">
-                  {PAYMENT_OPTIONS.find(o => o.value === paymentType)?.label}
+                  {PAYMENT_OPTIONS.find(o => o.value === submitted.paymentType)?.label}
                 </span>
               </div>
               <div class="flex justify-between px-5 py-3">
                 <span class="text-slate-600">Duration</span>
                 <span class="font-medium text-slate-900">
-                  {duration === '12plus' ? '12 months or more' : 'Less than 12 months'}
+                  {submitted.duration === '12plus' ? '12 months or more' : 'Less than 12 months'}
                 </span>
               </div>
               <div class="flex justify-between px-5 py-3">
