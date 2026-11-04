@@ -1,6 +1,6 @@
 export const salary = {
   categoryTitle: 'Calcolatori di stipendio Italia 2026',
-  categoryIntro: 'Calcola il tuo stipendio netto 2026 con i dati ufficiali italiani.',
+    categoryIntro: 'Calcola il tuo stipendio netto in Italia per 2026 con i dati ufficiali: IRPEF, contributi INPS e conversioni di stipendio lordo-netto.',
 
   salaryToHourly: {
     title: 'Stipendio Annuo in Tariffa Oraria Italia 2026 — PayRenTax',
