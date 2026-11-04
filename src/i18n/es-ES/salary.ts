@@ -1,7 +1,7 @@
 export const salary = {
   categoryTitle: 'Calculadoras de salario España 2026',
   categoryIntro:
-    'Calcula tu sueldo neto, IRPF completo (estatal + autonómico), Seguridad Social y finiquito para 2026.',
+    'Calcula tu sueldo neto en España para 2026: IRPF completo (estatal y autonómico), Seguridad Social, finiquito y conversiones de salario por hora.',
 
   salaryToHourly: {
     title: 'Calculadora de Salario a Hora España',
