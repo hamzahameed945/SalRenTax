@@ -80,7 +80,7 @@ const faqs = [
       basic amounts in the 2026 engine.
     </p>
     <h2 class="mt-10 text-xl font-semibold text-slate-900">Try a different Ontario salary</h2>
-    <CaOntarioSalaryCalculator client:load />
+    <CaOntarioSalaryCalculator client:load initialGross={50000} />
     <CalculatorFAQ heading="Frequently asked questions about Ontario take-home pay" items={faqs} />
   </section>
   <CalculatorResource locale="en-CA" category="salary" />
