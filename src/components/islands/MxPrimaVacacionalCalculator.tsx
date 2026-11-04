@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'preact/hooks';
 import { mxPrimaVacacionalEngine } from '../../calculators/labor/engines/mxPrimaVacacional';
+import PayBreakdownChart from './PayBreakdownChart';
 
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(value);
@@ -12,15 +13,20 @@ export default function MxPrimaVacacionalCalculator({ initialSalary }: Props) {
   const [sueldoMensual, setSueldoMensual] = useState(String(initialSalary ?? 20000));
   const [diasVacaciones, setDiasVacaciones] = useState('12');
   const [mesesTrabajados, setMesesTrabajados] = useState('12');
+  const [submitted, setSubmitted] = useState({
+    sueldoMensual,
+    diasVacaciones,
+    mesesTrabajados,
+  });
 
   const result = useMemo(() => {
     const validation = mxPrimaVacacionalEngine.validate({
-      sueldoMensual: Number(sueldoMensual),
-      diasVacaciones: Number(diasVacaciones),
-      mesesTrabajados: Number(mesesTrabajados),
+      sueldoMensual: Number(submitted.sueldoMensual),
+      diasVacaciones: Number(submitted.diasVacaciones),
+      mesesTrabajados: Number(submitted.mesesTrabajados),
     });
     return validation.valid ? mxPrimaVacacionalEngine.calculate(validation.data) : null;
-  }, [sueldoMensual, diasVacaciones, mesesTrabajados]);
+  }, [submitted]);
 
   return (
     <div class="grid gap-6 md:grid-cols-2">
@@ -61,20 +67,48 @@ export default function MxPrimaVacacionalCalculator({ initialSalary }: Props) {
             onInput={(e) => setMesesTrabajados((e.target as HTMLInputElement).value)}
           />
         </label>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ sueldoMensual, diasVacaciones, mesesTrabajados })}
+          >
+            Calcular
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setSueldoMensual(String(initialSalary ?? 20000));
+              setDiasVacaciones('12');
+              setMesesTrabajados('12');
+              setSubmitted({ sueldoMensual: String(initialSalary ?? 20000), diasVacaciones: '12', mesesTrabajados: '12' });
+            }}
+          >
+            Restablecer
+          </button>
+        </div>
       </div>
-
       <div class="rounded-xl bg-slate-50 p-6" aria-live="polite">
-        <p class="text-sm text-slate-500">Prima vacacional neta estimada</p>
+        <p class="text-sm text-slate-500">Prima vacacional neta</p>
         <p class="text-3xl font-bold text-accent">{result ? formatCurrency(result.primaNeta) : '—'}</p>
         {result && (
           <dl class="mt-4 space-y-2 text-sm">
             <div class="flex justify-between">
-              <dt>Prima bruta (25%)</dt>
+              <dt>Salario diario</dt>
+              <dd>{formatCurrency(result.salarioDiario)}</dd>
+            </div>
+            <div class="flex justify-between">
+              <dt>Prima bruta</dt>
               <dd>{formatCurrency(result.primaBruta)}</dd>
             </div>
             <div class="flex justify-between">
-              <dt>Exento de ISR (15 UMAs)</dt>
+              <dt>Monto exento de ISR</dt>
               <dd>{formatCurrency(result.montoExento)}</dd>
+            </div>
+            <div class="flex justify-between">
+              <dt>Base gravada</dt>
+              <dd>{formatCurrency(result.baseGravada)}</dd>
             </div>
             <div class="flex justify-between">
               <dt>ISR estimado</dt>
@@ -82,8 +116,18 @@ export default function MxPrimaVacacionalCalculator({ initialSalary }: Props) {
             </div>
           </dl>
         )}
+        {result && (
+          <PayBreakdownChart
+            title="Desglose de la prima bruta"
+            segments={[
+              { label: 'Prima neta', value: result.primaNeta },
+              { label: 'ISR estimado', value: result.isrEstimado },
+            ]}
+            format={(value) => formatCurrency(value)}
+          />
+        )}
         <p class="mt-4 text-xs text-slate-500">
-          Estimación con tarifa ISR 2026. La prima mínima legal es 25% del salario vacacional (LFT Art. 80).
+          La prima vacacional es el 25% del salario correspondiente a los días de vacaciones (LFT Art. 80). Hasta 15 UMAs diarias están exentas de ISR (LISR Art. 93 frac. XIV).
         </p>
       </div>
     </div>
