@@ -3,6 +3,7 @@ import {
   esFiniquitoEngine,
   type EsDismissalType,
 } from '../../calculators/labor/engines/esFiniquito';
+import PayBreakdownChart from './PayBreakdownChart';
 
 const fmt = (v: number) =>
   new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 }).format(v);
@@ -28,24 +29,34 @@ export default function EsFiniquitoCalculator({
   const [paymentsPerYear, setPaymentsPerYear]     = useState<'12' | '14'>('14');
   const [dismissalType, setDismissalType]         = useState<EsDismissalType>(defaultDismissal);
   const [yearsWorkedPre2012, setYearsPre2012]     = useState('0');
+  const [submitted, setSubmitted] = useState({
+    grossAnnual,
+    yearsWorked,
+    daysHolidayPending,
+    departureMonth,
+    paymentsPerYear,
+    dismissalType,
+    yearsWorkedPre2012,
+  });
 
-  const years = parseFloat(yearsWorked) || 0;
-  const pre2012 = parseFloat(yearsWorkedPre2012) || 0;
   const showPre2012 = dismissalType === 'unfairDismissal';
+
+  const submittedYears = parseFloat(submitted.yearsWorked) || 0;
+  const submittedPre2012 = parseFloat(submitted.yearsWorkedPre2012) || 0;
 
   const result = useMemo(() => {
     const v = esFiniquitoEngine.validate({
-      grossAnnual:        parseFloat(grossAnnual) || 0,
-      yearsWorked:        years,
-      daysHolidayPending: parseFloat(daysHolidayPending) || 0,
-      dismissalType,
-      departureMonth:     parseInt(departureMonth, 10) || 6,
-      yearsWorkedPre2012: pre2012,
-      paymentsPerYear:    paymentsPerYear === '14' ? 14 : 12,
+      grossAnnual:        parseFloat(submitted.grossAnnual) || 0,
+      yearsWorked:        submittedYears,
+      daysHolidayPending: parseFloat(submitted.daysHolidayPending) || 0,
+      dismissalType: submitted.dismissalType,
+      departureMonth:     parseInt(submitted.departureMonth, 10) || 6,
+      yearsWorkedPre2012: submittedPre2012,
+      paymentsPerYear:    submitted.paymentsPerYear === '14' ? 14 : 12,
     });
     if (!v.valid) return null;
     return esFiniquitoEngine.calculate(v.data, {} as never, 2026);
-  }, [grossAnnual, years, daysHolidayPending, dismissalType, departureMonth, pre2012, paymentsPerYear]);
+  }, [submitted]);
 
   return (
     <div class="space-y-6">
@@ -145,6 +156,31 @@ export default function EsFiniquitoCalculator({
             </div>
           )}
         </div>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ grossAnnual, yearsWorked, daysHolidayPending, departureMonth, paymentsPerYear, dismissalType, yearsWorkedPre2012 })}
+          >
+            Calcular
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setGrossAnnual('30000');
+              setYearsWorked('5');
+              setDaysHolidayPending('10');
+              setDepartureMonth('6');
+              setPaymentsPerYear('14');
+              setDismissalType(defaultDismissal);
+              setYearsPre2012('0');
+              setSubmitted({ grossAnnual: '30000', yearsWorked: '5', daysHolidayPending: '10', departureMonth: '6', paymentsPerYear: '14', dismissalType: defaultDismissal, yearsWorkedPre2012: '0' });
+            }}
+          >
+            Restablecer
+          </button>
+        </div>
       </div>
 
       {/* ── Results ────────────────────────────────────────────────── */}
@@ -156,7 +192,7 @@ export default function EsFiniquitoCalculator({
             <p class="text-sm font-medium text-yellow-100">Total finiquito estimado</p>
             <p class="mt-1 text-5xl font-bold tracking-tight">{fmt(result.totalFiniquito)}</p>
             <p class="mt-2 text-sm text-yellow-100">
-              {DISMISSAL_LABELS[dismissalType]} · {years} año(s) · salida en {MONTH_NAMES[parseInt(departureMonth) - 1]}
+              {DISMISSAL_LABELS[submitted.dismissalType]} · {submittedYears} año(s) · salida en {MONTH_NAMES[parseInt(submitted.departureMonth) - 1]}
             </p>
           </div>
 
@@ -174,7 +210,7 @@ export default function EsFiniquitoCalculator({
                   <div class="flex justify-between text-blue-700">
                     <span class="pl-4">
                       {result.extraPays} paga(s) extra × {result.monthsInYear}/12 meses
-                      ({MONTH_NAMES[parseInt(departureMonth) - 1]})
+                      ({MONTH_NAMES[parseInt(submitted.departureMonth) - 1]})
                     </span>
                     <span class="font-medium">{fmt(result.proportionalExtraPay)}</span>
                   </div>
@@ -185,7 +221,7 @@ export default function EsFiniquitoCalculator({
 
               {/* Vacation */}
               <div class="flex justify-between px-5 py-3 text-slate-700">
-                <span>Vacaciones no disfrutadas ({(parseFloat(daysHolidayPending) || 0)} días)</span>
+                <span>Vacaciones no disfrutadas ({(parseFloat(submitted.daysHolidayPending) || 0)} días)</span>
                 <span class="font-medium">{fmt(result.holidayPay)}</span>
               </div>
 
@@ -196,7 +232,7 @@ export default function EsFiniquitoCalculator({
                   {result.severancePre2012 > 0 && (
                     <div>
                       <div class="flex justify-between text-red-700">
-                        <span class="pl-4">Tramo pre-2012 (45 días × {pre2012} años{result.pre2012CapApplied ? ' — tope 42 mensualidades' : ''})</span>
+                        <span class="pl-4">Tramo pre-2012 (45 días × {submittedPre2012} años{result.pre2012CapApplied ? ' — tope 42 mensualidades' : ''})</span>
                         <span class="font-medium">{fmt(result.severancePre2012)}</span>
                       </div>
                     </div>
@@ -204,9 +240,9 @@ export default function EsFiniquitoCalculator({
                   {result.severancePost2012 > 0 && (
                     <div class="flex justify-between text-red-700">
                       <span class="pl-4">
-                        {dismissalType === 'unfairDismissal'
-                          ? `Tramo post-2012 (33 días × ${Math.max(0, years - pre2012).toFixed(1)} años${result.post2012CapApplied ? ' — tope 24 mensualidades' : ''})`
-                          : `20 días/año × ${years} años${result.post2012CapApplied ? ' — tope 12 mensualidades' : ''}`}
+                        {submitted.dismissalType === 'unfairDismissal'
+                          ? `Tramo post-2012 (33 días × ${Math.max(0, submittedYears - submittedPre2012).toFixed(1)} años${result.post2012CapApplied ? ' — tope 24 mensualidades' : ''})`
+                          : `20 días/año × ${submittedYears} años${result.post2012CapApplied ? ' — tope 12 mensualidades' : ''}`}
                       </span>
                       <span class="font-medium">{fmt(result.severancePost2012)}</span>
                     </div>
@@ -221,6 +257,16 @@ export default function EsFiniquitoCalculator({
               </div>
             </div>
           </div>
+
+          <PayBreakdownChart
+            title="Desglose del finiquito"
+            segments={[
+              { label: 'Pagas extra proporcionales', value: result.proportionalExtraPay },
+              { label: 'Vacaciones no disfrutadas', value: result.holidayPay },
+              { label: 'Indemnización', value: result.severancePay },
+            ]}
+            format={(value) => fmt(value)}
+          />
 
           <div class="rounded-lg border border-amber-200 bg-amber-50 p-4 text-xs text-amber-800">
             <strong>Nota fiscal:</strong> La indemnización mínima legal por despido improcedente está exenta de IRPF
