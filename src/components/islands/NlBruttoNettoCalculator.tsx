@@ -2,18 +2,21 @@ import { useState, useMemo } from 'preact/hooks';
 import { nlBruttoNettoEngine } from '../../calculators/salary/engines/nl/nlBruttoNetto';
 import PayBreakdownChart from './PayBreakdownChart';
 
-interface Props { locale: string; initialSalary?: number; }
+interface Props {
+  locale: string;
+}
 
 const fmt = (locale: string, v: number) =>
-  new Intl.NumberFormat(locale, { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 }).format(v);
-const fmtPct = (locale: string, v: number) => `${(v * 100).toFixed(1)}%`;
+  new Intl.NumberFormat(locale, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(v);
+const fmtPct = (locale: string, v: number, digits = 1) =>
+  new Intl.NumberFormat(locale, { style: 'percent', minimumFractionDigits: digits, maximumFractionDigits: digits }).format(v);
 
-type PayPeriod = 'monthly' | 'annual' | 'weekly' | 'fourWeekly';
+type PayPeriod = 'annual' | 'monthly' | 'fourweekly' | 'weekly';
 const periodLabels: Record<PayPeriod, string> = {
-  monthly: 'per maand',
   annual: 'per jaar',
+  monthly: 'per maand',
+  fourweekly: 'per 4 weken',
   weekly: 'per week',
-  fourWeekly: 'per 4 weken',
 };
 
 function Row({ label, value, locale, highlight }: { label: string; value: number; locale: string; highlight?: boolean }) {
@@ -25,8 +28,7 @@ function Row({ label, value, locale, highlight }: { label: string; value: number
   );
 }
 
-export default function NlBruttoNettoCalculator(props: Props) {
-  const { locale } = props;
+export default function NlBruttoNettoCalculator({ locale }: Props) {
   const [grossAnnual, setGrossAnnual] = useState('55000');
   const [age, setAge] = useState('');
   const [thirtyPct, setThirtyPct] = useState(false);
@@ -40,9 +42,9 @@ export default function NlBruttoNettoCalculator(props: Props) {
   const input = useMemo(() => ({
     grossAnnual: parseFloat(submitted.grossAnnual) || 0,
     age: submitted.age ? parseInt(submitted.age, 10) : undefined,
-    thirtyPct: submitted.thirtyPct,
-    vakantiegeld: submitted.vakantiegeld,
-    iack: submitted.iack,
+    thirtyPercentRuling: submitted.thirtyPct,
+    includeVakantiegeld: submitted.vakantiegeld,
+    iackEligible: submitted.iack,
     bornBefore1946: submitted.bornBefore1946,
     payPeriod: submitted.payPeriod,
   }), [submitted]);
@@ -53,44 +55,60 @@ export default function NlBruttoNettoCalculator(props: Props) {
   }, [input]);
   const d = result.data;
   const whatIfResult = useMemo(() => {
+    if (!showWhatIf || !d) return null;
     const g = parseFloat(whatIfGross);
-    if (!d || !g || g <= 0) return null;
+    if (!g || g <= 0) return null;
     const v = nlBruttoNettoEngine.validate({ ...input, grossAnnual: g });
     if (!v.valid) return null;
     return nlBruttoNettoEngine.calculate(v.data, {} as never, 2026);
-  }, [d, input, whatIfGross]);
+  }, [showWhatIf, d, input, whatIfGross]);
   return (
     <div class="space-y-6">
       <div class="rounded-xl border border-slate-200 bg-slate-50 p-5">
-        <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-4">Jouw gegevens</h2>
+        <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-4">Uw gegevens</h2>
         <div class="grid gap-4 sm:grid-cols-2">
           <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1">Bruto jaarsalaris <span class="text-slate-400 font-normal">(€)</span></label>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Bruto jaarsalaris <span class="text-slate-400 font-normal">(excl. vakantiegeld)</span></label>
             <div class="relative">
               <span class="absolute inset-y-0 left-3 flex items-center text-slate-400 text-sm">€</span>
               <input
-                type="number" min="0" step="1000"
-                class="w-full rounded-md border border-slate-300 pl-7 pr-3 py-2 text-slate-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                type="number" min="0" step="500"
+                class="w-full rounded-md border border-slate-300 pl-7 pr-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 value={grossAnnual}
                 onInput={e => setGrossAnnual((e.target as HTMLInputElement).value)}
                 placeholder="bijv. 55000"
               />
             </div>
-            {result.errors?.grossAnnual && <p class="mt-1 text-xs text-red-600">Vul een geldig bedrag in</p>}
+            {result.errors?.grossAnnual && <p class="mt-1 text-xs text-red-600">{result.errors.grossAnnual}</p>}
           </div>
           <div>
             <label class="block text-sm font-medium text-slate-700 mb-1">Leeftijd <span class="text-slate-400 font-normal">(optioneel)</span></label>
             <input
-              type="number" min="0" max="120"
-              class="w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+              type="number" min="15" max="100"
+              class="w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
               value={age}
               onInput={e => setAge((e.target as HTMLInputElement).value)}
               placeholder="bijv. 35"
             />
-            {result.errors?.age && <p class="mt-1 text-xs text-red-600">Vul een geldige leeftijd in</p>}
+            {age && parseInt(age) >= 67 && (
+              <p class="mt-1 text-xs text-blue-600">AOW-tarief toegepast (lagere schijf 1)</p>
+            )}
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Uitbetalingsperiode</label>
+            <select
+              class="w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              value={payPeriod}
+              onChange={e => setPayPeriod((e.target as HTMLSelectElement).value as typeof payPeriod)}
+            >
+              <option value="annual">Jaarlijks</option>
+              <option value="monthly">Maandelijks</option>
+              <option value="fourweekly">Per 4 weken</option>
+              <option value="weekly">Wekelijks</option>
+            </select>
           </div>
         </div>
-        <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <div class="mt-4 flex flex-col gap-2 justify-center">
           <label class="flex items-center gap-2 cursor-pointer select-none">
             <input
               type="checkbox" checked={vakantiegeld}
@@ -124,20 +142,6 @@ export default function NlBruttoNettoCalculator(props: Props) {
             <span class="text-sm text-slate-700">Geboren vóór 1946</span>
           </label>
         </div>
-        <div class="mt-4 max-w-xs">
-          <label class="block text-sm font-medium text-slate-700 mb-1">Uitbetalingsperiode</label>
-          <select
-            class="w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-            value={payPeriod}
-            onChange={e => setPayPeriod((e.target as HTMLSelectElement).value as PayPeriod)}
-          >
-            <option value="monthly">Maandelijks</option>
-            <option value="annual">Jaarlijks</option>
-            <option value="weekly">Wekelijks</option>
-            <option value="fourWeekly">Per 4 weken</option>
-          </select>
-        </div>
-        {age && parseInt(age) >= 67 && <p class="mt-3 text-xs text-slate-500">AOW-tarief toegepast: voor AOW-gerechtigden gelden lagere tarieven in schijf 1 en een aangepaste algemene heffingskorting.</p>}
         <div class="mt-4 flex gap-3">
           <button type="button" class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark" onClick={() => setSubmitted({ grossAnnual, age, thirtyPct, vakantiegeld, iack, bornBefore1946, payPeriod })}>Bereken</button>
           <button type="button" class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50" onClick={() => { const reset = { grossAnnual: '55000', age: '', thirtyPct: false, vakantiegeld: true, iack: false, bornBefore1946: false, payPeriod: 'monthly' as PayPeriod }; setGrossAnnual(reset.grossAnnual); setAge(reset.age); setThirtyPct(reset.thirtyPct); setVakantiegeld(reset.vakantiegeld); setIack(reset.iack); setBornBefore1946(reset.bornBefore1946); setPayPeriod(reset.payPeriod); setWhatIfGross(''); setShowWhatIf(false); setSubmitted(reset); }}>Opnieuw instellen</button>
@@ -149,7 +153,7 @@ export default function NlBruttoNettoCalculator(props: Props) {
             <p class="text-sm font-medium text-blue-200">Netto {periodLabels[submitted.payPeriod]}</p>
             <p class="mt-1 text-5xl font-bold tracking-tight">{fmt(locale, d.netPerPeriod)}</p>
             <div class="mt-3 flex flex-wrap gap-5 text-sm text-blue-100">
-              <span>Netto jaar: <strong class="text-white">{fmt(locale, d.netAnnual)}</strong></span>
+              <span>Bruto {periodLabels[submitted.payPeriod]}: <strong class="text-white">{fmt(locale, d.grossPerPeriod)}</strong></span>
               <span>Effectief tarief: <strong class="text-white">{fmtPct(locale, d.effectiveRate)}</strong></span>
               <span>Marginaal tarief: <strong class="text-white">{fmtPct(locale, d.marginalRate)}</strong></span>
             </div>
@@ -159,80 +163,28 @@ export default function NlBruttoNettoCalculator(props: Props) {
               <h3 class="text-sm font-semibold text-slate-700">Gedetailleerde berekening</h3>
             </div>
             <div class="divide-y divide-slate-100 text-sm">
-              <div class="flex justify-between px-5 py-3 text-slate-700">
-                <span>Bruto jaarsalaris</span>
-                <span class="font-medium">{fmt(locale, d.grossBase)}</span>
-              </div>
-              {d.vakantiegeld > 0 && (
-                <div class="flex justify-between px-5 py-2 text-slate-500">
-                  <span class="pl-4">+ Vakantiegeld (8%)</span>
-                  <span>{fmt(locale, d.vakantiegeld)}</span>
-                </div>
-              )}
-              <div class="flex justify-between px-5 py-3 font-medium text-slate-800 border-t border-slate-200">
-                <span>Bruto totaal</span>
-                <span>{fmt(locale, d.grossTotal)}</span>
-              </div>
-              {d.thirtyPctAllowance > 0 && (
-                <div class="flex justify-between px-5 py-2 text-slate-500">
-                  <span class="pl-4">− 30%-regeling (belastingvrij deel)</span>
-                  <span>{fmt(locale, d.thirtyPctAllowance)}</span>
-                </div>
-              )}
-              <div class="flex justify-between px-5 py-3 font-medium text-slate-800">
-                <span>Belastbaar inkomen</span>
-                <span>{fmt(locale, d.taxableIncome)}</span>
-              </div>
-              <div class="flex justify-between px-5 py-2 text-slate-600">
-                <span class="pl-4">Belasting schijf 1 (35,82%)</span>
-                <span>{fmt(locale, d.taxBand1)}</span>
-              </div>
-              {d.taxBand2 > 0 && (
-                <div class="flex justify-between px-5 py-2 text-slate-600">
-                  <span class="pl-4">Belasting schijf 2 (37,48%)</span>
-                  <span>{fmt(locale, d.taxBand2)}</span>
-                </div>
-              )}
-              {d.taxBand3 > 0 && (
-                <div class="flex justify-between px-5 py-2 text-slate-600">
-                  <span class="pl-4">Belasting schijf 3 (49,50%)</span>
-                  <span>{fmt(locale, d.taxBand3)}</span>
-                </div>
-              )}
-              <div class="flex justify-between px-5 py-2 text-slate-600">
-                <span class="pl-4">Bruto belasting</span>
-                <span>{fmt(locale, d.grossTax)}</span>
-              </div>
-              <div class="flex justify-between px-5 py-2 text-green-700">
-                <span class="pl-4">− Algemene heffingskorting</span>
-                <span>−{fmt(locale, d.generalCredit)}</span>
-              </div>
-              <div class="flex justify-between px-5 py-2 text-green-700">
-                <span class="pl-4">− Arbeidskorting</span>
-                <span>−{fmt(locale, d.labourCredit)}</span>
-              </div>
-              {d.iackCredit > 0 && (
-                <div class="flex justify-between px-5 py-2 text-green-700">
-                  <span class="pl-4">− Combinatiekorting</span>
-                  <span>−{fmt(locale, d.iackCredit)}</span>
-                </div>
-              )}
-              <div class="flex justify-between px-5 py-2 text-green-700">
-                <span class="pl-4">Totaal heffingskortingen</span>
-                <span>−{fmt(locale, d.totalCredits)}</span>
-              </div>
-              <div class="flex justify-between px-5 py-3 text-red-700 font-medium">
-                <span>Verschuldigde inkomstenbelasting</span>
-                <span>−{fmt(locale, d.incomeTaxAnnual)}</span>
-              </div>
-              <div class="flex justify-between px-5 py-4 bg-blue-50 text-blue-800 font-bold text-base">
-                <span>Netto jaarsalaris</span>
-                <span>{fmt(locale, d.netAnnual)}</span>
-              </div>
-              <div class="flex justify-between px-5 py-3 text-slate-700 font-medium">
-                <span>Netto {periodLabels[submitted.payPeriod]}</span>
-                <span>{fmt(locale, d.netPerPeriod)}</span>
-              </div>
+              <Row label="Bruto jaarsalaris" value={d.grossBase} locale={locale} />
+              {d.vakantiegeld > 0 && <Row label="Vakantiegeld (8%)" value={d.vakantiegeld} locale={locale} />}
+              <Row label="Bruto totaal" value={d.grossTotal} locale={locale} highlight />
+              {d.thirtyPctAllowance > 0 && <Row label="30%-regeling (vrijgesteld)" value={-d.thirtyPctAllowance} locale={locale} />}
+              <Row label="Belastbaar inkomen" value={d.taxableIncome} locale={locale} highlight />
+              {d.box1PerBracket.map((b, i) => (
+                <Row key={i} label={`Box 1 — ${b.bracketLabel} (${fmtPct(locale, b.rate, 2)})`} value={b.taxOwed} locale={locale} />
+              ))}
+              <Row label="Bruto box 1-belasting" value={d.box1TaxRaw} locale={locale} highlight />
+              <div class="bg-slate-50 px-5 py-2 text-xs font-semibold text-slate-500">Inbegrepen in schijf 1 (sociale premies)</div>
+              <Row label="AOW (17,9%)" value={d.socialSecurityBreakdown.aow} locale={locale} />
+              <Row label="WLZ (9,65%)" value={d.socialSecurityBreakdown.wlz} locale={locale} />
+              <Row label="ANW (0,1%)" value={d.socialSecurityBreakdown.anw} locale={locale} />
+              <Row label="Totaal sociale premies" value={d.socialSecurityBreakdown.total} locale={locale} highlight />
+              <Row label="Algemene heffingskorting" value={-d.algemeneHeffingskorting} locale={locale} />
+              <Row label="Arbeidskorting" value={-d.arbeidskorting} locale={locale} />
+              {d.iackCredit > 0 && <Row label="Combinatiekorting (IACK)" value={-d.iackCredit} locale={locale} />}
+              {d.ouderenkorting > 0 && <Row label="Ouderenkorting" value={-d.ouderenkorting} locale={locale} />}
+              <Row label="Totaal heffingskortingen" value={-d.totalCredits} locale={locale} highlight />
+              <Row label="Verschuldigde inkomstenbelasting" value={d.incomeTaxAnnual} locale={locale} highlight />
+              <Row label="Netto jaarsalaris" value={d.netAnnual} locale={locale} highlight />
+              <Row label={`Netto ${periodLabels[submitted.payPeriod]}`} value={d.netPerPeriod} locale={locale} highlight />
             </div>
           </div>
           <PayBreakdownChart title="Verdeling van het bruto salaris" format={(v) => fmt(locale, v)} segments={[
@@ -289,7 +241,7 @@ export default function NlBruttoNettoCalculator(props: Props) {
             )}
           </div>
           <p class="text-xs text-slate-400">
-            Schatting op basis van box 1 loonheffing 2026. Werkgeverspremies, pensioen, en aftrekposten zijn niet inbegrepen. Raadpleeg de Belastingdienst of een adviseur voor uw exacte situatie.
+            Schatting op basis van box 1 loonheffing 2026. Werkgeverspremies, pensioen, en aftrekposten zijn niet meegenomen. Raadpleeg de Belastingdienst of een adviseur voor uw exacte situatie.
           </p>
         </div>
       )}
