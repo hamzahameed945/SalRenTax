@@ -25,17 +25,27 @@ export default function UsTaxRefundCalculator({
   const [overtimePremium, setOvertimePremium] = useState('');
   const [tips, setTips] = useState('');
 
+  const [submitted, setSubmitted] = useState({
+    filingStatus,
+    annualIncome,
+    withholding,
+    qualifyingChildren,
+    overtimePremium,
+    tips,
+  });
+
   const result = useMemo(() => {
     const validation = usTaxRefundEngine.validate({
-      filingStatus,
-      annualIncome: Number(annualIncome),
-      withholding: Number(withholding),
-      qualifyingChildren: Number(qualifyingChildren),
-      overtimePremiumDeduction: overtimePremium.trim() === '' ? undefined : Number(overtimePremium),
-      tipsDeduction: tips.trim() === '' ? undefined : Number(tips),
+      filingStatus: submitted.filingStatus,
+      annualIncome: Number(submitted.annualIncome),
+      withholding: Number(submitted.withholding),
+      qualifyingChildren: Number(submitted.qualifyingChildren),
+      overtimePremiumDeduction:
+        submitted.overtimePremium.trim() === '' ? undefined : Number(submitted.overtimePremium),
+      tipsDeduction: submitted.tips.trim() === '' ? undefined : Number(submitted.tips),
     });
     return validation.valid ? usTaxRefundEngine.calculate(validation.data) : null;
-  }, [filingStatus, annualIncome, withholding, qualifyingChildren, overtimePremium, tips]);
+  }, [submitted]);
 
   const inputClass = 'mt-1 w-full rounded border p-2';
   const isRefund = result !== null && result.refund > 0;
@@ -108,7 +118,7 @@ export default function UsTaxRefundCalculator({
         </label>
         <details class="rounded border border-slate-200 bg-slate-50 p-3 text-sm">
           <summary class="cursor-pointer font-medium">
-            Optional: OBBBA deductions (overtime premium &amp; tips)
+            Optional: OBBBA deductions (overtime premium & tips)
           </summary>
           <label class="mt-3 block text-sm font-medium" for="us-tr-overtime">
             Qualified overtime premium ($)
@@ -150,6 +160,46 @@ export default function UsTaxRefundCalculator({
           refunded on your return. State tax, EITC, and itemized deductions are not modelled
           here — this is an estimate, not tax advice.
         </p>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() =>
+              setSubmitted({
+                filingStatus,
+                annualIncome,
+                withholding,
+                qualifyingChildren,
+                overtimePremium,
+                tips,
+              })
+            }
+          >
+            Calculate
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setFilingStatus('single');
+              setAnnualIncome(String(initialIncome));
+              setWithholding(String(initialWithholding));
+              setQualifyingChildren(String(initialChildren));
+              setOvertimePremium('');
+              setTips('');
+              setSubmitted({
+                filingStatus: 'single',
+                annualIncome: String(initialIncome),
+                withholding: String(initialWithholding),
+                qualifyingChildren: String(initialChildren),
+                overtimePremium: '',
+                tips: '',
+              });
+            }}
+          >
+            Reset
+          </button>
+        </div>
       </div>
 
       <div class="rounded-xl bg-slate-50 p-6" aria-live="polite">
