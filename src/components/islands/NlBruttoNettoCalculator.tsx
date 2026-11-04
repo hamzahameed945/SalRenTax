@@ -153,7 +153,7 @@ export default function NlBruttoNettoCalculator({ locale }: Props) {
             <p class="text-sm font-medium text-blue-200">Netto {periodLabels[submitted.payPeriod]}</p>
             <p class="mt-1 text-5xl font-bold tracking-tight">{fmt(locale, d.netPerPeriod)}</p>
             <div class="mt-3 flex flex-wrap gap-5 text-sm text-blue-100">
-              <span>Bruto {periodLabels[submitted.payPeriod]}: <strong class="text-white">{fmt(locale, d.grossPerPeriod)}</strong></span>
+              <span>Netto jaar: <strong class="text-white">{fmt(locale, d.netAnnual)}</strong></span>
               <span>Effectief tarief: <strong class="text-white">{fmtPct(locale, d.effectiveRate)}</strong></span>
               <span>Marginaal tarief: <strong class="text-white">{fmtPct(locale, d.marginalRate)}</strong></span>
             </div>
@@ -177,9 +177,9 @@ export default function NlBruttoNettoCalculator({ locale }: Props) {
               <Row label="WLZ (9,65%)" value={d.socialSecurityBreakdown.wlz} locale={locale} />
               <Row label="ANW (0,1%)" value={d.socialSecurityBreakdown.anw} locale={locale} />
               <Row label="Totaal sociale premies" value={d.socialSecurityBreakdown.total} locale={locale} highlight />
-              <Row label="Algemene heffingskorting" value={-d.algemeneHeffingskorting} locale={locale} />
+              <Row label="Algemene heffingskorting" value={-d.algemeenHeffingskorting} locale={locale} />
               <Row label="Arbeidskorting" value={-d.arbeidskorting} locale={locale} />
-              {d.iackCredit > 0 && <Row label="Combinatiekorting (IACK)" value={-d.iackCredit} locale={locale} />}
+              {d.iack > 0 && <Row label="Combinatiekorting (IACK)" value={-d.iack} locale={locale} />}
               {d.ouderenkorting > 0 && <Row label="Ouderenkorting" value={-d.ouderenkorting} locale={locale} />}
               <Row label="Totaal heffingskortingen" value={-d.totalCredits} locale={locale} highlight />
               <Row label="Verschuldigde inkomstenbelasting" value={d.incomeTaxAnnual} locale={locale} highlight />
