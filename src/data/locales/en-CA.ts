@@ -12,7 +12,7 @@ export const enCAConfig: LocaleConfig = {
   dateLocale: 'en-CA',
   dateFormat: 'DD/MM/YYYY',
   direction: 'ltr',
-  categories: [],
+  categories: ['salary'],
   availableYears: [2026],
   defaultYear: 2026,
 };
