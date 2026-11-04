@@ -9,17 +9,24 @@ export default function BrHorasExtrasCalculator() {
   const [monthlyHours, setMonthlyHours] = useState('220');
   const [overtimeHours, setOvertimeHours] = useState('10');
   const [premiumPercent, setPremiumPercent] = useState('50');
+  const [submitted, setSubmitted] = useState({
+    monthlySalary,
+    monthlyHours,
+    overtimeHours,
+    premiumPercent,
+  });
 
   const result = useMemo(() => {
     const validation = brHorasExtrasEngine.validate({
-      monthlySalary: Number(monthlySalary),
-      monthlyHours: Number(monthlyHours),
-      overtimeHours: Number(overtimeHours),
-      premiumPercent: Number(premiumPercent),
+      monthlySalary: Number(submitted.monthlySalary),
+      monthlyHours: Number(submitted.monthlyHours),
+      overtimeHours: Number(submitted.overtimeHours),
+      premiumPercent: Number(submitted.premiumPercent),
     });
-
-    return validation.valid ? brHorasExtrasEngine.calculate(validation.data, {} as never, 2026) : null;
-  }, [monthlySalary, monthlyHours, overtimeHours, premiumPercent]);
+    return validation.valid
+      ? brHorasExtrasEngine.calculate(validation.data, {} as never, 2026)
+      : null;
+  }, [submitted]);
 
   return (
     <div class="grid gap-6 md:grid-cols-2">
@@ -53,7 +60,6 @@ export default function BrHorasExtrasCalculator() {
             id="br-extra-overtime"
             class="mt-1 w-full rounded border p-2"
             type="number"
-            min="0"
             value={overtimeHours}
             onInput={(event) => setOvertimeHours((event.target as HTMLInputElement).value)}
           />
@@ -70,8 +76,29 @@ export default function BrHorasExtrasCalculator() {
             onInput={(event) => setPremiumPercent((event.target as HTMLInputElement).value)}
           />
         </label>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ monthlySalary, monthlyHours, overtimeHours, premiumPercent })}
+          >
+            Calcular
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setMonthlySalary('3000');
+              setMonthlyHours('220');
+              setOvertimeHours('10');
+              setPremiumPercent('50');
+              setSubmitted({ monthlySalary: '3000', monthlyHours: '220', overtimeHours: '10', premiumPercent: '50' });
+            }}
+          >
+            Limpar
+          </button>
+        </div>
       </div>
-
       <div class="rounded-xl bg-slate-50 p-6" aria-live="polite">
         <p class="text-sm text-slate-500">Pagamento por horas extras</p>
         <p class="text-3xl font-bold text-accent">{result ? formatCurrency(result.overtimePay) : '—'}</p>
