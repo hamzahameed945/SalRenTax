@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'preact/hooks';
 import { spainSalaryEngine, type ComunidadAutonoma } from '../../calculators/salary/engines/es/spainSalary';
 import { comunidadNames } from '../../data/salary/es/spainPayrollData2026';
+import PayBreakdownChart from './PayBreakdownChart';
 
 interface Props { locale: string; initialGross?: number; }
 
@@ -18,13 +19,19 @@ export default function SpainSalaryCalculator({ locale, initialGross }: Props) {
   const [age, setAge]                       = useState('');
   const [whatIfGross, setWhatIfGross]       = useState('');
   const [showWhatIf, setShowWhatIf]         = useState(false);
+  const [submitted, setSubmitted] = useState({
+    grossAnnual,
+    paymentsPerYear,
+    ccaa,
+    age,
+  });
 
   const input = useMemo(() => ({
-    grossAnnual:      parseFloat(grossAnnual) || 0,
-    paymentsPerYear:  (paymentsPerYear === '14' ? 14 : 12) as 12 | 14,
-    comunidadAutonoma: ccaa,
-    age:              age ? parseInt(age, 10) : undefined,
-  }), [grossAnnual, paymentsPerYear, ccaa, age]);
+    grossAnnual:      parseFloat(submitted.grossAnnual) || 0,
+    paymentsPerYear:  (submitted.paymentsPerYear === '14' ? 14 : 12) as 12 | 14,
+    comunidadAutonoma: submitted.ccaa,
+    age:              submitted.age ? parseInt(submitted.age, 10) : undefined,
+  }), [submitted]);
 
   const result = useMemo(() => {
     const v = spainSalaryEngine.validate(input);
@@ -102,6 +109,28 @@ export default function SpainSalaryCalculator({ locale, initialGross }: Props) {
             />
           </div>
         </div>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ grossAnnual, paymentsPerYear, ccaa, age })}
+          >
+            Calcular
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setGrossAnnual(String(initialGross ?? 30000));
+              setPaymentsPerYear('14');
+              setCcaa('madrid');
+              setAge('');
+              setSubmitted({ grossAnnual: String(initialGross ?? 30000), paymentsPerYear: '14', ccaa: 'madrid', age: '' });
+            }}
+          >
+            Restablecer
+          </button>
+        </div>
       </div>
 
       {/* ── Results ────────────────────────────────────────────────── */}
@@ -111,7 +140,7 @@ export default function SpainSalaryCalculator({ locale, initialGross }: Props) {
           {/* Hero */}
           <div class="rounded-xl bg-gradient-to-br from-yellow-600 to-red-700 p-6 text-white">
             <p class="text-sm font-medium text-yellow-100">
-              Neto por paga ({paymentsPerYear === '14' ? '14 pagas' : '12 pagas'})
+              Neto por paga ({submitted.paymentsPerYear === '14' ? '14 pagas' : '12 pagas'})
             </p>
             <p class="mt-1 text-5xl font-bold tracking-tight">{fmt(locale, d.netPerPayment)}</p>
             <div class="mt-3 flex flex-wrap gap-5 text-sm text-yellow-100">
@@ -162,7 +191,7 @@ export default function SpainSalaryCalculator({ locale, initialGross }: Props) {
                 {d.reduccionRendimientosTrabajo > 0 && (
                   <Row label={`Reducción Art. 20 LIRPF`} value={-d.reduccionRendimientosTrabajo} locale={locale} color="blue" />
                 )}
-                <Row label={`Mínimo personal (${age && parseInt(age) >= 75 ? '≥75 años' : age && parseInt(age) >= 65 ? '65–74 años' : 'general'})`} value={-d.minimoPersonal} locale={locale} color="blue" />
+                <Row label={`Mínimo personal (${submitted.age && parseInt(submitted.age) >= 75 ? '≥75 años' : submitted.age && parseInt(submitted.age) >= 65 ? '65–74 años' : 'general'})`} value={-d.minimoPersonal} locale={locale} color="blue" />
                 <div class="flex justify-between pt-2 border-t border-blue-200 font-medium text-blue-800">
                   <span>Base liquidable</span>
                   <span>{fmt(locale, d.baseLiquidable)}</span>
@@ -189,11 +218,21 @@ export default function SpainSalaryCalculator({ locale, initialGross }: Props) {
                 <span>{fmt(locale, d.netAnnual)}</span>
               </div>
               <div class="flex justify-between px-5 py-3 text-slate-700 font-medium">
-                <span>Por paga ({paymentsPerYear} pagas)</span>
+                <span>Por paga ({submitted.paymentsPerYear} pagas)</span>
                 <span>{fmt(locale, d.netPerPayment)}</span>
               </div>
             </div>
           </div>
+
+          <PayBreakdownChart
+            title="Desglose del salario bruto"
+            segments={[
+              { label: 'Sueldo neto anual', value: d.netAnnual },
+              { label: 'Total SS trabajador', value: d.ssTotalEmployee },
+              { label: 'IRPF total', value: d.irpfTotalAnnual },
+            ]}
+            format={(value) => fmt(locale, value)}
+          />
 
           {/* What-if */}
           <div class="rounded-xl border border-green-200 bg-green-50 p-5">
