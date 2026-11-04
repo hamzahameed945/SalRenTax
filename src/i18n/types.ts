@@ -19,7 +19,8 @@ export type LocaleCode =
   | 'nl-NL'
   | 'el-GR'
   | 'fr-FR'
-  | 'it-IT';
+  | 'it-IT'
+  |'en-CA';
 
 /** All locales planned for initial coverage. */
 export const ALL_LOCALES: LocaleCode[] = [
@@ -38,6 +39,7 @@ export const ALL_LOCALES: LocaleCode[] = [
   'el-GR',
   'fr-FR',
   'it-IT',
+    'en-CA',
 ];
 
 /**
@@ -63,6 +65,7 @@ export const LOCALE_STATUS: Record<LocaleCode, LocaleStatus> = {
   'el-GR': 'active',
   'fr-FR': 'active',
   'it-IT': 'active',
+    'en-CA': 'active',
 };
 
 /** All locales with an 'active' status. */
