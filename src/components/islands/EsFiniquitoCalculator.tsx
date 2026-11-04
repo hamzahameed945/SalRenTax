@@ -261,9 +261,9 @@ export default function EsFiniquitoCalculator({
           <PayBreakdownChart
             title="Desglose del finiquito"
             segments={[
-              { label: 'Pagas extra proporcionales', value: result.proportionalExtraPay },
-              { label: 'Vacaciones no disfrutadas', value: result.holidayPay },
-              { label: 'Indemnización', value: result.severancePay },
+              { label: 'Pagas extra proporcionales', value: result.proportionalExtraPay, color: '#0d9488'},
+              { label: 'Vacaciones no disfrutadas', value: result.holidayPay, color: '#2563eb'},
+              { label: 'Indemnización', value: result.severancePay, color: '#7c3aed'},
             ]}
             format={(value) => fmt(value)}
           />
