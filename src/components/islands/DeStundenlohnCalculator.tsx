@@ -12,6 +12,8 @@ export default function DeStundenlohnCalculator() {
       locale="de-DE"
       currency="EUR"
       t={{ errors }}
+calculateLabel="Berechnen"
+resetLabel="Zurücksetzen"
       labels={{
         annualSalary: 'Jahresgehalt (€)',
         hoursPerWeek: 'Stunden pro Woche',
