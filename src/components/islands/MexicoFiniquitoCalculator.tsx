@@ -7,6 +7,7 @@ import {
   primaAntiguedadTopeDiario2026,
   vacacionesMinimas,
 } from '../../data/salary/mx/mexicoPayrollData2026';
+import PayBreakdownChart from './PayBreakdownChart';
 
 const fmt = (v: number) =>
   new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 2 }).format(v);
@@ -24,23 +25,32 @@ export default function MexicoFiniquitoCalculator() {
   const [daysVacationPending, setDaysVacationPending] = useState('');
   const [monthsWorkedThisYear, setMonthsWorkedThisYear] = useState('6');
   const [dismissalType, setDismissalType]           = useState<MxDismissalType>('unjustifiedDismissal');
+  const [submitted, setSubmitted] = useState({
+    dailyWage,
+    yearsWorked,
+    useStatutoryVac,
+    daysVacationPending,
+    monthsWorkedThisYear,
+    dismissalType,
+  });
 
   const years = parseFloat(yearsWorked) || 0;
   const statutoryDays = vacacionesMinimas(Math.floor(years));
 
-  const vacInput = useStatutoryVac ? undefined : parseFloat(daysVacationPending) || 0;
+  const submittedYears = parseFloat(submitted.yearsWorked) || 0;
+  const submittedVacInput = submitted.useStatutoryVac ? undefined : parseFloat(submitted.daysVacationPending) || 0;
 
   const result = useMemo(() => {
     const v = mxFiniquitoEngine.validate({
-      dailyWage:           parseFloat(dailyWage) || 0,
-      yearsWorked:         years,
-      daysVacationPending: vacInput,
-      monthsWorkedThisYear: parseInt(monthsWorkedThisYear, 10) || 6,
-      dismissalType,
+      dailyWage:           parseFloat(submitted.dailyWage) || 0,
+      yearsWorked:         submittedYears,
+      daysVacationPending: submittedVacInput,
+      monthsWorkedThisYear: parseInt(submitted.monthsWorkedThisYear, 10) || 6,
+      dismissalType: submitted.dismissalType,
     });
     if (!v.valid) return null;
     return mxFiniquitoEngine.calculate(v.data, {} as never, 2026);
-  }, [dailyWage, years, vacInput, monthsWorkedThisYear, dismissalType]);
+  }, [submitted]);
 
   return (
     <div class="space-y-6">
@@ -134,6 +144,30 @@ export default function MexicoFiniquitoCalculator() {
             )}
           </div>
         </div>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ dailyWage, yearsWorked, useStatutoryVac, daysVacationPending, monthsWorkedThisYear, dismissalType })}
+          >
+            Calcular
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setDailyWage('500');
+              setYearsWorked('3');
+              setUseStatutoryVac(true);
+              setDaysVacationPending('');
+              setMonthsWorkedThisYear('6');
+              setDismissalType('unjustifiedDismissal');
+              setSubmitted({ dailyWage: '500', yearsWorked: '3', useStatutoryVac: true, daysVacationPending: '', monthsWorkedThisYear: '6', dismissalType: 'unjustifiedDismissal' });
+            }}
+          >
+            Restablecer
+          </button>
+        </div>
       </div>
 
       {/* ── Results ────────────────────────────────────────────────── */}
@@ -145,7 +179,7 @@ export default function MexicoFiniquitoCalculator() {
             <p class="text-sm font-medium text-green-200">Total estimado</p>
             <p class="mt-1 text-5xl font-bold tracking-tight">{fmt(result.totalLiquidacion)}</p>
             <p class="mt-2 text-sm text-green-100">
-              {DISMISSAL_LABELS[dismissalType]} · {Math.floor(years)} año(s) de servicio
+              {DISMISSAL_LABELS[submitted.dismissalType]} · {Math.floor(submittedYears)} año(s) de servicio
             </p>
           </div>
 
@@ -163,7 +197,7 @@ export default function MexicoFiniquitoCalculator() {
                 </p>
                 <ResultRow label="Aguinaldo proporcional (15 días)" value={result.proportionalBonus} />
                 <ResultRow
-                  label={`Vacaciones (${result.vacationDaysUsed} días${useStatutoryVac ? ' — mín. legal' : ''})`}
+                  label={`Vacaciones (${result.vacationDaysUsed} días${submitted.useStatutoryVac ? ' — mín. legal' : ''})`}
                   value={result.proportionalVacations}
                 />
                 <ResultRow label="Prima vacacional (25 %)" value={result.vacationBonus} />
@@ -183,12 +217,12 @@ export default function MexicoFiniquitoCalculator() {
                     <ResultRow label="Indemnización constitucional (90 días)" value={result.severancePay} color="red" />
                   )}
                   {result.additionalSeverance > 0 && (
-                    <ResultRow label={`20 días × ${Math.floor(years)} años`} value={result.additionalSeverance} color="red" />
+                    <ResultRow label={`20 días × ${Math.floor(submittedYears)} años`} value={result.additionalSeverance} color="red" />
                   )}
                   {result.seniorityPremium > 0 && (
                     <div>
                       <ResultRow
-                        label={`Prima antigüedad (12 días × ${Math.floor(years)} años${result.umaCapApplied ? ' — tope aplicado' : ''})`}
+                        label={`Prima antigüedad (12 días × ${Math.floor(submittedYears)} años${result.umaCapApplied ? ' — tope aplicado' : ''})`}
                         value={result.seniorityPremium}
                         color="red"
                       />
@@ -221,6 +255,19 @@ export default function MexicoFiniquitoCalculator() {
             </div>
           </div>
 
+          <PayBreakdownChart
+            title="Desglose del total"
+            segments={[
+              { label: 'Aguinaldo proporcional', value: result.proportionalBonus },
+              { label: 'Vacaciones', value: result.proportionalVacations },
+              { label: 'Prima vacacional', value: result.vacationBonus },
+              { label: 'Indemnización constitucional', value: result.severancePay },
+              { label: 'Indemnización adicional', value: result.additionalSeverance },
+              { label: 'Prima de antigüedad', value: result.seniorityPremium },
+            ]}
+            format={(value) => fmt(value)}
+          />
+
           {/* Vacation reference table */}
           <details class="rounded-xl border border-slate-200 overflow-hidden">
             <summary class="bg-slate-50 px-5 py-3 text-sm font-semibold text-slate-700 cursor-pointer select-none">
@@ -236,7 +283,7 @@ export default function MexicoFiniquitoCalculator() {
                 </thead>
                 <tbody>
                   {[[1,12],[2,14],[3,16],[4,18],[5,20],[6,22],[10,22],[11,24],[15,24],[16,26],[20,26]].map(([y,d]) => (
-                    <tr key={y} class={`border-b border-slate-100 ${Math.floor(years) === y ? 'bg-blue-50 font-semibold text-blue-700' : ''}`}>
+                    <tr key={y} class={`border-b border-slate-100 ${Math.floor(submittedYears) === y ? 'bg-blue-50 font-semibold text-blue-700' : ''}`}>
                       <td class="py-1 pr-4">{y} año(s)</td>
                       <td class="py-1">{d} días</td>
                     </tr>
