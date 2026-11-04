@@ -7,5 +7,5 @@ export const meta = {
     'Free Ireland salary calculators for 2026: take-home pay after PAYE, USC, and PRSI. The most accurate Irish tax calculator online.',
   paycheckTitle: 'Take Home Pay Calculator Ireland 2026 — PayRenTax',
   paycheckDescription:
-    'Calculate your Irish take-home pay for 2026 after PAYE income tax, USC, and PRSI deductions.',
+    'Calculate your Irish take-home pay for 2026 after PAYE income tax, USC and PRSI: enter your gross salary to see your net monthly and annual pay.',
 } as const;
