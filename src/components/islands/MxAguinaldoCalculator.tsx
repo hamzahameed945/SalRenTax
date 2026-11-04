@@ -117,8 +117,8 @@ export default function MxAguinaldoCalculator({ initialSalary }: Props) {
           <PayBreakdownChart
             title="Desglose del aguinaldo bruto"
             segments={[
-              { label: 'Aguinaldo neto', value: result.aguinaldoNeto },
-              { label: 'ISR estimado', value: result.isrEstimado },
+              { label: 'Aguinaldo neto', value: result.aguinaldoNeto, color: '#0d9488'},
+              { label: 'ISR estimado', value: result.isrEstimado, color: '#2563eb'},
             ]}
             format={(value) => formatCurrency(value)}
           />
