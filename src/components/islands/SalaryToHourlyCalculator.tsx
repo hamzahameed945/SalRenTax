@@ -45,11 +45,17 @@ export default function SalaryToHourlyCalculator({
   const [hoursPerWeek, setHoursPerWeek] = useState('40');
   const [weeksPerYear, setWeeksPerYear] = useState('52');
 
+  const [submitted, setSubmitted] = useState({
+    annualSalary,
+    hoursPerWeek,
+    weeksPerYear,
+  });
+
   const result = useMemo(() => {
     const input = {
-      annualSalary: parseFloat(annualSalary),
-      hoursPerWeek: parseFloat(hoursPerWeek),
-      weeksPerYear: parseFloat(weeksPerYear),
+      annualSalary: parseFloat(submitted.annualSalary),
+      hoursPerWeek: parseFloat(submitted.hoursPerWeek),
+      weeksPerYear: parseFloat(submitted.weeksPerYear),
     };
     const validation = salaryToHourlyEngine.validate(input);
     if (validation.valid) {
@@ -59,7 +65,7 @@ export default function SalaryToHourlyCalculator({
       };
     }
     return { data: null, error: validation.errors };
-  }, [annualSalary, hoursPerWeek, weeksPerYear]);
+  }, [submitted]);
 
   const formatCurrency = (value: number) =>
     new Intl.NumberFormat(locale, { style: 'currency', currency }).format(value);
@@ -110,6 +116,28 @@ export default function SalaryToHourlyCalculator({
               {t.errors?.[result.error.weeksPerYear] || result.error.weeksPerYear}
             </p>
           )}
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ annualSalary, hoursPerWeek, weeksPerYear })}
+          >
+            Calculate
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setAnnualSalary('');
+              setHoursPerWeek('40');
+              setWeeksPerYear('52');
+              setSubmitted({ annualSalary: '', hoursPerWeek: '40', weeksPerYear: '52' });
+            }}
+          >
+            Reset
+          </button>
         </div>
       </div>
 
