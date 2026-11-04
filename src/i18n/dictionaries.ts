@@ -17,6 +17,18 @@ import { itIT } from './it-IT';
 
 export type Dictionary = typeof enUS;
 
+// English strings reused for Canada, with Canada-specific salary labels.
+const enCA = {
+  ...enGB,
+  salary: {
+    ...enGB.salary,
+    ontario: 'Ontario',
+    cpp: 'Canada Pension Plan (CPP)',
+    ei: 'Employment Insurance (EI)',
+    surtax: 'Ontario surtax',
+  },
+};
+
 const dictionaries = {
   'en-US': enUS,
   'en-GB': enGB,
@@ -33,6 +45,7 @@ const dictionaries = {
   'el-GR': elGR,
   'fr-FR': frFR,
   'it-IT': itIT,
+  'en-CA': enCA,
 } as const;
 
 export function getDictionary(locale: 'en-US'): typeof enUS;
@@ -50,12 +63,26 @@ export function getDictionary(locale: 'nl-NL'): typeof nlNL;
 export function getDictionary(locale: 'el-GR'): typeof elGR;
 export function getDictionary(locale: 'fr-FR'): typeof frFR;
 export function getDictionary(locale: 'it-IT'): typeof itIT;
+export function getDictionary(locale: 'en-CA'): typeof enCA;
 export function getDictionary(
   locale: LocaleCode,
-): typeof enUS | typeof enGB | typeof enIE | typeof enNG | typeof ptBR | typeof ptPT | typeof esES | typeof esMX | typeof esAR | typeof esCO | typeof deDE | typeof nlNL | typeof elGR | typeof frFR | typeof itIT;
-export function getDictionary(
-  locale: LocaleCode,
-): typeof enUS | typeof enGB | typeof enIE | typeof enNG | typeof ptBR | typeof ptPT | typeof esES | typeof esMX | typeof esAR | typeof esCO | typeof deDE | typeof nlNL | typeof elGR | typeof frFR | typeof itIT {
+):
+  | typeof enUS
+  | typeof enGB
+  | typeof enIE
+  | typeof enNG
+  | typeof ptBR
+  | typeof ptPT
+  | typeof esES
+  | typeof esMX
+  | typeof esAR
+  | typeof esCO
+  | typeof deDE
+  | typeof nlNL
+  | typeof elGR
+  | typeof frFR
+  | typeof itIT
+  | typeof enCA {
   const dict = dictionaries[locale as keyof typeof dictionaries];
   if (!dict) {
     throw new Error(
