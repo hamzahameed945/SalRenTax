@@ -1,7 +1,7 @@
 export const salary = {
   categoryTitle: 'Ireland Salary Calculators',
   seoTitle: 'Salary Calculator Ireland 2026: Take-Home Pay',
-  categoryIntro: 'Calculate your take-home pay after Irish income tax (PAYE), USC, and PRSI.',
+    categoryIntro: 'Calculate your Irish take-home pay after PAYE income tax, USC and PRSI: free 2026 calculators for net monthly and annual pay in Ireland.',
   takeHomePay: {
     title: 'Ireland Take Home Pay Calculator 2026',
     h1: 'Ireland Take Home Pay Calculator 2026',
