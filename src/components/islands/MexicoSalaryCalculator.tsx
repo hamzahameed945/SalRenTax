@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'preact/hooks';
 import { mexicoSalaryEngine } from '../../calculators/salary/engines/mx/mexicoSalary';
+import PayBreakdownChart from './PayBreakdownChart';
 
 interface Props { locale: string; initialSalary?: number; }
 
@@ -12,10 +13,13 @@ export default function MexicoSalaryCalculator(props: Props) {
   const [grossMonthly, setGrossMonthly] = useState(String(props.initialSalary ?? 15000));
   const [whatIfGross, setWhatIfGross]   = useState('');
   const [showWhatIf, setShowWhatIf]     = useState(false);
+  const [submitted, setSubmitted] = useState({
+    grossMonthly,
+  });
 
   const input = useMemo(() => ({
-    grossMonthly: parseFloat(grossMonthly) || 0,
-  }), [grossMonthly]);
+    grossMonthly: parseFloat(submitted.grossMonthly) || 0,
+  }), [submitted]);
 
   const result = useMemo(() => {
     const v = mexicoSalaryEngine.validate(input);
@@ -57,6 +61,25 @@ export default function MexicoSalaryCalculator(props: Props) {
               ✓ Aplica subsidio para el empleo ({fmt(d.subsidioEmpleo)}/mes)
             </p>
           )}
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ grossMonthly })}
+          >
+            Calcular
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setGrossMonthly(String(props.initialSalary ?? 15000));
+              setSubmitted({ grossMonthly: String(props.initialSalary ?? 15000) });
+            }}
+          >
+            Restablecer
+          </button>
         </div>
       </div>
 
@@ -136,6 +159,16 @@ export default function MexicoSalaryCalculator(props: Props) {
               </div>
             </div>
           </div>
+
+          <PayBreakdownChart
+            title="Desglose del salario bruto"
+            segments={[
+              { label: 'Salario neto mensual', value: d.netMonthly },
+              { label: 'Total IMSS obrero', value: d.totalImssObrero },
+              { label: 'ISR neto a retener', value: d.isrNeto },
+            ]}
+            format={(value) => fmt(value)}
+          />
 
           {/* Employer cost */}
           <details class="rounded-xl border border-slate-200 overflow-hidden">
