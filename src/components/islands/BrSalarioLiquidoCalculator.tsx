@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'preact/hooks';
+import PayBreakdownChart from './PayBreakdownChart';
 import { brSalarioLiquidoEngine } from '../../calculators/salary/engines/brSalarioLiquido';
 
 const formatCurrency = (value: number) =>
@@ -11,16 +12,20 @@ export default function BrSalarioLiquidoCalculator() {
   const [grossMonthly, setGrossMonthly] = useState('4000');
   const [dependents, setDependents] = useState('0');
   const [showBreakdown, setShowBreakdown] = useState(false);
+  const [submitted, setSubmitted] = useState({
+    grossMonthly,
+    dependents,
+  });
 
   const result = useMemo(() => {
     const validation = brSalarioLiquidoEngine.validate({ 
-      grossMonthly: Number(grossMonthly),
-      dependents: Number(dependents),
+      grossMonthly: Number(submitted.grossMonthly),
+      dependents: Number(submitted.dependents),
     });
     return validation.valid
       ? brSalarioLiquidoEngine.calculate(validation.data, {} as never, 2026)
       : null;
-  }, [grossMonthly, dependents]);
+  }, [submitted]);
 
   return (
     <div class="space-y-6">
@@ -55,6 +60,26 @@ export default function BrSalarioLiquidoCalculator() {
           <p class="text-xs text-slate-500">
             Cálculo com INSS e IRRF 2026. Dedução de R$ 189,59 por dependente aplicada.
           </p>
+          <div class="flex gap-3 pt-2">
+            <button
+              type="button"
+              class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+              onClick={() => setSubmitted({ grossMonthly, dependents })}
+            >
+              Calcular
+            </button>
+            <button
+              type="button"
+              class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+              onClick={() => {
+                setGrossMonthly('4000');
+                setDependents('0');
+                setSubmitted({ grossMonthly: '4000', dependents: '0' });
+              }}
+            >
+              Limpar
+            </button>
+          </div>
         </div>
 
         <div class="rounded-xl bg-slate-50 p-6" aria-live="polite">
@@ -89,6 +114,15 @@ export default function BrSalarioLiquidoCalculator() {
                   <dd class="text-accent">{formatCurrency(result.netMonthly)}</dd>
                 </div>
               </dl>
+              <PayBreakdownChart
+                title="Distribuição do salário"
+                format={formatCurrency}
+                segments={[
+                  { label: 'Salário líquido', value: result.netMonthly, color: '#0d9488' },
+                  { label: 'INSS', value: result.inss, color: '#2563eb' },
+                  { label: 'IRRF', value: result.irrf, color: '#db2777' },
+                ]}
+              />
               
               <button
                 class="mt-4 w-full text-sm text-accent hover:underline"
