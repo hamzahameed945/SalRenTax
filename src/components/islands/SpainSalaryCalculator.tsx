@@ -23,7 +23,8 @@ export default function SpainSalaryCalculator({ locale, initialGross }: Props) {
     grossAnnual,
     paymentsPerYear,
     ccaa,
-    age,
+  age,
+    whatIfGross,
   });
 
   const input = useMemo(() => ({
@@ -40,11 +41,11 @@ export default function SpainSalaryCalculator({ locale, initialGross }: Props) {
   }, [input]);
 
   const whatIfResult = useMemo(() => {
-    if (!whatIfGross || !showWhatIf) return null;
-    const v = spainSalaryEngine.validate({ ...input, grossAnnual: parseFloat(whatIfGross) || 0 });
+    if (!submitted.whatIfGross || !showWhatIf) return null;
+    const v = spainSalaryEngine.validate({ ...input, grossAnnual: parseFloat(submitted.whatIfGross) || 0 });
     if (!v.valid) return null;
     return spainSalaryEngine.calculate(v.data, {} as never, 2026);
-  }, [whatIfGross, showWhatIf, input]);
+  }, [submitted.whatIfGross, showWhatIf, input]);
 
   const d = result.data;
 
@@ -113,7 +114,7 @@ export default function SpainSalaryCalculator({ locale, initialGross }: Props) {
           <button
             type="button"
             class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
-            onClick={() => setSubmitted({ grossAnnual, paymentsPerYear, ccaa, age })}
+            onClick={() => setSubmitted({ grossAnnual, paymentsPerYear, ccaa, age, whatIfGross })}
           >
             Calcular
           </button>
@@ -124,8 +125,8 @@ export default function SpainSalaryCalculator({ locale, initialGross }: Props) {
               setGrossAnnual(String(initialGross ?? 30000));
               setPaymentsPerYear('14');
               setCcaa('madrid');
-              setAge('');
-              setSubmitted({ grossAnnual: String(initialGross ?? 30000), paymentsPerYear: '14', ccaa: 'madrid', age: '' });
+              setAge(''); setWhatIfGross('');
+              setSubmitted({ grossAnnual: String(initialGross ?? 30000), paymentsPerYear: '14', ccaa: 'madrid', age: '', whatIfGross: '' });
             }}
           >
             Restablecer
