@@ -64,6 +64,7 @@ export function getDictionary(locale: 'el-GR'): typeof elGR;
 export function getDictionary(locale: 'fr-FR'): typeof frFR;
 export function getDictionary(locale: 'it-IT'): typeof itIT;
 export function getDictionary(locale: 'en-CA'): typeof enCA;
+export function getDictionary(locale: LocaleCode): typeof enUS | typeof enGB | typeof enIE | typeof enNG | typeof ptBR | typeof ptPT | typeof esES | typeof esMX | typeof esAR | typeof esCO | typeof deDE | typeof nlNL | typeof elGR | typeof frFR | typeof itIT | typeof enCA;
 export function getDictionary(
   locale: LocaleCode,
 ):
