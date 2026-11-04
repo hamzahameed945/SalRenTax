@@ -144,7 +144,7 @@ export default function NlBruttoNettoCalculator({ locale }: Props) {
         </div>
         <div class="mt-4 flex gap-3">
           <button type="button" class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark" onClick={() => setSubmitted({ grossAnnual, age, thirtyPct, vakantiegeld, iack, bornBefore1946, payPeriod, whatIfGross })}>Bereken</button>
-          <button type="button" class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50" onClick={() => { const reset = { grossAnnual: '55000', age: '', thirtyPct: false, vakantiegeld: true, iack: false, bornBefore1946: false, payPeriod: 'monthly' as PayPeriod }; setGrossAnnual(reset.grossAnnual); setAge(reset.age); setThirtyPct(reset.thirtyPct); setVakantiegeld(reset.vakantiegeld); setIack(reset.iack); setBornBefore1946(reset.bornBefore1946); setPayPeriod(reset.payPeriod); setWhatIfGross(''); setShowWhatIf(false); setSubmitted(reset); }}>Opnieuw instellen</button>
+          <button type="button" class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50" onClick={() => { const reset = { grossAnnual: '55000', age: '', thirtyPct: false, vakantiegeld: true, iack: false, bornBefore1946: false, payPeriod: 'monthly' as PayPeriod, whatIfGross: '' }; setGrossAnnual(reset.grossAnnual); setAge(reset.age); setThirtyPct(reset.thirtyPct); setVakantiegeld(reset.vakantiegeld); setIack(reset.iack); setBornBefore1946(reset.bornBefore1946); setPayPeriod(reset.payPeriod); setWhatIfGross(''); setShowWhatIf(false); setSubmitted(reset); }}>Opnieuw instellen</button>
         </div>
       </div>
       {d && (
