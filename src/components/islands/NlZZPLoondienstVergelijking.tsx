@@ -18,24 +18,36 @@ export default function NlZZPLoondienstVergelijking({ locale }: Props) {
   const [grossMonthlySalary, setGrossMonthly] = useState('3500');
   const [includeVakantiegeld, setVak]         = useState(true);
   const [urencriteriumOverride, setUrenc]     = useState(false);
+  const [submitted, setSubmitted] = useState({ hourlyRate: '75', billableHours: '1200', businessCosts: '5000', grossMonthlySalary: '3500', includeVakantiegeld: true, urencriteriumOverride: false });
 
   const result = useMemo(() => {
-    const hours = parseInt(billableHours, 10) || 0;
+    const hours = parseInt(submitted.billableHours, 10) || 0;
     const input = {
-      hourlyRate:        parseFloat(hourlyRate) || 0,
+      hourlyRate:        parseFloat(submitted.hourlyRate) || 0,
       billableHours:     hours,
-      businessCosts:     parseFloat(businessCosts) || 0,
-      grossMonthlySalary: parseFloat(grossMonthlySalary) || 0,
-      urencriteriumMet:  urencriteriumOverride || hours >= 1225,
-      includeVakantiegeld,
+      businessCosts:     parseFloat(submitted.businessCosts) || 0,
+      grossMonthlySalary: parseFloat(submitted.grossMonthlySalary) || 0,
+      urencriteriumMet:  submitted.urencriteriumOverride || hours >= 1225,
+      includeVakantiegeld: submitted.includeVakantiegeld,
     };
     const v = nlZZPLoondienstEngine.validate(input);
     if (!v.valid) return { data: null, errors: v.errors };
     return { data: nlZZPLoondienstEngine.calculate(v.data, {} as never, 2026), errors: null };
-  }, [hourlyRate, billableHours, businessCosts, grossMonthlySalary, includeVakantiegeld, urencriteriumOverride]);
+  }, [submitted]);
 
   const d = result.data;
   const maxNet = d ? Math.max(d.zzp.nettoMaand, d.loondienst.nettoMaand, 1) : 1;
+
+  const handleCalculate = () => setSubmitted({ hourlyRate, billableHours, businessCosts, grossMonthlySalary, includeVakantiegeld, urencriteriumOverride });
+  const handleReset = () => {
+    setHourlyRate('75');
+    setBillableHours('1200');
+    setBusinessCosts('5000');
+    setGrossMonthly('3500');
+    setVak(true);
+    setUrenc(false);
+    setSubmitted({ hourlyRate: '75', billableHours: '1200', businessCosts: '5000', grossMonthlySalary: '3500', includeVakantiegeld: true, urencriteriumOverride: false });
+  };
 
   return (
     <div class="space-y-6">
@@ -109,6 +121,11 @@ export default function NlZZPLoondienstVergelijking({ locale }: Props) {
         </div>
       </div>
 
+      <div class="flex gap-3">
+        <button type="button" class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark" onClick={handleCalculate}>Bereken</button>
+        <button type="button" class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50" onClick={handleReset}>Opnieuw instellen</button>
+      </div>
+
       {d && (
         <div class="space-y-6" role="region" aria-live="polite">
           {/* Verdict */}
@@ -178,7 +195,7 @@ export default function NlZZPLoondienstVergelijking({ locale }: Props) {
             <h3 class="font-semibold mb-2">Wat moet uw uurtarief zijn om in loondienst bij te blijven?</h3>
             {d.breakevenUurtarief !== null ? (
               <p>
-                Bij <strong>{d.zzp.nettoPerDeclarabelUur !== null ? (parseInt(billableHours, 10) || 0).toLocaleString('nl-NL') : '—'} declarabele uren</strong> per jaar
+                Bij <strong>{d.zzp.nettoPerDeclarabelUur !== null ? (parseInt(submitted.billableHours, 10) || 0).toLocaleString('nl-NL') : '—'} declarabele uren</strong> per jaar
                 heeft u als zzp'er een uurtarief van <strong>€{d.breakevenUurtarief.toFixed(0)},−</strong> nodig
                 om hetzelfde netto te halen als {fmt(locale, d.loondienst.brutoMaand)} bruto per maand in loondienst.
                 {d.zzpTariefMultiplier !== null && (
