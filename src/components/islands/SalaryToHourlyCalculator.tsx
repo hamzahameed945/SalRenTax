@@ -83,7 +83,7 @@ export default function SalaryToHourlyCalculator({
           />
           {result.error?.annualSalary && (
             <p class="mt-1 text-sm text-red-600">
-              {t.errors?.[result.error.annualSalary] || result.error.annualSalary}
+              {t.errors?.[result.error.annualSalary.split('.').pop() ?? result.error.annualSalary] || result.error.annualSalary}
             </p>
           )}
         </div>
@@ -98,7 +98,7 @@ export default function SalaryToHourlyCalculator({
           />
           {result.error?.hoursPerWeek && (
             <p class="mt-1 text-sm text-red-600">
-              {t.errors?.[result.error.hoursPerWeek] || result.error.hoursPerWeek}
+              {t.errors?.[result.error.hoursPerWeek.split('.').pop() ?? result.error.hoursPerWeek] || result.error.hoursPerWeek}
             </p>
           )}
         </div>
@@ -113,7 +113,7 @@ export default function SalaryToHourlyCalculator({
           />
           {result.error?.weeksPerYear && (
             <p class="mt-1 text-sm text-red-600">
-              {t.errors?.[result.error.weeksPerYear] || result.error.weeksPerYear}
+              {t.errors?.[result.error.weeksPerYear.split('.').pop() ?? result.error.weeksPerYear] || result.error.weeksPerYear}
             </p>
           )}
         </div>
