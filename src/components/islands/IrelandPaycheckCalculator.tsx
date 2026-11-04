@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'preact/hooks';
+import PayBreakdownChart from './PayBreakdownChart';
 import { irelandPaycheckEngine } from '../../calculators/salary/engines/ie/irelandPaycheck';
 import { enIE } from '../../i18n/en-IE';
 
@@ -9,9 +10,14 @@ export default function IrelandPaycheckCalculator({ locale }: { locale: string }
   const [grossAnnual, setGrossAnnual] = useState('40000');
   const [payFrequency, setPayFrequency] = useState<'annually' | 'monthly' | 'biweekly' | 'weekly'>('monthly');
   const [maritalStatus, setMaritalStatus] = useState<'single' | 'married'>('single');
+  const [submitted, setSubmitted] = useState({
+    grossAnnual,
+    payFrequency,
+    maritalStatus,
+  });
 
   const result = useMemo(() => {
-    const input = { grossAnnual: parseFloat(grossAnnual), payFrequency, maritalStatus };
+    const input = { grossAnnual: parseFloat(submitted.grossAnnual), payFrequency: submitted.payFrequency, maritalStatus: submitted.maritalStatus };
     const validation = irelandPaycheckEngine.validate(input);
     if (validation.valid) {
       return {
@@ -20,7 +26,7 @@ export default function IrelandPaycheckCalculator({ locale }: { locale: string }
       };
     }
     return { data: null, error: validation.errors };
-  }, [grossAnnual, payFrequency, maritalStatus]);
+  }, [submitted]);
 
   const fmt = (v: number) =>
     new Intl.NumberFormat(locale, { style: 'currency', currency: 'EUR' }).format(v);
@@ -28,7 +34,7 @@ export default function IrelandPaycheckCalculator({ locale }: { locale: string }
   const fmtPct = (v: number) =>
     new Intl.NumberFormat(locale, { style: 'percent', minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(v);
 
-  const periods = payFrequency === 'annually' ? 1 : payFrequency === 'monthly' ? 12 : payFrequency === 'biweekly' ? 26 : 52;
+  const periods = submitted.payFrequency === 'annually' ? 1 : submitted.payFrequency === 'monthly' ? 12 : submitted.payFrequency === 'biweekly' ? 26 : 52;
 
   return (
     <div class="grid gap-8 md:grid-cols-2">
@@ -67,6 +73,27 @@ export default function IrelandPaycheckCalculator({ locale }: { locale: string }
             ))}
           </select>
         </div>
+        <div class="flex gap-3">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ grossAnnual, payFrequency, maritalStatus })}
+          >
+            Calculate
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setGrossAnnual('40000');
+              setPayFrequency('monthly');
+              setMaritalStatus('single');
+              setSubmitted({ grossAnnual: '40000', payFrequency: 'monthly', maritalStatus: 'single' });
+            }}
+          >
+            Reset
+          </button>
+        </div>
       </div>
 
       <div class="rounded-xl bg-slate-50 p-6" role="region" aria-live="polite">
@@ -98,6 +125,16 @@ export default function IrelandPaycheckCalculator({ locale }: { locale: string }
                 <dd>{fmtPct(result.data.effectiveTotalRate)}</dd>
               </div>
             </dl>
+            <PayBreakdownChart
+              title="Pay breakdown"
+              format={(value) => fmt(value)}
+              segments={[
+                { label: t.results.netPay, value: result.data.netPayPerPeriod, color: '#0d9488' },
+                { label: t.results.incomeTax, value: result.data.payeAnnual / periods, color: '#2563eb' },
+                { label: t.results.usc, value: result.data.uscAnnual / periods, color: '#7c3aed' },
+                { label: t.results.prsi, value: result.data.prsiAnnual / periods, color: '#db2777' },
+              ]}
+            />
           </div>
         ) : (
           <p class="text-slate-500 text-sm">Enter your annual salary to calculate your take-home pay.</p>
