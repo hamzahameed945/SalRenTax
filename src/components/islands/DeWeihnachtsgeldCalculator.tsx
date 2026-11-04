@@ -120,6 +120,7 @@ export default function DeWeihnachtsgeldCalculator({ initialBonus, initialSalary
         {result && (
           <PayBreakdownChart
             title="Aufteilung des Weihnachtsgeld-Bruttos"
+            format={formatCurrency}
             segments={[
               { label: 'Netto', value: result.nettoGeschaetzt, color: '#0f766e' },
               { label: 'Lohnsteuer', value: result.lohnsteuerGeschaetzt, color: '#b45309' },
