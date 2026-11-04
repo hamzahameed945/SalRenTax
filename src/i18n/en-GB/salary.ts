@@ -33,7 +33,7 @@ export const salary = {
   salaryToHourly: {
     title: 'Salary to Hourly Calculator UK',
     h1: 'Salary to Hourly Rate Calculator UK',
-    intro: 'Convert your annual salary to an equivalent hourly rate based on your working hours.',
+    intro: 'Convert your UK annual salary to an equivalent hourly rate: enter your gross salary, weekly hours and working weeks to see exactly what you earn per hour.',
   },
   payFrequency: {
     title: 'Pay Frequency Converter UK',
