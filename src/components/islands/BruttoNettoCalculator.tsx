@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'preact/hooks';
 import { bruttoNettoEngine, type KirchensteuerRegion } from '../../calculators/salary/engines/de/bruttoNetto';
 import type { Steuerklasse } from '../../data/salary/de/germanPayrollData2026';
+import PayBreakdownChart from './PayBreakdownChart';
 
 interface Props { locale?: string; defaultKirchensteuer?: KirchensteuerRegion; }
 
@@ -32,13 +33,22 @@ export default function BruttoNettoCalculator({
   const [whatIfGross, setWhatIfGross]           = useState('');
   const [showWhatIf, setShowWhatIf]             = useState(false);
 
-  const input = useMemo(() => ({
-    grossMonthly:       parseFloat(grossMonthly) || 0,
+  const [submitted, setSubmitted] = useState({
+    grossMonthly,
     steuerklasse,
-    numberOfChildren:   parseInt(numberOfChildren, 10) || 0,
-    kirchensteuerRegion: kirchensteuer,
+    numberOfChildren,
+    kirchensteuer,
     isSachsen,
-  }), [grossMonthly, steuerklasse, numberOfChildren, kirchensteuer, isSachsen]);
+    whatIfGross,
+  });
+
+  const input = useMemo(() => ({
+    grossMonthly:       parseFloat(submitted.grossMonthly) || 0,
+    steuerklasse: submitted.steuerklasse,
+    numberOfChildren:   parseInt(submitted.numberOfChildren, 10) || 0,
+    kirchensteuerRegion: submitted.kirchensteuer,
+    isSachsen: submitted.isSachsen,
+  }), [submitted]);
 
   const result = useMemo(() => {
     const v = bruttoNettoEngine.validate(input);
@@ -47,11 +57,11 @@ export default function BruttoNettoCalculator({
   }, [input]);
 
   const whatIfResult = useMemo(() => {
-    if (!whatIfGross || !showWhatIf) return null;
-    const v = bruttoNettoEngine.validate({ ...input, grossMonthly: parseFloat(whatIfGross) || 0 });
+    if (!submitted.whatIfGross || !showWhatIf) return null;
+    const v = bruttoNettoEngine.validate({ ...input, grossMonthly: parseFloat(submitted.whatIfGross) || 0 });
     if (!v.valid) return null;
     return bruttoNettoEngine.calculate(v.data, {} as never, 2026);
-  }, [whatIfGross, showWhatIf, input]);
+  }, [submitted, showWhatIf, input]);
 
   const d = result.data;
 
@@ -142,6 +152,39 @@ export default function BruttoNettoCalculator({
             </label>
           </div>
         </div>
+        <div class="mt-4 flex gap-3">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ grossMonthly, steuerklasse, numberOfChildren, kirchensteuer, isSachsen, whatIfGross })}
+          >
+            Berechnen
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              const reset = {
+                grossMonthly: '3500',
+                steuerklasse: 'I' as Steuerklasse,
+                numberOfChildren: '0',
+                kirchensteuer: defaultKirchensteuer,
+                isSachsen: false,
+                whatIfGross: '',
+              };
+              setGrossMonthly(reset.grossMonthly);
+              setSteuerklasse(reset.steuerklasse);
+              setNumberOfChildren(reset.numberOfChildren);
+              setKirchensteuer(reset.kirchensteuer);
+              setIsSachsen(reset.isSachsen);
+              setWhatIfGross(reset.whatIfGross);
+              setShowWhatIf(false);
+              setSubmitted(reset);
+            }}
+          >
+            Zurücksetzen
+          </button>
+        </div>
       </div>
 
       {/* ── Results ────────────────────────────────────────────────────── */}
@@ -212,6 +255,17 @@ export default function BruttoNettoCalculator({
               </div>
             </div>
           </div>
+
+          <PayBreakdownChart
+            title="Aufteilung des Bruttogehalts"
+            segments={[
+              { label: 'Netto', value: d.netMonthly, color: '#0f766e' },
+              { label: 'Sozialversicherung', value: d.totalSocialInsuranceEmployee, color: '#0369a1' },
+              { label: 'Lohnsteuer', value: d.lohnsteuerMonthly, color: '#b45309' },
+              { label: 'Solidaritätszuschlag', value: d.soliMonthly, color: '#475569' },
+              { label: 'Kirchensteuer', value: d.kirchensteuerMonthly, color: '#7c3aed' },
+            ]}
+          />
 
           {/* Employer cost info */}
           <details class="rounded-xl border border-slate-200 overflow-hidden">
