@@ -38,7 +38,7 @@ export default function NlBruttoNettoCalculator({ locale }: Props) {
   const [payPeriod, setPayPeriod] = useState<PayPeriod>('monthly');
   const [whatIfGross, setWhatIfGross] = useState('');
   const [showWhatIf, setShowWhatIf] = useState(false);
-  const [submitted, setSubmitted] = useState({ grossAnnual: '55000', age: '', thirtyPct: false, vakantiegeld: true, iack: false, bornBefore1946: false, payPeriod: 'monthly' as PayPeriod });
+  const [submitted, setSubmitted] = useState({ grossAnnual: '55000', age: '', thirtyPct: false, vakantiegeld: true, iack: false, bornBefore1946: false, payPeriod: 'monthly' as PayPeriod, whatIfGross: '' });
   const input = useMemo(() => ({
     grossAnnual: parseFloat(submitted.grossAnnual) || 0,
     age: submitted.age ? parseInt(submitted.age, 10) : undefined,
@@ -56,12 +56,12 @@ export default function NlBruttoNettoCalculator({ locale }: Props) {
   const d = result.data;
   const whatIfResult = useMemo(() => {
     if (!showWhatIf || !d) return null;
-    const g = parseFloat(whatIfGross);
+    const g = parseFloat(submitted.whatIfGross);
     if (!g || g <= 0) return null;
     const v = nlBruttoNettoEngine.validate({ ...input, grossAnnual: g });
     if (!v.valid) return null;
     return nlBruttoNettoEngine.calculate(v.data, {} as never, 2026);
-  }, [showWhatIf, d, input, whatIfGross]);
+  }, [showWhatIf, d, input, submitted.whatIfGross]);
   return (
     <div class="space-y-6">
       <div class="rounded-xl border border-slate-200 bg-slate-50 p-5">
@@ -143,7 +143,7 @@ export default function NlBruttoNettoCalculator({ locale }: Props) {
           </label>
         </div>
         <div class="mt-4 flex gap-3">
-          <button type="button" class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark" onClick={() => setSubmitted({ grossAnnual, age, thirtyPct, vakantiegeld, iack, bornBefore1946, payPeriod })}>Bereken</button>
+          <button type="button" class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark" onClick={() => setSubmitted({ grossAnnual, age, thirtyPct, vakantiegeld, iack, bornBefore1946, payPeriod, whatIfGross })}>Bereken</button>
           <button type="button" class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50" onClick={() => { const reset = { grossAnnual: '55000', age: '', thirtyPct: false, vakantiegeld: true, iack: false, bornBefore1946: false, payPeriod: 'monthly' as PayPeriod }; setGrossAnnual(reset.grossAnnual); setAge(reset.age); setThirtyPct(reset.thirtyPct); setVakantiegeld(reset.vakantiegeld); setIack(reset.iack); setBornBefore1946(reset.bornBefore1946); setPayPeriod(reset.payPeriod); setWhatIfGross(''); setShowWhatIf(false); setSubmitted(reset); }}>Opnieuw instellen</button>
         </div>
       </div>
