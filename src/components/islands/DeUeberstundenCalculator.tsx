@@ -3,6 +3,7 @@ import {
   ueberstundenEngine,
   type UeberstundenModus,
 } from '../../calculators/salary/engines/de/ueberstunden';
+import PayBreakdownChart from './PayBreakdownChart';
 
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(value);
@@ -29,24 +30,34 @@ export default function DeUeberstundenCalculator({
   const [wochenStunden, setWochenStunden] = useState('40');
   const [jahresBrutto, setJahresBrutto] = useState(String(initialJahresBrutto ?? 50000));
 
+  const [submitted, setSubmitted] = useState({
+    modus,
+    stunden,
+    zuschlagProzent,
+    stundenlohn,
+    monatsBrutto,
+    wochenStunden,
+    jahresBrutto,
+  });
+
   const result = useMemo(() => {
-    const monatsBruttoNum = Number(monatsBrutto);
+    const monatsBruttoNum = Number(submitted.monatsBrutto);
     const input = {
-      stunden: Number(stunden),
-      zuschlagProzent: Number(zuschlagProzent),
-      modus,
-      stundenlohn: Number(stundenlohn),
+      stunden: Number(submitted.stunden),
+      zuschlagProzent: Number(submitted.zuschlagProzent),
+      modus: submitted.modus,
+      stundenlohn: Number(submitted.stundenlohn),
       monatsBrutto: monatsBruttoNum,
-      wochenStunden: Number(wochenStunden),
+      wochenStunden: Number(submitted.wochenStunden),
       // Im Gehaltsmodus wird das Jahresbrutto aus dem Monatsgehalt abgeleitet
       // (12 × Monatsbrutto), da der Grenzsteuersatz vom Jahreseinkommen abhängt.
-      jahresBrutto: modus === 'gehalt' ? monatsBruttoNum * 12 : Number(jahresBrutto),
+      jahresBrutto: submitted.modus === 'gehalt' ? monatsBruttoNum * 12 : Number(submitted.jahresBrutto),
     };
     const validation = ueberstundenEngine.validate(input);
     return validation.valid ? ueberstundenEngine.calculate(validation.data) : null;
-  }, [modus, stunden, zuschlagProzent, stundenlohn, monatsBrutto, wochenStunden, jahresBrutto]);
+  }, [submitted]);
 
-  const abgeleitetesJahresbrutto = Number(monatsBrutto) * 12;
+  const abgeleitetesJahresbrutto = Number(submitted.monatsBrutto) * 12;
 
   return (
     <div class="grid gap-6 md:grid-cols-2">
@@ -179,6 +190,40 @@ export default function DeUeberstundenCalculator({
           (Einkommensteuertarif 2026, Steuerklasse I) inkl. Arbeitnehmer-Sozialversicherung
           (kinderlos, Ø Zusatzbeitrag). Ihre tatsächliche Lohnabrechnung ist maßgeblich.
         </p>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ modus, stunden, zuschlagProzent, stundenlohn, monatsBrutto, wochenStunden, jahresBrutto })}
+          >
+            Berechnen
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              const reset = {
+                modus: 'stundenlohn' as UeberstundenModus,
+                stunden: String(initialStunden ?? 10),
+                zuschlagProzent: '0',
+                stundenlohn: String(initialStundenlohn ?? 25),
+                monatsBrutto: '4000',
+                wochenStunden: '40',
+                jahresBrutto: String(initialJahresBrutto ?? 50000),
+              };
+              setModus(reset.modus);
+              setStunden(reset.stunden);
+              setZuschlagProzent(reset.zuschlagProzent);
+              setStundenlohn(reset.stundenlohn);
+              setMonatsBrutto(reset.monatsBrutto);
+              setWochenStunden(reset.wochenStunden);
+              setJahresBrutto(reset.jahresBrutto);
+              setSubmitted(reset);
+            }}
+          >
+            Zurücksetzen
+          </button>
+        </div>
       </div>
 
       <div class="rounded-xl bg-slate-50 p-6" aria-live="polite">
@@ -213,6 +258,17 @@ export default function DeUeberstundenCalculator({
               <dd>{formatPercent(result.marginalRate)}</dd>
             </div>
           </dl>
+        )}
+        {result && (
+          <PayBreakdownChart
+            title="Aufteilung des Überstunden-Bruttos"
+            segments={[
+              { label: 'Netto', value: result.nettoGeschaetzt, color: '#0f766e' },
+              { label: 'Lohnsteuer', value: result.lohnsteuerGeschaetzt, color: '#b45309' },
+              { label: 'Solidaritätszuschlag', value: result.soliGeschaetzt, color: '#475569' },
+              { label: 'Sozialversicherung', value: result.sozialversicherungGeschaetzt, color: '#0369a1' },
+            ]}
+          />
         )}
         <p class="mt-4 text-xs text-slate-500">{result ? result.hinweis : ''}</p>
       </div>
