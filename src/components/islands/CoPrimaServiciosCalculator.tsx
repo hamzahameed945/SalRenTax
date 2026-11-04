@@ -11,14 +11,18 @@ interface Props {
 export default function CoPrimaServiciosCalculator({ initialSalary }: Props) {
   const [salarioMensual, setSalarioMensual] = useState(String(initialSalary ?? 3000000));
   const [diasTrabajados, setDiasTrabajados] = useState('180');
+  const [submitted, setSubmitted] = useState({
+    salarioMensual,
+    diasTrabajados,
+  });
 
   const result = useMemo(() => {
     const validation = coPrimaServiciosEngine.validate({
-      salarioMensual: Number(salarioMensual),
-      diasTrabajados: Number(diasTrabajados),
+      salarioMensual: Number(submitted.salarioMensual),
+      diasTrabajados: Number(submitted.diasTrabajados),
     });
     return validation.valid ? coPrimaServiciosEngine.calculate(validation.data) : null;
-  }, [salarioMensual, diasTrabajados]);
+  }, [submitted]);
 
   return (
     <div class="grid gap-6 md:grid-cols-2">
@@ -47,8 +51,27 @@ export default function CoPrimaServiciosCalculator({ initialSalary }: Props) {
             onInput={(e) => setDiasTrabajados((e.target as HTMLInputElement).value)}
           />
         </label>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ salarioMensual, diasTrabajados })}
+          >
+            Calcular
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setSalarioMensual(String(initialSalary ?? 3000000));
+              setDiasTrabajados('180');
+              setSubmitted({ salarioMensual: String(initialSalary ?? 3000000), diasTrabajados: '180' });
+            }}
+          >
+            Restablecer
+          </button>
+        </div>
       </div>
-
       <div class="rounded-xl bg-slate-50 p-6" aria-live="polite">
         <p class="text-sm text-slate-500">Prima de servicios — cuota de diciembre</p>
         <p class="text-3xl font-bold text-accent">{result ? formatCurrency(result.primaBruta) : '—'}</p>
@@ -69,7 +92,7 @@ export default function CoPrimaServiciosCalculator({ initialSalary }: Props) {
           </dl>
         )}
         <p class="mt-4 text-xs text-slate-500">
-          Estimación según CST Art. 306. La cuota de diciembre se paga hasta el 20 de diciembre de 2026.
+          Estimación bruta según el Código Sustantivo del Trabajo, artículo 306. La cuota de diciembre debe pagarse a más tardar el 20 de diciembre y no está sujeta a la misma tributación que el salario ordinario.
         </p>
       </div>
     </div>
