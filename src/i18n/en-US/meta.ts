@@ -8,5 +8,5 @@ export const meta = {
   siteTitleSuffix: 'PayRenTax',
   paycheckTitle: 'US Paycheck Calculator — PayRenTax',
   paycheckDescription:
-    'Get a quick estimate of your US take-home pay after federal income tax, Social Security, Medicare, and pre-tax deductions.',
+    'Get a quick estimate of your US take-home pay after federal income tax, Social Security, Medicare and pre-tax deductions — updated for 2026.',
 } as const;
