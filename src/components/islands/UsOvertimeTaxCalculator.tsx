@@ -72,16 +72,15 @@ export default function UsOvertimeTaxCalculator({
             class={inputClass}
             type="number"
             min="0"
-            max="600"
             step="1"
             value={overtimeHours}
             onInput={(e) => setOvertimeHours((e.target as HTMLInputElement).value)}
           />
         </label>
-        <label class="block text-sm font-medium" for="us-ot-filing">
+        <label class="block text-sm font-medium" for="us-ot-status">
           Filing status
           <select
-            id="us-ot-filing"
+            id="us-ot-status"
             class={inputClass}
             value={filingStatus}
             onChange={(e) =>
@@ -93,59 +92,60 @@ export default function UsOvertimeTaxCalculator({
           </select>
         </label>
         <fieldset class="space-y-2">
-          <legend class="text-sm font-medium">How to estimate your federal rate</legend>
+          <legend class="text-sm font-medium">How to work out your tax bracket</legend>
           <label class="flex items-center gap-2 text-sm">
             <input
               type="radio"
-              name="us-ot-rate-mode"
+              name="us-ot-mode"
               checked={!useBracket}
               onChange={() => setUseBracket(false)}
             />
-            Estimate from my annual salary
+            Estimate it from my salary
           </label>
           <label class="flex items-center gap-2 text-sm">
             <input
               type="radio"
-              name="us-ot-rate-mode"
+              name="us-ot-mode"
               checked={useBracket}
               onChange={() => setUseBracket(true)}
             />
-            Use a federal tax bracket directly
+            I know my marginal bracket
           </label>
         </fieldset>
         {!useBracket ? (
           <label class="block text-sm font-medium" for="us-ot-salary">
-            Annual salary ($)
+            Estimated total 2026 wages ($), overtime included
             <input
               id="us-ot-salary"
               class={inputClass}
               type="number"
-              min="0"
-              step="100"
+              min="1"
+              step="1000"
               value={annualSalary}
               onInput={(e) => setAnnualSalary((e.target as HTMLInputElement).value)}
             />
           </label>
         ) : (
           <label class="block text-sm font-medium" for="us-ot-bracket">
-            Federal tax bracket
+            Your 2026 federal marginal tax bracket
             <select
               id="us-ot-bracket"
               class={inputClass}
               value={taxBracket}
               onChange={(e) => setTaxBracket((e.target as HTMLSelectElement).value)}
             >
-              {FEDERAL_BRACKET_OPTIONS_2026.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
+              {FEDERAL_BRACKET_OPTIONS_2026.map((b) => (
+                <option key={b} value={b}>
+                  {formatPercent(b)}
                 </option>
               ))}
             </select>
           </label>
         )}
         <p class="text-xs text-slate-500">
-          The $10,000 overtime deduction is claimed when you file your return, not in your
-          regular paycheck, and it does not reduce Social Security or Medicare tax.
+          For most employees, the premium is taxed as ordinary income and the deduction is
+          claimed when you file. The $10,000 deduction is not available in your paycheck, but you
+          can adjust your withholding to account for it.
         </p>
         <div class="flex gap-3 pt-2">
           <button
@@ -188,39 +188,64 @@ export default function UsOvertimeTaxCalculator({
           </button>
         </div>
       </div>
-
-      <div class="space-y-4">
-        <h3 class="text-lg font-semibold">Overtime pay</h3>
+      <div class="rounded-xl bg-slate-50 p-6" aria-live="polite">
+        <p class="text-sm text-slate-500">Overtime gross pay (2026)</p>
+        <p class="text-3xl font-bold text-accent">
+          {result ? formatCurrency(result.overtimeGross) : '—'}
+        </p>
         {result ? (
           <>
-            <div>
-              <span class="text-sm text-slate-500">Overtime pay after tax</span>
-              <p class="text-3xl font-bold text-accent">{formatCurrency(result.netAfterTax)}</p>
-            </div>
-            <dl class="space-y-2 text-sm">
-              <div class="flex justify-between border-b pb-1">
-                <dt>Base pay for overtime hours</dt>
-                <dd>{formatCurrency(result.basePay)}</dd>
+            <dl class="mt-4 space-y-2 text-sm">
+              <div class="flex justify-between">
+                <dt>Base pay (regular rate × overtime hours)</dt>
+                <dd>{formatCurrency(result.baseComponent)}</dd>
               </div>
-              <div class="flex justify-between border-b pb-1">
-                <dt>Overtime premium (0.5× rate)</dt>
-                <dd>{formatCurrency(result.premiumPay)}</dd>
+              <div class="flex justify-between">
+                <dt>Overtime premium (0.5 × rate × overtime hours)</dt>
+                <dd>{formatCurrency(result.premiumComponent)}</dd>
               </div>
-              <div class="flex justify-between border-b pb-1">
-                <dt>Overtime gross pay</dt>
+              <div class="flex justify-between font-medium">
+                <dt>Gross pay</dt>
                 <dd>{formatCurrency(result.overtimeGross)}</dd>
               </div>
-              <div class="flex justify-between border-b pb-1">
-                <dt>Federal income tax on overtime</dt>
+              <div class="flex justify-between">
+                <dt>Federal income tax (marginal bracket)</dt>
                 <dd>-{formatCurrency(result.taxOnOvertime)}</dd>
               </div>
-              <div class="flex justify-between border-b pb-1">
+              <div class="flex justify-between">
                 <dt>Social Security + Medicare</dt>
                 <dd>-{formatCurrency(result.ficaOnOvertime)}</dd>
+                <span class="text-xs text-slate-500">
+                  FICA applies to all overtime pay; the deduction does not reduce it
+                </span>
               </div>
-              <div class="flex justify-between border-b pb-1">
-                <dt>Total pay (regular + overtime)</dt>
-                <dd>{formatCurrency(result.totalPay)}</dd>
+              <div class="flex justify-between font-medium">
+                <dt>Net after tax</dt>
+                <dd>{formatCurrency(result.netAfterTax)}</dd>
+              </div>
+              <div class="flex justify-between">
+                <dt>Tax bracket used</dt>
+                <dd>{formatPercent(result.marginalRate)}</dd>
+                <span class="text-xs text-slate-500">
+                  {result.bracketDerived ? '(estimated from salary)' : '(directly entered)'}
+                </span>
+              </div>
+              <div class="flex justify-between">
+                <dt>Deductible overtime premium</dt>
+                <dd>{formatCurrency(result.deductiblePremium)}</dd>
+                <span class="text-xs text-slate-500">
+                  up to the $10,000 deduction cap (no double count)
+                </span>
+              </div>
+              <div class="flex justify-between">
+                <dt>Estimated tax saving from the deduction</dt>
+                <dd>{formatCurrency(result.taxSavings)}</dd>
+                <span class="text-xs text-slate-500">you get this when you file</span>
+              </div>
+              <div class="flex justify-between font-medium">
+                <dt>Estimated net after tax</dt>
+                <dd>{formatCurrency(result.effectiveNet)}</dd>
+                <span class="text-xs text-slate-500">includes the deduction benefit</span>
               </div>
             </dl>
             <PayBreakdownChart
@@ -236,10 +261,16 @@ export default function UsOvertimeTaxCalculator({
                 },
               ]}
             />
-            <p class="text-xs text-slate-500">
-              Federal rate used: {formatPercent(result.federalRate)} ({result.rateSource}).
-              Eligible for the 2026 overtime deduction: {formatCurrency(result.eligibleDeduction)}.
+            <p class="mt-4 text-xs text-slate-500">
+              The $10,000 deduction is capped at your deductible premium and phases out above
+              $150,000 ($300,000 joint) MAGI. Only the premium portion — not the full overtime pay
+              — is deductible.
             </p>
+            {result.phaseOutApplied && (
+              <p class="mt-4 text-sm text-amber-700">
+                Your MAGI exceeds the phase-out threshold, so the $10,000 deduction is reduced.
+              </p>
+            )}
           </>
         ) : (
           <p class="text-sm text-slate-500">No valid overtime calculation to show.</p>
