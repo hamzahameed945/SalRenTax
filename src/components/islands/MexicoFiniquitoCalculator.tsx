@@ -258,12 +258,12 @@ export default function MexicoFiniquitoCalculator() {
           <PayBreakdownChart
             title="Desglose del total"
             segments={[
-              { label: 'Aguinaldo proporcional', value: result.proportionalBonus },
-              { label: 'Vacaciones', value: result.proportionalVacations },
-              { label: 'Prima vacacional', value: result.vacationBonus },
-              { label: 'Indemnización constitucional', value: result.severancePay },
-              { label: 'Indemnización adicional', value: result.additionalSeverance },
-              { label: 'Prima de antigüedad', value: result.seniorityPremium },
+              { label: 'Aguinaldo proporcional', value: result.proportionalBonus, color: '#0d9488'},
+              { label: 'Vacaciones', value: result.proportionalVacations, color: '#2563eb'},
+              { label: 'Prima vacacional', value: result.vacationBonus, color: '#7c3aed'},
+              { label: 'Indemnización constitucional', value: result.severancePay, color: '#db2777'},
+              { label: 'Indemnización adicional', value: result.additionalSeverance, color: '#ea580c'},
+              { label: 'Prima de antigüedad', value: result.seniorityPremium, color: '#059669'},
             ]}
             format={(value) => fmt(value)}
           />
