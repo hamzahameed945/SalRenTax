@@ -2,9 +2,12 @@
 import CategoryResource from '../../../components/content/CategoryResource.astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../components/calculator/CalculatorFAQ.astro';
+import JsonLd from '../../../components/seo/JsonLd.astro';
 import { getDictionary } from '../../../i18n/dictionaries';
 import { getActivePagesForLocale } from '../../../seo/page-registry';
 import { buildPageMetadata } from '../../../lib/seo/metadata';
+import { buildFaqJsonLd } from '../../../lib/seo/structuredData';
 import { buildLocalePath } from '../../../i18n/utils';
 
 const locale = 'en-GB' as const;
@@ -17,6 +20,29 @@ const meta = buildPageMetadata(
 const calculators = getActivePagesForLocale(locale).filter(
   (p) => p.category === 'salary' && p.pageType === 'calculator',
 );
+const faqItems = [
+  {
+    question: 'What is take-home pay?',
+    answer:
+      'Take-home pay is gross pay minus PAYE income tax and National Insurance. It is the amount left after those deductions, before you spend or save anything else.',
+  },
+  {
+    question: 'What is PAYE?',
+    answer:
+      'PAYE, short for Pay As You Earn, is the system under which an employer deducts income tax from your pay before you receive it. National Insurance is usually deducted at the same time.',
+  },
+  {
+    question: 'How do I work out my hourly rate?',
+    answer:
+      'Use the salary-to-hourly calculator on this page. Enter your annual salary and the working pattern it is based on, and it will convert that salary into an hourly equivalent you can compare with other roles.',
+  },
+  {
+    question: 'Are these results exact?',
+    answer:
+      'No. These calculators give estimates for general guidance. Your actual payslip can differ depending on your individual circumstances and deductions, so use it as a starting point rather than a final payroll figure.',
+  },
+];
+const faqJsonLd = buildFaqJsonLd(faqItems);
 ---
 
 <BaseLayout
@@ -25,6 +51,7 @@ const calculators = getActivePagesForLocale(locale).filter(
   description={meta.description}
   canonical={meta.canonical}
 >
+  <JsonLd entries={[faqJsonLd]} />
   <Breadcrumbs
     locale={locale}
     trail={[{ label: t.navigation.salary, href: buildLocalePath(locale, 'salary') }]}
@@ -45,6 +72,11 @@ const calculators = getActivePagesForLocale(locale).filter(
         </li>
       ))}
     </ul>
-  </section>
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">About these calculators</h2>
+    <p class="mt-3 text-slate-600">Take-home pay is the amount left after deductions from gross pay. In the UK, that generally means gross pay minus PAYE income tax and National Insurance. The calculators on this page cover salary-to-hourly conversions and take-home pay estimates, so you can move between an annual figure and the amount you actually receive.</p>
+    <p class="mt-3 text-slate-600">Start with the figure you know, whether that is a salary or an hourly rate, and use the matching calculator to see the equivalent in another period. Comparing figures only works when they cover the same period, so check whether you are looking at a weekly, monthly, or annual amount.</p>
+    <p class="mt-3 text-slate-600">Pay frequency also matters for monthly budgeting. The same annual salary can be paid in different instalments, which changes how much lands in your account each month. Planning regular bills around your monthly take-home amount, rather than the annual headline figure, gives a clearer picture of what is available.</p>
+    <CalculatorFAQ heading="Frequently asked questions" items={faqItems} />
+</section>
   <CategoryResource locale="en-GB" category="salary" />
 </BaseLayout>
