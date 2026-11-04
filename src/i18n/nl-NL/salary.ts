@@ -1,6 +1,6 @@
 export const salary = {
   categoryTitle: 'Salaris Calculators Nederland',
-  categoryIntro: 'Bereken uw netto salaris, uurloon en andere salarisconversies voor Nederland 2026.',
+    categoryIntro: 'Bereken uw netto salaris, uurloon en andere salarisconversies voor Nederland in 2026 met gratis calculators voor bruto-netto en loonheffing.',
 
   salaryToHourly: {
     title: 'Salaris naar Uurloon Calculator',
