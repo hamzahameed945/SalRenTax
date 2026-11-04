@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'preact/hooks';
+import PayBreakdownChart from './PayBreakdownChart';
 import { rentAffordabilityEngine } from '../../calculators/rent/engines/rentAffordability';
 
 export default function RentAffordabilityCalculator({ locale }: { locale: string }) {
@@ -9,12 +10,19 @@ export default function RentAffordabilityCalculator({ locale }: { locale: string
   );
   const [targetGrossPercentage, setTargetGrossPercentage] = useState('30');
 
+  const [submitted, setSubmitted] = useState({
+    grossIncome,
+    netIncome,
+    payFrequency,
+    targetGrossPercentage,
+  });
+
   const result = useMemo(() => {
     const input = {
-      grossIncomePerPeriod: parseFloat(grossIncome),
-      netIncomePerPeriod: netIncome ? parseFloat(netIncome) : undefined,
-      payFrequency,
-      targetGrossPercentage: parseFloat(targetGrossPercentage),
+      grossIncomePerPeriod: parseFloat(submitted.grossIncome),
+      netIncomePerPeriod: submitted.netIncome ? parseFloat(submitted.netIncome) : undefined,
+      payFrequency: submitted.payFrequency,
+      targetGrossPercentage: parseFloat(submitted.targetGrossPercentage),
     };
 
     const validation = rentAffordabilityEngine.validate(input);
@@ -29,7 +37,7 @@ export default function RentAffordabilityCalculator({ locale }: { locale: string
       };
     }
     return { data: null, error: validation.errors };
-  }, [grossIncome, netIncome, payFrequency, targetGrossPercentage]);
+  }, [submitted]);
 
   return (
     <div class="grid gap-8 md:grid-cols-2">
@@ -93,6 +101,36 @@ export default function RentAffordabilityCalculator({ locale }: { locale: string
             <p class="mt-1 text-sm text-red-600">{result.error.targetGrossPercentage}</p>
           )}
         </div>
+
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() =>
+              setSubmitted({ grossIncome, netIncome, payFrequency, targetGrossPercentage })
+            }
+          >
+            Calculate
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setGrossIncome('');
+              setNetIncome('');
+              setPayFrequency('annually');
+              setTargetGrossPercentage('30');
+              setSubmitted({
+                grossIncome: '',
+                netIncome: '',
+                payFrequency: 'annually',
+                targetGrossPercentage: '30',
+              });
+            }}
+          >
+            Reset
+          </button>
+        </div>
       </div>
 
       <div class="rounded-xl bg-slate-50 p-6">
@@ -144,6 +182,25 @@ export default function RentAffordabilityCalculator({ locale }: { locale: string
                 affordability guidelines.
               </p>
             </div>
+
+            <PayBreakdownChart
+              title="Monthly income breakdown"
+              format={(value) =>
+                new Intl.NumberFormat(locale, { style: 'currency', currency: 'USD' }).format(value)
+              }
+              segments={[
+                {
+                  label: 'Recommended rent',
+                  value: result.data.recommendedRentGross,
+                  color: '#2563eb',
+                },
+                {
+                  label: 'Remaining income',
+                  value: result.data.monthlyGrossIncome - result.data.recommendedRentGross,
+                  color: '#0d9488',
+                },
+              ]}
+            />
           </div>
         ) : (
           <p class="text-slate-500 text-sm">
