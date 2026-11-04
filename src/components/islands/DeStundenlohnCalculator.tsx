@@ -1,4 +1,5 @@
 import SalaryToHourlyCalculator from './SalaryToHourlyCalculator';
+import { errors } from '../../i18n/de-DE/errors';
 
 // Results here are already Calculate-gated: SalaryToHourlyCalculator
 // only updates its results on its Calculate press and restores its
@@ -10,6 +11,7 @@ export default function DeStundenlohnCalculator() {
     <SalaryToHourlyCalculator
       locale="de-DE"
       currency="EUR"
+      t={{ errors }}
       labels={{
         annualSalary: 'Jahresgehalt (€)',
         hoursPerWeek: 'Stunden pro Woche',
