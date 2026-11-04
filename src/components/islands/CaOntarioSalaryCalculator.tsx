@@ -6,9 +6,10 @@ const DEFAULT_GROSS_ANNUAL = '75000';
 const SCOPE_NOTE =
   'Estimate only: includes federal and Ontario income tax (with basic personal amounts), CPP/CPP2 and EI. Excludes the Ontario Health Premium and other credits/deductions.';
 
-export default function CaOntarioSalaryCalculator() {
-  const [grossAnnual, setGrossAnnual] = useState(DEFAULT_GROSS_ANNUAL);
-  const [submitted, setSubmitted] = useState(DEFAULT_GROSS_ANNUAL);
+export default function CaOntarioSalaryCalculator({ initialGross = Number(DEFAULT_GROSS_ANNUAL) }: { initialGross?: number }) {
+  const initialGrossAnnual = String(initialGross);
+  const [grossAnnual, setGrossAnnual] = useState(initialGrossAnnual);
+  const [submitted, setSubmitted] = useState(initialGrossAnnual);
 
   const result = useMemo(() => calculateCaOntarioSalary(Number(submitted)), [submitted]);
   const format = (value: number) =>
@@ -21,8 +22,8 @@ export default function CaOntarioSalaryCalculator() {
   };
 
   const handleReset = () => {
-    setGrossAnnual(DEFAULT_GROSS_ANNUAL);
-    setSubmitted(DEFAULT_GROSS_ANNUAL);
+    setGrossAnnual(initialGrossAnnual);
+    setSubmitted(initialGrossAnnual);
   };
 
   return (
