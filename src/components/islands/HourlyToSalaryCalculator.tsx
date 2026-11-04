@@ -7,11 +7,17 @@ export default function HourlyToSalaryCalculator({ t, locale }: { t: ErrorTransl
   const [hoursPerWeek, setHoursPerWeek] = useState('40');
   const [weeksPerYear, setWeeksPerYear] = useState('52');
 
+  const [submitted, setSubmitted] = useState({
+    hourlyWage,
+    hoursPerWeek,
+    weeksPerYear,
+  });
+
   const result = useMemo(() => {
     const input = {
-      hourlyWage: parseFloat(hourlyWage),
-      hoursPerWeek: parseFloat(hoursPerWeek),
-      weeksPerYear: parseFloat(weeksPerYear),
+      hourlyWage: parseFloat(submitted.hourlyWage),
+      hoursPerWeek: parseFloat(submitted.hoursPerWeek),
+      weeksPerYear: parseFloat(submitted.weeksPerYear),
     };
 
     const validation = hourlyToSalaryEngine.validate(input);
@@ -26,7 +32,7 @@ export default function HourlyToSalaryCalculator({ t, locale }: { t: ErrorTransl
       };
     }
     return { data: null, error: validation.errors };
-  }, [hourlyWage, hoursPerWeek, weeksPerYear]);
+  }, [submitted]);
 
   const formatCurrency = (value: number) =>
     new Intl.NumberFormat(locale, { style: 'currency', currency: 'USD' }).format(value);
@@ -80,6 +86,28 @@ export default function HourlyToSalaryCalculator({ t, locale }: { t: ErrorTransl
               {t.errors?.[result.error.weeksPerYear] || result.error.weeksPerYear}
             </p>
           )}
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ hourlyWage, hoursPerWeek, weeksPerYear })}
+          >
+            Calculate
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setHourlyWage('');
+              setHoursPerWeek('40');
+              setWeeksPerYear('52');
+              setSubmitted({ hourlyWage: '', hoursPerWeek: '40', weeksPerYear: '52' });
+            }}
+          >
+            Reset
+          </button>
         </div>
       </div>
 
