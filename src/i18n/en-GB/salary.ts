@@ -1,6 +1,6 @@
 export const salary = {
   categoryTitle: 'UK Salary Calculators',
-  categoryIntro: 'Calculate your take-home pay, hourly rates, and salary conversions for the UK.',
+    categoryIntro: 'Calculate your UK take-home pay, hourly rates and salary conversions: free 2026 calculators for PAYE tax, National Insurance and net monthly pay.',
   takeHomePay: {
     title: 'UK Take Home Pay Calculator 2026',
     h1: 'UK Take Home Pay Calculator 2026',
