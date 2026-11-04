@@ -6,7 +6,7 @@ export const salary = {
   salaryToHourly: {
     title: 'Calculadora de Salario a Hora España',
     h1: 'Calculadora de Salario Anual a Hora',
-    intro: 'Convierte tu salario anual bruto en un equivalente por hora según tus horas trabajadas.',
+    intro: 'Convierte tu salario anual bruto en un equivalente por hora en España: introduce tu sueldo, horas semanales y semanas al año y obtén tu tarifa horaria bruta.',
     labels: {
       annualSalary:   'Salario bruto anual (€)',
       hoursPerWeek:   'Horas por semana',
