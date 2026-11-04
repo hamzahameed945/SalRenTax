@@ -23,10 +23,15 @@ export default function GbRedundancyPayCalculator() {
   const [age, setAge] = useState('45');
   const [years, setYears] = useState('10');
   const [weeklyPay, setWeeklyPay] = useState('800');
+  const [submitted, setSubmitted] = useState({
+    age,
+    years,
+    weeklyPay,
+  });
 
-  const ageNum = parseFloat(age) || 0;
-  const yearsNum = parseFloat(years) || 0;
-  const weeklyPayNum = parseFloat(weeklyPay) || 0;
+  const ageNum = parseFloat(submitted.age) || 0;
+  const yearsNum = parseFloat(submitted.years) || 0;
+  const weeklyPayNum = parseFloat(submitted.weeklyPay) || 0;
 
   const result = useMemo(() => {
     const v = gbRedundancyPayEngine.validate({
@@ -36,7 +41,7 @@ export default function GbRedundancyPayCalculator() {
     });
     if (!v.valid) return null;
     return gbRedundancyPayEngine.calculate(v.data, undefined as never, 2026);
-  }, [ageNum, yearsNum, weeklyPayNum]);
+  }, [submitted]);
 
   return (
     <div className="space-y-6">
@@ -96,6 +101,27 @@ export default function GbRedundancyPayCalculator() {
             </p>
           </div>
 
+        </div>
+        <div className="mt-4 flex gap-3">
+          <button
+            type="button"
+            className="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ age, years, weeklyPay })}
+          >
+            Calculate
+          </button>
+          <button
+            type="button"
+            className="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setAge('45');
+              setYears('10');
+              setWeeklyPay('800');
+              setSubmitted({ age: '45', years: '10', weeklyPay: '800' });
+            }}
+          >
+            Reset
+          </button>
         </div>
       </div>
 
