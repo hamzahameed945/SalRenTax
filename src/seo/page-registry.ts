@@ -8419,6 +8419,20 @@ export const pageRegistry: PageDefinition[] = [
     equivalentPageGroup: 'pay-frequency',
     status: 'active',
   },
+  {
+    id: 'en-ca-salary-ontario',
+    locale: 'en-CA',
+    category: 'salary',
+    slug: 'salary/ontario-salary-calculator',
+    pageType: 'calculator',
+    calculatorType: 'caOntarioSalary',
+    primaryKeyword: 'salary calculator ontario',
+    description: 'Estimate your Ontario take-home pay for 2026 with federal and Ontario tax, CPP/CPP2 and EI. Enter your gross annual salary to see your net monthly pay in CAD.',
+    secondaryKeywords: ['ontario salary calculator', 'ontario take home pay calculator'],
+    year: 2026,
+    contentKey: 'caOntarioSalary',
+    status: 'active',
+  },
 ];
 
 export function getActivePages(): PageDefinition[] {
