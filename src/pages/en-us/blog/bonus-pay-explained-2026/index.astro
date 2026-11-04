@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import { buildLocalePath } from '../../../../lib/localePaths.ts';
+import { buildLocalizedCanonical } from '../../../../lib/canonical.ts';
+
+const locale = 'en-us';
+const title = 'Bonus Pay Explained: How Work Bonuses Work and What They Mean for Your Pay';
+const description = 'A bonus is extra pay on top of your regular salary or wages. Learn the common bonus types in general terms, how a bonus fits into annual pay, how it differs from salary and overtime, and what to check on your pay stub.';
+const canonical = buildLocalizedCanonical(locale, 'blog/bonus-pay-explained-2026');
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: '2026-11-04',
+  dateModified: '2026-11-04',
+  author: {
+    '@type': 'Organization',
+    name: 'PayRenTax',
+    url: 'https://payrentax.com',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'PayRenTax',
+    url: 'https://payrentax.com',
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': canonical,
+  },
+};
+---
+
+<BaseLayout locale={locale} title={title} description={description} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  <main class="page">
+    <Breadcrumbs locale={locale} trail={[{ label: 'Blog', href: buildLocalePath(locale, 'blog') }, { label: 'Bonus Pay Explained', href: buildLocalePath(locale, 'blog/bonus-pay-explained-2026') }]} />
+    <article class="article">
+      <header class="article-header">
+        <p class="article-date">November 4, 2026</p>
+        <h1>{title}</h1>
+        <p class="article-lead">{description}</p>
+      </header>
+      <section class="article-section">
+        <h2>What a bonus is</h2>
+        <p>A bonus is extra pay paid in addition to your regular salary or hourly wages. It is not part of your ordinary rate for a normal pay period. Instead, it is usually paid as a separate amount, on a separate occasion, for a reason set out by the employer.</p>
+        <p>The key point is simple: your regular pay is what you earn for your usual work, while a bonus is an additional payment on top of that regular pay. A bonus can therefore change what you receive in a particular pay period, or over a year, without changing your regular salary or hourly rate.</p>
+      </section>
+      <section class="article-section">
+        <h2>Common bonus types</h2>
+        <p>Employers use different names for bonuses, and the details depend on the employer's own plan. In general terms, the common types include:</p>
+        <ul>
+          <li><strong>Performance bonus:</strong> a payment linked to results, such as meeting a goal set by the employer.</li>
+          <li><strong>Annual or year-end bonus:</strong> a payment made once a year, often at the end of a year or review period.</li>
+          <li><strong>Sign-on bonus:</strong> a payment offered when a person starts a new job.</li>
+          <li><strong>Referral bonus:</strong> a payment for recommending a person who is then hired.</li>
+        </ul>
+        <p>These labels are general descriptions only. Whether a bonus is paid, how much it is, and when it is paid all depend on the employer's plan, so check the terms that apply to your own job rather than assuming a bonus is guaranteed.</p>
+      </section>
+      <section class="article-section">
+        <h2>How a bonus fits into annual pay</h2>
+        <p>To see how a bonus fits into your annual pay, add it to your regular pay. This is plain addition, and it gives your total cash pay before any deductions:</p>
+        <p><strong>Annual salary + bonus = total cash pay</strong></p>
+        <p>For example, as an illustration only: an annual salary of $60,000 plus a bonus of $5,000 gives $65,000 in total cash pay before deductions ($60,000 + $5,000 = $65,000). The bonus does not change the $60,000 salary itself; it is added to it for that year.</p>
+        <p>That total is a gross figure, before deductions. The amount you actually take home can be lower, because deductions are taken from pay. To estimate what a bonus means for a specific paycheck, use the <a href="/en-us/salary/bonus-tax-calculator/">bonus calculator</a> and enter your own figures.</p>
+      </section>
+      <section class="article-section">
+        <h2>Bonus vs salary vs overtime</h2>
+        <p>Salary, overtime, and a bonus are three different kinds of pay, and it helps to keep them separate:</p>
+        <ul>
+          <li><strong>Salary</strong> is your regular pay for your usual work, paid on a regular schedule.</li>
+          <li><strong>Overtime</strong> is extra pay for extra hours worked beyond the usual schedule, as explained in our post on <a href="/en-us/blog/overtime-pay-explained-2026/">overtime pay</a>.</li>
+          <li><strong>Bonus</strong> is an additional payment that is not tied to an hourly rate or to extra hours in the same way.</li>
+        </ul>
+        <p>A bonus therefore does not replace your salary, and it is not the same as overtime. You can receive a bonus in a year when you also receive regular salary, and in some cases overtime as well. Adding each part separately keeps the total clear.</p>
+      </section>
+      <section class="article-section">
+        <h2>What to check on your pay stub and how to use the bonus calculator</h2>
+        <p>When a bonus is paid, check your pay stub for the bonus amount itself, the pay period it covers, and any deductions shown for that period. Our guide to <a href="/en-us/blog/how-to-read-your-paystub-2026/">how to read your pay stub</a> explains the lines you will usually see.</p>
+        <p>Then use the <a href="/en-us/salary/bonus-tax-calculator/">bonus calculator</a> to work through your own figures, and the <a href="/en-us/salary/paycheck-calculator/">paycheck calculator</a> to see how a pay period fits together. If you want the wider picture, our post on <a href="/en-us/blog/take-home-pay-explained-2026/">take-home pay</a> explains why the amount you take home is usually smaller than your gross pay.</p>
+        <p>Keep the question simple: what is your regular pay, what is the bonus, and what is the total before deductions? Once those three figures are clear, a bonus is much easier to understand.</p>
+      </section>
+    </article>
+  </main>
+</BaseLayout>
