@@ -11,14 +11,18 @@ interface Props {
 export default function ArAguinaldoCalculator({ initialSalary }: Props) {
   const [mejorSueldo, setMejorSueldo] = useState(String(initialSalary ?? 1000000));
   const [diasTrabajados, setDiasTrabajados] = useState('180');
+  const [submitted, setSubmitted] = useState({
+    mejorSueldo,
+    diasTrabajados,
+  });
 
   const result = useMemo(() => {
     const validation = arAguinaldoEngine.validate({
-      mejorSueldo: Number(mejorSueldo),
-      diasTrabajados: Number(diasTrabajados),
+      mejorSueldo: Number(submitted.mejorSueldo),
+      diasTrabajados: Number(submitted.diasTrabajados),
     });
     return validation.valid ? arAguinaldoEngine.calculate(validation.data) : null;
-  }, [mejorSueldo, diasTrabajados]);
+  }, [submitted]);
 
   return (
     <div class="grid gap-6 md:grid-cols-2">
@@ -47,8 +51,27 @@ export default function ArAguinaldoCalculator({ initialSalary }: Props) {
             onInput={(e) => setDiasTrabajados((e.target as HTMLInputElement).value)}
           />
         </label>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ mejorSueldo, diasTrabajados })}
+          >
+            Calcular
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setMejorSueldo(String(initialSalary ?? 1000000));
+              setDiasTrabajados('180');
+              setSubmitted({ mejorSueldo: String(initialSalary ?? 1000000), diasTrabajados: '180' });
+            }}
+          >
+            Restablecer
+          </button>
+        </div>
       </div>
-
       <div class="rounded-xl bg-slate-50 p-6" aria-live="polite">
         <p class="text-sm text-slate-500">Aguinaldo (SAC) — segunda cuota</p>
         <p class="text-3xl font-bold text-accent">{result ? formatCurrency(result.aguinaldoBruto) : '—'}</p>
@@ -69,7 +92,7 @@ export default function ArAguinaldoCalculator({ initialSalary }: Props) {
           </dl>
         )}
         <p class="mt-4 text-xs text-slate-500">
-          Estimación bruta según Ley 23.073. La segunda cuota se paga hasta el 18 de diciembre. El SAC puede estar alcanzado por Ganancias.
+          Estimación bruta según Ley 23.073. La segunda cuota se paga hasta el 18 de diciembre. El SAC puede estar sujeto a Ganancias en ciertos casos.
         </p>
       </div>
     </div>
