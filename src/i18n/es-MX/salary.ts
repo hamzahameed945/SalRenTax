@@ -7,7 +7,7 @@ export const salary = {
   salaryToHourly: {
     title: 'Calculadora de Salario a Hora México',
     h1: 'Calculadora de Salario Anual a Hora',
-    intro: 'Convierte tu salario anual en un equivalente por hora según tus horas laboradas.',
+    intro: 'Convierte tu salario anual en un equivalente por hora en México: escribe tu sueldo, tus horas por semana y semanas laboradas y obtén tu tarifa horaria bruta.',
   },
 
   payFrequency: {
