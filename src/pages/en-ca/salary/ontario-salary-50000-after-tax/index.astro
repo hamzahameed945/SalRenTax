@@ -9,7 +9,7 @@ import { calculateCaOntarioSalary } from '../../../../calculators/salary/engines
 import { getDictionary } from '../../../../i18n/dictionaries';
 import { buildLocalePath } from '../../../../i18n/utils';
 import { buildPageMetadata } from '../../../../lib/seo/metadata';
-import { buildFaqJsonLd } from '../../../../lib/seo/faq';
+import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
 
 const locale = 'en-CA' as const;
 const t = getDictionary(locale);
@@ -81,8 +81,8 @@ const faqs = [
     </p>
     <h2 class="mt-10 text-xl font-semibold text-slate-900">Try a different Ontario salary</h2>
     <CaOntarioSalaryCalculator client:load />
-    <CalculatorFAQ faqs={faqs} />
+    <CalculatorFAQ heading="Frequently asked questions about Ontario take-home pay" items={faqs} />
   </section>
   <CalculatorResource locale="en-CA" category="salary" />
-  <JsonLd type="faq" data={buildFaqJsonLd(faqs)} />
+  <JsonLd entries={[buildFaqJsonLd(faqs)]} />
 </BaseLayout>
