@@ -2,17 +2,14 @@ import { useState, useMemo } from 'preact/hooks';
 import { nlHypotheekEngine } from '../../calculators/salary/engines/nl/nlHypotheek';
 import PayBreakdownChart from './PayBreakdownChart';
 
-interface Props {
-  locale: string;
-  initialGrossMonthly?: number;
-}
+interface Props { locale: string; initialGrossMonthly?: number; }
 
 const fmt = (locale: string, v: number) =>
   new Intl.NumberFormat(locale, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(v);
-const fmtPct = (locale: string, v: number, decimals = 1) => `${(v * 100).toFixed(decimals)}%`;
+const fmtPct = (locale: string, v: number, digits = 2) =>
+  new Intl.NumberFormat(locale, { style: 'percent', minimumFractionDigits: digits, maximumFractionDigits: digits }).format(v);
 
 export default function NlHypotheekCalculator({ locale, initialGrossMonthly = 4000 }: Props) {
-  const inputCls = 'w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none';
   const [grossMonthly, setGrossMonthly] = useState(String(initialGrossMonthly));
   const [partnerMonthly, setPartnerMonthly] = useState('');
   const [ratePct, setRatePct] = useState('4,0');
@@ -20,43 +17,42 @@ export default function NlHypotheekCalculator({ locale, initialGrossMonthly = 40
   const [otherDebts, setOtherDebts] = useState('');
   const [singleApplicant, setSingleApplicant] = useState(false);
   const [submitted, setSubmitted] = useState({ grossMonthly: String(initialGrossMonthly), partnerMonthly: '', ratePct: '4,0', termYears: '30', otherDebts: '', singleApplicant: false });
-  const parsePct = (s: string) => {
-    const n = parseFloat(s.replace(',', '.'));
-    return Number.isFinite(n) ? n : NaN;
-  };
+  const parsePct = (s: string) => parseFloat(s.replace(',', '.'));
   const result = useMemo(() => {
-    const v = nlHypotheekEngine.validate({
-      grossMonthly: parseFloat(submitted.grossMonthly) || 0,
-      partnerMonthly: submitted.partnerMonthly ? parseFloat(submitted.partnerMonthly) || 0 : undefined,
-      annualInterestRate: parsePct(submitted.ratePct),
-      loanTermYears: parseInt(submitted.termYears, 10),
-      otherMonthlyDebts: submitted.otherDebts ? parseFloat(submitted.otherDebts) || 0 : undefined,
+    const input = {
+      grossMonthly: parseFloat(submitted.grossMonthly.replace(',', '.')) || 0,
+      partnerGrossMonthly: parseFloat(submitted.partnerMonthly.replace(',', '.')) || 0,
+      annualInterestRate: parsePct(submitted.ratePct) / 100,
+      loanTermYears: parseInt(submitted.termYears, 10) || 30,
+      otherMonthlyDebts: parseFloat(submitted.otherDebts.replace(',', '.')) || 0,
       singleApplicant: submitted.singleApplicant,
-    });
+    };
+    const v = nlHypotheekEngine.validate(input);
     if (!v.valid) return { data: null, errors: v.errors };
     return { data: nlHypotheekEngine.calculate(v.data, {} as never, 2026), errors: null };
   }, [submitted]);
   const d = result.data;
+  const inputCls = 'w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500';
   return (
     <div class="space-y-6">
+      {/* Inputs */}
       <div class="rounded-xl border border-slate-200 bg-slate-50 p-5">
-        <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-4">Jouw situatie</h2>
-        <div class="grid gap-4 sm:grid-cols-2">
+        <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-4">Uw gegevens</h2>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1">Bruto maandinkomen <span class="text-slate-400 font-normal">(€)</span></label>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Bruto maandsalaris <span class="text-slate-400 font-normal">(excl. vakantiegeld)</span></label>
             <div class="relative">
               <span class="absolute inset-y-0 left-3 flex items-center text-slate-400 text-sm">€</span>
-              <input type="number" min="0" step="100" class={`${inputCls} pl-7`} value={grossMonthly} onInput={e => setGrossMonthly((e.target as HTMLInputElement).value)} placeholder="bijv. 4000" />
+              <input type="number" min="0" step="100" class={`${inputCls} pl-7`} value={grossMonthly} onInput={e => setGrossMonthly((e.target as HTMLInputElement).value)} placeholder="4000" />
             </div>
             {result.errors?.grossMonthly && <p class="mt-1 text-xs text-red-600">Vul een geldig salaris in</p>}
           </div>
           <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1">Bruto maandinkomen partner <span class="text-slate-400 font-normal">(optioneel)</span></label>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Bruto maandsalaris partner <span class="text-slate-400 font-normal">(optioneel)</span></label>
             <div class="relative">
               <span class="absolute inset-y-0 left-3 flex items-center text-slate-400 text-sm">€</span>
               <input type="number" min="0" step="100" class={`${inputCls} pl-7`} value={partnerMonthly} onInput={e => setPartnerMonthly((e.target as HTMLInputElement).value)} placeholder="0" />
             </div>
-            {result.errors?.partnerMonthly && <p class="mt-1 text-xs text-red-600">Vul een geldig salaris in</p>}
           </div>
           <div>
             <label class="block text-sm font-medium text-slate-700 mb-1">Hypotheekrente <span class="text-slate-400 font-normal">(indicatie 10 jr vast)</span></label>
