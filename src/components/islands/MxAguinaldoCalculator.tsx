@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'preact/hooks';
 import { mxAguinaldoEngine } from '../../calculators/labor/engines/mxAguinaldo';
+import PayBreakdownChart from './PayBreakdownChart';
 
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(value);
@@ -12,15 +13,20 @@ export default function MxAguinaldoCalculator({ initialSalary }: Props) {
   const [sueldoMensual, setSueldoMensual] = useState(String(initialSalary ?? 20000));
   const [diasAguinaldo, setDiasAguinaldo] = useState('15');
   const [mesesTrabajados, setMesesTrabajados] = useState('12');
+  const [submitted, setSubmitted] = useState({
+    sueldoMensual,
+    diasAguinaldo,
+    mesesTrabajados,
+  });
 
   const result = useMemo(() => {
     const validation = mxAguinaldoEngine.validate({
-      sueldoMensual: Number(sueldoMensual),
-      diasAguinaldo: Number(diasAguinaldo),
-      mesesTrabajados: Number(mesesTrabajados),
+      sueldoMensual: Number(submitted.sueldoMensual),
+      diasAguinaldo: Number(submitted.diasAguinaldo),
+      mesesTrabajados: Number(submitted.mesesTrabajados),
     });
     return validation.valid ? mxAguinaldoEngine.calculate(validation.data) : null;
-  }, [sueldoMensual, diasAguinaldo, mesesTrabajados]);
+  }, [submitted]);
 
   return (
     <div class="grid gap-6 md:grid-cols-2">
@@ -61,6 +67,27 @@ export default function MxAguinaldoCalculator({ initialSalary }: Props) {
             onInput={(e) => setMesesTrabajados((e.target as HTMLInputElement).value)}
           />
         </label>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ sueldoMensual, diasAguinaldo, mesesTrabajados })}
+          >
+            Calcular
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setSueldoMensual(String(initialSalary ?? 20000));
+              setDiasAguinaldo('15');
+              setMesesTrabajados('12');
+              setSubmitted({ sueldoMensual: String(initialSalary ?? 20000), diasAguinaldo: '15', mesesTrabajados: '12' });
+            }}
+          >
+            Restablecer
+          </button>
+        </div>
       </div>
 
       <div class="rounded-xl bg-slate-50 p-6" aria-live="polite">
@@ -86,10 +113,18 @@ export default function MxAguinaldoCalculator({ initialSalary }: Props) {
             </div>
           </dl>
         )}
+        {result && (
+          <PayBreakdownChart
+            title="Desglose del aguinaldo bruto"
+            segments={[
+              { label: 'Aguinaldo neto', value: result.aguinaldoNeto },
+              { label: 'ISR estimado', value: result.isrEstimado },
+            ]}
+            format={(value) => formatCurrency(value)}
+          />
+        )}
         <p class="mt-4 text-xs text-slate-500">
-          Estimación con la tarifa ISR mensual 2026 (Art. 96 LISR). La retención real
-          depende del procedimiento de nómina de tu patrón y de tu ingreso total de
-          diciembre. El patrón debe pagar el aguinaldo antes del 20 de diciembre.
+          Estimación con la tarifa ISR mensual 2026 (Art. 96 LISR). La retención real depende del procedimiento de nómina de tu patrón y de tu ingreso total de diciembre. El patrón debe pagar el aguinaldo antes del 20 de diciembre.
         </p>
       </div>
     </div>
