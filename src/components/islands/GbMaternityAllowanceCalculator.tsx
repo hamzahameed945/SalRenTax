@@ -17,14 +17,14 @@ const WORK_STATUS_OPTIONS: { value: GbMaWorkStatus; label: string; hint: string 
   { value: 'employed', label: 'Employed', hint: 'You work for an employer but cannot get Statutory Maternity Pay' },
   { value: 'selfEmployed', label: 'Self-employed', hint: 'Registered with HMRC as self-employed' },
   { value: 'recentlyStopped', label: 'Recently stopped working', hint: 'You were employed but have stopped' },
-  { value: 'spouseBusiness', label: 'Unpaid work for my spouse or civil partner\u2019s business', hint: '£27/week for up to 14 weeks' },
+  { value: 'spouseBusiness', label: 'Unpaid work for my spouse or civil partner’s business', hint: '£27/week for up to 14 weeks' },
 ];
 
 const REASON_COPY: Record<GbMaIneligibilityReason, string> = {
   'receives-smp':
     'You said you get Statutory Maternity Pay from another job — in that case you cannot get Maternity Allowance.',
   'too-few-work-weeks':
-    `You need to have worked at least ${GB_MA_MIN_WORK_WEEKS} weeks in the ${GB_MA_TEST_PERIOD_WEEKS}-week test period before your baby\u2019s due date.`,
+    `You need to have worked at least ${GB_MA_MIN_WORK_WEEKS} weeks in the ${GB_MA_TEST_PERIOD_WEEKS}-week test period before your baby’s due date.`,
   'too-few-high-earning-weeks':
     `You need to have earned at least £${GB_MA_HIGH_EARNING_THRESHOLD}/week in at least ${GB_MA_MIN_HIGH_EARNING_WEEKS} of those weeks.`,
 };
@@ -36,14 +36,22 @@ export default function GbMaternityAllowanceCalculator() {
   const [averageWeeklyEarnings, setAverageWeeklyEarnings] = useState('500');
   const [class2WeeksPaid, setClass2WeeksPaid] = useState('13');
   const [receivesSmp, setReceivesSmp] = useState(false);
+  const [submitted, setSubmitted] = useState({
+    workStatus,
+    weeksWorked,
+    weeksAtLeast30,
+    averageWeeklyEarnings,
+    class2WeeksPaid,
+    receivesSmp,
+  });
 
   const input = {
-    workStatus,
-    weeksWorked: Math.max(0, parseInt(weeksWorked, 10) || 0),
-    weeksAtLeast30: Math.max(0, parseInt(weeksAtLeast30, 10) || 0),
-    averageWeeklyEarnings: Math.max(0, parseFloat(averageWeeklyEarnings) || 0),
-    class2WeeksPaid: Math.max(0, parseInt(class2WeeksPaid, 10) || 0),
-    receivesSmpFromAnotherJob: receivesSmp,
+    workStatus: submitted.workStatus,
+    weeksWorked: Math.max(0, parseInt(submitted.weeksWorked, 10) || 0),
+    weeksAtLeast30: Math.max(0, parseInt(submitted.weeksAtLeast30, 10) || 0),
+    averageWeeklyEarnings: Math.max(0, parseFloat(submitted.averageWeeklyEarnings) || 0),
+    class2WeeksPaid: Math.max(0, parseInt(submitted.class2WeeksPaid, 10) || 0),
+    receivesSmpFromAnotherJob: submitted.receivesSmp,
   };
 
   const valid = gbMaternityAllowanceEngine.validate(input).valid;
@@ -51,10 +59,11 @@ export default function GbMaternityAllowanceCalculator() {
   const result = useMemo(() => {
     if (!valid) return null;
     return gbMaternityAllowanceEngine.calculate(input, {} as never, 2026);
-  }, [workStatus, weeksWorked, weeksAtLeast30, averageWeeklyEarnings, class2WeeksPaid, receivesSmp]);
+  }, [submitted]);
 
   const isSelfEmployed = workStatus === 'selfEmployed';
   const isSpouseBusiness = workStatus === 'spouseBusiness';
+  const submittedIsSpouseBusiness = submitted.workStatus === 'spouseBusiness';
 
   return (
     <div className="space-y-6">
@@ -65,7 +74,7 @@ export default function GbMaternityAllowanceCalculator() {
 
         <fieldset>
           <legend className="text-sm font-medium text-slate-700 mb-2">
-            How did you work in the 66 weeks before your baby\u2019s due date?
+            How did you work in the 66 weeks before your baby’s due date?
           </legend>
           <div className="grid gap-2 sm:grid-cols-2">
             {WORK_STATUS_OPTIONS.map(o => (
@@ -171,6 +180,30 @@ export default function GbMaternityAllowanceCalculator() {
           />
           <span>I get Statutory Maternity Pay (SMP) from an employer for this pregnancy.</span>
         </label>
+        <div className="mt-4 flex gap-3">
+          <button
+            type="button"
+            className="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ workStatus, weeksWorked, weeksAtLeast30, averageWeeklyEarnings, class2WeeksPaid, receivesSmp })}
+          >
+            Calculate
+          </button>
+          <button
+            type="button"
+            className="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setWorkStatus('employed');
+              setWeeksWorked('40');
+              setWeeksAtLeast30('40');
+              setAverageWeeklyEarnings('500');
+              setClass2WeeksPaid('13');
+              setReceivesSmp(false);
+              setSubmitted({ workStatus: 'employed', weeksWorked: '40', weeksAtLeast30: '40', averageWeeklyEarnings: '500', class2WeeksPaid: '13', receivesSmp: false });
+            }}
+          >
+            Reset
+          </button>
+        </div>
       </div>
 
       {/* ── Results ────────────────────────────────────────────────── */}
@@ -199,14 +232,14 @@ export default function GbMaternityAllowanceCalculator() {
               <div className="flex justify-between px-5 py-3">
                 <span className="text-slate-600">Work situation</span>
                 <span className="font-medium text-slate-900 text-right">
-                  {WORK_STATUS_OPTIONS.find(o => o.value === workStatus)?.label}
+                  {WORK_STATUS_OPTIONS.find(o => o.value === submitted.workStatus)?.label}
                 </span>
               </div>
               <div className="flex justify-between px-5 py-3">
                 <span className="text-slate-600">Weeks worked (need ≥ 26 of 66)</span>
                 <span className="font-medium text-slate-900">{input.weeksWorked}</span>
               </div>
-              {!isSpouseBusiness && (
+              {!submittedIsSpouseBusiness && (
                 <div className="flex justify-between px-5 py-3">
                   <span className="text-slate-600">Weeks at £30+/week (need ≥ 13)</span>
                   <span className="font-medium text-slate-900">{input.weeksAtLeast30}</span>
@@ -250,7 +283,7 @@ export default function GbMaternityAllowanceCalculator() {
             </div>
           )}
 
-          {result.eligible && isSpouseBusiness && (
+          {result.eligible && submittedIsSpouseBusiness && (
             <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 text-xs text-blue-800">
               <strong>Note:</strong> this route also requires your spouse or civil partner to have been
               registered as self-employed with HMRC and paying Class 2 NI during the same 26 weeks.
