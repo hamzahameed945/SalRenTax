@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'preact/hooks';
+import PayBreakdownChart from './PayBreakdownChart';
 import {
   usHouseAffordabilityEngine,
   type FilingStatus,
@@ -28,26 +29,38 @@ export default function HouseAffordabilityCalculator({
   const [state, setState] = useState(stateCode ?? 'TX');
   const [filingStatus, setFilingStatus] = useState<FilingStatus>('single');
 
-  const validation = usHouseAffordabilityEngine.validate({
-    annualSalary: Number(salary),
-    stateCode: state,
+  const [submitted, setSubmitted] = useState({
+    salary,
+    state,
     filingStatus,
   });
 
   const result = useMemo(() => {
+    const validation = usHouseAffordabilityEngine.validate({
+      annualSalary: Number(submitted.salary),
+      stateCode: submitted.state,
+      filingStatus: submitted.filingStatus,
+    });
     if (!validation.valid) return null;
     return usHouseAffordabilityEngine.calculate(
-      { annualSalary: Number(salary), stateCode: state, filingStatus },
+      {
+        annualSalary: Number(submitted.salary),
+        stateCode: submitted.state,
+        filingStatus: submitted.filingStatus,
+      },
       { countryCode: 'US' },
       2026,
     );
-  }, [salary, state, filingStatus]);
+  }, [submitted]);
 
   return (
     <div class="grid gap-8 md:grid-cols-2">
       <form
         class="space-y-5 rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
-        onSubmit={(e) => e.preventDefault()}
+        onSubmit={(e) => {
+          e.preventDefault();
+          setSubmitted({ salary, state, filingStatus });
+        }}
       >
         <div>
           <label class="mb-1 block text-sm font-medium text-slate-700" for="ha-salary">
@@ -103,6 +116,31 @@ export default function HouseAffordabilityCalculator({
           Oct 2026), 20% down, and {result ? result.stateName : 'state'}'s effective
           property tax rate.
         </p>
+
+        <div class="flex gap-3 pt-2">
+          <button
+            type="submit"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+          >
+            Calculate
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setSalary(initialAnnualSalary ?? '100000');
+              setState(stateCode ?? 'TX');
+              setFilingStatus('single');
+              setSubmitted({
+                salary: initialAnnualSalary ?? '100000',
+                state: stateCode ?? 'TX',
+                filingStatus: 'single',
+              });
+            }}
+          >
+            Reset
+          </button>
+        </div>
       </form>
 
       <div
@@ -148,6 +186,27 @@ export default function HouseAffordabilityCalculator({
                 <dd>{formatCurrency(Math.round(result.monthlyTakeHomePay), config)}</dd>
               </div>
             </dl>
+            <PayBreakdownChart
+              title="Monthly PITI breakdown"
+              format={(value) => formatCurrency(value, config)}
+              segments={[
+                {
+                  label: 'Principal & interest',
+                  value: Math.round(result.monthlyPrincipalAndInterest),
+                  color: '#0d9488',
+                },
+                {
+                  label: 'Property tax',
+                  value: Math.round(result.monthlyPropertyTax),
+                  color: '#2563eb',
+                },
+                {
+                  label: "Homeowner's insurance",
+                  value: Math.round(result.monthlyHomeownerInsurance),
+                  color: '#7c3aed',
+                },
+              ]}
+            />
           </div>
         ) : (
           <p class="text-sm text-slate-500">
