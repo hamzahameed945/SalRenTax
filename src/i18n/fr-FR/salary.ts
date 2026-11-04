@@ -1,6 +1,6 @@
 export const salary = {
   categoryTitle: 'Calculateurs de salaire France 2026',
-  categoryIntro: 'Calculez votre salaire net 2026 avec les données officielles françaises.',
+    categoryIntro: 'Calculez votre salaire net en France pour 2026 avec les données officielles: impôt sur le revenu, cotisations sociales et salaire brut-net.',
 
   salaryToHourly: {
     title: 'Salaire Annuel vers Taux Horaire France 2026 — PayRenTax',
