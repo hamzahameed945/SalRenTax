@@ -1,13 +1,12 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
-import { buildLocalePath } from '../../../../lib/localePaths.ts';
-import { buildLocalizedCanonical } from '../../../../lib/canonical.ts';
+import { buildLocalePath } from '../../../../i18n/utils';
 
-const locale = 'en-us';
+const locale = 'en-US' as const;
 const title = 'Bonus Pay Explained: How Work Bonuses Work and What They Mean for Your Pay';
 const description = 'A bonus is extra pay on top of your regular salary or wages. Learn the common bonus types in general terms, how a bonus fits into annual pay, how it differs from salary and overtime, and what to check on your pay stub.';
-const canonical = buildLocalizedCanonical(locale, 'blog/bonus-pay-explained-2026');
+const canonical = '/en-us/blog/bonus-pay-explained-2026/';
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
@@ -18,22 +17,24 @@ const schema = {
   author: {
     '@type': 'Organization',
     name: 'PayRenTax',
-    url: 'https://payrentax.com',
+        url: 'https://payrentax.me',
   },
   publisher: {
     '@type': 'Organization',
     name: 'PayRenTax',
-    url: 'https://payrentax.com',
+        url: 'https://payrentax.me',
   },
   mainEntityOfPage: {
     '@type': 'WebPage',
-    '@id': canonical,
+        '@id': 'https://payrentax.me/en-us/blog/bonus-pay-explained-2026/',
   },
 };
 ---
 
 <BaseLayout locale={locale} title={title} description={description} canonical={canonical}>
-  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Fragment>
   <main class="page">
     <Breadcrumbs locale={locale} trail={[{ label: 'Blog', href: buildLocalePath(locale, 'blog') }, { label: 'Bonus Pay Explained', href: buildLocalePath(locale, 'blog/bonus-pay-explained-2026') }]} />
     <article class="article">
