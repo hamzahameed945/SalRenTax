@@ -14,6 +14,7 @@ import { nlNLConfig } from './nl-NL';
 import { elGRConfig } from './el-GR';
 import { frFRConfig } from './fr-FR';
 import { itITConfig } from './it-IT';
+import { enCAConfig } from './en-CA';
 
 /**
  * Config registry. All active locales have their LocaleConfig populated.
@@ -34,6 +35,7 @@ const localeConfigs: Partial<Record<LocaleCode, LocaleConfig>> = {
   'el-GR': elGRConfig,
   'fr-FR': frFRConfig,
   'it-IT': itITConfig,
+  'en-CA': enCAConfig,
 };
 
 export function getLocaleConfig(locale: LocaleCode): LocaleConfig {
