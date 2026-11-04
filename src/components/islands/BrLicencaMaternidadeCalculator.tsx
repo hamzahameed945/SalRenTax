@@ -6,14 +6,18 @@ const formatCurrency = (value: number) =>
 
 export default function BrLicencaMaternidadeCalculator() {
   const [monthlySalary, setMonthlySalary] = useState('3000');
+  const [submitted, setSubmitted] = useState({
+    monthlySalary,
+  });
 
   const result = useMemo(() => {
     const validation = brLicencaMaternidadeEngine.validate({
-      monthlySalary: Number(monthlySalary),
+      monthlySalary: Number(submitted.monthlySalary),
     });
-
-    return validation.valid ? brLicencaMaternidadeEngine.calculate(validation.data, {} as never, 2026) : null;
-  }, [monthlySalary]);
+    return validation.valid
+      ? brLicencaMaternidadeEngine.calculate(validation.data, {} as never, 2026)
+      : null;
+  }, [submitted]);
 
   return (
     <div class="grid gap-6 md:grid-cols-2">
@@ -34,8 +38,26 @@ export default function BrLicencaMaternidadeCalculator() {
           O benefício é de 100% do salário por 120 dias, limitado ao teto do INSS de 2026
           (R$ 8.475,55). Quem paga é a empresa, que compensa o valor na guia do INSS.
         </p>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ monthlySalary })}
+          >
+            Calcular
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setMonthlySalary('3000');
+              setSubmitted({ monthlySalary: '3000' });
+            }}
+          >
+            Limpar
+          </button>
+        </div>
       </div>
-
       <div class="rounded-xl bg-slate-50 p-6" aria-live="polite">
         <p class="text-sm text-slate-500">Benefício mensal</p>
         <p class="text-3xl font-bold text-accent">{result ? formatCurrency(result.monthlyBenefit) : '—'}</p>
