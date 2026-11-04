@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'preact/hooks';
+import PayBreakdownChart from './PayBreakdownChart';
 import { usPaycheckEngine, type FilingStatus } from '../../calculators/salary/engines/usPaycheck';
 import type { PayFrequency } from '../../calculators/core/frequency';
 import { getLocaleConfig } from '../../data/locales';
@@ -201,6 +202,23 @@ export default function PaycheckCalculator({
                 <dd>{formatPercent(result.effectiveFederalRate, config)}</dd>
               </div>
             </dl>
+            <PayBreakdownChart
+              title="Pay breakdown"
+              format={(value) => formatCurrency(value, config)}
+              segments={[
+                { label: t.results.netPay, value: result.netPayPerPeriod, color: '#0d9488' },
+                { label: t.results.federalIncomeTax, value: result.federalIncomeTaxPerPeriod, color: '#2563eb' },
+                { label: t.results.socialSecurity, value: result.socialSecurityPerPeriod, color: '#7c3aed' },
+                { label: t.results.medicare, value: result.medicarePerPeriod, color: '#db2777' },
+                ...(stateCode && (result.stateIncomeTaxPerPeriod ?? 0) > 0
+                    ? [{ label: `State income tax (${stateCode})`, value: result.stateIncomeTaxPerPeriod ?? 0, color: '#ea580c' }]
+                    : []),
+              ...(result.preTaxDeductionsPerPeriod > 0
+                  ? [{ label: t.results.preTaxDeductions, value: result.preTaxDeductionsPerPeriod, color: '#64748b' }]
+                  : []),
+            ]}
+            />
+              
           </div>
         ) : (
           <p class="text-sm text-slate-500">{tErrors.invalidNumber}</p>
