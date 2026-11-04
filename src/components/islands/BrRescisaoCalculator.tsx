@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'preact/hooks';
+import PayBreakdownChart from './PayBreakdownChart';
 import { brRescisaoEngine, type BrDismissalType } from '../../calculators/labor/engines/brRescisao';
 import { ptBR } from '../../i18n/pt-BR';
 
@@ -8,13 +9,18 @@ export default function BrRescisaoCalculator({ locale }: { locale: string }) {
   const [monthsWorked, setMonthsWorked] = useState('8');
   const [daysVacationPending, setDaysVacationPending] = useState('10');
   const [dismissalType, setDismissalType] = useState<BrDismissalType>('demissaoSemJustaCausa');
-
+  const [submitted, setSubmitted] = useState({
+    grossMonthly,
+    monthsWorked,
+    daysVacationPending,
+    dismissalType,
+  });
   const result = useMemo(() => {
     const input = {
-      grossMonthly: parseFloat(grossMonthly),
-      monthsWorked: parseInt(monthsWorked, 10),
-      daysVacationPending: parseInt(daysVacationPending, 10) || 0,
-      dismissalType,
+      grossMonthly: parseFloat(submitted.grossMonthly),
+      monthsWorked: parseInt(submitted.monthsWorked, 10),
+      daysVacationPending: parseInt(submitted.daysVacationPending, 10) || 0,
+      dismissalType: submitted.dismissalType,
     };
     const validation = brRescisaoEngine.validate(input);
     if (validation.valid) {
@@ -24,11 +30,9 @@ export default function BrRescisaoCalculator({ locale }: { locale: string }) {
       };
     }
     return { data: null, error: validation.errors };
-  }, [grossMonthly, monthsWorked, daysVacationPending, dismissalType]);
-
+  }, [submitted]);
   const fmt = (v: number) =>
     new Intl.NumberFormat(locale, { style: 'currency', currency: 'BRL' }).format(v);
-
   return (
     <div class="grid gap-8 lg:grid-cols-2">
       <div class="space-y-5">
@@ -78,8 +82,29 @@ export default function BrRescisaoCalculator({ locale }: { locale: string }) {
             ))}
           </select>
         </div>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ grossMonthly, monthsWorked, daysVacationPending, dismissalType })}
+          >
+            Calcular
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setGrossMonthly('3000');
+              setMonthsWorked('8');
+              setDaysVacationPending('10');
+              setDismissalType('demissaoSemJustaCausa');
+              setSubmitted({ grossMonthly: '3000', monthsWorked: '8', daysVacationPending: '10', dismissalType: 'demissaoSemJustaCausa' });
+            }}
+          >
+            Limpar
+          </button>
+        </div>
       </div>
-
       <div class="rounded-xl bg-slate-50 p-6" role="region" aria-live="polite">
         {result.data ? (
           <div class="space-y-3">
@@ -113,6 +138,17 @@ export default function BrRescisaoCalculator({ locale }: { locale: string }) {
                 </div>
               )}
             </dl>
+            <PayBreakdownChart
+              title="Distribuição da rescisão"
+              format={fmt}
+              segments={[
+                { label: t.results.saldoSalario, value: result.data.saldoSalario, color: '#0d9488' },
+                { label: t.results.feriasProporcionais, value: result.data.feriasProporcionais, color: '#2563eb' },
+                { label: t.results.decimoTerceiroProportional, value: result.data.decimoTerceiroProportional, color: '#db2777' },
+                { label: t.results.avisoPrevio, value: result.data.avisoPrevio, color: '#f59e0b' },
+                { label: t.results.multaFgts, value: result.data.multaFgts, color: '#7c3aed' },
+              ]}
+            />
             <p class="mt-4 text-xs text-slate-500">{result.data.fgtsBalanceNote}</p>
           </div>
         ) : (
