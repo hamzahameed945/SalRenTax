@@ -99,7 +99,7 @@ export default function SalaryRaiseCalculator({
           />
           {result.error?.currentSalary && (
             <p class="mt-1 text-sm text-red-600">
-              {t.errors?.[result.error.currentSalary] || result.error.currentSalary}
+              {t.errors?.[result.error.currentSalary.split('.').pop() ?? result.error.currentSalary] || result.error.currentSalary}
             </p>
           )}
         </div>
@@ -128,7 +128,7 @@ export default function SalaryRaiseCalculator({
           />
           {result.error?.raisePercentage && raiseType === 'percentage' && (
             <p class="mt-1 text-sm text-red-600">
-              {t.errors?.[result.error.raisePercentage] || result.error.raisePercentage}
+              {t.errors?.[result.error.raisePercentage.split('.').pop() ?? result.error.raisePercentage] || result.error.raisePercentage}
             </p>
           )}
         </div>
@@ -143,7 +143,7 @@ export default function SalaryRaiseCalculator({
           />
           {result.error?.hoursPerWeek && (
             <p class="mt-1 text-sm text-red-600">
-              {t.errors?.[result.error.hoursPerWeek] || result.error.hoursPerWeek}
+              {t.errors?.[result.error.hoursPerWeek.split('.').pop() ?? result.error.hoursPerWeek] || result.error.hoursPerWeek}
             </p>
           )}
         </div>
