@@ -258,6 +258,7 @@ export default function BruttoNettoCalculator({
 
           <PayBreakdownChart
             title="Aufteilung des Bruttogehalts"
+            format={(v) => fmt(locale, v)}
             segments={[
               { label: 'Netto', value: d.netMonthly, color: '#0f766e' },
               { label: 'Sozialversicherung', value: d.totalSocialInsuranceEmployee, color: '#0369a1' },
