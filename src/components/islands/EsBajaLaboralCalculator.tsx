@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'preact/hooks';
 import { esBajaLaboralEngine } from '../../calculators/labor/engines/esBajaLaboral';
+import PayBreakdownChart from './PayBreakdownChart';
 
 const fmt = (v: number) =>
   new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 }).format(v);
@@ -7,17 +8,21 @@ const fmt = (v: number) =>
 export default function EsBajaLaboralCalculator() {
   const [base, setBase] = useState('2400');
   const [dias, setDias] = useState('30');
+  const [submitted, setSubmitted] = useState({
+    base,
+    dias,
+  });
 
-  const diasBaja = parseInt(dias, 10) || 0;
+  const submittedDiasBaja = parseInt(submitted.dias, 10) || 0;
 
   const result = useMemo(() => {
     const v = esBajaLaboralEngine.validate({
-      baseCotizacionMensual: parseFloat(base) || 0,
-      diasBaja,
+      baseCotizacionMensual: parseFloat(submitted.base) || 0,
+      diasBaja: submittedDiasBaja,
     });
     if (!v.valid) return null;
     return esBajaLaboralEngine.calculate(v.data, {} as never, 2026);
-  }, [base, diasBaja]);
+  }, [submitted]);
 
   return (
     <div class="space-y-6">
@@ -59,6 +64,26 @@ export default function EsBajaLaboralCalculator() {
           </div>
 
         </div>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ base, dias })}
+          >
+            Calcular
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setBase('2400');
+              setDias('30');
+              setSubmitted({ base: '2400', dias: '30' });
+            }}
+          >
+            Restablecer
+          </button>
+        </div>
       </div>
 
       {/* ── Results ────────────────────────────────────────────────── */}
@@ -70,7 +95,7 @@ export default function EsBajaLaboralCalculator() {
             <p class="text-sm font-medium text-yellow-100">Prestación total estimada</p>
             <p class="mt-1 text-5xl font-bold tracking-tight">{fmt(result.totalPrestacion)}</p>
             <p class="mt-2 text-sm text-yellow-100">
-              {diasBaja} día(s) de baja · base reguladora {fmt(result.baseReguladoraDiaria)}/día
+              {submittedDiasBaja} día(s) de baja · base reguladora {fmt(result.baseReguladoraDiaria)}/día
             </p>
           </div>
 
@@ -120,6 +145,15 @@ export default function EsBajaLaboralCalculator() {
               </div>
             </div>
           </div>
+
+          <PayBreakdownChart
+            title="Desglose de la prestación"
+            segments={[
+              { label: 'Días 4–20: 60%', value: result.desglose.tramo60.importe },
+              { label: 'Desde el día 21: 75%', value: result.desglose.tramo75.importe },
+            ]}
+            format={(value) => fmt(value)}
+          />
 
           <div class="rounded-lg border border-amber-200 bg-amber-50 p-4 text-xs text-amber-800">
             <strong>Nota:</strong> estimación para incapacidad temporal por <strong>contingencias comunes</strong>
