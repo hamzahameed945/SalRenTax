@@ -32,16 +32,23 @@ export default function UsSeveranceCalculator() {
   const [seniorityTier, setSeniorityTier] = useState<SeniorityTier>('individual-contributor');
   const [offeredWeeks, setOfferedWeeks] = useState('');
 
+  const [submitted, setSubmitted] = useState({
+    annualSalary,
+    yearsOfService,
+    seniorityTier,
+    offeredWeeks,
+  });
+
   const result = useMemo(() => {
     const validation = usSeveranceEngine.validate({
-      annualSalary: Number(annualSalary),
-      yearsOfService: Number(yearsOfService),
-      seniorityTier,
-      offeredSeveranceWeeks: offeredWeeks.trim() === '' ? undefined : Number(offeredWeeks),
+      annualSalary: Number(submitted.annualSalary),
+      yearsOfService: Number(submitted.yearsOfService),
+      seniorityTier: submitted.seniorityTier,
+      offeredSeveranceWeeks: submitted.offeredWeeks.trim() === '' ? undefined : Number(submitted.offeredWeeks),
     });
 
     return validation.valid ? usSeveranceEngine.calculate(validation.data, {} as never, 2026) : null;
-  }, [annualSalary, yearsOfService, seniorityTier, offeredWeeks]);
+  }, [submitted]);
 
   const verdict = result && result.verdict !== 'no-offer' ? verdictCopy[result.verdict] : null;
 
@@ -98,6 +105,33 @@ export default function UsSeveranceCalculator() {
             onInput={(event) => setOfferedWeeks((event.target as HTMLInputElement).value)}
           />
         </label>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ annualSalary, yearsOfService, seniorityTier, offeredWeeks })}
+          >
+            Calculate
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setAnnualSalary('85000');
+              setYearsOfService('5');
+              setSeniorityTier('individual-contributor');
+              setOfferedWeeks('');
+              setSubmitted({
+                annualSalary: '85000',
+                yearsOfService: '5',
+                seniorityTier: 'individual-contributor',
+                offeredWeeks: '',
+              });
+            }}
+          >
+            Reset
+          </button>
+        </div>
       </div>
 
       <div class="rounded-xl bg-slate-50 p-6" aria-live="polite">
