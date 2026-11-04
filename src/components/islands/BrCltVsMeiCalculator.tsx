@@ -7,11 +7,14 @@ export default function BrCltVsMeiCalculator({ locale }: { locale: string }) {
   const t = ptBR.labor.cltVsMei;
   const [grossMonthly, setGrossMonthly] = useState('5000');
   const [meiActivity, setMeiActivity] = useState<MeiActivity>('servicos');
-
+  const [submitted, setSubmitted] = useState({
+    grossMonthly,
+    meiActivity,
+  });
   const result = useMemo(() => {
     const input = {
-      grossMonthly: parseFloat(grossMonthly),
-      meiActivity,
+      grossMonthly: parseFloat(submitted.grossMonthly),
+      meiActivity: submitted.meiActivity,
     };
     const validation = brCltVsMeiEngine.validate(input);
     if (validation.valid) {
@@ -21,14 +24,11 @@ export default function BrCltVsMeiCalculator({ locale }: { locale: string }) {
       };
     }
     return { data: null, error: validation.errors };
-  }, [grossMonthly, meiActivity]);
-
+  }, [submitted]);
   const fmt = (v: number) =>
     new Intl.NumberFormat(locale, { style: 'currency', currency: 'BRL' }).format(v);
-
   const fmtSigned = (v: number) =>
     (v >= 0 ? '+' : '−') + fmt(Math.abs(v)).replace('R$', 'R$ ');
-
   return (
     <div class="grid gap-8 lg:grid-cols-2">
       <div class="space-y-5">
@@ -59,8 +59,27 @@ export default function BrCltVsMeiCalculator({ locale }: { locale: string }) {
         <p class="text-xs text-slate-500">
           O comparativo usa o mesmo valor bruto para os dois lados: salário (CLT) ou receita de serviços/comércio (MEI).
         </p>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ grossMonthly, meiActivity })}
+          >
+            Calcular
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setGrossMonthly('5000');
+              setMeiActivity('servicos');
+              setSubmitted({ grossMonthly: '5000', meiActivity: 'servicos' });
+            }}
+          >
+            Limpar
+          </button>
+        </div>
       </div>
-
       <div class="rounded-xl bg-slate-50 p-6" role="region" aria-live="polite">
         {result.data ? (
           <div class="space-y-6">
@@ -83,11 +102,9 @@ export default function BrCltVsMeiCalculator({ locale }: { locale: string }) {
                 </div>
               </div>
               <p class="mt-2 text-sm text-slate-600">
-                {t.results.monthlyDifference}: <span class="font-semibold">{fmtSigned(result.data.monthlyDifference)}</span>{' '}
-                · {t.results.betterMonthly}: <span class="font-semibold">{result.data.betterMonthly === 'tie' ? t.results.tie : result.data.betterMonthly === 'clt' ? t.results.clt : t.results.mei}</span>
+                {t.results.monthlyDifference}: <span class="font-semibold">{fmtSigned(result.data.monthlyDifference)}</span> · {t.results.betterMonthly}: <span class="font-semibold">{result.data.betterMonthly === 'tie' ? t.results.tie : result.data.betterMonthly === 'clt' ? t.results.clt : t.results.mei}</span>
               </p>
             </div>
-
             <div>
               <h3 class="text-sm font-semibold text-slate-900">{t.results.annualComparison}</h3>
               <dl class="mt-3 space-y-2 text-sm text-slate-700">
