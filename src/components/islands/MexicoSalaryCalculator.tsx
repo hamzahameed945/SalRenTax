@@ -10,11 +10,13 @@ const fmtPct = (v: number) =>
   `${(v * 100).toFixed(2).replace('.', ',')} %`;
 
 export default function MexicoSalaryCalculator(props: Props) {
-  const [grossMonthly, setGrossMonthly] = useState(String(props.initialSalary ?? 15000));
+  const [grossMonthly,
+  setGrossMonthly] = useState(String(props.initialSalary ?? 15000));
   const [whatIfGross, setWhatIfGross]   = useState('');
   const [showWhatIf, setShowWhatIf]     = useState(false);
   const [submitted, setSubmitted] = useState({
     grossMonthly,
+  whatIfGross,
   });
 
   const input = useMemo(() => ({
@@ -28,11 +30,11 @@ export default function MexicoSalaryCalculator(props: Props) {
   }, [input]);
 
   const whatIfResult = useMemo(() => {
-    if (!whatIfGross || !showWhatIf) return null;
-    const v = mexicoSalaryEngine.validate({ grossMonthly: parseFloat(whatIfGross) || 0 });
+    if (!submitted.whatIfGross || !showWhatIf) return null;
+    const v = mexicoSalaryEngine.validate({ grossMonthly: parseFloat(submitted.whatIfGross) || 0 });
     if (!v.valid) return null;
     return mexicoSalaryEngine.calculate(v.data, {} as never, 2026);
-  }, [whatIfGross, showWhatIf]);
+  }, [submitted.whatIfGross, showWhatIf]);
 
   const d = result.data;
 
@@ -66,7 +68,7 @@ export default function MexicoSalaryCalculator(props: Props) {
           <button
             type="button"
             class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
-            onClick={() => setSubmitted({ grossMonthly })}
+            onClick={() => setSubmitted({ grossMonthly, whatIfGross })}
           >
             Calcular
           </button>
@@ -74,8 +76,8 @@ export default function MexicoSalaryCalculator(props: Props) {
             type="button"
             class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
             onClick={() => {
-              setGrossMonthly(String(props.initialSalary ?? 15000));
-              setSubmitted({ grossMonthly: String(props.initialSalary ?? 15000) });
+              setGrossMonthly(String(props.initialSalary ?? 15000)); setWhatIfGross('');
+              setSubmitted({ grossMonthly: String(props.initialSalary ?? 15000), whatIfGross: '' });
             }}
           >
             Restablecer
