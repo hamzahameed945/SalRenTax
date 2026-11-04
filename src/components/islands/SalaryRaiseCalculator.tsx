@@ -54,12 +54,19 @@ export default function SalaryRaiseCalculator({
   const [raiseValue, setRaiseValue] = useState('');
   const [hoursPerWeek, setHoursPerWeek] = useState('40');
 
+  const [submitted, setSubmitted] = useState({
+    currentSalary,
+    raiseType,
+    raiseValue,
+    hoursPerWeek,
+  });
+
   const result = useMemo(() => {
     const input = {
-      currentSalary: parseFloat(currentSalary),
-      hoursPerWeek:  parseFloat(hoursPerWeek),
-      raisePercentage: raiseType === 'percentage' ? parseFloat(raiseValue) : undefined,
-      newSalary: raiseType === 'flat' ? parseFloat(currentSalary) + parseFloat(raiseValue) : undefined,
+      currentSalary: parseFloat(submitted.currentSalary),
+      hoursPerWeek:  parseFloat(submitted.hoursPerWeek),
+      raisePercentage: submitted.raiseType === 'percentage' ? parseFloat(submitted.raiseValue) : undefined,
+      newSalary: submitted.raiseType === 'flat' ? parseFloat(submitted.currentSalary) + parseFloat(submitted.raiseValue) : undefined,
     };
     if (Number.isNaN(input.raisePercentage) && Number.isNaN(input.newSalary)) {
       return { data: null, error: null };
@@ -72,7 +79,7 @@ export default function SalaryRaiseCalculator({
       };
     }
     return { data: null, error: validation.errors };
-  }, [currentSalary, raiseType, raiseValue, hoursPerWeek]);
+  }, [submitted]);
 
   const formatCurrency = (value: number) =>
     new Intl.NumberFormat(locale, { style: 'currency', currency }).format(value);
@@ -139,6 +146,33 @@ export default function SalaryRaiseCalculator({
               {t.errors?.[result.error.hoursPerWeek] || result.error.hoursPerWeek}
             </p>
           )}
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ currentSalary, raiseType, raiseValue, hoursPerWeek })}
+          >
+            Calculate
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setCurrentSalary('');
+              setRaiseType('percentage');
+              setRaiseValue('');
+              setHoursPerWeek('40');
+              setSubmitted({
+                currentSalary: '',
+                raiseType: 'percentage',
+                raiseValue: '',
+                hoursPerWeek: '40',
+              });
+            }}
+          >
+            Reset
+          </button>
         </div>
       </div>
 
