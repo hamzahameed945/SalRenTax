@@ -1,7 +1,7 @@
 export const salary = {
   categoryTitle: 'Salary Calculators',
   categoryIntro:
-    'Use these calculators to estimate take-home pay, convert between salary and hourly wages, compare different pay schedules, and see how a raise could change your income.',
+    'Use these calculators to estimate take-home pay, convert salary to hourly wages, compare pay schedules, and see how a raise could change your income.',
   paycheck: {
     title: 'Paycheck Calculator',
     h1: 'US Paycheck Calculator',
