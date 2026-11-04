@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/navigation/Breadcrumbs.astro';
+import CalculatorFAQ from '../../../components/calculator/CalculatorFAQ.astro';
+import CalculatorResource from '../../../components/content/CalculatorResource.astro';
+import JsonLd from '../../../components/seo/JsonLd.astro';
+import CaOntarioSalaryCalculator from '../../../components/islands/CaOntarioSalaryCalculator';
+import { getDictionary } from '../../../i18n/dictionaries';
+import { buildLocalePath } from '../../../i18n/utils';
+import { buildPageMetadata } from '../../../lib/seo/metadata';
+import { buildFaqJsonLd } from '../../../lib/seo/structuredData';
+
+const locale = 'en-CA' as const;
+const t = getDictionary(locale);
+const title = 'Ontario Salary Calculator 2026: Take-Home Pay After Tax, CPP & EI';
+const description =
+  'Estimate your Ontario take-home pay for 2026 with federal and Ontario tax, CPP/CPP2 and EI. Enter your gross annual salary to see your net monthly pay in CAD.';
+const meta = buildPageMetadata(title, description, '/en-ca/salary/ontario-salary-calculator/');
+const faqItems = [
+  {
+    question: 'What does this Ontario salary calculator include?',
+    answer:
+      'It includes federal and Ontario income tax (with basic personal amounts), Ontario surtax, CPP/CPP2 and EI. It excludes the Ontario Health Premium and other credits/deductions.',
+  },
+  {
+    question: 'How is Ontario tax calculated here?',
+    answer:
+      'Ontario tax uses the 2026 brackets of 5.05% to $53,891, 9.15% to $107,785, 11.16% to $150,000, 12.16% to $220,000 and 13.16% above, less the basic personal amount credit, plus Ontario surtax where it applies.',
+  },
+  {
+    question: 'What are CPP, CPP2 and EI in this estimate?',
+    answer:
+      'CPP is 5.95% on earnings between $3,500 and $74,600, CPP2 is 4% on earnings between $74,600 and $85,000, and EI is 1.63% on insurable earnings to $68,900.',
+  },
+];
+const faqJsonLd = buildFaqJsonLd(faqItems);
+const calculatorJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: title,
+  description,
+  url: meta.canonical,
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'Web',
+  inLanguage: 'en-CA',
+  publisher: {
+    '@type': 'Organization',
+    name: t.common.siteName,
+    logo: 'https://payrentax.me/logo.svg',
+  },
+};
+---
+
+<BaseLayout locale={locale} title={meta.title} description={meta.description} canonical={meta.canonical}>
+  <JsonLd entries={[faqJsonLd, calculatorJsonLd]} />
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      { label: t.navigation.salary, href: buildLocalePath(locale, 'salary') },
+      {
+        label: 'Ontario Salary Calculator',
+        href: buildLocalePath(locale, 'salary/ontario-salary-calculator'),
+      },
+    ]}
+  />
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Ontario Salary Calculator</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Enter your gross annual salary in CAD to estimate your Ontario take-home pay after federal tax,
+      Ontario tax, CPP/CPP2 and EI.
+    </p>
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <CaOntarioSalaryCalculator client:load />
+    </div>
+    <p class="mt-8 text-sm text-slate-600">
+      Estimate only: includes federal and Ontario income tax (with basic personal amounts), CPP/CPP2
+      and EI. Excludes the Ontario Health Premium and other credits/deductions.
+    </p>
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>2026 Ontario tax rates used here</h2>
+      <p>
+        Federal tax uses 14% to $58,523, 20.5% to $117,045, 26% to $181,440, 29% to $258,482 and 33%
+        above, with a federal basic personal amount of $16,452. Ontario tax uses 5.05% to $53,891, 9.15%
+        to $107,785, 11.16% to $150,000, 12.16% to $220,000 and 13.16% above, with an Ontario basic
+        personal amount of $12,989. Ontario surtax is 20% on Ontario tax above $5,818, plus an
+        additional 36% above $7,446.
+      </p>
+      <p class="text-sm">Source: CRA (T4032/T4127).</p>
+    </div>
+    <CalculatorFAQ heading="Frequently asked questions about Ontario take-home pay" items={faqItems} />
+  </article>
+  <CalculatorResource locale="en-CA" category="salary" />
+</BaseLayout>
