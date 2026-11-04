@@ -34,6 +34,12 @@ export default function PaycheckCalculator({
   const [preTaxDeductions, setPreTaxDeductions] = useState('0');
   const [touched, setTouched] = useState(false);
 
+    const [submitted, setSubmitted] = useState({
+          grossPay,
+          payFrequency,
+          filingStatus,
+          preTaxDeductions,
+    });
   const input = {
     grossPayPerPeriod: Number(grossPay),
     payFrequency,
@@ -44,10 +50,18 @@ export default function PaycheckCalculator({
 
   const validation = usPaycheckEngine.validate(input);
 
+  const submittedInput = {
+        grossPayPerPeriod: Number(submitted.grossPay),
+        payFrequency: submitted.payFrequency,
+        filingStatus: submitted.filingStatus,
+        preTaxDeductionsPerPeriod: Number(submitted.preTaxDeductions) || 0,
+        ...(stateCode ? { stateCode } : {}),
+  };
+  
   const result = useMemo(() => {
-    if (!validation.valid) return null;
-    return usPaycheckEngine.calculate(input, { countryCode: 'US' }, 2026);
-  }, [grossPay, payFrequency, filingStatus, preTaxDeductions, stateCode]);
+        if (!usPaycheckEngine.validate(submittedInput).valid) return null;
+        return usPaycheckEngine.calculate(submittedInput, { countryCode: 'US' }, 2026);
+  }, [submitted, stateCode]);
 
   return (
     <div class="grid gap-8 md:grid-cols-2">
@@ -56,6 +70,9 @@ export default function PaycheckCalculator({
         onSubmit={(e) => {
           e.preventDefault();
           setTouched(true);
+                    if (validation.valid) {
+                                  setSubmitted({ grossPay, payFrequency, filingStatus, preTaxDeductions });
+                    }
         }}
       >
         <div>
@@ -147,6 +164,12 @@ export default function PaycheckCalculator({
               setFilingStatus('single');
               setPreTaxDeductions('0');
               setTouched(false);
+                          setSubmitted({
+                                          grossPay: '2500',
+                                          payFrequency: 'biweekly',
+                                          filingStatus: 'single',
+                                          preTaxDeductions: '0',
+                          });
             }}
           >
             {t.reset}
