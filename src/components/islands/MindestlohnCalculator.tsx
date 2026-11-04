@@ -7,10 +7,15 @@ export default function MindestlohnCalculator({ locale }: { locale: string }) {
   const [hoursPerWeek, setHoursPerWeek] = useState('40');
   const [weeksPerYear, setWeeksPerYear] = useState('52');
 
+  const [submitted, setSubmitted] = useState({
+    hoursPerWeek,
+    weeksPerYear,
+  });
+
   const result = useMemo(() => {
     const input = {
-      hoursPerWeek: parseFloat(hoursPerWeek),
-      weeksPerYear: parseFloat(weeksPerYear),
+      hoursPerWeek: parseFloat(submitted.hoursPerWeek),
+      weeksPerYear: parseFloat(submitted.weeksPerYear),
     };
     const validation = mindestlohnEngine.validate(input);
     if (validation.valid) {
@@ -20,7 +25,7 @@ export default function MindestlohnCalculator({ locale }: { locale: string }) {
       };
     }
     return { data: null, error: validation.errors };
-  }, [hoursPerWeek, weeksPerYear]);
+  }, [submitted]);
 
   const fmt = (v: number) =>
     new Intl.NumberFormat(locale, { style: 'currency', currency: 'EUR' }).format(v);
@@ -47,6 +52,26 @@ export default function MindestlohnCalculator({ locale }: { locale: string }) {
             onInput={(e) => setWeeksPerYear((e.target as HTMLInputElement).value)}
             placeholder="z. B. 52"
           />
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() => setSubmitted({ hoursPerWeek, weeksPerYear })}
+          >
+            Berechnen
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setHoursPerWeek('40');
+              setWeeksPerYear('52');
+              setSubmitted({ hoursPerWeek: '40', weeksPerYear: '52' });
+            }}
+          >
+            Zurücksetzen
+          </button>
         </div>
       </div>
 
