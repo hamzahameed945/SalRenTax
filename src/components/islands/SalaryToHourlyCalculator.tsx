@@ -33,11 +33,15 @@ export default function SalaryToHourlyCalculator({
   locale = 'en-US',
   currency = 'USD',
   labels,
+    calculateLabel = 'Calculate',
+    resetLabel = 'Reset',
 }: {
   t?: ErrorTranslations;
   locale?: string;
   currency?: string;
   labels?: Partial<SalaryToHourlyLabels>;
+    calculateLabel?: string;
+    resetLabel?: string;
 }) {
   const l = { ...DEFAULT_LABELS, ...labels };
 
@@ -124,7 +128,7 @@ export default function SalaryToHourlyCalculator({
             class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
             onClick={() => setSubmitted({ annualSalary, hoursPerWeek, weeksPerYear })}
           >
-            Calculate
+            {calculateLabel}
           </button>
           <button
             type="button"
@@ -136,7 +140,7 @@ export default function SalaryToHourlyCalculator({
               setSubmitted({ annualSalary: '', hoursPerWeek: '40', weeksPerYear: '52' });
             }}
           >
-            Reset
+            {resetLabel}
           </button>
         </div>
       </div>
