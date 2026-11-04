@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'preact/hooks';
+import PayBreakdownChart from './PayBreakdownChart';
 import {
   usOvertimeTaxEngine,
   FEDERAL_BRACKET_OPTIONS_2026,
@@ -6,7 +7,6 @@ import {
 
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
-
 const formatPercent = (value: number) =>
   new Intl.NumberFormat('en-US', { style: 'percent', maximumFractionDigits: 1 }).format(value);
 
@@ -28,16 +28,25 @@ export default function UsOvertimeTaxCalculator({
   const [annualSalary, setAnnualSalary] = useState(String(initialSalary));
   const [taxBracket, setTaxBracket] = useState('0.22');
 
+  const [submitted, setSubmitted] = useState({
+    hourlyRate,
+    overtimeHours,
+    filingStatus,
+    useBracket,
+    annualSalary,
+    taxBracket,
+  });
+
   const result = useMemo(() => {
     const validation = usOvertimeTaxEngine.validate({
-      hourlyRate: Number(hourlyRate),
-      overtimeHours: Number(overtimeHours),
-      filingStatus,
-      annualSalary: useBracket ? undefined : Number(annualSalary),
-      taxBracket: useBracket ? Number(taxBracket) : undefined,
+      hourlyRate: Number(submitted.hourlyRate),
+      overtimeHours: Number(submitted.overtimeHours),
+      filingStatus: submitted.filingStatus,
+      annualSalary: submitted.useBracket ? undefined : Number(submitted.annualSalary),
+      taxBracket: submitted.useBracket ? Number(submitted.taxBracket) : undefined,
     });
     return validation.valid ? usOvertimeTaxEngine.calculate(validation.data) : null;
-  }, [hourlyRate, overtimeHours, filingStatus, useBracket, annualSalary, taxBracket]);
+  }, [submitted]);
 
   const inputClass = 'mt-1 w-full rounded border p-2';
 
@@ -63,150 +72,177 @@ export default function UsOvertimeTaxCalculator({
             class={inputClass}
             type="number"
             min="0"
+            max="600"
             step="1"
             value={overtimeHours}
             onInput={(e) => setOvertimeHours((e.target as HTMLInputElement).value)}
           />
         </label>
-        <label class="block text-sm font-medium" for="us-ot-status">
+        <label class="block text-sm font-medium" for="us-ot-filing">
           Filing status
           <select
-            id="us-ot-status"
+            id="us-ot-filing"
             class={inputClass}
             value={filingStatus}
-            onChange={(e) => setFilingStatus((e.target as HTMLSelectElement).value as 'single' | 'marriedJointly')}
+            onChange={(e) =>
+              setFilingStatus((e.target as HTMLSelectElement).value as 'single' | 'marriedJointly')
+            }
           >
             <option value="single">Single</option>
             <option value="marriedJointly">Married filing jointly</option>
           </select>
         </label>
-        <fieldset class="block text-sm font-medium">
-          <legend>How to work out your tax bracket</legend>
-          <label class="mt-1 flex items-center gap-2 font-normal">
+        <fieldset class="space-y-2">
+          <legend class="text-sm font-medium">How to estimate your federal rate</legend>
+          <label class="flex items-center gap-2 text-sm">
             <input
               type="radio"
-              name="us-ot-mode"
+              name="us-ot-rate-mode"
               checked={!useBracket}
               onChange={() => setUseBracket(false)}
             />
-            Estimate it from my salary
+            Estimate from my annual salary
           </label>
-          <label class="mt-1 flex items-center gap-2 font-normal">
+          <label class="flex items-center gap-2 text-sm">
             <input
               type="radio"
-              name="us-ot-mode"
+              name="us-ot-rate-mode"
               checked={useBracket}
               onChange={() => setUseBracket(true)}
             />
-            I know my marginal bracket
+            Use a federal tax bracket directly
           </label>
         </fieldset>
         {!useBracket ? (
           <label class="block text-sm font-medium" for="us-ot-salary">
-            Estimated total 2026 wages ($), overtime included
+            Annual salary ($)
             <input
               id="us-ot-salary"
               class={inputClass}
               type="number"
-              min="1"
-              step="1000"
+              min="0"
+              step="100"
               value={annualSalary}
               onInput={(e) => setAnnualSalary((e.target as HTMLInputElement).value)}
             />
           </label>
         ) : (
           <label class="block text-sm font-medium" for="us-ot-bracket">
-            Your 2026 federal marginal tax bracket
+            Federal tax bracket
             <select
               id="us-ot-bracket"
               class={inputClass}
               value={taxBracket}
               onChange={(e) => setTaxBracket((e.target as HTMLSelectElement).value)}
             >
-              {FEDERAL_BRACKET_OPTIONS_2026.map((b) => (
-                <option key={b} value={b}>
-                  {formatPercent(b)}
+              {FEDERAL_BRACKET_OPTIONS_2026.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
                 </option>
               ))}
             </select>
           </label>
         )}
         <p class="text-xs text-slate-500">
-          Overtime is taxed at the <strong>same marginal rate</strong> as your regular pay — not a
-          higher one. The OBBBA deduction estimate assumes your overtime is FLSA-mandated
-          (non-exempt, over 40 hours a week).
+          The $10,000 overtime deduction is claimed when you file your return, not in your
+          regular paycheck, and it does not reduce Social Security or Medicare tax.
         </p>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            class="rounded-md bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-dark"
+            onClick={() =>
+              setSubmitted({
+                hourlyRate,
+                overtimeHours,
+                filingStatus,
+                useBracket,
+                annualSalary,
+                taxBracket,
+              })
+            }
+          >
+            Calculate
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+            onClick={() => {
+              setHourlyRate(String(initialHourlyRate));
+              setOvertimeHours(String(initialOvertimeHours));
+              setFilingStatus('single');
+              setUseBracket(false);
+              setAnnualSalary(String(initialSalary));
+              setTaxBracket('0.22');
+              setSubmitted({
+                hourlyRate: String(initialHourlyRate),
+                overtimeHours: String(initialOvertimeHours),
+                filingStatus: 'single',
+                useBracket: false,
+                annualSalary: String(initialSalary),
+                taxBracket: '0.22',
+              });
+            }}
+          >
+            Reset
+          </button>
+        </div>
       </div>
 
-      <div class="rounded-xl bg-slate-50 p-6" aria-live="polite">
-        <p class="text-sm text-slate-500">Overtime gross pay (2026)</p>
-        <p class="text-3xl font-bold text-accent">
-          {result ? formatCurrency(result.overtimeGross) : '—'}
-        </p>
-        {result && (
+      <div class="space-y-4">
+        <h3 class="text-lg font-semibold">Overtime pay</h3>
+        {result ? (
           <>
-            <dl class="mt-4 space-y-2 text-sm">
-              <div class="flex justify-between">
-                <dt>Straight-time component (rate × hours)</dt>
-                <dd>{formatCurrency(result.baseComponent)}</dd>
+            <div>
+              <span class="text-sm text-slate-500">Overtime pay after tax</span>
+              <p class="text-3xl font-bold text-accent">{formatCurrency(result.netAfterTax)}</p>
+            </div>
+            <dl class="space-y-2 text-sm">
+              <div class="flex justify-between border-b pb-1">
+                <dt>Base pay for overtime hours</dt>
+                <dd>{formatCurrency(result.basePay)}</dd>
               </div>
-              <div class="flex justify-between">
-                <dt>Premium component ("the half" × hours)</dt>
-                <dd>{formatCurrency(result.premiumComponent)}</dd>
+              <div class="flex justify-between border-b pb-1">
+                <dt>Overtime premium (0.5× rate)</dt>
+                <dd>{formatCurrency(result.premiumPay)}</dd>
               </div>
-              <div class="flex justify-between">
-                <dt>
-                  Federal income tax on overtime
-                  <span class="block text-xs text-slate-500">
-                    at your {result.bracketDerived ? 'estimated' : 'chosen'} marginal rate of{' '}
-                    {formatPercent(result.marginalRate)} — the same rate as regular pay
-                  </span>
-                </dt>
-                <dd>{formatCurrency(result.taxOnOvertime)}</dd>
+              <div class="flex justify-between border-b pb-1">
+                <dt>Overtime gross pay</dt>
+                <dd>{formatCurrency(result.overtimeGross)}</dd>
               </div>
-              <div class="flex justify-between">
-                <dt>
-                  Social Security + Medicare (FICA)
-                  <span class="block text-xs text-slate-500">
-                    OBBBA does not cover payroll tax
-                  </span>
-                </dt>
-                <dd>{formatCurrency(result.ficaOnOvertime)}</dd>
+              <div class="flex justify-between border-b pb-1">
+                <dt>Federal income tax on overtime</dt>
+                <dd>-{formatCurrency(result.taxOnOvertime)}</dd>
               </div>
-              <div class="flex justify-between font-semibold">
-                <dt>Overtime pay after tax &amp; FICA</dt>
-                <dd>{formatCurrency(result.netAfterTax)}</dd>
+              <div class="flex justify-between border-b pb-1">
+                <dt>Social Security + Medicare</dt>
+                <dd>-{formatCurrency(result.ficaOnOvertime)}</dd>
               </div>
-              <hr class="border-slate-200" />
-              <div class="flex justify-between">
-                <dt>
-                  OBBBA "no tax on overtime" deduction
-                  <span class="block text-xs text-slate-500">
-                    premium only{result.phaseOutApplied ? ', reduced by income phase-out' : ''}
-                  </span>
-                </dt>
-                <dd>{formatCurrency(result.deductiblePremium)}</dd>
-              </div>
-              <div class="flex justify-between font-semibold text-emerald-700">
-                <dt>
-                  Estimated tax savings
-                  <span class="block text-xs text-slate-500 font-normal">
-                    arrives as a larger refund or smaller bill at filing time — not in your paycheck
-                  </span>
-                </dt>
-                <dd>{formatCurrency(result.taxSavings)}</dd>
-              </div>
-              <div class="flex justify-between font-semibold">
-                <dt>Effective overtime take-home (incl. savings)</dt>
-                <dd>{formatCurrency(result.effectiveNet)}</dd>
+              <div class="flex justify-between border-b pb-1">
+                <dt>Total pay (regular + overtime)</dt>
+                <dd>{formatCurrency(result.totalPay)}</dd>
               </div>
             </dl>
-            <p class="mt-4 text-xs text-slate-500">
-              Estimate only. The OBBBA deduction covers the premium portion of FLSA-mandated
-              overtime for tax years 2025–2028, capped at $12,500 (single) or $25,000 (joint),
-              phasing out above $150,000 / $300,000 MAGI. Your pay stub is definitive.
+            <PayBreakdownChart
+              title="Overtime pay breakdown"
+              format={(value) => formatCurrency(value)}
+              segments={[
+                { label: 'Overtime pay after tax', value: result.netAfterTax, color: '#0d9488' },
+                { label: 'Federal income tax', value: result.taxOnOvertime, color: '#2563eb' },
+                {
+                  label: 'Social Security + Medicare',
+                  value: result.ficaOnOvertime,
+                  color: '#7c3aed',
+                },
+              ]}
+            />
+            <p class="text-xs text-slate-500">
+              Federal rate used: {formatPercent(result.federalRate)} ({result.rateSource}).
+              Eligible for the 2026 overtime deduction: {formatCurrency(result.eligibleDeduction)}.
             </p>
           </>
+        ) : (
+          <p class="text-sm text-slate-500">No valid overtime calculation to show.</p>
         )}
       </div>
     </div>
