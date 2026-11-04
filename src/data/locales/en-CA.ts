@@ -1,17 +1,18 @@
 import type { LocaleConfig } from '../../i18n/types';
 
 export const enCAConfig: LocaleConfig = {
-  code: 'en-CA',
-  language: 'en-CA',
-  country: 'Canada',
+  locale: 'en-CA',
+  language: 'en',
+  languageName: 'English (Canada)',
+  countryCode: 'CA',
+  countryName: 'Canada',
   currency: 'CAD',
   currencySymbol: '$',
-  region: 'CA',
-  direction: 'ltr',
+  numberLocale: 'en-CA',
+  dateLocale: 'en-CA',
   dateFormat: 'DD/MM/YYYY',
-  numberFormat: 'en-CA',
-  status: 'active',
-  taxSystem: 'progressive',
-  rentSystem: 'monthly',
-  labourSystem: 'annual',
+  direction: 'ltr',
+  categories: ['salary'],
+  availableYears: [2026],
+  defaultYear: 2026,
 };
