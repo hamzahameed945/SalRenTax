@@ -1,6 +1,6 @@
 export const labor = {
   categoryTitle: 'Calculadoras Laborais',
-  categoryIntro: 'Calcule o subsídio de Natal e outros direitos laborais em Portugal.',
+  categoryIntro: 'Calcule o subsídio de Natal e outros direitos laborais em Portugal, com estimativas claras para planear a sua saída com confiança.',
   subsidioNatal: {
     title: 'Calculadora de Subsídio de Natal 2026',
     h1: 'Calculadora de Subsídio de Natal 2026',
