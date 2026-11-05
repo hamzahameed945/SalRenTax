@@ -1,6 +1,6 @@
 export const rent = {
   categoryTitle: 'Rent Calculators UK',
-  categoryIntro: 'Calculate how much rent you can afford based on your income.',
+  categoryIntro: 'Calculate how much rent you can afford based on your income, then compare housing options and set a realistic monthly budget before you move.',
   rentAffordability: {
     title: 'Rent Affordability Calculator UK',
     h1: 'How Much Rent Can I Afford in the UK?',
