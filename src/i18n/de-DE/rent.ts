@@ -1,6 +1,6 @@
 export const rent = {
   categoryTitle: 'Mietrechner',
-  categoryIntro: 'Berechnen Sie, wie viel Miete Sie sich leisten können.',
+  categoryIntro: 'Berechnen Sie, wie viel Miete Sie sich leisten können, und planen Sie Ihr Wohnbudget, bevor Sie eine Wohnung suchen oder einen Mietvertrag unterschreiben.',
   rentAffordability: {
     title: 'Mietbelastungsrechner Deutschland',
     h1: 'Wie Viel Miete Kann Ich Mir Leisten?',
