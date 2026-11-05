@@ -1,6 +1,6 @@
 export const labor = {
   categoryTitle: 'Calculadoras laborales',
-  categoryIntro: 'Calcula tu finiquito, indemnización por despido y otros conceptos laborales.',
+  categoryIntro: 'Calcula tu finiquito, indemnización por despido y otros conceptos laborales, con estimaciones claras para revisar tu caso antes de decidir.',
 
   bajaLaboral: {
     title: 'Calculadora de baja laboral 2026',
