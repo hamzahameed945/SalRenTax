@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import { buildLocalePath } from '../../../../i18n/utils';
+
+const locale = 'en-US' as const;
+const title = 'Salary vs Hourly Pay: Which One Pays More?';
+const description = 'Compare salary and hourly pay with simple math: divide a salary by 2,080 hours or multiply an hourly wage by 2,080 to see which one comes out ahead.';
+const canonical = '/en-us/blog/salary-vs-hourly-pay-2026/';
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: '2026-11-05',
+  dateModified: '2026-11-05',
+  author: {
+    '@type': 'Organization',
+    name: 'PayRenTax',
+    url: 'https://payrentax.me',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'PayRenTax',
+    url: 'https://payrentax.me',
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': 'https://payrentax.me/en-us/blog/salary-vs-hourly-pay-2026/',
+  },
+};
+---
+
+<BaseLayout locale={locale} title={title} description={description} canonical={canonical}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+  <main class="page">
+    <Breadcrumbs locale={locale} trail={[{ label: 'Blog', href: buildLocalePath(locale, 'blog') }, { label: 'Salary vs Hourly Pay', href: buildLocalePath(locale, 'blog/salary-vs-hourly-pay-2026') }]} />
+    <article class="article">
+      <header class="article-header">
+        <p class="article-date">November 5, 2026</p>
+        <h1>{title}</h1>
+        <p class="article-intro">{description}</p>
+      </header>
+
+      <section class="article-section">
+        <h2>What Salary Pay Means</h2>
+        <p>Salary pay is a fixed amount per year, usually paid in regular periods through the year. The pay stays the same each period even if the hours in a week vary a little.</p>
+      </section>
+
+      <section class="article-section">
+        <h2>What Hourly Pay Means</h2>
+        <p>Hourly pay is pay for each hour worked, so the total changes when the hours change. Fewer hours means less pay, and more hours means more pay.</p>
+      </section>
+
+      <section class="article-section">
+        <h2>How to Compare Them With Simple Math</h2>
+        <p>A full-time year is 40 hours a week for 52 weeks, which is 2,080 hours. To turn a salary into an hourly rate, divide the salary by 2,080. To turn an hourly wage into a yearly amount, multiply the wage by 2,080.</p>
+        <p>For example, 25 dollars an hour times 2,080 equals 52,000 dollars a year. In the other direction, 60,000 dollars a year divided by 2,080 equals about 28.85 dollars an hour.</p>
+      </section>
+
+      <section class="article-section">
+        <h2>A Side-by-Side Example</h2>
+        <p>Compare a 52,000 dollar salary with 25 dollars an hour at 40 hours a week. The arithmetic comes out the same, so the better choice depends on the hours you actually work and what matters to you, not on the label alone.</p>
+      </section>
+
+      <section class="article-section">
+        <h2>What Else to Weigh Up</h2>
+        <p>Look beyond the headline number. Think about hours and schedule, how steady the work is, and whether extra hours change the pay. Run your own numbers with a <a href="/en-us/salary/salary-to-hourly/">salary-to-hourly calculator</a> and an <a href="/en-us/salary/hourly-to-salary/">hourly-to-salary calculator</a> before deciding.</p>
+        <p>Salary and hourly pay are simply two ways of expressing the same arithmetic. Work out the numbers for your own hours, weigh up what matters to you, and choose the arrangement that fits your work best.</p>
+      </section>
+    </article>
+  </main>
+</BaseLayout>
