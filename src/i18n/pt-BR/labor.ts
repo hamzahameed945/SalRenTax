@@ -1,7 +1,7 @@
 export const labor = {
   categoryTitle: 'Calculadoras Trabalhistas',
   seoTitle: 'Calculadora Trabalhista 2026 — CLT',
-  categoryIntro: 'Calcule rescisão, décimo terceiro salário, férias e outros direitos trabalhistas.',
+  categoryIntro: 'Calcule rescisão, décimo terceiro salário, férias e outros direitos trabalhistas, com estimativas claras para planejar sua saída com segurança.',
   rescisao: {
     title: 'Calculadora de Rescisão Trabalhista 2026',
     h1: 'Calculadora de Rescisão Trabalhista 2026',
