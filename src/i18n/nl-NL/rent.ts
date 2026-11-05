@@ -1,6 +1,6 @@
 export const rent = {
   categoryTitle: 'Huurcalculators Nederland',
-  categoryIntro: 'Bereken hoeveel huur u zich kunt veroorloven op basis van uw inkomen.',
+  categoryIntro: 'Bereken hoeveel huur u zich kunt veroorloven op basis van uw inkomen, en vergelijk woningen om een realistisch maandbudget te kiezen voordat u verhuist.',
   rentAffordability: {
     title: 'Huurmogelijkheid Calculator Nederland',
     h1: 'Hoeveel Huur Kan Ik Me Veroorloven?',
