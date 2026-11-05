@@ -1,7 +1,7 @@
 export const labor = {
   categoryTitle: 'Labor Calculators',
   categoryIntro:
-    'Labor calculators for the United States: severance benchmarks and other employment-related estimates. All results are market benchmarks for general information, not legal advice.',
+    'Labor calculators for the United States: severance benchmarks and other employment-related estimates, for general information only, not legal advice.',
 
   severance: {
     title: 'Severance Pay Benchmark Calculator 2026',
