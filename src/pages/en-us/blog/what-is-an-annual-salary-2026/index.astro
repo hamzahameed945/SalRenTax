@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import { buildLocalePath } from '../../../../i18n/utils';
+
+const locale = 'en-US' as const;
+const title = 'What Is an Annual Salary? How Your Yearly Pay Is Calculated';
+const description = 'An annual salary is the total pay for a full year of work. Learn how it is calculated from an hourly wage and how it breaks down into monthly, biweekly, and weekly amounts.';
+const canonical = '/en-us/blog/what-is-an-annual-salary-2026/';
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: '2026-11-06',
+  dateModified: '2026-11-06',
+  author: {
+    '@type': 'Organization',
+    name: 'PayRenTax',
+    url: 'https://payrentax.me',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'PayRenTax',
+    url: 'https://payrentax.me',
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': 'https://payrentax.me/en-us/blog/what-is-an-annual-salary-2026/',
+  },
+};
+---
+
+<BaseLayout locale={locale} title={title} description={description} canonical={canonical}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+  <main class="page">
+    <Breadcrumbs locale={locale} trail={[{ label: 'Blog', href: buildLocalePath(locale, 'blog') }, { label: 'What Is an Annual Salary', href: buildLocalePath(locale, 'blog/what-is-an-annual-salary-2026') }]} />
+    <article class="article">
+      <header class="article-header">
+        <p class="article-date">November 6, 2026</p>
+        <h1>{title}</h1>
+        <p class="article-intro">{description}</p>
+      </header>
+
+      <section class="article-section">
+        <h2>What an Annual Salary Is</h2>
+        <p>An annual salary is the total amount of pay for a full year of work, stated as one yearly figure. Job offers usually quote it this way, so a salary of 52,000 dollars means 52,000 dollars for the year, before any deductions.</p>
+      </section>
+
+      <section class="article-section">
+        <h2>How an Annual Salary Is Calculated</h2>
+        <p>To work out an annual salary from an hourly wage, multiply the wage by the hours worked each week, then by the number of weeks worked in the year. A full-time year is 40 hours a week for 52 weeks, which is 2,080 hours.</p>
+        <p>For example, 25 dollars an hour times 2,080 hours equals 52,000 dollars a year. At 30 dollars an hour, the same hours give 62,400 dollars a year.</p>
+      </section>
+
+      <section class="article-section">
+        <h2>From an Annual Salary to Monthly, Biweekly, and Weekly Pay</h2>
+        <p>Once you know the annual figure, the pay for shorter periods follows from simple division. Divide by 12 for monthly pay, by 26 for biweekly pay, and by 52 for weekly pay.</p>
+        <p>On a 52,000 dollar salary, that is about 4,333 dollars a month, 2,000 dollars every two weeks, and 1,000 dollars a week. The yearly total stays the same; only the size and timing of each check change.</p>
+      </section>
+
+      <section class="article-section">
+        <h2>Why Comparing Annual Figures Helps</h2>
+        <p>Comparing offers on an annual basis puts different pay arrangements side by side. An hourly rate, a weekly wage, and a yearly salary can all be turned into the same annual number, so you can compare them directly instead of guessing which one is higher.</p>
+      </section>
+
+      <section class="article-section">
+        <h2>Check Your Own Numbers</h2>
+        <p>Run your own figures through an <a href="/en-us/salary/annual-salary-calculator/">annual salary calculator</a> to turn hourly, daily, weekly, or monthly pay into an annual amount, or use the <a href="/en-us/salary/hourly-to-salary/">hourly-to-salary calculator</a> for a single hourly wage.</p>
+        <p>An annual salary is one number for the whole year. Work it out with the same simple arithmetic, break it down into the pay periods that match your budget, and compare offers on the same basis.</p>
+      </section>
+    </article>
+  </main>
+</BaseLayout>
