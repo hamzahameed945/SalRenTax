@@ -1,5 +1,6 @@
 ---
 import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
 import InContentAd from '../../../../components/ads/InContentAd.astro';
@@ -47,7 +48,51 @@ const locale = 'en-US' as const;
         It multiplies hourly pay by hours per week and working weeks per year, then works out the
         monthly, biweekly, weekly, and daily equivalents from that annual amount.
       </p>
+      <h2>Annual pay compared with hourly pay</h2>
+      <p>
+        An annual salary and an hourly wage describe the same pay in different ways. The annual
+        figure is your hourly wage multiplied by the hours you work each week and the weeks you
+        work each year, so the same hourly rate gives a higher annual salary when you work more
+        hours or more weeks.
+      </p>
+      <p>
+        The calculator starts with 40 hours per week and 52 weeks per year. Change either figure
+        if your schedule is different — for example, enter fewer weeks if you take unpaid time
+        off — and the monthly, biweekly, weekly, and daily equivalents are worked out from the
+        new annual amount.
+      </p>
+      <p>
+        The result is based only on your hourly wage, hours per week, and weeks per year. It
+        does not add overtime, bonuses, or tips, and it does not deduct tax, because the
+        calculator has no fields for them.
+      </p>
+      <h2>Frequently asked questions</h2>
+      <h3>How is my annual salary worked out from my hourly wage?</h3>
+      <p>
+        Multiply your hourly wage by the hours you work each week, then multiply that weekly
+        amount by the weeks you work each year. That gives your estimated annual salary, and
+        the monthly, biweekly, weekly, and daily figures are worked out from it.
+      </p>
+      <h3>How many weeks per year does the estimate assume?</h3>
+      <p>
+        The calculator starts with 52 weeks per year. If you work fewer weeks, change the weeks
+        per year figure to match your schedule.
+      </p>
+      <h3>Does the estimate include overtime or a bonus?</h3>
+      <p>
+        No. The calculator only uses your hourly wage, hours per week, and weeks per year, so
+        overtime, bonuses, and tips are not included in the result.
+      </p>
     </div>
+    <RelatedCalculators
+      heading="Related calculators"
+      links={[
+        { label: 'Salary to Hourly Calculator', href: '/en-us/salary/salary-to-hourly/' },
+        { label: 'Hourly to Salary Calculator', href: '/en-us/salary/hourly-to-salary/' },
+        { label: 'Paycheck Calculator', href: '/en-us/salary/paycheck-calculator/' },
+        { label: 'Salary Raise Calculator', href: '/en-us/salary/salary-raise/' },
+      ]}
+    />
   </article>
   <CalculatorResource locale="en-US" category="salary" />
 </BaseLayout>
