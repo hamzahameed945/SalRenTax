@@ -1,5 +1,6 @@
 ---
 import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import { getDictionary } from '../../../../i18n/dictionaries';
 import { buildPageMetadata } from '../../../../lib/seo/metadata';
@@ -32,6 +33,15 @@ const meta = buildPageMetadata(
         Enter your hourly rate and the number of hours you normally work. The calculator estimates the equivalent annual income so you can compare hourly and salaried opportunities more easily.
       </p>
     </div>
+    <RelatedCalculators
+      heading="Related calculators"
+      links={[
+        { label: 'Annual Salary Calculator', href: '/en-us/salary/annual-salary-calculator/' },
+        { label: 'Salary to Hourly Calculator', href: '/en-us/salary/salary-to-hourly/' },
+        { label: 'Paycheck Calculator', href: '/en-us/salary/paycheck-calculator/' },
+        { label: 'Salary Raise Calculator', href: '/en-us/salary/salary-raise/' },
+      ]}
+    />
   </section>
   <CalculatorResource locale="en-US" category="salary" />
 </BaseLayout>
