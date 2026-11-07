@@ -1,5 +1,6 @@
 ---
 import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
 import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
@@ -358,6 +359,14 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
     </p>
 
     <CalculatorFAQ heading="Perguntas frequentes sobre rescisão trabalhista" items={faqItems} />
+    <RelatedCalculators
+      heading="Calculadoras relacionadas"
+      links={[
+      { label: "Calculadora de licença-maternidade", href: "/pt-br/labor/licenca-maternidade-calculadora/" },
+      { label: "Calcular férias", href: "/pt-br/labor/calcular-ferias/" },
+      { label: "Calcular décimo terceiro", href: "/pt-br/labor/calcular-decimo-terceiro/" },
+      ]}
+    />
   </article>
   <CalculatorResource locale="pt-BR" category="labor" />
 </BaseLayout>
