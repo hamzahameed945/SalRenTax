@@ -1,5 +1,6 @@
 ---
 import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import { getDictionary } from '../../../../i18n/dictionaries';
 import { buildPageMetadata } from '../../../../lib/seo/metadata';
@@ -35,6 +36,15 @@ const meta = buildPageMetadata(
         The result is a conversion, not a statement about your actual compensation package or overtime eligibility.
       </p>
     </div>
+    <RelatedCalculators
+      heading="Related calculators"
+      links={[
+        { label: 'Annual Salary Calculator', href: '/en-us/salary/annual-salary-calculator/' },
+        { label: 'Hourly to Salary Calculator', href: '/en-us/salary/hourly-to-salary/' },
+        { label: 'Paycheck Calculator', href: '/en-us/salary/paycheck-calculator/' },
+        { label: 'Salary Raise Calculator', href: '/en-us/salary/salary-raise/' },
+      ]}
+    />
   </section>
   <CalculatorResource locale="en-US" category="salary" />
 </BaseLayout>
