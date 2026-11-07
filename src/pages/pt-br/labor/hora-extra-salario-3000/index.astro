@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import RelatedCalculators from '../../../../components/content/RelatedCalculators.astro';
 import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
 import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
 import InContentAd from '../../../../components/ads/InContentAd.astro';
@@ -107,5 +108,13 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
     </p>
 
     <CalculatorFAQ heading="Hora extra com salário de R$ 3.000: perguntas frequentes" items={faqItems} />
+      <RelatedCalculators
+      heading="Calculadoras relacionadas"
+      links={[
+      { label: "Calculadora de licença-maternidade", href: "/pt-br/labor/licenca-maternidade-calculadora/" },
+      { label: "Calcular férias", href: "/pt-br/labor/calcular-ferias/" },
+      { label: "Calcular décimo terceiro", href: "/pt-br/labor/calcular-decimo-terceiro/" },
+      ]}
+    />
   </article>
 </BaseLayout>
