@@ -1,0 +1,347 @@
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../../components/Breadcrumbs.astro";
+import FAQ from "../../../components/FAQ.astro";
+import RelatedLinks from "../../../components/RelatedLinks.astro";
+import InContentAd from "../../../components/InContentAd.astro";
+
+const title = "How to Calculate Your Paycheck (2026 Guide)";
+const description =
+  "Learn how to calculate your paycheck step by step: gross pay from hourly wages or salary, overtime at time-and-a-half, common deductions, and how pay frequency changes each check.";
+const canonical = "/en-us/blog/how-to-calculate-your-paycheck-2026/";
+const datePublished = "2026-11-07";
+const dateModified = "2026-11-07";
+
+const faqItems = [
+  {
+    q: "How do I calculate my paycheck?",
+    a: "Start with gross pay — hourly rate × hours worked, or annual salary ÷ number of pay periods — then subtract deductions such as income tax, Social Security, Medicare, and benefit premiums. What is left is your net (take-home) pay.",
+  },
+  {
+    q: "How is overtime pay calculated?",
+    a: "Hours over 40 in a workweek are paid at 1.5× your regular hourly rate. For example, at $20/hour, 5 overtime hours pay $30/hour, adding $150 to that week's gross pay.",
+  },
+  {
+    q: "Why is my paycheck less than my salary divided by 26?",
+    a: "Salary ÷ 26 is your gross biweekly pay, before anything is taken out. Taxes, Social Security, Medicare, health insurance, and retirement contributions are deducted first, so your net check is always smaller.",
+  },
+  {
+    q: "How much is my biweekly paycheck from a $60,000 salary?",
+    a: "Gross pay is $60,000 ÷ 26 = $2,307.69 per biweekly check, before deductions. Your actual take-home pay will be lower after taxes and other deductions.",
+  },
+  {
+    q: "What deductions come out of a paycheck?",
+    a: "Common deductions include federal income tax, state income tax where applicable, Social Security, Medicare, health insurance premiums, and retirement plan contributions. The exact amounts depend on your income, state, filing status, and benefit choices.",
+  },
+];
+
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  datePublished={datePublished}
+  dateModified={dateModified}
+>
+  <Breadcrumbs
+    items={[
+      { label: "Home", href: "/en-us/" },
+      { label: "Blog", href: "/en-us/blog/" },
+      { label: "How to Calculate Your Paycheck" },
+    ]}
+  />
+
+  <article class="article">
+    <header class="article-header">
+      <p class="article-kicker">Salary Guides · 5 min read</p>
+      <h1>How to Calculate Your Paycheck (2026 Guide)</h1>
+      <p class="article-meta">
+        Published November 7, 2026 · Updated November 7, 2026 · By SalRenTax
+        Editorial Team
+      </p>
+      <p class="article-intro">
+        Your paycheck never matches the salary number in your offer letter —
+        and that is normal. Gross pay, deductions, and pay frequency all
+        change the amount that lands in your bank account. This guide walks
+        through the calculation step by step, so you can work out any
+        paycheck with simple arithmetic and spot mistakes when they happen.
+      </p>
+    </header>
+
+    <div class="tldr-box">
+      <p><strong>TL;DR:</strong></p>
+      <ul>
+        <li>
+          <strong>Gross pay</strong> is hourly rate × hours worked, or annual
+          salary ÷ number of pay periods.
+        </li>
+        <li>
+          <strong>Overtime</strong> pays 1.5× your regular rate for hours over
+          40 in a week.
+        </li>
+        <li>
+          <strong>Net pay</strong> is gross pay minus deductions: taxes,
+          Social Security, Medicare, and benefits.
+        </li>
+        <li>
+          A <strong>$60,000 salary</strong> is $2,307.69 gross per biweekly
+          check, before deductions.
+        </li>
+      </ul>
+    </div>
+
+    <nav class="toc" aria-label="On this page">
+      <p><strong>On this page</strong></p>
+      <ul>
+        <li><a href="#what-is">What Is a Paycheck?</a></li>
+        <li><a href="#gross-pay">Step 1: Calculate Your Gross Pay</a></li>
+        <li><a href="#deductions">Step 2: Subtract Deductions</a></li>
+        <li><a href="#frequency">How Pay Frequency Changes Your Paycheck</a></li>
+        <li><a href="#check">How to Check Your Paycheck for Errors</a></li>
+        <li><a href="#faq">Frequently Asked Questions</a></li>
+      </ul>
+    </nav>
+
+    <section id="what-is">
+      <h2>What Is a Paycheck?</h2>
+      <p>
+        A paycheck is the payment you receive for a single pay period. Every
+        paycheck has two numbers that matter: <strong>gross pay</strong>, the
+        total you earned before anything is taken out, and
+        <strong> net pay</strong> (take-home pay), the amount that actually
+        reaches your bank account after deductions.
+      </p>
+      <p>
+        Your paystub breaks the paycheck down line by line: hours worked,
+        pay rate, gross pay, each deduction, and year-to-date totals. If you
+        have never read one closely, our guide on
+        <a href="/en-us/blog/how-to-read-your-paystub-2026/">how to read your
+        paystub</a> explains every section. Once you can calculate your gross
+        pay yourself, the rest of the paystub is much easier to follow.
+      </p>
+    </section>
+
+    <section id="gross-pay">
+      <h2>Step 1: Calculate Your Gross Pay</h2>
+      <p>
+        Gross pay is the starting point for every paycheck calculation. How
+        you work it out depends on how you are paid:
+      </p>
+      <div class="formula-box">
+        <p><strong>Hourly workers: gross pay = hourly rate × hours worked</strong></p>
+        <p><strong>Salaried workers: gross pay = annual salary ÷ pay periods per year</strong></p>
+      </div>
+      <p>
+        For hourly workers, overtime changes the math. Hours over 40 in a
+        workweek are paid at 1.5× your regular rate (time-and-a-half). Our
+        <a href="/en-us/salary/overtime-tax-calculator/">overtime
+        calculator</a> works this out for you, and our
+        <a href="/en-us/blog/overtime-pay-explained-2026/">overtime pay
+        guide</a> explains the rules in detail.
+      </p>
+      <div class="example-box">
+        <p><strong>Example: $20/hour, 45 hours in one week</strong></p>
+        <ul>
+          <li>Regular pay: 40 hours × $20 = <strong>$800</strong></li>
+          <li>Overtime pay: 5 hours × $30 (1.5× $20) = <strong>$150</strong></li>
+          <li>Gross pay for the week: <strong>$950</strong></li>
+        </ul>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Pay arrangement</th>
+            <th>Calculation</th>
+            <th>Gross pay</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>$20/hour, 40 hours/week</td>
+            <td>$20 × 40</td>
+            <td>$800/week</td>
+          </tr>
+          <tr>
+            <td>$25/hour, 40 hours/week</td>
+            <td>$25 × 40</td>
+            <td>$1,000/week</td>
+          </tr>
+          <tr>
+            <td>$30/hour, 40 hours/week</td>
+            <td>$30 × 40</td>
+            <td>$1,200/week</td>
+          </tr>
+          <tr>
+            <td>$60,000 salary, biweekly</td>
+            <td>$60,000 ÷ 26</td>
+            <td>$2,307.69/check</td>
+          </tr>
+          <tr>
+            <td>$52,000 salary, monthly</td>
+            <td>$52,000 ÷ 12</td>
+            <td>$4,333.33/check</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="deductions">
+      <h2>Step 2: Subtract Deductions</h2>
+      <p>
+        Gross pay is not what you take home. Before your paycheck reaches
+        you, your employer subtracts deductions. The exact amounts depend on
+        your income, state, filing status, and benefit choices, but the
+        categories are the same for most workers:
+      </p>
+      <ul>
+        <li><strong>Federal income tax</strong> — withheld based on your income and the information on your W-4</li>
+        <li><strong>State income tax</strong> — applies in most states; a few states have no income tax</li>
+        <li><strong>Social Security</strong> — a payroll tax on your wages</li>
+        <li><strong>Medicare</strong> — a payroll tax on all of your wages</li>
+        <li><strong>Health insurance premiums</strong> — your share of your employer plan's cost</li>
+        <li><strong>Retirement contributions</strong> — 401(k) or similar plan contributions, if you enrolled</li>
+      </ul>
+      <p>
+        Net pay is simply gross pay minus all of these deductions. Because
+        the amounts vary so much from person to person, the most accurate way
+        to estimate your own check is our
+        <a href="/en-us/salary/paycheck-calculator/">paycheck calculator</a>,
+        which factors in your state, filing status, and pay frequency. For
+        the bigger picture of what take-home pay means, see our guide on
+        <a href="/en-us/blog/take-home-pay-explained-2026/">take-home pay
+        explained</a>.
+      </p>
+    </section>
+
+    <section id="frequency">
+      <h2>How Pay Frequency Changes Your Paycheck</h2>
+      <p>
+        The same annual salary produces a different check size depending on
+        how often you are paid — the total for the year stays the same, it is
+        just split into more or fewer pieces. Here is what a $52,000 salary
+        looks like under each schedule:
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Pay frequency</th>
+            <th>Pay periods/year</th>
+            <th>Gross pay per check</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Weekly</td>
+            <td>52</td>
+            <td>$1,000</td>
+          </tr>
+          <tr>
+            <td>Biweekly (every 2 weeks)</td>
+            <td>26</td>
+            <td>$2,000</td>
+          </tr>
+          <tr>
+            <td>Semimonthly (twice a month)</td>
+            <td>24</td>
+            <td>$2,166.67</td>
+          </tr>
+          <tr>
+            <td>Monthly</td>
+            <td>12</td>
+            <td>$4,333.33</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        Weekly and biweekly schedules sometimes produce an extra paycheck in
+        a year (for example, 27 biweekly checks instead of 26), which is a
+        useful budgeting bonus when it happens. Read our comparison of
+        <a href="/en-us/blog/biweekly-vs-monthly-pay-2026/">biweekly vs.
+        monthly pay</a> for the trade-offs, or convert between schedules
+        with our <a href="/en-us/salary/pay-frequency-converter/">pay
+        frequency converter</a>.
+      </p>
+    </section>
+
+    <section id="check">
+      <h2>How to Check Your Paycheck for Errors</h2>
+      <p>
+        Payroll mistakes happen — wrong hours, a missed overtime rate, or a
+        deduction that should have stopped. A quick check each payday catches
+        them early:
+      </p>
+      <ol>
+        <li>
+          <strong>Verify your hours.</strong> Compare the hours on your
+          paystub with your own records or timesheet, including any overtime
+          hours.
+        </li>
+        <li>
+          <strong>Check your rate.</strong> Multiply your hourly rate by your
+          hours (and 1.5× for overtime) and compare the result with the gross
+          pay shown.
+        </li>
+        <li>
+          <strong>Review each deduction.</strong> A deduction that suddenly
+          changes — or one you never signed up for — is worth asking payroll
+          about.
+        </li>
+        <li>
+          <strong>Compare year-to-date totals.</strong> Your year-to-date
+          gross should roughly equal your per-check gross multiplied by the
+          number of checks so far this year.
+        </li>
+        <li>
+          <strong>Keep your paystubs.</strong> They are your proof of income
+          and your record if a correction is ever needed.
+        </li>
+      </ol>
+      <p>
+        If a number does not add up, contact your payroll department with the
+        specific check and line item — a clear, polite question with the math
+        attached is usually resolved quickly.
+      </p>
+    </section>
+
+    <section id="faq">
+      <h2>Frequently Asked Questions</h2>
+      <FAQ items={faqItems} />
+    </section>
+
+    <section id="related">
+      <h2>Related Articles</h2>
+      <RelatedLinks
+        links={[
+          { href: "/en-us/blog/take-home-pay-explained-2026/", label: "Take-Home Pay Explained (2026)" },
+          { href: "/en-us/blog/how-to-read-your-paystub-2026/", label: "How to Read Your Paystub (2026)" },
+          { href: "/en-us/blog/overtime-pay-explained-2026/", label: "Overtime Pay Explained (2026)" },
+          { href: "/en-us/blog/biweekly-vs-monthly-pay-2026/", label: "Biweekly vs. Monthly Pay (2026)" },
+          { href: "/en-us/blog/what-is-an-annual-salary-2026/", label: "What Is an Annual Salary? (2026)" },
+        ]}
+      />
+    </section>
+  </article>
+
+  <InContentAd slot="after-article" />
+</BaseLayout>
+
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: title,
+  description,
+  author: { "@type": "Organization", name: "SalRenTax" },
+  publisher: { "@type": "Organization", name: "SalRenTax" },
+  datePublished,
+  dateModified,
+  mainEntityOfPage: { "@type": "WebPage", "@id": `https://salrentax.com${canonical}` },
+  mainEntity: {
+    "@type": "FAQPage",
+    mainEntity: faqItems.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  },
+})} />
+</script>
