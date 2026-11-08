@@ -1,0 +1,346 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import { buildLocalePath } from '../../../../i18n/utils';
+
+const locale = 'en-US' as const;
+const title = 'How to Calculate a Salary Raise (2026 Guide)';
+const description =
+  'Learn how to calculate a salary raise step by step: turn a percentage into dollars, work out your new salary, and see what the raise adds to each paycheck.';
+const canonical = '/en-us/blog/how-to-calculate-a-salary-raise-2026/';
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: '2026-11-08',
+  dateModified: '2026-11-08',
+  author: {
+    '@type': 'Organization',
+    name: 'PayRenTax',
+    url: 'https://payrentax.me',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'PayRenTax',
+    url: 'https://payrentax.me',
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': 'https://payrentax.me/en-us/blog/how-to-calculate-a-salary-raise-2026/',
+  },
+};
+
+const faqItems = [
+  {
+    q: 'How do I calculate a salary raise?',
+    a: 'Multiply your current salary by the raise percentage written as a decimal — for example, 5% is 0.05 — then add the result to your current salary. A 5% raise on $60,000 is $60,000 × 0.05 = $3,000, so the new salary is $63,000.',
+  },
+  {
+    q: 'What is a 5% raise on a $60,000 salary?',
+    a: 'A 5% raise on $60,000 adds $3,000 a year, bringing the salary to $63,000. That is $250 more per month, or $115.38 more per biweekly paycheck, before deductions.',
+  },
+  {
+    q: 'How do I find the percentage of a raise I was offered?',
+    a: 'Subtract your old salary from the new salary, divide by the old salary, and multiply by 100. A move from $40,000 to $45,000 is ($45,000 − $40,000) ÷ $40,000 × 100 = 12.5%.',
+  },
+  {
+    q: 'How does a raise change my hourly rate?',
+    a: 'A $25 per hour wage with a 5% raise becomes $26.25 per hour, which is $54,600 a year on a 40-hour week (2,080 hours).',
+  },
+  {
+    q: 'Does a raise increase my take-home pay by the full amount?',
+    a: 'No. The raise increases your gross pay by the full amount, but deductions such as taxes are taken from the new, higher gross pay, so your take-home pay rises by less than the raise itself.',
+  },
+];
+---
+
+<BaseLayout locale={locale} title={title} description={description} canonical={canonical}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((f) => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a },
+        })),
+      })}
+    />
+  </Fragment>
+
+  <main class="page">
+    <Breadcrumbs locale={locale} trail={[{ label: 'Blog', href: buildLocalePath(locale, 'blog') }, { label: 'How to Calculate a Salary Raise', href: buildLocalePath(locale, 'blog/how-to-calculate-a-salary-raise-2026') }]} />
+    <article class="article">
+      <header class="article-header">
+        <p class="article-date">November 8, 2026</p>
+        <h1>{title}</h1>
+        <p class="article-intro">{description}</p>
+      </header>
+
+      <p>
+        A raise usually arrives as a percentage — 3%, 5%, maybe more — and the
+        number that matters is what it adds to your pay in dollars. This guide
+        shows how to turn any raise percentage into a new salary, a monthly
+        figure, and a per-paycheck amount, using only simple arithmetic.
+      </p>
+
+      <div class="tldr-box">
+        <p><strong>TL;DR:</strong></p>
+        <ul>
+          <li>
+            <strong>Raise amount</strong> = current salary × raise percentage
+            (as a decimal).
+          </li>
+          <li>
+            <strong>New salary</strong> = current salary + raise amount.
+          </li>
+          <li>
+            A <strong>5% raise on $60,000</strong> adds $3,000 a year:
+            $250 a month, $115.38 per biweekly check.
+          </li>
+          <li>
+            To find the <strong>percentage of an offer</strong>, divide the
+            increase by your old salary and multiply by 100.
+          </li>
+        </ul>
+      </div>
+
+      <nav class="toc" aria-label="On this page">
+        <p><strong>On this page</strong></p>
+        <ul>
+          <li><a href="#what-is">What Is a Salary Raise?</a></li>
+          <li><a href="#formula">How to Calculate a Salary Raise in 3 Steps</a></li>
+          <li><a href="#paycheck">What a Raise Adds to Each Paycheck</a></li>
+          <li><a href="#percentage">How to Work Out the Percentage of a Raise</a></li>
+          <li><a href="#over-time">What Raises Add Up to Over Time</a></li>
+          <li><a href="#faq">Frequently Asked Questions</a></li>
+        </ul>
+      </nav>
+
+      <section id="what-is" class="article-section">
+        <h2>What Is a Salary Raise?</h2>
+        <p>
+          A salary raise is an increase in your base pay, usually given as a
+          percentage of your current salary. If you earn $60,000 and receive a
+          5% raise, your salary rises by $3,000 to $63,000 a year. The
+          percentage is the same whatever you earn — but the dollar amount it
+          produces is bigger on a bigger salary, which is why the same 5% can
+          feel very different from one job to the next.
+        </p>
+        <p>
+          Raises are often tied to a performance review, a promotion, or an
+          annual pay cycle, and they usually take effect on a set date. Once
+          the new salary starts, every paycheck after that date uses the new
+          figure. Our guide on
+          <a href="/en-us/blog/how-to-ask-for-a-raise-2026/">how to ask for a
+          raise</a> covers the conversation itself; this guide covers the
+          math, so you know exactly what any offer is worth before you accept
+          it.
+        </p>
+      </section>
+
+      <section id="formula" class="article-section">
+        <h2>How to Calculate a Salary Raise in 3 Steps</h2>
+        <p>
+          Calculating a raise takes three steps, and you only need your current
+          salary and the raise percentage:
+        </p>
+
+        <div class="formula-box">
+          <p><strong>Raise amount = current salary × raise percentage</strong></p>
+          <p><strong>New salary = current salary + raise amount</strong></p>
+        </div>
+
+        <ol>
+          <li>
+            <strong>Turn the percentage into a decimal.</strong> Divide it by
+            100: 5% becomes 0.05, 3% becomes 0.03, and 2.5% becomes 0.025.
+          </li>
+          <li>
+            <strong>Multiply by your current salary.</strong> That gives the
+            raise in dollars per year.
+          </li>
+          <li>
+            <strong>Add it to your current salary.</strong> That is your new
+            annual salary.
+          </li>
+        </ol>
+
+        <div class="example-box">
+          <p><strong>Example: $60,000 salary, 5% raise</strong></p>
+          <ul>
+            <li>Raise amount: $60,000 × 0.05 = <strong>$3,000 per year</strong></li>
+            <li>New salary: $60,000 + $3,000 = <strong>$63,000 per year</strong></li>
+            <li>Monthly increase: $3,000 ÷ 12 = <strong>$250 per month</strong></li>
+          </ul>
+        </div>
+
+        <p>
+          You can check the result instantly with our
+          <a href="/en-us/salary/salary-raise/">salary raise calculator</a>,
+          which works out the new salary and the per-paycheck amount for any
+          percentage. If you are comparing an hourly wage instead, our
+          <a href="/en-us/salary/annual-salary-calculator/">annual salary
+          calculator</a> converts it to a yearly figure first.
+        </p>
+      </section>
+
+      <section id="paycheck" class="article-section">
+        <h2>What a Raise Adds to Each Paycheck</h2>
+        <p>
+          The annual raise is only part of the picture — what you notice is the
+          extra amount on each paycheck. Divide the yearly raise by the number
+          of pay periods in the year: 52 for weekly pay, 26 for biweekly pay,
+          24 for semimonthly pay, and 12 for monthly pay.
+        </p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Raise on $60,000</th>
+              <th>Per year</th>
+              <th>Per month</th>
+              <th>Per biweekly check</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2%</td>
+              <td>$1,200</td>
+              <td>$100</td>
+              <td>$46.15</td>
+            </tr>
+            <tr>
+              <td>3%</td>
+              <td>$1,800</td>
+              <td>$150</td>
+              <td>$69.23</td>
+            </tr>
+            <tr>
+              <td>4%</td>
+              <td>$2,400</td>
+              <td>$200</td>
+              <td>$92.31</td>
+            </tr>
+            <tr>
+              <td>5%</td>
+              <td>$3,000</td>
+              <td>$250</td>
+              <td>$115.38</td>
+            </tr>
+            <tr>
+              <td>10%</td>
+              <td>$6,000</td>
+              <td>$500</td>
+              <td>$230.77</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+          Remember that these are gross figures, before deductions. Your
+          take-home pay rises by less than the gross raise, because taxes and
+          other deductions are taken from the new, higher pay. To see the
+          effect on an actual check, run the new salary through our
+          <a href="/en-us/salary/paycheck-calculator/">paycheck calculator</a>
+          and compare it with your current check — our guide on
+          <a href="/en-us/blog/how-to-calculate-your-paycheck-2026/">how to
+          calculate your paycheck</a> explains the steps.
+        </p>
+      </section>
+
+      <section id="percentage" class="article-section">
+        <h2>How to Work Out the Percentage of a Raise</h2>
+        <p>
+          Sometimes the offer comes as a dollar figure instead of a percentage
+          — a new salary of $45,000, say, up from $40,000. To find the
+          percentage, subtract the old salary from the new one, divide by the
+          old salary, and multiply by 100:
+        </p>
+
+        <div class="formula-box">
+          <p><strong>Raise percentage = (new salary − old salary) ÷ old salary × 100</strong></p>
+        </div>
+
+        <div class="example-box">
+          <p><strong>Example: $40,000 to $45,000</strong></p>
+          <ul>
+            <li>Increase: $45,000 − $40,000 = <strong>$5,000</strong></li>
+            <li>Percentage: $5,000 ÷ $40,000 × 100 = <strong>12.5%</strong></li>
+          </ul>
+        </div>
+
+        <p>
+          The same math works for hourly pay. A wage of $25 per hour with a 5%
+          raise becomes $25 × 1.05 = $26.25 per hour. On a 40-hour week (2,080
+          hours a year), that is $52,000 a year rising to $54,600 — a $2,600
+          annual increase. Our
+          <a href="/en-us/salary/salary-to-hourly/">salary to hourly
+          calculator</a> converts between the two whenever you need to compare
+          an hourly offer with a salary.
+        </p>
+      </section>
+
+      <section id="over-time" class="article-section">
+        <h2>What Raises Add Up to Over Time</h2>
+        <p>
+          Raises compound: each new raise applies to a salary that already
+          includes the last one. A 3% raise every year for three years on a
+          $50,000 salary does not add 9% — it adds a little more, because each
+          year's 3% is calculated on a higher base:
+        </p>
+
+        <div class="example-box">
+          <p><strong>Example: $50,000, 3% raise each year for 3 years</strong></p>
+          <ul>
+            <li>Year 1: $50,000 × 1.03 = <strong>$51,500</strong></li>
+            <li>Year 2: $51,500 × 1.03 = <strong>$53,045</strong></li>
+            <li>Year 3: $53,045 × 1.03 = <strong>$54,636.35</strong></li>
+          </ul>
+        </div>
+
+        <p>
+          After three years the salary is $54,636.35 — a total increase of
+          $4,636.35, compared with $4,500 if the same 3% had been applied to the
+          original $50,000 each time. The gap is small over three years, but
+          over a career it is the reason steady raises matter more than any
+          single one.
+        </p>
+
+        <p>
+          When a raise takes effect, check the first paycheck at the new rate:
+          divide the new salary by your pay periods (26 for biweekly, 12 for
+          monthly) and compare the gross figure with your paystub. If it does
+          not match, ask payroll — a clear question with the math attached is
+          usually resolved quickly.
+        </p>
+      </section>
+
+      <section id="faq" class="article-section">
+        <h2>Frequently Asked Questions</h2>
+        {faqItems.map((item) => (
+          <>
+            <h3>{item.q}</h3>
+            <p>{item.a}</p>
+          </>
+        ))}
+      </section>
+
+      <section id="related" class="article-section">
+        <h2>Related Articles</h2>
+        <ul>
+          <li><a href="/en-us/blog/how-to-ask-for-a-raise-2026/">How to Ask for a Raise (2026)</a></li>
+          <li><a href="/en-us/blog/what-is-an-annual-salary-2026/">What Is an Annual Salary? (2026)</a></li>
+          <li><a href="/en-us/blog/how-to-calculate-your-paycheck-2026/">How to Calculate Your Paycheck (2026)</a></li>
+          <li><a href="/en-us/blog/salary-to-hourly-conversion-2026/">Salary to Hourly Conversion (2026)</a></li>
+          <li><a href="/en-us/blog/take-home-pay-explained-2026/">Take-Home Pay Explained (2026)</a></li>
+        </ul>
+      </section>
+
+    </article>
+  </main>
+</BaseLayout>
