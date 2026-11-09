@@ -1,0 +1,403 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import { buildLocalePath } from '../../../../i18n/utils';
+
+const locale = 'en-US' as const;
+
+const title = 'How Much House Can You Afford on Your Salary? (2026 Guide)';
+
+const description =
+  'Work out how much house you can afford from your salary with the 28/36 rule: turn your pay into a maximum monthly payment, then see what that buys at a 7.28% rate with 20% down.';
+
+const canonical = '/en-us/blog/how-much-house-can-you-afford-2026/';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: '2026-11-09',
+  dateModified: '2026-11-09',
+  author: {
+    '@type': 'Organization',
+    name: 'PayRenTax',
+    url: 'https://payrentax.me',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'PayRenTax',
+    url: 'https://payrentax.me',
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': 'https://payrentax.me/en-us/blog/how-much-house-can-you-afford-2026/',
+  },
+};
+
+const faqItems = [
+  {
+    q: 'How much house can I afford on a $60,000 salary?',
+    a: 'Using the 28% rule, a $60,000 salary gives a gross monthly income of $5,000, so the maximum monthly housing payment is $5,000 × 0.28 = $1,400. That $1,400 has to cover principal, interest, property tax, and insurance together.',
+  },
+  {
+    q: 'What is the 28/36 rule?',
+    a: 'The 28/36 rule is the guideline lenders use: your total monthly housing payment should not exceed 28% of your gross monthly income, and your total monthly debts including housing should not exceed 36% of your gross monthly income.',
+  },
+  {
+    q: 'What does PITI stand for?',
+    a: 'PITI stands for principal, interest, property tax, and insurance — the four parts of a monthly mortgage payment. The 28% rule applies to the whole PITI amount, not just principal and interest.',
+  },
+  {
+    q: 'How much is a 20% down payment on a $250,000 house?',
+    a: 'A 20% down payment on a $250,000 house is $250,000 × 0.20 = $50,000, leaving a loan of $200,000. On a $200,000 house the same 20% down payment is $40,000, and on a $300,000 house it is $60,000.',
+  },
+  {
+    q: 'Does the state I live in change how much house I can afford?',
+    a: 'Yes. Property tax rates on the PayRenTax calculator page range from 0.29% in Hawaii to 1.88% in New Jersey and Illinois, so the same house can cost about $265 a month more in tax in a high-tax state than in a low-tax state — and that tax comes out of the same 28% budget.',
+  },
+];
+
+---
+
+<BaseLayout locale={locale} title={title} description={description} canonical={canonical}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((f) => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a },
+        })),
+      })}
+    />
+  </Fragment>
+
+  <main class="page">
+    <Breadcrumbs locale={locale} trail={[{ label: 'Blog', href: buildLocalePath(locale, 'blog') }, { label: 'How Much House Can You Afford', href: buildLocalePath(locale, 'blog/how-much-house-can-you-afford-2026') }]} />
+    <article class="article">
+      <header class="article-header">
+        <p class="article-date">November 9, 2026</p>
+        <h1>{title}</h1>
+        <p class="article-intro">{description}</p>
+      </header>
+
+      <p>
+        A salary tells you what you earn, but it does not directly tell you
+        what house you can buy. The link between the two is your monthly
+        housing payment: lenders compare it with your monthly income, and the
+        comparison they use is the 28/36 rule. This guide shows how to turn
+        any salary into a maximum monthly payment, what goes into that
+        payment, and what it buys — using only the figures on our house
+        affordability calculator page and simple arithmetic.
+      </p>
+
+      <div class="tldr-box">
+        <p><strong>TL;DR:</strong></p>
+        <ul>
+          <li>
+            <strong>Max monthly housing payment</strong> = gross monthly
+            income × 28%.
+          </li>
+          <li>
+            On a <strong>$60,000 salary</strong>, that is $5,000 × 0.28 =
+            <strong>$1,400 a month</strong>.
+          </li>
+          <li>
+            The payment is <strong>PITI</strong>: principal, interest,
+            property tax, and insurance — all four together.
+          </li>
+          <li>
+            A <strong>20% down payment</strong> means the loan is 80% of the
+            home price: $40,000 down on a $200,000 house.
+          </li>
+          <li>
+            Your <strong>state changes the answer</strong>: property tax
+            runs from 0.29% to 1.88%, a difference of about $265 a month on
+            a $200,000 house.
+          </li>
+        </ul>
+      </div>
+
+      <nav class="toc" aria-label="On this page">
+        <p><strong>On this page</strong></p>
+        <ul>
+          <li><a href="#what-it-means">What "How Much House Can I Afford" Means</a></li>
+          <li><a href="#rule">The 28% Rule in 3 Steps</a></li>
+          <li><a href="#piti">What Goes Into Your Monthly Payment</a></li>
+          <li><a href="#example">Worked Example: A $200,000 Home on a $60,000 Salary</a></li>
+          <li><a href="#state">Why Your State Changes the Answer</a></li>
+          <li><a href="#faq">Frequently Asked Questions</a></li>
+        </ul>
+      </nav>
+
+      <section id="what-it-means" class="article-section">
+        <h2>What "How Much House Can I Afford" Means</h2>
+        <p>
+          "How much house can I afford" is really a question about a monthly
+          payment, not a house price. A lender does not start from the price
+          of a house; it starts from your income and works out the largest
+          monthly payment that income can support. The house price follows
+          from that payment, the interest rate, the down payment, and the
+          property tax where you live.
+        </p>
+        <p>
+          The guideline lenders use is the <strong>28/36 rule</strong>, which
+          is stated on our
+          <a href="/en-us/salary/house-affordability/">house affordability
+          calculator</a> page. It has two parts. The front-end ratio says
+          your total monthly housing payment should not exceed 28% of your
+          gross monthly income. The back-end ratio says your total monthly
+          debts — housing plus everything else, such as car loans and
+          student loans — should not exceed 36% of your gross monthly
+          income. Both ratios use gross income, before deductions, so start
+          from the salary figure itself, not your take-home pay. Our guide
+          on
+          <a href="/en-us/blog/take-home-pay-explained-2026/">take-home
+          pay</a> explains the difference between the two.
+        </p>
+      </section>
+
+      <section id="rule" class="article-section">
+        <h2>The 28% Rule in 3 Steps</h2>
+        <p>
+          Finding your maximum monthly housing payment takes three steps,
+          and you only need your annual salary:
+        </p>
+
+        <div class="formula-box">
+          <p><strong>Gross monthly income = annual salary ÷ 12</strong></p>
+          <p><strong>Max monthly housing payment = gross monthly income × 0.28</strong></p>
+        </div>
+
+        <ol>
+          <li>
+            <strong>Divide your salary by 12.</strong> That is your gross
+            monthly income.
+          </li>
+          <li>
+            <strong>Multiply by 0.28.</strong> That is the largest monthly
+            housing payment under the 28% rule.
+          </li>
+          <li>
+            <strong>Multiply by 0.36 for the back-end check.</strong> That is
+            the largest your total monthly debts, housing included, should
+            be.
+          </li>
+        </ol>
+
+        <div class="example-box">
+          <p><strong>Example: $60,000 salary</strong></p>
+          <ul>
+            <li>Gross monthly income: $60,000 ÷ 12 = <strong>$5,000</strong></li>
+            <li>Max housing payment: $5,000 × 0.28 = <strong>$1,400 per month</strong></li>
+            <li>Max total debts: $5,000 × 0.36 = <strong>$1,800 per month</strong></li>
+          </ul>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Annual salary</th>
+              <th>Gross monthly income</th>
+              <th>Max housing payment (28%)</th>
+              <th>Max total debts (36%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>$50,000</td>
+              <td>$4,166.67</td>
+              <td>$1,166.67</td>
+              <td>$1,500.00</td>
+            </tr>
+            <tr>
+              <td>$60,000</td>
+              <td>$5,000.00</td>
+              <td>$1,400.00</td>
+              <td>$1,800.00</td>
+            </tr>
+            <tr>
+              <td>$75,000</td>
+              <td>$6,250.00</td>
+              <td>$1,750.00</td>
+              <td>$2,250.00</td>
+            </tr>
+            <tr>
+              <td>$80,000</td>
+              <td>$6,666.67</td>
+              <td>$1,866.67</td>
+              <td>$2,400.00</td>
+            </tr>
+            <tr>
+              <td>$100,000</td>
+              <td>$8,333.33</td>
+              <td>$2,333.33</td>
+              <td>$3,000.00</td>
+            </tr>
+            <tr>
+              <td>$125,000</td>
+              <td>$10,416.67</td>
+              <td>$2,916.67</td>
+              <td>$3,750.00</td>
+            </tr>
+            <tr>
+              <td>$150,000</td>
+              <td>$12,500.00</td>
+              <td>$3,500.00</td>
+              <td>$4,500.00</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+          The back-end figure matters as much as the front-end one. On a
+          $60,000 salary, the 36% limit is $1,800 a month for all debts
+          combined. If your housing payment is $1,400, that leaves $400 a
+          month for every other debt payment. If your other debts are larger
+          than that, the house you can afford is smaller than the 28% figure
+          alone suggests. You can check the salary behind any of these
+          figures with our
+          <a href="/en-us/salary/annual-salary-calculator/">annual salary
+          calculator</a>.
+        </p>
+      </section>
+
+      <section id="piti" class="article-section">
+        <h2>What Goes Into Your Monthly Payment</h2>
+        <p>
+          The monthly payment the 28% rule limits is PITI: principal,
+          interest, property tax, and insurance. All four parts come out of
+          the same budget, so a high property tax leaves less room for
+          principal and interest — and therefore buys a cheaper house.
+        </p>
+        <ul>
+          <li>
+            <strong>Principal and interest.</strong> This is the loan itself.
+            Our calculator page uses a 7.28% 30-year fixed rate, from the
+            Freddie Mac Primary Mortgage Market Survey for the week ending
+            October 1, 2026. At that rate, every $160,000 borrowed costs
+            $1,094.74 a month in principal and interest.
+          </li>
+          <li>
+            <strong>Property tax.</strong> The calculator page uses each
+            state's effective rate on owner-occupied housing, from 0.29% in
+            Hawaii to 1.88% in New Jersey and Illinois. On a $200,000 house,
+            that is $48.33 a month at 0.29% and $313.33 a month at 1.88%.
+          </li>
+          <li>
+            <strong>Homeowner's insurance.</strong> The calculator page uses
+            0.20% of the home value per year. On a $200,000 house, that is
+            $400 a year, or $33.33 a month.
+          </li>
+          <li>
+            <strong>Down payment.</strong> The calculator page assumes 20%
+            down, which also means no private mortgage insurance. A 20%
+            down payment is $40,000 on a $200,000 house, $50,000 on a
+            $250,000 house, and $60,000 on a $300,000 house — and the loan
+            is the remaining 80%.
+          </li>
+        </ul>
+        <p>
+          To see your own numbers instantly, run your salary and state
+          through our
+          <a href="/en-us/salary/house-affordability/">house affordability
+          calculator</a>, which applies the same 28% rule, rate, down
+          payment, and state tax figures.
+        </p>
+      </section>
+
+      <section id="example" class="article-section">
+        <h2>Worked Example: A $200,000 Home on a $60,000 Salary</h2>
+        <p>
+          Take a $60,000 salary and a $200,000 house, using the calculator
+          page's figures: 20% down, a 7.28% 30-year fixed rate, and the
+          lowest property tax rate of 0.29%. The steps are:
+        </p>
+
+        <div class="example-box">
+          <p><strong>Example: $60,000 salary, $200,000 house, 0.29% property tax</strong></p>
+          <ul>
+            <li>Down payment: $200,000 × 0.20 = <strong>$40,000</strong></li>
+            <li>Loan: $200,000 − $40,000 = <strong>$160,000</strong></li>
+            <li>Principal and interest: <strong>$1,094.74 per month</strong></li>
+            <li>Property tax: $200,000 × 0.0029 ÷ 12 = <strong>$48.33 per month</strong></li>
+            <li>Insurance: $200,000 × 0.0020 ÷ 12 = <strong>$33.33 per month</strong></li>
+            <li>Total PITI: $1,094.74 + $48.33 + $33.33 = <strong>$1,176.40 per month</strong></li>
+          </ul>
+        </div>
+
+        <p>
+          The 28% limit on a $60,000 salary is $1,400 a month, so a $1,176.40
+          payment fits — with $223.60 a month of room to spare. The 36%
+          back-end limit is $1,800, so after this housing payment there is
+          $623.60 a month left for all other debt payments combined. If your
+          other debts are within that, the house fits both parts of the
+          rule. To check what the same salary means per paycheck, run it
+          through our
+          <a href="/en-us/salary/paycheck-calculator/">paycheck
+          calculator</a> — our guide on
+          <a href="/en-us/blog/how-to-calculate-your-paycheck-2026/">how to
+          calculate your paycheck</a> explains the steps.
+        </p>
+      </section>
+
+      <section id="state" class="article-section">
+        <h2>Why Your State Changes the Answer</h2>
+        <p>
+          The same salary and the same house price do not buy the same house
+          everywhere, because property tax is part of the monthly payment.
+          On the $200,000 house above, the tax alone is $48.33 a month at
+          Hawaii's 0.29% rate and $313.33 a month at New Jersey's 1.88%
+          rate — a difference of $265.00 a month for the same house:
+        </p>
+
+        <div class="example-box">
+          <p><strong>Same $200,000 house, same $60,000 salary</strong></p>
+          <ul>
+            <li>At 0.29% property tax: $1,094.74 + $48.33 + $33.33 = <strong>$1,176.40 per month — fits the $1,400 limit</strong></li>
+            <li>At 1.88% property tax: $1,094.74 + $313.33 + $33.33 = <strong>$1,441.40 per month — $41.40 over the $1,400 limit</strong></li>
+          </ul>
+        </div>
+
+        <p>
+          In the high-tax case, the payment is $41.40 over the limit, so the
+          buyer would need a cheaper house, a larger down payment, or a
+          higher salary to make the same $200,000 house fit. That is why the
+          calculator asks for your state first: the tax rate is set before
+          any of the other math begins. If you are weighing renting against
+          buying, our guide on
+          <a href="/en-us/blog/how-much-rent-can-i-afford-2026/">how much
+          rent you can afford</a> applies the same kind of income-based
+          budget to rent instead.
+        </p>
+      </section>
+
+      <section id="faq" class="article-section">
+        <h2>Frequently Asked Questions</h2>
+        {faqItems.map((item) => (
+          <>
+            <h3>{item.q}</h3>
+            <p>{item.a}</p>
+          </>
+        ))}
+      </section>
+
+      <section id="related" class="article-section">
+        <h2>Related Articles</h2>
+        <ul>
+          <li><a href="/en-us/blog/how-much-rent-can-i-afford-2026/">How Much Rent Can I Afford in 2026?</a></li>
+          <li><a href="/en-us/blog/what-is-an-annual-salary-2026/">What Is an Annual Salary? (2026)</a></li>
+          <li><a href="/en-us/blog/how-to-calculate-your-paycheck-2026/">How to Calculate Your Paycheck (2026)</a></li>
+          <li><a href="/en-us/blog/take-home-pay-explained-2026/">Take-Home Pay Explained (2026)</a></li>
+          <li><a href="/en-us/blog/salary-to-hourly-conversion-2026/">Salary to Hourly Conversion (2026)</a></li>
+        </ul>
+      </section>
+
+    </article>
+  </main>
+</BaseLayout>
