@@ -1,4 +1,5 @@
 ---
+import CategoryResource from '../../../components/content/CategoryResource.astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/navigation/Breadcrumbs.astro';
 import { getDictionary } from '../../../i18n/dictionaries';
@@ -49,4 +50,5 @@ const pages = [
       ))}
     </ul>
   </section>
+  <CategoryResource locale="el-GR" category="labor" />
 </BaseLayout>
