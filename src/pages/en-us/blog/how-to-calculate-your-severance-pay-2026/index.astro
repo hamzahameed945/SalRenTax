@@ -1,0 +1,442 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import { buildLocalePath } from '../../../../i18n/utils';
+
+const locale = 'en-US' as const;
+
+const title = 'How to Calculate Your Severance Pay in 2026';
+
+const description =
+  'Severance usually runs 1–2 weeks of pay per year of service. On an $85,000 salary with 5 years of service, that is about $8,173 to $16,346 — learn how the benchmark works, how it is taxed, and what to check before you sign.';
+
+const canonical = '/en-us/blog/how-to-calculate-your-severance-pay-2026/';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: '2026-11-11',
+  dateModified: '2026-11-11',
+  author: {
+    '@type': 'Organization',
+    name: 'PayRenTax',
+    url: 'https://payrentax.me',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'PayRenTax',
+    url: 'https://payrentax.me',
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': 'https://payrentax.me/en-us/blog/how-to-calculate-your-severance-pay-2026/',
+  },
+};
+
+const faqItems = [
+  {
+    q: 'Is severance pay required by law in the US?',
+    a: 'No. There is no US federal law that requires employers to offer severance pay. Severance is normally a matter of company policy, an employment contract, or a negotiated separation agreement. Some states have their own rules on final pay timing, and the federal WARN Act requires advance notice of certain mass layoffs, but neither creates a general right to severance.',
+  },
+  {
+    q: 'How is severance pay taxed?',
+    a: 'Severance pay is taxed as ordinary income, just like wages. Employers usually withhold federal income tax at the flat 22% supplemental-wage rate, plus Social Security and Medicare. The 22% is only withholding — your actual tax depends on your total income for the year, so a large lump sum can push you into a higher bracket or leave you owed a refund at tax time.',
+  },
+  {
+    q: 'How many weeks of severance per year of service is typical?',
+    a: 'The widely cited market benchmark is 1–2 weeks of pay per year of service, with senior staff often receiving more: roughly 1× the benchmark for individual contributors, 1.5× for managers and 2× for executives. These are market norms, not legal minimums, and actual packages vary widely by company, industry and role.',
+  },
+  {
+    q: 'Can I negotiate my severance package?',
+    a: 'Yes. Severance terms are frequently negotiable, especially the non-cash parts: extended healthcare coverage, outplacement services, the wording of any non-compete or non-disparagement clause, the payment format (lump sum vs salary continuation) and the last day of employment, which can affect benefits and equity vesting.',
+  },
+  {
+    q: 'Should I take severance as a lump sum or salary continuation?',
+    a: 'A lump sum gives you the full amount at once, which can be useful if you expect to find work quickly, but a large payment in one tax year may be taxed less efficiently. Salary continuation spreads payments over time and sometimes keeps benefits running longer. Which is better depends on your tax situation, benefit needs and how soon you expect new income.',
+  },
+];
+
+---
+
+<BaseLayout locale={locale} title={title} description={description} canonical={canonical}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((f) => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a },
+        })),
+      })}
+    />
+  </Fragment>
+
+  <main class="page">
+    <Breadcrumbs locale={locale} trail={[{ label: 'Blog', href: buildLocalePath(locale, 'blog') }, { label: 'How to Calculate Your Severance Pay', href: buildLocalePath(locale, 'blog/how-to-calculate-your-severance-pay-2026') }]} />
+    <article class="article">
+      <header class="article-header">
+        <p class="article-date">November 11, 2026</p>
+        <h1>{title}</h1>
+        <p class="article-intro">{description}</p>
+      </header>
+
+      <p>
+        Losing a job is stressful enough without having to decode the
+        separation agreement that comes with it. Severance pay is the
+        money an employer offers when your employment ends — usually
+        after a layoff — and the headline number is almost always quoted
+        in <strong>weeks of pay</strong>. This guide shows how to work
+        out what a typical package looks like for your salary, your
+        years of service and your seniority, using only the figures on
+        our
+        <a href="/en-us/labor/severance-calculator/">severance
+        calculator</a> page and simple arithmetic.
+      </p>
+
+      <div class="tldr-box">
+        <p><strong>TL;DR:</strong></p>
+        <ul>
+          <li>
+            The market benchmark is <strong>1–2 weeks of pay per year
+            of service</strong> — more for managers and executives.
+          </li>
+          <li>
+            Weekly pay = annual salary ÷ 52. Severance = weeks of pay
+            × weekly pay.
+          </li>
+          <li>
+            On an <strong>$85,000 salary</strong> with 5 years of
+            service, an individual contributor's benchmark is about
+            <strong>$8,173 to $16,346</strong>.
+          </li>
+          <li>
+            Severance is taxed as ordinary income, usually with
+            <strong>22% federal tax withheld</strong> — but that is
+            only withholding, not your final tax.
+          </li>
+          <li>
+            No US federal law requires severance — it comes from company
+            policy, a contract, or negotiation.
+          </li>
+        </ul>
+      </div>
+
+      <nav class="toc" aria-label="On this page">
+        <p><strong>On this page</strong></p>
+        <ul>
+          <li><a href="#what-it-is">What Severance Pay Is (and Is Not)</a></li>
+          <li><a href="#benchmark">The 1–2 Weeks Rule: How the Benchmark Works</a></li>
+          <li><a href="#example">Worked Example: $85,000 Salary, 5 Years of Service</a></li>
+          <li><a href="#tax">How Severance Pay Is Taxed</a></li>
+          <li><a href="#before-you-sign">Before You Sign: What to Negotiate</a></li>
+          <li><a href="#faq">Frequently Asked Questions</a></li>
+        </ul>
+      </nav>
+
+      <section id="what-it-is" class="article-section">
+        <h2>What Severance Pay Is (and Is Not)</h2>
+        <p>
+          Severance pay is a payment an employer makes when employment
+          ends, most often after a layoff or a restructuring. It is
+          usually quoted as a number of <strong>weeks of pay</strong> —
+          for example, "8 weeks" — and it is separate from your final
+          paycheck, any unused vacation payout, and unemployment
+          benefits. The first thing to understand is that severance is
+          not a legal right in the United States: there is
+          <strong>no US federal law that requires employers to offer
+          severance pay</strong>. It normally comes from company policy,
+          an employment contract, or a negotiated separation agreement.
+          Some states have their own rules on the timing of final pay,
+          and the federal WARN Act requires advance notice of certain
+          mass layoffs — but neither creates a general right to
+          severance.
+        </p>
+        <p>
+          Because severance is usually offered rather than owed, the
+          number you are first offered is a starting point, not a final
+          answer. The benchmark below tells you what a typical package
+          looks like in the US market, so you can tell whether an offer
+          is in line, below market, or generous. Our
+          <a href="/en-us/labor/severance-calculator/">severance
+          calculator</a> runs the same benchmark for your own numbers
+          and compares an offer against it. The calculator shows what
+          packages typically look like — it is not legal advice and does
+          not create any entitlement.
+        </p>
+      </section>
+
+      <section id="benchmark" class="article-section">
+        <h2>The 1–2 Weeks Rule: How the Benchmark Works</h2>
+        <p>
+          The most widely cited rule of thumb for US severance is
+          <strong>1–2 weeks of pay per year of service</strong>. The
+          calculator multiplies that range by a seniority factor drawn
+          from observed market practice: individual contributors get
+          roughly 1× the benchmark, managers about 1.5×, and executives
+          about 2×. These are market norms, not legal minimums, and
+          actual packages vary widely by company, industry and role.
+        </p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Seniority</th>
+              <th>Multiplier</th>
+              <th>Benchmark for 5 years of service</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Individual contributor</td>
+              <td>1.0×</td>
+              <td>5–10 weeks of pay</td>
+            </tr>
+            <tr>
+              <td>Manager</td>
+              <td>1.5×</td>
+              <td>7.5–15 weeks of pay</td>
+            </tr>
+            <tr>
+              <td>Executive</td>
+              <td>2.0×</td>
+              <td>10–20 weeks of pay</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+          The calculation itself has two steps. First, work out your
+          weekly pay. Second, multiply it by the number of weeks in
+          your benchmark range:
+        </p>
+
+        <div class="formula-box">
+          <p><strong>Weekly pay = annual salary ÷ 52</strong></p>
+          <p><strong>Weeks of pay = years of service × 1–2 × seniority multiplier</strong></p>
+          <p><strong>Severance = weeks of pay × weekly pay</strong></p>
+        </div>
+
+        <p>
+          Company policy, industry norms, the circumstances of the
+          departure and individual negotiation all move real packages
+          above or below this range. A long-tenured employee at a
+          company with a generous policy can receive far more than the
+          benchmark, while a short-tenured employee at a company with
+          no formal policy may receive less — or nothing at all.
+        </p>
+      </section>
+
+      <section id="example" class="article-section">
+        <h2>Worked Example: $85,000 Salary, 5 Years of Service</h2>
+        <p>
+          Take an individual contributor who earned
+          <strong>$85,000</strong> a year and worked at the company for
+          <strong>5 years</strong>. The severance calculator page uses
+          the same example as its default:
+        </p>
+
+        <div class="example-box">
+          <p><strong>Example: $85,000 salary, 5 years, individual contributor (1.0×)</strong></p>
+          <ul>
+            <li>Weekly pay: $85,000 ÷ 52 = <strong>$1,634.62</strong></li>
+            <li>Weeks of pay: 5 years × 1–2 weeks × 1.0 = <strong>5–10 weeks</strong></li>
+            <li>Low end: 5 × $1,634.62 = <strong>$8,173.08</strong></li>
+            <li>High end: 10 × $1,634.62 = <strong>$16,346.15</strong></li>
+            <li>Midpoint of the range: <strong>$12,259.61</strong></li>
+          </ul>
+        </div>
+
+        <p>
+          The same math works at other salaries and seniority levels.
+          A manager on $120,000 with 8 years of service has weekly pay
+          of $2,307.69 and a benchmark of 12–24 weeks (8 × 1–2 × 1.5),
+          which is $27,692.31 to $55,384.62. An individual contributor
+          on $60,000 with 3 years of service has weekly pay of
+          $1,153.85 and a benchmark of 3–6 weeks, or $3,461.54 to
+          $6,923.08.
+        </p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Salary</th>
+              <th>Years</th>
+              <th>Seniority</th>
+              <th>Weeks</th>
+              <th>Benchmark range</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>$60,000</td>
+              <td>3</td>
+              <td>Individual contributor</td>
+              <td>3–6</td>
+              <td>$3,461.54 – $6,923.08</td>
+            </tr>
+            <tr>
+              <td>$85,000</td>
+              <td>5</td>
+              <td>Individual contributor</td>
+              <td>5–10</td>
+              <td>$8,173.08 – $16,346.15</td>
+            </tr>
+            <tr>
+              <td>$120,000</td>
+              <td>8</td>
+              <td>Manager</td>
+              <td>12–24</td>
+              <td>$27,692.31 – $55,384.62</td>
+            </tr>
+            <tr>
+              <td>$150,000</td>
+              <td>10</td>
+              <td>Executive</td>
+              <td>20–40</td>
+              <td>$57,692.31 – $115,384.62</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+          Notice how much seniority matters: the executive on $150,000
+          with 10 years of service has a benchmark range roughly seven
+          times the individual contributor on $60,000 with 3 years —
+          even though the salary is only two and a half times larger.
+          Years of service and the seniority multiplier compound. To
+          see your own numbers instantly, run your salary, years of
+          service and seniority through our
+          <a href="/en-us/labor/severance-calculator/">severance
+          calculator</a> — you can also enter the weeks you were
+          offered to see whether the offer sits below, within, or above
+          the market benchmark.
+        </p>
+      </section>
+
+      <section id="tax" class="article-section">
+        <h2>How Severance Pay Is Taxed</h2>
+        <p>
+          Severance pay is taxed as <strong>ordinary income</strong>,
+          just like wages. Employers usually withhold federal income tax
+          at the flat <strong>22% supplemental-wage rate</strong>, plus
+          Social Security and Medicare. But the 22% is only withholding
+          — your actual tax depends on your total income for the year.
+          A large lump sum can push you into a higher bracket, or leave
+          you owed a refund at tax time if too much was withheld.
+        </p>
+
+        <div class="example-box">
+          <p><strong>Example: $20,000 lump-sum severance</strong></p>
+          <ul>
+            <li>Federal withholding at the 22% supplemental rate: 22% × $20,000 = <strong>$4,400</strong></li>
+            <li>Social Security and Medicare are withheld on top of that amount</li>
+            <li>Your actual tax on the $20,000 depends on your total income for the year — the $4,400 is an estimate, not the final bill</li>
+          </ul>
+        </div>
+
+        <p>
+          That distinction matters most when severance arrives in a
+          single tax year. If you are laid off early in the year and
+          find new work quickly, the lump sum stacks on top of your new
+          salary and your total income — and your real tax rate — may
+          be higher than the 22% withheld. If you stay out of work for
+          the rest of the year, your total income may be lower than
+          usual and some of the withholding may come back as a refund
+          when you file. Our guide on
+          <a href="/en-us/blog/how-to-estimate-your-tax-refund-2026/">how
+          to estimate your tax refund</a> shows how withholding and
+          true liability are compared at filing time, and our
+          <a href="/en-us/blog/how-to-calculate-your-paycheck-2026/">paycheck
+          guide</a> shows where each deduction appears on a paystub.
+          Whether the payment arrives as one lump sum or spread out as
+          salary continuation also changes the tax picture, which is
+          covered in the next section.
+        </p>
+      </section>
+
+      <section id="before-you-sign" class="article-section">
+        <h2>Before You Sign: What to Negotiate</h2>
+        <p>
+          The headline number is only part of a separation agreement.
+          Severance terms are frequently negotiable — especially the
+          non-cash parts — so before signing, consider negotiating
+          these items:
+        </p>
+        <ul>
+          <li>
+            <strong>Extended healthcare.</strong> Ask how long health
+            cover continues and whether the employer will pay COBRA
+            premiums for some months after departure.
+          </li>
+          <li>
+            <strong>Outplacement support.</strong> Career coaching and
+            job-search services cost the employer relatively little but
+            can be valuable to you.
+          </li>
+          <li>
+            <strong>Non-compete review.</strong> Have any non-compete,
+            non-solicitation or non-disparagement clause reviewed by an
+            employment lawyer before you sign — these clauses limit
+            what you can do next.
+          </li>
+          <li>
+            <strong>Lump sum vs salary continuation.</strong> A lump sum
+            gives you the full amount at once, which can be useful if
+            you expect to find work quickly, but a large payment in one
+            tax year may be taxed less efficiently. Salary continuation
+            spreads payments over time and sometimes keeps benefits
+            running longer. Which is better depends on your tax
+            situation, benefit needs and how soon you expect new
+            income.
+          </li>
+          <li>
+            <strong>Employment dates and references.</strong> Agree on
+            your official last day and what the company will say to
+            reference checks — the last day can also affect benefits
+            and equity vesting.
+          </li>
+        </ul>
+        <p>
+          One more practical point: separation agreements usually come
+          with a deadline and a release of claims, so do not sign under
+          time pressure without reading the whole document. If the
+          agreement is long or the clauses are unclear, a short review
+          by an employment lawyer is usually worth it — the calculator
+          page itself notes that its benchmark is general information
+          only and not legal advice. Once you know your benchmark
+          number, what will be withheld, and which non-cash terms
+          matter to you, you can judge the offer on its full value
+          rather than on the headline weeks alone.
+        </p>
+      </section>
+
+      <section id="faq" class="article-section">
+        <h2>Frequently Asked Questions</h2>
+        {faqItems.map((item) => (
+          <>
+            <h3>{item.q}</h3>
+            <p>{item.a}</p>
+          </>
+        ))}
+      </section>
+
+      <section id="related" class="article-section">
+        <h2>Related Articles</h2>
+        <ul>
+          <li><a href="/en-us/blog/how-to-calculate-your-paycheck-2026/">How to Calculate Your Paycheck (2026 Guide)</a></li>
+          <li><a href="/en-us/blog/how-to-read-your-paystub-2026/">How to Read Your Paystub: Gross Pay, Deductions, and Net Pay</a></li>
+          <li><a href="/en-us/blog/how-to-estimate-your-tax-refund-2026/">How to Estimate Your Tax Refund in 2026 (Before You File)</a></li>
+          <li><a href="/en-us/blog/how-to-ask-for-a-raise-2026/">How to Ask for a Raise: Prepare, Time It, and Make Your Case</a></li>
+          <li><a href="/en-us/blog/take-home-pay-explained-2026/">What Is Take-Home Pay? Gross Pay vs Net Pay Explained</a></li>
+        </ul>
+      </section>
+
+    </article>
+  </main>
+</BaseLayout>
