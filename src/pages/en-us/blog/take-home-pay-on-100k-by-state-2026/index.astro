@@ -1,0 +1,525 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import { buildLocalePath } from '../../../../i18n/utils';
+
+const locale = 'en-US' as const;
+
+const title = 'Take-Home Pay on $100,000 by State in 2026';
+
+const description =
+  'On a $100,000 salary in 2026, take-home pay runs from $71,004 in Oregon to $79,180 in nine states with no income tax — an $8,176 gap. See the full 50-state ranking and what it means for your paycheck.';
+
+const canonical = '/en-us/blog/take-home-pay-on-100k-by-state-2026/';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: '2026-11-12',
+  dateModified: '2026-11-12',
+  author: {
+    '@type': 'Organization',
+    name: 'PayRenTax',
+    url: 'https://payrentax.me',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'PayRenTax',
+    url: 'https://payrentax.me',
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': 'https://payrentax.me/en-us/blog/take-home-pay-on-100k-by-state-2026/',
+  },
+};
+
+const faqItems = [
+  {
+    q: 'How is take-home pay calculated in this study?',
+    a: 'Each figure assumes a single filer with a $100,000 annual salary and no pre-tax deductions, using 2026 IRS federal brackets, the 2026 Social Security wage base of $184,500, and each state’s 2026 income tax brackets. State figures are estimates.',
+  },
+  {
+    q: 'Which state has the highest take-home pay on $100,000?',
+    a: 'Nine states with no individual income tax tie for first: Alaska, Florida, Nevada, New Hampshire, South Dakota, Tennessee, Texas, Washington, and Wyoming, each leaving $79,180 after federal taxes and FICA.',
+  },
+  {
+    q: 'Which state has the lowest take-home pay on $100,000?',
+    a: 'Oregon, at $71,004 — $8,176 less than the top states, driven by its $8,176 state income tax bill.',
+  },
+  {
+    q: 'Does this include local taxes?',
+    a: 'No. City and county income taxes (for example, New York City’s) are not modeled, so actual take-home in those places is lower.',
+  },
+  {
+    q: 'Does moving to a no-income-tax state raise my take-home pay by the full gap?',
+    a: 'Only the state-tax part changes. On $100,000, the gap between the highest and lowest states is $8,176 a year because that is the difference in state tax. Federal tax and FICA are the same in every state, and the study does not model cost of living, housing, or local taxes, which can be higher in a no-income-tax state.',
+  },
+];
+
+---
+
+<BaseLayout locale={locale} title={title} description={description} canonical={canonical}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((f) => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a },
+        })),
+      })}
+    />
+  </Fragment>
+
+  <main class="page">
+    <Breadcrumbs locale={locale} trail={[{ label: 'Blog', href: buildLocalePath(locale, 'blog') }, { label: 'Take-Home Pay on $100,000 by State', href: buildLocalePath(locale, 'blog/take-home-pay-on-100k-by-state-2026') }]} />
+    <article class="article">
+      <header class="article-header">
+        <p class="article-date">November 12, 2026</p>
+        <h1>{title}</h1>
+        <p class="article-intro">{description}</p>
+      </header>
+
+      <p>
+        Two workers can earn the same $100,000 salary and take home
+        very different amounts — the only difference is the state
+        printed on their paystub. Our
+        <a href="/en-us/study/take-home-pay-100k-by-state/">2026
+        study</a> ran a $100,000 salary through federal and state tax
+        rules for all 50 states, and the result is a gap of
+        <strong>$8,176 a year</strong> between the best and worst
+        states. This guide walks through the ranking, shows what the
+        gap looks like per paycheck, and explains how the figures were
+        worked out, using only the numbers from that study and simple
+        arithmetic.
+      </p>
+
+      <div class="tldr-box">
+        <p><strong>TL;DR:</strong></p>
+        <ul>
+          <li>
+            Highest take-home on $100,000: <strong>$79,180</strong> in
+            nine states with no individual income tax.
+          </li>
+          <li>
+            Lowest take-home: <strong>$71,004</strong> in Oregon — an
+            <strong>$8,176 a year</strong> gap, or about
+            <strong>$681.33 a month</strong>.
+          </li>
+          <li>
+            Federal tax and FICA are the same in every state — the
+            whole gap comes from state income tax.
+          </li>
+          <li>
+            California is not the worst: at $73,957 it sits 44th, ahead
+            of Oregon, Hawaii, Maine and others on $100,000.
+          </li>
+          <li>
+            Figures assume a single filer with no pre-tax deductions;
+            local taxes are not counted.
+          </li>
+        </ul>
+      </div>
+
+      <nav class="toc" aria-label="On this page">
+        <p><strong>On this page</strong></p>
+        <ul>
+          <li><a href="#the-gap">The $8,176 Gap: Same Salary, Different State</a></li>
+          <li><a href="#top-10">The Top 10 States for Take-Home Pay on $100,000</a></li>
+          <li><a href="#bottom-10">The Bottom 10 States</a></li>
+          <li><a href="#how-calculated">How the Figures Are Calculated</a></li>
+          <li><a href="#your-state">What to Do With Your State's Number</a></li>
+          <li><a href="#faq">Frequently Asked Questions</a></li>
+        </ul>
+      </nav>
+
+      <section id="the-gap" class="article-section">
+        <h2>The $8,176 Gap: Same Salary, Different State</h2>
+        <p>
+          The headline result of the study is simple. A single filer
+          earning $100,000 keeps <strong>$79,180</strong> in nine
+          states — Alaska, Florida, Nevada, New Hampshire, South
+          Dakota, Tennessee, Texas, Washington and Wyoming — and only
+          <strong>$71,004</strong> in Oregon. The difference is
+          <strong>$79,180 − $71,004 = $8,176 a year</strong>. That gap
+          is the state income tax bill: $0 in the nine no-tax states
+          and $8,176 in Oregon. Federal income tax and FICA
+          (Social Security and Medicare) are identical in every state,
+          so they cannot explain any of the difference.
+        </p>
+
+        <div class="formula-box">
+          <p><strong>Take-home pay = $100,000 − federal tax − FICA − state tax</strong></p>
+          <p><strong>Gap = $79,180 − $71,004 = $8,176 a year</strong></p>
+          <p><strong>Monthly gap = $8,176 ÷ 12 = $681.33</strong></p>
+        </div>
+
+        <p>
+          Spread over the year, the gap is easier to picture in monthly
+          and per-paycheck terms:
+        </p>
+
+        <div class="example-box">
+          <p><strong>Example: the $8,176 gap, per month and per paycheck</strong></p>
+          <ul>
+            <li>Monthly take-home in a no-tax state: $79,180 ÷ 12 = <strong>$6,598.33</strong></li>
+            <li>Monthly take-home in Oregon: $71,004 ÷ 12 = <strong>$5,917.00</strong></li>
+            <li>Monthly difference: $6,598.33 − $5,917.00 = <strong>$681.33</strong></li>
+            <li>Biweekly paycheck in a no-tax state: $79,180 ÷ 26 = <strong>$3,045.38</strong></li>
+            <li>Biweekly paycheck in Oregon: $71,004 ÷ 26 = <strong>$2,730.92</strong></li>
+            <li>Difference per biweekly paycheck: <strong>about $314.46</strong></li>
+          </ul>
+        </div>
+
+        <p>
+          The effective tax rate tells the same story in percentages.
+          In the nine no-tax states, total tax is $20,820 on $100,000,
+          an effective rate of <strong>20.8%</strong>. In Oregon,
+          total tax is $28,996, an effective rate of
+          <strong>29.0%</strong>. Every other state falls between those
+          two marks. Our guide on
+          <a href="/en-us/blog/take-home-pay-explained-2026/">what
+          take-home pay is</a> explains the deductions behind those
+          totals, and our
+          <a href="/en-us/blog/how-to-calculate-your-paycheck-2026/">paycheck
+          guide</a> shows where each one appears on a paystub.
+        </p>
+      </section>
+
+      <section id="top-10" class="article-section">
+        <h2>The Top 10 States for Take-Home Pay on $100,000</h2>
+        <p>
+          Nine states tie for first place because they levy no
+          individual income tax, so their workers keep the full
+          $79,180 left after federal tax and FICA. The tenth spot goes
+          to North Dakota, the best state that does tax income: its
+          $691 state tax bill leaves <strong>$78,489</strong>, only
+          $691 behind the leaders.
+        </p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>State</th>
+              <th>Take-home</th>
+              <th>State tax</th>
+              <th>Effective rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Alaska</td>
+              <td>$79,180</td>
+              <td>$0</td>
+              <td>20.8%</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Florida</td>
+              <td>$79,180</td>
+              <td>$0</td>
+              <td>20.8%</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Nevada</td>
+              <td>$79,180</td>
+              <td>$0</td>
+              <td>20.8%</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>New Hampshire</td>
+              <td>$79,180</td>
+              <td>$0</td>
+              <td>20.8%</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>South Dakota</td>
+              <td>$79,180</td>
+              <td>$0</td>
+              <td>20.8%</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>Tennessee</td>
+              <td>$79,180</td>
+              <td>$0</td>
+              <td>20.8%</td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>Texas</td>
+              <td>$79,180</td>
+              <td>$0</td>
+              <td>20.8%</td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td>Washington</td>
+              <td>$79,180</td>
+              <td>$0</td>
+              <td>20.8%</td>
+            </tr>
+            <tr>
+              <td>9</td>
+              <td>Wyoming</td>
+              <td>$79,180</td>
+              <td>$0</td>
+              <td>20.8%</td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td>North Dakota</td>
+              <td>$78,489</td>
+              <td>$691</td>
+              <td>21.5%</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+          Just outside the top 10, Ohio ($77,146) and Arizona
+          ($77,074) round out the states where take-home stays above
+          $77,000. To run your own numbers for any of these states,
+          try the
+          <a href="/en-us/states/texas-paycheck-calculator/">Texas
+          paycheck calculator</a> or the
+          <a href="/en-us/states/florida-paycheck-calculator/">Florida
+          paycheck calculator</a> — each state has its own calculator
+          with its own 2026 brackets.
+        </p>
+      </section>
+
+      <section id="bottom-10" class="article-section">
+        <h2>The Bottom 10 States</h2>
+        <p>
+          At the other end of the ranking, Oregon is last by a wide
+          margin: its $8,176 state tax bill is more than $2,000 above
+          the next-highest state, Hawaii at $6,157. The rest of the
+          bottom 10 cluster between $4,860 and $6,157 of state tax.
+        </p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>State</th>
+              <th>Take-home</th>
+              <th>State tax</th>
+              <th>Effective rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>41</td>
+              <td>New York</td>
+              <td>$74,320</td>
+              <td>$4,860</td>
+              <td>25.7%</td>
+            </tr>
+            <tr>
+              <td>42</td>
+              <td>Virginia</td>
+              <td>$74,191</td>
+              <td>$4,989</td>
+              <td>25.8%</td>
+            </tr>
+            <tr>
+              <td>43</td>
+              <td>Massachusetts</td>
+              <td>$74,180</td>
+              <td>$5,000</td>
+              <td>25.8%</td>
+            </tr>
+            <tr>
+              <td>44</td>
+              <td>California</td>
+              <td>$73,957</td>
+              <td>$5,223</td>
+              <td>26.0%</td>
+            </tr>
+            <tr>
+              <td>45</td>
+              <td>Minnesota</td>
+              <td>$73,903</td>
+              <td>$5,277</td>
+              <td>26.1%</td>
+            </tr>
+            <tr>
+              <td>46</td>
+              <td>Kansas</td>
+              <td>$73,889</td>
+              <td>$5,291</td>
+              <td>26.1%</td>
+            </tr>
+            <tr>
+              <td>47</td>
+              <td>Delaware</td>
+              <td>$73,811</td>
+              <td>$5,369</td>
+              <td>26.2%</td>
+            </tr>
+            <tr>
+              <td>48</td>
+              <td>Maine</td>
+              <td>$73,147</td>
+              <td>$6,033</td>
+              <td>26.9%</td>
+            </tr>
+            <tr>
+              <td>49</td>
+              <td>Hawaii</td>
+              <td>$73,023</td>
+              <td>$6,157</td>
+              <td>27.0%</td>
+            </tr>
+            <tr>
+              <td>50</td>
+              <td>Oregon</td>
+              <td>$71,004</td>
+              <td>$8,176</td>
+              <td>29.0%</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+          The biggest surprise in the ranking is California. Despite
+          its reputation for high taxes, its progressive brackets leave
+          middle earners better off than Oregon, Hawaii, Maine and
+          others on $100,000 — California ranks 44th, not last, with
+          $73,957 of take-home, or $6,163.08 a month. New York is a
+          similar story: it ranks 41st at $74,320 ($6,193.33 a month),
+          but remember that local taxes are not counted — New York
+          City's income tax would push its real take-home lower. Check
+          the
+          <a href="/en-us/states/california-paycheck-calculator/">California
+          paycheck calculator</a>, the
+          <a href="/en-us/states/new-york-paycheck-calculator/">New
+          York paycheck calculator</a> or the
+          <a href="/en-us/states/oregon-paycheck-calculator/">Oregon
+          paycheck calculator</a> for the full breakdown in any of
+          these states.
+        </p>
+      </section>
+
+      <section id="how-calculated" class="article-section">
+        <h2>How the Figures Are Calculated</h2>
+        <p>
+          Every figure in the ranking comes from the same setup, so
+          the states are directly comparable. The study assumes a
+          <strong>single filer</strong> earning
+          <strong>$100,000 in wages</strong> with
+          <strong>no pre-tax deductions</strong> — no 401(k), no
+          health-insurance premiums taken out before tax. It applies
+          the 2026 IRS federal brackets, the 2026 Social Security wage
+          base of $184,500, and each state's 2026 income tax brackets.
+          Because $100,000 is below the $184,500 wage base, Social
+          Security applies to the full salary in this study.
+        </p>
+        <p>
+          Three things are deliberately left out. State personal
+          exemptions and credits are not modeled, local (city and
+          county) income taxes are not modeled, and the figures are
+          estimates — your real paycheck will differ if you have
+          pre-tax deductions, a different filing status, or income
+          other than wages. That is why the study's own page says the
+          figures are estimates and points readers to the
+          <a href="/en-us/states/">state paycheck calculators</a> to
+          run their own numbers. The method is the same one behind our
+          <a href="/en-us/blog/how-to-calculate-your-paycheck-2026/">paycheck
+          guide</a>: start with gross pay, subtract each tax in turn,
+          and what is left is take-home pay.
+        </p>
+      </section>
+
+      <section id="your-state" class="article-section">
+        <h2>What to Do With Your State's Number</h2>
+        <p>
+          A ranking is only useful if it changes a decision, so here
+          is how to use it:
+        </p>
+        <ul>
+          <li>
+            <strong>Find your state.</strong> The full 50-state
+            ranking, with every state from Alaska to Oregon, is on our
+            <a href="/en-us/study/take-home-pay-100k-by-state/">2026
+            study page</a>. If your salary is not $100,000, run your
+            own salary through your state's paycheck calculator
+            instead — the ranking order can shift at other incomes.
+          </li>
+          <li>
+            <strong>Compare the monthly figure, not just the annual
+            one.</strong> A $681.33 monthly gap is the number that
+            shows up in a budget; the annual figure is what it adds
+            up to. Our
+            <a href="/en-us/blog/how-much-rent-can-i-afford-2026/">rent
+            affordability guide</a> and
+            <a href="/en-us/blog/how-much-house-can-you-afford-2026/">house
+            affordability guide</a> both start from monthly take-home
+            pay, so use the monthly number there.
+          </li>
+          <li>
+            <strong>Remember what is not counted.</strong> Local taxes
+            are excluded, so if you live in a city with its own income
+            tax, your real take-home is lower than the ranking shows.
+            Cost of living is not in the study at all — a state with
+            no income tax can still cost more overall once housing
+            and other prices are counted.
+          </li>
+          <li>
+            <strong>Use it for planning, not for a move.</strong>
+            State tax is one line on a paystub, not a reason to
+            relocate on its own. If you are weighing an offer in
+            another state, compare the full package — salary, state
+            tax, local tax and living costs — with the same
+            calculator, and check what the extra take-home is worth
+            against the move itself.
+          </li>
+        </ul>
+        <p>
+          The ranking also settles a common argument: a high-tax
+          reputation does not always mean the lowest take-home pay.
+          California at 44th and New York at 41st both beat Oregon,
+          Hawaii and Maine on $100,000 — and the nine states at the
+          top are there for one reason only, that they charge $0 of
+          state income tax. Run your state, your salary and your filing
+          status through the calculator before drawing any conclusion
+          about your own paycheck.
+        </p>
+      </section>
+
+      <section id="faq" class="article-section">
+        <h2>Frequently Asked Questions</h2>
+        {faqItems.map((item) => (
+          <>
+            <h3>{item.q}</h3>
+            <p>{item.a}</p>
+          </>
+        ))}
+      </section>
+
+      <section id="related" class="article-section">
+        <h2>Related Articles</h2>
+        <ul>
+          <li><a href="/en-us/blog/take-home-pay-explained-2026/">What Is Take-Home Pay? Gross Pay vs Net Pay Explained</a></li>
+          <li><a href="/en-us/blog/how-to-calculate-your-paycheck-2026/">How to Calculate Your Paycheck (2026 Guide)</a></li>
+          <li><a href="/en-us/blog/how-much-house-can-you-afford-2026/">How Much House Can You Afford on Your Salary? (2026 Guide)</a></li>
+          <li><a href="/en-us/blog/how-much-rent-can-i-afford-2026/">How Much Rent Can I Afford in 2026?</a></li>
+          <li><a href="/en-us/blog/how-to-estimate-your-tax-refund-2026/">How to Estimate Your Tax Refund in 2026 (Before You File)</a></li>
+        </ul>
+      </section>
+
+    </article>
+  </main>
+</BaseLayout>
