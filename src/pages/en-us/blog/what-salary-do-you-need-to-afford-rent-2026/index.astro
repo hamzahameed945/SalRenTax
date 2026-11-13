@@ -1,0 +1,318 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import { buildLocalePath } from '../../../../i18n/utils';
+
+const locale = 'en-US' as const;
+
+const title = 'What Salary Do You Need to Afford $1,500 Rent? (2026 Guide)';
+
+const description =
+  'Flip the 30% rule around: $1,500 rent needs a $60,000 salary, $2,000 rent needs $80,000 — plus what the number looks like per paycheck and why take-home pay gives a stricter answer.';
+
+const canonical = '/en-us/blog/what-salary-do-you-need-to-afford-rent-2026/';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: '2026-11-13',
+  dateModified: '2026-11-13',
+  author: {
+    '@type': 'Organization',
+    name: 'PayRenTax',
+    url: 'https://payrentax.me',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'PayRenTax',
+    url: 'https://payrentax.me',
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': 'https://payrentax.me/en-us/blog/what-salary-do-you-need-to-afford-rent-2026/',
+  },
+};
+
+const faqItems = [
+  {
+    q: 'What salary do I need to afford $1,500 rent?',
+    a: 'At the 30% rule, $60,000 a year in gross pay: $1,500 / 0.30 = $5,000 a month, times 12 = $60,000. That is the gross-pay figure; running the same rule on take-home pay needs a higher salary.',
+  },
+  {
+    q: 'What salary do I need for $2,000 rent?',
+    a: '$80,000 a year in gross pay: $2,000 / 0.30 = about $6,667 a month, times 12 = $80,000. For $2,500 rent the figure is $100,000, and for $1,000 rent it is $40,000.',
+  },
+  {
+    q: 'Is the 30% rule based on gross or take-home pay?',
+    a: 'It is usually applied to gross (pre-tax) income, which is why it is only a starting point. If your take-home pay is much lower than your gross pay, check the result against your actual monthly budget and use the take-home pay figure for a more conservative estimate.',
+  },
+  {
+    q: 'Does the salary figure include utilities and other costs?',
+    a: 'No. The calculator estimates a starting rent budget from income alone. Utilities, renters insurance, parking, debt payments, and savings are not included, so compare the result with your complete monthly budget before committing to a lease.',
+  },
+  {
+    q: 'What if rent in my city is above the 30% guideline?',
+    a: 'High-cost cities often push households above 30%. In that case, look at the full budget: a lower rent share helps, but so do lower transport costs, shared housing, or a shorter lease while income grows. Do not stretch to a rent that leaves no room for essentials or an emergency fund.',
+  },
+];
+---
+
+<BaseLayout locale={locale} title={title} description={description} canonical={canonical}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((f) => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a },
+        })),
+      })}
+    />
+  </Fragment>
+
+  <main class="page">
+    <Breadcrumbs locale={locale} trail={[{ label: 'Blog', href: buildLocalePath(locale, 'blog') }, { label: 'What Salary Do You Need to Afford Rent?', href: buildLocalePath(locale, 'blog/what-salary-do-you-need-to-afford-rent-2026') }]} />
+    <article class="article">
+      <header class="article-header">
+        <p class="article-date">November 13, 2026</p>
+        <h1>{title}</h1>
+        <p class="article-intro">{description}</p>
+      </header>
+
+      <p>
+        Most rent guides start from your salary and work out what rent
+        you can afford. But when you are apartment hunting, the question
+        usually runs the other way: you have found a place at a set rent,
+        and you want to know what salary that rent needs. This guide
+        flips the PayRenTax
+        <a href="/en-us/rent/rent-affordability/">rent affordability
+        calculator</a>'s 30% rule around, so you can start from any rent
+        and work out the salary behind it — using only that rule and
+        simple arithmetic.
+      </p>
+
+      <div class="tldr-box">
+        <p><strong>TL;DR:</strong></p>
+        <ul>
+          <li>
+            The salary you need is the rent times 40: $1,500 rent needs
+            <strong>$60,000 a year</strong>, $2,000 rent needs
+            <strong>$80,000</strong>.
+          </li>
+          <li>
+            On $60,000 paid biweekly, each paycheck is
+            <strong>$2,307.69 gross</strong> — and $1,500 rent is 65% of
+            one paycheck.
+          </li>
+          <li>
+            The 30% rule is usually applied to gross pay. Run it on
+            take-home pay instead and the salary you need is higher.
+          </li>
+          <li>
+            The figure covers rent only — utilities, insurance, parking,
+            debt and savings are not included.
+          </li>
+        </ul>
+      </div>
+
+      <nav class="toc" aria-label="On this page">
+        <p><strong>On this page</strong></p>
+        <ul>
+          <li><a href="#the-formula">The Reverse 30% Rule, in One Formula</a></li>
+          <li><a href="#salary-by-rent">Salary Needed for Common Rents</a></li>
+          <li><a href="#per-paycheck">What the Salary Looks Like Per Paycheck</a></li>
+          <li><a href="#gross-vs-take-home">Gross Pay or Take-Home Pay?</a></li>
+          <li><a href="#what-it-misses">What the Number Does Not Include</a></li>
+          <li><a href="#faq">Frequently Asked Questions</a></li>
+        </ul>
+      </nav>
+
+      <section id="the-formula" class="article-section">
+        <h2>The Reverse 30% Rule, in One Formula</h2>
+        <p>
+          The rent affordability calculator starts from salary: take your
+          annual gross income, divide it by 12 for monthly income, then
+          multiply by 0.30. The formula is: (annual income / 12) × 0.30
+          = affordable monthly rent. To go the other way, solve the same
+          formula for income instead of rent.
+        </p>
+        <p>
+          Divide the monthly rent by 0.30 to get the monthly gross income
+          you need, then multiply by 12 for the annual salary. The
+          formula is: (monthly rent / 0.30) × 12 = salary needed. Because
+          12 / 0.30 = 40, there is a shortcut: <strong>multiply the
+          monthly rent by 40</strong> and you have the annual salary.
+          A $1,500 rent needs $1,500 × 40 = $60,000 a year. Treat the
+          result as a planning range, not a hard limit — debt, savings
+          goals and local prices matter too.
+        </p>
+      </section>
+
+      <section id="salary-by-rent" class="article-section">
+        <h2>Salary Needed for Common Rents</h2>
+        <p>
+          Every figure below comes from the same formula, and each one
+          matches the calculator's own examples in reverse: the
+          calculator says $50,000 supports about $1,250 in rent, $60,000
+          about $1,500, $70,000 about $1,750, $80,000 about $2,000 and
+          $100,000 about $2,500 — so those salaries are exactly what
+          those rents need.
+        </p>
+        <ul>
+          <li>
+            <strong>$1,000 rent:</strong> $40,000 a year ($1,000 / 0.30
+            = about $3,333 a month, times 12).
+          </li>
+          <li>
+            <strong>$1,250 rent:</strong> $50,000 a year ($1,250 / 0.30
+            = about $4,167 a month, times 12).
+          </li>
+          <li>
+            <strong>$1,500 rent:</strong> $60,000 a year ($1,500 / 0.30
+            = $5,000 a month, times 12).
+          </li>
+          <li>
+            <strong>$1,750 rent:</strong> $70,000 a year ($1,750 / 0.30
+            = about $5,833 a month, times 12).
+          </li>
+          <li>
+            <strong>$2,000 rent:</strong> $80,000 a year ($2,000 / 0.30
+            = about $6,667 a month, times 12).
+          </li>
+          <li>
+            <strong>$2,500 rent:</strong> $100,000 a year ($2,500 / 0.30
+            = about $8,333 a month, times 12).
+          </li>
+          <li>
+            <strong>$3,000 rent:</strong> $120,000 a year ($3,000 / 0.30
+            = $10,000 a month, times 12).
+          </li>
+        </ul>
+        <p>
+          A quick check before you use the table: the rent you are
+          testing should be the rent alone, not rent plus utilities or
+          parking. If the listing bundles those in, subtract them first
+          and run the formula on the rent itself. Our
+          <a href="/en-us/blog/how-much-rent-can-i-afford-2026/">rent
+          affordability guide</a> runs the same rule in the forward
+          direction, salary first, if you want to cross-check a figure
+          from the other side.
+        </p>
+      </section>
+
+      <section id="per-paycheck" class="article-section">
+        <h2>What the Salary Looks Like Per Paycheck</h2>
+        <p>
+          An annual salary is abstract; a paycheck is what actually
+          lands in your account. Take the headline case, $1,500 rent on
+          a $60,000 salary. Monthly gross pay is $60,000 / 12 =
+          $5,000, and the rent is 30% of that — the rule working as
+          intended.
+        </p>
+        <p>
+          If you are paid biweekly, there are 26 paychecks a year, so
+          each one is $60,000 / 26 = $2,307.69 gross. The $1,500 rent
+          is 65% of a single biweekly paycheck — which is why rent
+          usually takes more than one paycheck a month. In most months
+          you get two paychecks, $4,615.38 gross between them, and twice
+          a year a month brings three paychecks, which is the built-in
+          buffer biweekly pay gives you. If you are paid weekly, each
+          check is $60,000 / 52 = $1,153.85 gross, so the rent is about
+          one and a third weekly paychecks. Our
+          <a href="/en-us/blog/biweekly-vs-monthly-pay-2026/">biweekly
+          vs monthly pay guide</a> explains how pay frequency changes
+          the feel of a budget even though the annual total is the same.
+        </p>
+        <p>
+          Remember these are gross figures, before tax. Your take-home
+          pay per check is lower, which is why the next section matters
+          before you sign anything.
+        </p>
+      </section>
+
+      <section id="gross-vs-take-home" class="article-section">
+        <h2>Gross Pay or Take-Home Pay?</h2>
+        <p>
+          The 30% rule is usually applied to gross (pre-tax) income,
+          which is why it is only a starting point. If your take-home
+          pay is much lower than your gross pay, check the result against
+          your actual monthly budget and use the take-home pay figure
+          for a more conservative estimate.
+        </p>
+        <p>
+          Here is what that difference looks like in practice. On a
+          $100,000 salary, our
+          <a href="/en-us/blog/take-home-pay-on-100k-by-state-2026/">2026
+          take-home pay study</a> puts annual take-home pay between
+          $71,004 and $79,180 depending on the state — $5,917.00 to
+          $6,598.33 a month. At 30% of take-home pay, that supports
+          about $1,775.10 to $1,979.50 a month in rent, noticeably less
+          than the $2,500 the same salary supports at 30% of gross pay.
+          The gap between the two answers is the tax taken out before
+          the money reaches you, so if your budget is tight, run the
+          rule on take-home pay. The
+          <a href="/en-us/salary/paycheck-calculator/">paycheck
+          calculator</a> can estimate your take-home pay from your
+          salary, and our
+          <a href="/en-us/blog/take-home-pay-explained-2026/">take-home
+          pay guide</a> explains what is usually deducted and why two
+          jobs with the same salary can pay differently.
+        </p>
+      </section>
+
+      <section id="what-it-misses" class="article-section">
+        <h2>What the Number Does Not Include</h2>
+        <p>
+          The calculator estimates a starting rent budget from income
+          alone. Utilities, renters insurance, parking, debt payments
+          and savings are not included, so compare the result with your
+          complete monthly budget before committing to a lease. A rent
+          that looks affordable on income alone can still be tight once
+          those costs are added, so run the full monthly budget before
+          you commit.
+        </p>
+        <p>
+          High-cost cities often push households above 30% — in that
+          case, look at the full budget: lower transport costs, shared
+          housing, or a shorter lease while income grows can all help.
+          Do not stretch to a rent that leaves no room for essentials
+          or an emergency fund. And if the salary the formula gives you
+          is higher than what you earn now, the number still helps: it
+          tells you how far away the rent is, and whether a raise, a
+          second income or a cheaper place closes the gap. Our
+          <a href="/en-us/blog/how-to-calculate-a-salary-raise-2026/">salary
+          raise guide</a> shows how to turn a raise percentage into
+          dollars if a higher salary is the plan.
+        </p>
+      </section>
+
+      <section id="faq" class="article-section">
+        <h2>Frequently Asked Questions</h2>
+        {faqItems.map((item) => (
+          <>
+            <h3>{item.q}</h3>
+            <p>{item.a}</p>
+          </>
+        ))}
+      </section>
+
+      <section id="related" class="article-section">
+        <h2>Related Articles</h2>
+        <ul>
+          <li><a href="/en-us/blog/how-much-rent-can-i-afford-2026/">How Much Rent Can I Afford in 2026?</a></li>
+          <li><a href="/en-us/blog/how-much-house-can-you-afford-2026/">How Much House Can You Afford on Your Salary? (2026 Guide)</a></li>
+          <li><a href="/en-us/blog/take-home-pay-explained-2026/">What Is Take-Home Pay? Gross Pay vs Net Pay Explained</a></li>
+          <li><a href="/en-us/blog/how-to-calculate-your-paycheck-2026/">How to Calculate Your Paycheck (2026 Guide)</a></li>
+          <li><a href="/en-us/blog/take-home-pay-on-100k-by-state-2026/">Take-Home Pay on $100,000 by State in 2026</a></li>
+        </ul>
+      </section>
+
+    </article>
+  </main>
+</BaseLayout>
