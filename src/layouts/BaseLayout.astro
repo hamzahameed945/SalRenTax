@@ -5,7 +5,7 @@ import Footer from '../components/navigation/Footer.astro';
 import JsonLd from '../components/seo/JsonLd.astro';
 import { getDictionary } from '../i18n/dictionaries';
 import { getLocaleConfig } from '../data/locales';
-import { buildWebPageJsonLd, buildWebSiteJsonLd } from '../lib/seo/structuredData';
+import { buildOrganizationJsonLd, buildWebPageJsonLd, buildWebSiteJsonLd } from '../lib/seo/structuredData';
 import { buildHreflangLinks, buildLocaleHomepageHreflangLinks } from '../lib/seo/hreflang';
 import { resolveSiteUrl } from '../lib/seo/site';
 import type { LocaleCode } from '../i18n/types';
@@ -32,6 +32,7 @@ const hreflangLinks = equivalentPageGroup
   : buildLocaleHomepageHreflangLinks(canonicalPathname);
 const jsonLdEntries = [
   buildWebSiteJsonLd(t.common.siteName, siteUrl),
+  buildOrganizationJsonLd({ name: t.common.siteName, url: siteUrl, logo: `${siteUrl}/favicon.svg` }),
   buildWebPageJsonLd({ name: title, description, url: canonicalUrl, inLanguage: config.language }),
 ];
 ---
