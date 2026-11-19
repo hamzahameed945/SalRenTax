@@ -101,3 +101,24 @@ export function buildFaqJsonLd(
     })),
   };
 }
+
+export interface JsonLdOrganization {
+  '@context': 'https://schema.org';
+  '@type': 'Organization';
+  name: string;
+  url: string;
+  logo: string;
+}
+
+/**
+ * Site-level entity node (GEO/AEO): gives search engines and AI assistants
+ * one unambiguous organisation identity for the whole domain. Emitted once
+ * per page from BaseLayout alongside the WebSite node.
+ */
+export function buildOrganizationJsonLd(params: {
+  name: string;
+  url: string;
+  logo: string;
+}): JsonLdOrganization {
+  return { '@context': 'https://schema.org', '@type': 'Organization', ...params };
+}
