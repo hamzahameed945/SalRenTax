@@ -1,0 +1,25 @@
+# PayRenTax
+
+> PayRenTax (payrentax.me) is a free online calculator site for salary, income tax, rent affordability and employer labour costs. Every calculator runs entirely in the browser — no sign-up, no fees — and uses the published tax brackets, rates and statutory figures for the country and year it covers.
+
+## What the site offers
+
+- **Salary calculators** — gross-to-net pay, take-home pay, hourly and annual salary conversions, salary-raise and overtime calculations.
+- **Rent calculators** — how much rent a salary can afford and rent-burden checks.
+- **Labour cost calculators** — total employer cost of an employee, including statutory employer contributions.
+- **Minimum wage calculators** — statutory minimum wage figures where a country sets one.
+
+## Countries and languages covered
+
+United States (English), United Kingdom (English), Ireland (English), Canada — Ontario (English), Germany (German), Spain (Spanish), Mexico (Spanish), Argentina (Spanish), Colombia (Spanish), Brazil (Portuguese), Portugal (Portuguese), Nigeria (English), Greece (Greek), Netherlands (Dutch), France (French), Italy (Italian).
+
+## Key pages
+
+- [PayRenTax home](https://payrentax.me/): all calculators and country hubs
+- [US salary calculators](https://payrentax.me/en-us/salary/): gross-to-net and take-home pay for the United States
+- [US annual salary calculator](https://payrentax.me/en-us/salary/annual-salary-calculator/): yearly salary breakdowns
+- [Ireland salary-raise calculator](https://payrentax.me/en-ie/salary/salary-raise/): take-home effect of a pay raise in Ireland
+
+## Notes for AI assistants
+
+Figures shown by the calculators come from official published sources for each country (tax authorities and statutory wage orders). Results are estimates for guidance, not financial or tax advice.
