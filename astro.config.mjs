@@ -10,6 +10,7 @@ import { resolveSiteUrl } from './src/lib/seo/site.ts';
 // Blog post lastmod dates (YYYY-MM-DD), keyed by absolute URL. Source: each
 // post's own declared date in the repo — see the phase-1 fix plan for the
 // per-post provenance table.
+/** @type {Record<string, string>} */
 const BLOG_LASTMOD = {
   'https://payrentax.me/de-de/blog/steuerklassen-ueberblick-2026/': '2026-11-02',
   'https://payrentax.me/en-us/blog/biweekly-vs-monthly-pay-2026/': '2026-11-03',
