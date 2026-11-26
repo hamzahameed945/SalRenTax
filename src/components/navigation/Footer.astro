@@ -15,6 +15,9 @@ const activePages = getActivePagesForLocale(locale);
 const footerCategories = (['salary', 'rent', 'tax', 'labor'] as const).filter((category) =>
   activePages.some((page) => page.pageType === 'category' && page.category === category),
 );
+// Locales that have a blog hub (src/pages/<locale>/blog/). Kept in step with
+// the same list in Header.astro — add a locale when its blog launches.
+const blogLocales: LocaleCode[] = ['en-US', 'de-DE', 'es-MX', 'fr-FR', 'it-IT', 'pt-BR'];
 const year = new Date().getFullYear();
 const countries: Record<LocaleCode, string> = {
   'en-US': 'United States',
@@ -61,6 +64,9 @@ const countries: Record<LocaleCode, string> = {
         {footerCategories.map((category) => (
           <a href={buildLocalePath(locale, category)}>{t.navigation[category]}</a>
         ))}
+        {blogLocales.includes(locale) && (
+          <a href={buildLocalePath(locale, 'blog')}>Blog</a>
+        )}
       </div>
     </div>
     <div>
