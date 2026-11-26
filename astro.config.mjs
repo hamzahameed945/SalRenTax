@@ -40,6 +40,13 @@ const BLOG_LASTMOD = {
   'https://payrentax.me/pt-br/blog/salario-liquido-2026/': '2026-09-25',
 };
 
+// A2 house-affordability amount variants are noindexed (phase-2 plan,
+// Item 2): keep them out of the sitemap. The hub itself
+// (/en-us/salary/house-affordability/) does not match this pattern —
+// it has no -{amount} segment — and stays listed.
+const HOUSE_AFFORDABILITY_VARIANT =
+  /\/en-us\/salary\/house-affordability\/[a-z]+(?:-[a-z]+)*-\d+\/$/;
+
 export default defineConfig({
   output: 'static',
   site: resolveSiteUrl(),
@@ -50,7 +57,10 @@ export default defineConfig({
       // should be sitemapped. Everything the registry marks planned,
       // coming-soon, or disabled is never built in the first place, so it
       // can't leak in here — this filter additionally excludes the 404 page.
-      filter: (page) => !page.endsWith('/404') && !page.endsWith('/404/'),
+      filter: (page) =>
+        !page.endsWith('/404') &&
+        !page.endsWith('/404/') &&
+        !HOUSE_AFFORDABILITY_VARIANT.test(page),
       // Honest lastmod: only blog posts get one, using each post's own
       // declared date (its BlogPosting schema dateModified, or the date in
       // its locale hub's blogPosts list — the two agree). Calculator pages
