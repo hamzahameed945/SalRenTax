@@ -1,0 +1,117 @@
+---
+import { ukPaycheckEngine } from '../../calculators/salary/engines/gb/ukPaycheck';
+import type { UkPaycheckInput, UkStudentLoanPlan } from '../../calculators/salary/engines/gb/ukPaycheck';
+import {
+  ukPersonalAllowance2026,
+  ukIncomeTaxBrackets2026,
+  ukStudentLoan2026,
+} from '../../data/salary/gb/ukTaxData2026';
+
+interface Props {
+  amount: number;
+}
+
+const { amount } = Astro.props;
+
+const run = (grossAnnual: number, overrides: Partial<UkPaycheckInput> = {}) =>
+  ukPaycheckEngine.calculate(
+    { grossAnnual, payFrequency: 'annually', ...overrides },
+    {} as never,
+    2026,
+  );
+
+const base = run(amount);
+const keepOnExtra1000 = Math.round(run(amount + 1000).netAnnualPay - base.netAnnualPay);
+
+const higherRateThreshold = ukPersonalAllowance2026 + (ukIncomeTaxBrackets2026[0]?.max ?? 0);
+const additionalRateThreshold = ukPersonalAllowance2026 + (ukIncomeTaxBrackets2026[1]?.max ?? 0);
+let bandLabel = 'additional-rate';
+if (amount <= higherRateThreshold) bandLabel = 'basic-rate';
+else if (amount <= additionalRateThreshold) bandLabel = 'higher-rate';
+
+const money = (n: number) => '£' + Math.round(n).toLocaleString('en-GB');
+const pct = (r: number) => (r * 100).toFixed(2) + '%';
+
+const loanPlans: { key: UkStudentLoanPlan; label: string; threshold: number }[] = [
+  { key: 'plan1', label: 'Plan 1', threshold: ukStudentLoan2026.plan1Threshold },
+  { key: 'plan2', label: 'Plan 2', threshold: ukStudentLoan2026.plan2Threshold },
+  { key: 'plan4', label: 'Plan 4', threshold: ukStudentLoan2026.plan4Threshold },
+  { key: 'plan5', label: 'Plan 5', threshold: ukStudentLoan2026.plan5Threshold },
+  { key: 'postgraduate', label: 'Postgraduate', threshold: ukStudentLoan2026.postgraduateThreshold },
+];
+const loanRows = loanPlans.map((plan) => {
+  const r = run(amount, { studentLoanPlan: plan.key });
+  const repayment = plan.key === 'postgraduate' ? r.postgraduateLoanRepayment : r.studentLoanRepayment;
+  return { ...plan, repayment, net: r.netAnnualPay };
+});
+
+const pension = run(amount, { pensionContributionPercent: 5, pensionSalarySacrifice: true });
+const scotland = run(amount, { region: 'scotland' });
+const scotTaxDiff = scotland.incomeTaxAnnual - base.incomeTaxAnnual;
+let scotDiffText = 'the same amount';
+if (scotTaxDiff > 0) scotDiffText = `${money(scotTaxDiff)} more`;
+else if (scotTaxDiff < 0) scotDiffText = `${money(-scotTaxDiff)} less`;
+---
+
+<div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+  <h2 class="text-xl font-semibold">Where a {money(amount)} salary sits in the 2026/27 tax bands</h2>
+  <p class="mt-3 text-sm leading-relaxed text-slate-600">
+    On {money(amount)} your Personal Allowance is {money(base.personalAllowance)} and your taxable
+    income is {money(base.taxableIncome)}, which makes you a {bandLabel} taxpayer in England, Wales
+    and Northern Ireland. Income tax and National Insurance together take {pct(base.effectiveTotalRate)} of
+    the gross salary, and on the next £1,000 of pay you would keep about {money(keepOnExtra1000)} —
+    the rest goes in tax and NI at your marginal rate.
+  </p>
+  <p class="mt-3 text-sm leading-relaxed text-slate-600">
+    {amount < higherRateThreshold && (
+      <>You are {money(higherRateThreshold - amount)} of gross pay below the {money(higherRateThreshold)} higher-rate threshold, so a pay rise smaller than that stays entirely in the basic-rate band.</>
+    )}
+    {amount >= higherRateThreshold && amount < additionalRateThreshold && (
+      <>You are {money(additionalRateThreshold - amount)} of gross pay below the {money(additionalRateThreshold)} additional-rate threshold, where the top 45% rate begins.</>
+    )}
+    {amount >= additionalRateThreshold && (
+      <>Your salary is above the {money(additionalRateThreshold)} additional-rate threshold, so income above that line is taxed at 45%.</>
+    )}
+    {base.personalAllowance < ukPersonalAllowance2026 && (
+      <> Your Personal Allowance is tapered below the standard {money(ukPersonalAllowance2026)} because your income is over £100,000 — £1 of allowance is removed for every £2 above that line.</>
+    )}
+    {base.personalAllowance >= ukPersonalAllowance2026 && amount >= 100000 && (
+      <> Your allowance is still the full {money(ukPersonalAllowance2026)} at this level — the taper starts above £100,000 and removes £1 of allowance for every £2 of extra income, reaching zero at {money(100000 + ukPersonalAllowance2026 * 2)}.</>
+    )}
+  </p>
+</div>
+
+<div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+  <h2 class="text-xl font-semibold">Student loan repayments on {money(amount)}</h2>
+  <p class="mt-3 text-sm leading-relaxed text-slate-600">
+    Repayments are {(ukStudentLoan2026.deductionRate * 100).toFixed(0)}% of the income above your
+    plan's threshold ({(ukStudentLoan2026.postgraduateRate * 100).toFixed(0)}% for a Postgraduate
+    loan, above {money(ukStudentLoan2026.postgraduateThreshold)}). On {money(amount)} they differ
+    sharply by plan:
+  </p>
+  <table class="mt-4 w-full text-sm">
+    <thead>
+      <tr class="text-left"><th>Plan</th><th>Threshold</th><th>Repaid per year</th><th>Take-home</th></tr>
+    </thead>
+    <tbody>
+      {loanRows.map((row) => (
+        <tr><td>{row.label}</td><td>{money(row.threshold)}</td><td>{money(row.repayment)}</td><td>{money(row.net)}</td></tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+  <h2 class="text-xl font-semibold">Pension contributions and Scotland on {money(amount)}</h2>
+  <p class="mt-3 text-sm leading-relaxed text-slate-600">
+    Paying 5% of your salary into a pension by salary sacrifice puts {money(pension.pensionContribution)} a
+    year into the pension and reduces your take-home to {money(pension.netAnnualPay)} — a fall of
+    {money(base.netAnnualPay - pension.netAnnualPay)}, which is less than the contribution itself
+    because the sacrifice also lowers your income tax and National Insurance.
+  </p>
+  <p class="mt-3 text-sm leading-relaxed text-slate-600">
+    Scotland sets its own income tax bands. On {money(amount)}, Scottish income tax would be
+    {money(scotland.incomeTaxAnnual)} instead of {money(base.incomeTaxAnnual)} — {scotDiffText} —
+    leaving a take-home of {money(scotland.netAnnualPay)}. National Insurance is UK-wide and does not change.
+  </p>
+</div>
