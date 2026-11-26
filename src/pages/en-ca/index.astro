@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getDictionary } from '../../i18n/dictionaries';
+import { getActivePagesForLocale } from '../../seo/page-registry';
+import { buildPageMetadata } from '../../lib/seo/metadata';
+import { buildLocalePath } from '../../i18n/utils';
+import TiltCard from '../../components/islands/TiltCard';
+import { categoryMeta } from '../../data/categoryMeta';
+
+const locale = 'en-CA' as const;
+const t = getDictionary(locale);
+const homeTitle = 'Ontario Salary & Take-Home Pay Calculators 2026 — PayRenTax';
+const homeDescription =
+  'Estimate your Ontario take-home pay after federal and Ontario tax, CPP/CPP2 and EI. Free 2026 calculators with every rate and assumption explained.';
+const meta = buildPageMetadata(homeTitle, homeDescription, '/en-ca/');
+const calculatorPages = getActivePagesForLocale(locale).filter((p) => p.pageType === 'calculator');
+---
+
+<BaseLayout locale={locale} title={meta.title} description={meta.description} canonical={meta.canonical}>
+  <section class="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-50">
+    <div class="relative z-10 mx-auto max-w-5xl px-4 pt-16 pb-20 text-center sm:pt-24 sm:pb-28">
+      <p class="text-sm font-semibold uppercase tracking-widest text-accent">Canada Tax Calculators 2026</p>
+      <h1 class="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
+        Ontario Salary &amp; Take-Home Pay Calculator
+      </h1>
+      <p class="mx-auto mt-5 max-w-2xl text-lg text-slate-600 leading-relaxed">
+        {homeDescription}
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ Calculator Cards ═══ -->
+  <section class="mx-auto max-w-5xl px-4 py-16 sm:py-20">
+    <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl mb-2">{t.common.popularCalculators}</h2>
+    <p class="text-slate-500 mb-8">Quick access to the tools people use most.</p>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {calculatorPages.map((page, i) => {
+        const cm = categoryMeta[page.category] ?? categoryMeta['salary'];
+        return (
+          <div class="perspective-1000" style={`animation-delay: ${i * 80}ms;`}>
+            <TiltCard
+              client:visible
+              href={buildLocalePath(locale, page.slug)}
+              glowColor={cm.glow}
+            >
+              <div class="p-6">
+                <div class={`mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${cm.gradient} text-xl shadow-md`}>
+                  <span class="drop-shadow-sm">{cm.icon}</span>
+                </div>
+                <h3 class="text-base font-bold text-slate-900 leading-snug">
+                  {page.primaryKeyword}
+                </h3>
+                {page.description && (
+                  <p class="mt-1 text-sm text-slate-500 leading-snug">{page.description}</p>
+                )}
+                <div class="mt-4 flex items-center gap-1.5 text-sm font-semibold text-accent">
+                  Explore
+                  <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                  </svg>
+                </div>
+              </div>
+            </TiltCard>
+          </div>
+        );
+      })}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-4 pb-16">
+    <h2 class="text-xl font-semibold text-slate-900 mb-4">Ontario Income Tax, CPP &amp; EI 2026</h2>
+    <div class="space-y-4 text-slate-600">
+      <p>
+        Our <strong>Ontario take-home pay calculator</strong> applies the 2026 federal and Ontario
+        rates published by the CRA. Federal tax runs from 14% on the first $58,523 to 33% above
+        $258,482, with a federal basic personal amount of $16,452. Ontario tax runs from 5.05% on
+        the first $53,891 to 13.16% above $220,000, with an Ontario basic personal amount of
+        $12,989, plus the Ontario surtax where it applies.
+      </p>
+      <p>
+        Payroll deductions also include CPP at 5.95% on earnings between $3,500 and $74,600, CPP2
+        at 4% on earnings between $74,600 and $85,000, and EI at 1.63% on insurable earnings up to
+        $68,900. Estimates exclude the Ontario Health Premium and other credits or deductions.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
