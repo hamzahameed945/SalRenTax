@@ -11,6 +11,7 @@ import { getDictionary } from '../../../../i18n/dictionaries';
 import { buildPageMetadata } from '../../../../lib/seo/metadata';
 import { buildLocalePath } from '../../../../i18n/utils';
 import { buildFaqJsonLd } from '../../../../lib/seo/structuredData';
+import GbAmountInsights from '../../../../components/content/GbAmountInsights.astro';
 
 const locale = 'en-GB' as const;
 const t = getDictionary(locale);
@@ -134,7 +135,8 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
       employee National Insurance 8% on £12,570\u2013£50,270 and 2% above.
     </p>
 
-    <CalculatorFAQ heading="£30,000 after tax: FAQs" items={faqItems} />
+  <GbAmountInsights amount={30000} />
+<CalculatorFAQ heading="£30,000 after tax: FAQs" items={faqItems} />
 
     <div class="mt-10">
       <h2 class="text-xl font-semibold">Customise the numbers</h2>
