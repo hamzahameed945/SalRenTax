@@ -15,6 +15,10 @@ const config = getLocaleConfig(locale);
 const calculatorPages = getActivePagesForLocale(locale)
   .filter((page) => page.pageType === 'calculator')
   .slice(0, 8);
+// Locales that have a blog hub (src/pages/<locale>/blog/). Blog pages are not
+// in the page registry, so this list is maintained here — add a locale when
+// its blog launches.
+const blogLocales: LocaleCode[] = ['en-US', 'de-DE', 'es-MX', 'fr-FR', 'it-IT', 'pt-BR'];
 const localeLabels: Record<LocaleCode, string> = {
   'en-US': '🇺🇸 United States · English',
   'en-GB': '🇬🇧 United Kingdom · English',
@@ -67,6 +71,11 @@ const localeLabels: Record<LocaleCode, string> = {
           {t.navigation[category]}
         </a>
       ))}
+      {blogLocales.includes(locale) && (
+        <a href={buildLocalePath(locale, 'blog')} class="header-nav-link">
+          Blog
+        </a>
+      )}
       <a href="/how-calculators-work/" class="header-nav-link">
         How it works
       </a>
