@@ -8507,6 +8507,18 @@ export const pageRegistry: PageDefinition[] = [
     equivalentPageGroup: undefined,
     status: 'active',
   },
+  {
+    id: 'en-ca-home',
+    locale: 'en-CA',
+    category: 'guides',
+    slug: '',
+    pageType: 'home',
+    primaryKeyword: 'ontario salary and tax calculators',
+    secondaryKeywords: ['ontario take home pay calculator', 'canada salary calculator'],
+    year: null,
+    contentKey: 'localeHome',
+    status: 'active',
+  },
 ];
 
 export function getActivePages(): PageDefinition[] {
