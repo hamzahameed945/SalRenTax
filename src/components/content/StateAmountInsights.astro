@@ -1,0 +1,197 @@
+---
+import { usPaycheckEngine, getStateTaxMeta } from '../../calculators/salary/engines/usPaycheck';
+import {
+  federalBrackets2026Single,
+  standardDeduction2026,
+} from '../../data/salary/us/federalTax2026';
+import { calculateSciad } from '../../calculators/salary/engines/usStates/sc';
+
+interface Props {
+  stateCode: string;
+  stateName: string;
+  amount: number;
+}
+
+const { stateCode, stateName, amount } = Astro.props;
+
+const AMOUNTS = [40000, 50000, 60000, 75000, 80000, 100000, 125000, 150000];
+
+const run = (gross: number) =>
+  usPaycheckEngine.calculate(
+    {
+      grossPayPerPeriod: gross,
+      payFrequency: 'annually',
+      filingStatus: 'single',
+      preTaxDeductionsPerPeriod: 0,
+      stateCode,
+    },
+    { countryCode: 'US' },
+    2026,
+  );
+
+const takeHome = (r: ReturnType<typeof run>) =>
+  r.annualGrossPay -
+  r.annualFederalIncomeTax -
+  (r.annualStateIncomeTax ?? 0) -
+  r.annualSocialSecurity -
+  r.annualMedicare -
+  (r.annualAdditionalMedicare ?? 0);
+
+const rows = AMOUNTS.map((a) => {
+  const r = run(a);
+  return {
+    a,
+    fed: r.annualFederalIncomeTax,
+    st: r.annualStateIncomeTax ?? 0,
+    fica: r.annualSocialSecurity + r.annualMedicare + (r.annualAdditionalMedicare ?? 0),
+    take: takeHome(r),
+  };
+});
+
+const base = run(amount);
+const stateTax = base.annualStateIncomeTax ?? 0;
+const totalTax = amount - takeHome(base);
+const stateShare = totalTax > 0 ? (stateTax / totalTax) * 100 : 0;
+const stateOnExtra1000 = Math.round((run(amount + 1000).annualStateIncomeTax ?? 0) - stateTax);
+
+const fedTaxable = Math.max(0, amount - standardDeduction2026.single);
+const fedBracket =
+  federalBrackets2026Single.find((b) => b.max === null || fedTaxable < b.max) ??
+  federalBrackets2026Single[federalBrackets2026Single.length - 1];
+
+const meta = getStateTaxMeta(stateCode);
+
+let stateTaxable: number | null = null;
+if (meta?.type === 'graduated') {
+  stateTaxable =
+    stateCode === 'SC'
+      ? Math.max(0, amount - calculateSciad(amount, 'single'))
+      : Math.max(0, amount - (meta.standardDeductionSingle ?? 0));
+} else if (meta?.type === 'flat') {
+  stateTaxable = Math.max(0, amount - (meta.standardDeductionSingle ?? 0));
+}
+const band =
+  meta?.type === 'graduated' && meta.bracketsSingle && stateTaxable !== null
+    ? meta.bracketsSingle.find((b) => b.max === null || stateTaxable < b.max) ??
+      meta.bracketsSingle[meta.bracketsSingle.length - 1]
+    : undefined;
+
+const money = (n: number) => '$' + Math.round(n).toLocaleString('en-US');
+const ratePct = (r: number) => parseFloat((r * 100).toFixed(3)) + '%';
+const rangeLabel = (min: number, max: number | null) =>
+  max === null ? `${money(min)} and up` : `${money(min)} – ${money(max)}`;
+---
+
+<div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+  <h2 class="text-xl font-semibold">How the tax on {money(amount)} breaks down in {stateName}</h2>
+  <p class="mt-3 text-sm leading-relaxed text-slate-600">
+    Total tax on {money(amount)} in {stateName} is {money(totalTax)} — {((totalTax / amount) * 100).toFixed(1)}%
+    of the gross salary. {stateName} income tax accounts for {money(stateTax)} of that
+    ({stateShare.toFixed(1)}% of the total bill); the rest is federal income tax and FICA.
+    After the {money(standardDeduction2026.single)} federal standard deduction, your federal
+    taxable income is {money(fedTaxable)}, which puts the top slice of your income in the
+    {ratePct(fedBracket.rate)} federal bracket.
+  </p>
+  <p class="mt-3 text-sm leading-relaxed text-slate-600">
+    {meta?.type === 'graduated' && band && stateTaxable !== null && (
+      <>Your {stateName} taxable income of {money(stateTaxable)} reaches the {ratePct(band.rate)} state
+      bracket. On the next $1,000 of salary, {stateName} takes about {money(stateOnExtra1000)} more in
+      state income tax.</>
+    )}
+    {meta?.type === 'flat' && (
+      <>{stateName} charges a flat {ratePct(meta.flatRate ?? 0)} on taxable income, so the state
+      takes about {money(stateOnExtra1000)} of the next $1,000 of salary, at any income level.</>
+    )}
+    {meta?.type === 'none' && (
+      <>{stateName} has no state income tax on wages, so a pay rise changes only your federal
+      income tax and FICA — nothing extra goes to the state.</>
+    )}
+  </p>
+</div>
+
+<div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+  <h2 class="text-xl font-semibold">Take-home pay in {stateName} at other salary levels</h2>
+  <table class="mt-4 w-full text-sm">
+    <thead>
+      <tr class="text-left"><th>Salary</th><th>Federal tax</th><th>{stateName} tax</th><th>FICA</th><th>Take-home</th></tr>
+    </thead>
+    <tbody>
+      {rows.map((row) => (
+        <tr class={row.a === amount ? 'font-semibold' : undefined}>
+          <td>{money(row.a)}{row.a === amount ? ' (this page)' : ''}</td>
+          <td>{money(row.fed)}</td>
+          <td>{money(row.st)}</td>
+          <td>{money(row.fica)}</td>
+          <td>{money(row.take)}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <p class="mt-4 text-xs text-slate-500">
+    Single filer, no pre-tax deductions, 2026 federal and {stateName} rules. The same
+    assumptions as the breakdown at the top of this page.
+  </p>
+</div>
+
+<div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+  <h2 class="text-xl font-semibold">How {stateName} taxes income in 2026</h2>
+  {meta?.type === 'graduated' && meta.bracketsSingle && (
+    <>
+      <table class="mt-4 w-full text-sm">
+        <thead>
+          <tr class="text-left"><th>Taxable income (single)</th><th>Rate</th></tr>
+        </thead>
+        <tbody>
+          {meta.bracketsSingle.map((b) => (
+            <tr><td>{rangeLabel(b.min, b.max)}</td><td>{ratePct(b.rate)}</td></tr>
+          ))}
+        </tbody>
+      </table>
+      {stateCode === 'SC' ? (
+        <p class="mt-3 text-sm leading-relaxed text-slate-600">
+          South Carolina replaced its standard deduction in 2026 with the SC Income Adjusted
+          Deduction (SCIAD): up to {money(meta.sciadBaseSingle ?? 0)} for single filers
+          ({money(meta.sciadBaseMarriedJointly ?? 0)} married filing jointly), phasing out as
+          income rises. On {money(amount)} the deduction is {money(calculateSciad(amount, 'single'))}.
+          The brackets above apply to income after that deduction.
+        </p>
+      ) : meta.deductionLabel === 'personal exemption' ? (
+        <p class="mt-3 text-sm leading-relaxed text-slate-600">
+          {stateName} has no standard deduction. Instead, a personal exemption of
+          {money(meta.standardDeductionSingle ?? 0)} (single) or {money(meta.standardDeductionMarriedJointly ?? 0)}
+          (married filing jointly) comes off the top before the brackets apply.
+        </p>
+      ) : (
+        <p class="mt-3 text-sm leading-relaxed text-slate-600">
+          The 2026 standard deduction is {money(meta.standardDeductionSingle ?? 0)} for single
+          filers and {money(meta.standardDeductionMarriedJointly ?? 0)} married filing jointly;
+          the brackets above apply to income after that deduction.
+        </p>
+      )}
+    </>
+  )}
+  {meta?.type === 'flat' && (
+    <p class="mt-3 text-sm leading-relaxed text-slate-600">
+      {meta.deductionLabel === 'personal exemption' ? (
+        <>{stateName} taxes income at a flat {ratePct(meta.flatRate ?? 0)}. There is no standard
+        deduction; a personal exemption of {money(meta.standardDeductionSingle ?? 0)} per filer
+        comes off the top first.</>
+      ) : (meta.standardDeductionSingle ?? 0) > 0 ? (
+        <>{stateName} taxes income at a flat {ratePct(meta.flatRate ?? 0)} after a standard
+        deduction of {money(meta.standardDeductionSingle ?? 0)} (single) or
+        {money(meta.standardDeductionMarriedJointly ?? 0)} (married filing jointly).</>
+      ) : (
+        <>{stateName} taxes income at a flat {ratePct(meta.flatRate ?? 0)} with no standard
+        deduction — the rate applies from the first dollar of income (after any pre-tax
+        deductions).</>
+      )}
+    </p>
+  )}
+  {meta?.type === 'none' && (
+    <p class="mt-3 text-sm leading-relaxed text-slate-600">
+      {stateName} does not tax wage income at the state level, which is why the {stateName} tax
+      column is $0 at every salary level above. Only federal income tax and FICA (Social
+      Security and Medicare) come out of the gross pay.
+    </p>
+  )}
+</div>
