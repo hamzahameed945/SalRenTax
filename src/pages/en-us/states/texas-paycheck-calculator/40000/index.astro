@@ -10,6 +10,7 @@ import { getDictionary } from '../../../../../i18n/dictionaries';
 import { buildPageMetadata } from '../../../../../lib/seo/metadata';
 import { buildLocalePath } from '../../../../../i18n/utils';
 import { buildFaqJsonLd } from '../../../../../lib/seo/structuredData';
+import StateAmountInsights from '../../../../../components/content/StateAmountInsights.astro';
 
 const locale = 'en-US' as const;
 const t = getDictionary(locale);
@@ -107,6 +108,7 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
       {t.disclaimers.general} {t.disclaimers.dataSource}
     </p>
 
+    <StateAmountInsights stateCode="TX" stateName="Texas" amount={40000} />
     <CalculatorFAQ heading="$40,000 in Texas: FAQs" items={faqItems} />
 
     <div class="mt-10">
