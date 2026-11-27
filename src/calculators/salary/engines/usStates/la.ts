@@ -8,6 +8,7 @@ import type { StateTaxEngine } from './types';
  */
 export const laStateEngine: StateTaxEngine = {
   stateCode: 'LA',
+  meta: { type: 'flat', flatRate: 0.03, standardDeductionSingle: 12875, standardDeductionMarriedJointly: 25750 },
   calculate(input, annualGrossPay, annualPreTaxDeductions) {
     const standardDeduction = input.filingStatus === 'marriedJointly' ? 25750 : 12875;
     const taxable = Math.max(0, annualGrossPay - annualPreTaxDeductions - standardDeduction);

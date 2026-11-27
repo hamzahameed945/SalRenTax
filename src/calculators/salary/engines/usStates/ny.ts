@@ -52,6 +52,35 @@ function scheduleTax(taxable: number, brackets: readonly BracketRow[]): number {
 
 export const nyStateEngine: StateTaxEngine = {
   stateCode: 'NY',
+  // TaxBracket form of the SINGLE/MARRIED tuple tables above (min = previous
+  // upper bound), with the TOP_RATE row made explicit.
+  meta: {
+    type: 'graduated',
+    bracketsSingle: [
+      { min: 0, max: 8500, rate: 0.039 },
+      { min: 8500, max: 11700, rate: 0.044 },
+      { min: 11700, max: 13900, rate: 0.0515 },
+      { min: 13900, max: 80650, rate: 0.054 },
+      { min: 80650, max: 215400, rate: 0.059 },
+      { min: 215400, max: 1077550, rate: 0.0685 },
+      { min: 1077550, max: 5000000, rate: 0.0965 },
+      { min: 5000000, max: 25000000, rate: 0.103 },
+      { min: 25000000, max: null, rate: 0.109 },
+    ],
+    bracketsMarriedJointly: [
+      { min: 0, max: 17150, rate: 0.039 },
+      { min: 17150, max: 23600, rate: 0.044 },
+      { min: 23600, max: 27900, rate: 0.0515 },
+      { min: 27900, max: 161550, rate: 0.054 },
+      { min: 161550, max: 323200, rate: 0.059 },
+      { min: 323200, max: 2155350, rate: 0.0685 },
+      { min: 2155350, max: 5000000, rate: 0.0965 },
+      { min: 5000000, max: 25000000, rate: 0.103 },
+      { min: 25000000, max: null, rate: 0.109 },
+    ],
+    standardDeductionSingle: 8000,
+    standardDeductionMarriedJointly: 16050,
+  },
   calculate(input, annualGrossPay, annualPreTaxDeductions) {
     const deduction = input.filingStatus === 'marriedJointly' ? 16050 : 8000;
     const taxable = Math.max(0, annualGrossPay - annualPreTaxDeductions - deduction);

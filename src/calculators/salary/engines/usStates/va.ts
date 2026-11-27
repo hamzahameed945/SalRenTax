@@ -30,6 +30,7 @@ function getBrackets(filingStatus: FilingStatus): TaxBracket[] {
 
 export const vaStateEngine: StateTaxEngine = {
   stateCode: 'VA',
+  meta: { type: 'graduated', bracketsSingle: VA_BRACKETS_2026_SINGLE, bracketsMarriedJointly: VA_BRACKETS_2026_MARRIED_JOINTLY, standardDeductionSingle: 8750, standardDeductionMarriedJointly: 17500 },
   calculate(input, annualGrossPay, annualPreTaxDeductions) {
     const standardDeduction = input.filingStatus === 'marriedJointly' ? 17500 : 8750;
     const taxable = Math.max(0, annualGrossPay - annualPreTaxDeductions - standardDeduction);

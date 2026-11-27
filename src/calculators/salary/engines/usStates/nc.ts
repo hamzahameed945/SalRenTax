@@ -8,6 +8,7 @@ import type { StateTaxEngine } from './types';
  */
 export const ncStateEngine: StateTaxEngine = {
   stateCode: 'NC',
+  meta: { type: 'flat', flatRate: 0.0399, standardDeductionSingle: 12750, standardDeductionMarriedJointly: 25500 },
   calculate(input, annualGrossPay, annualPreTaxDeductions) {
     const standardDeduction = input.filingStatus === 'marriedJointly' ? 25500 : 12750;
     const taxable = Math.max(0, annualGrossPay - annualPreTaxDeductions - standardDeduction);

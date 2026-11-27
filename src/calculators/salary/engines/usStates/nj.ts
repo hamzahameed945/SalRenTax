@@ -76,6 +76,14 @@ function getNJBrackets(filingStatus: FilingStatus): TaxBracket[] {
 
 export const njStateEngine: StateTaxEngine = {
   stateCode: 'NJ',
+  meta: {
+    type: 'graduated',
+    bracketsSingle: NJ_BRACKETS_2026_SINGLE,
+    bracketsMarriedJointly: NJ_BRACKETS_2026_MARRIED_JOINTLY,
+    standardDeductionSingle: NJ_PERSONAL_EXEMPTION_2026.single,
+    standardDeductionMarriedJointly: NJ_PERSONAL_EXEMPTION_2026.marriedJointly,
+    deductionLabel: 'personal exemption',
+  },
   calculate(input, annualGrossPay, annualPreTaxDeductions) {
     const personalExemption = getNJPersonalExemption(input.filingStatus);
     const taxableIncome = Math.max(0, annualGrossPay - annualPreTaxDeductions - personalExemption);

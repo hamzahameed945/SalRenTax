@@ -6,6 +6,7 @@ import type { StateTaxEngine } from './types';
 
 export const waStateEngine: StateTaxEngine = {
   stateCode: 'WA',
+  meta: { type: 'none' },
   calculate(_input, _annualGrossPay, _annualPreTaxDeductions) {
     // Washington has no state income tax on wages
     const annualStateIncomeTax = 0;

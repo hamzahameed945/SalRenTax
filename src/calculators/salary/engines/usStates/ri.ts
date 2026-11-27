@@ -28,6 +28,7 @@ function getBrackets(filingStatus: FilingStatus): TaxBracket[] {
 
 export const riStateEngine: StateTaxEngine = {
   stateCode: 'RI',
+  meta: { type: 'graduated', bracketsSingle: RI_BRACKETS_2026_SINGLE, bracketsMarriedJointly: RI_BRACKETS_2026_MARRIED_JOINTLY, standardDeductionSingle: 11200, standardDeductionMarriedJointly: 22400 },
   calculate(input, annualGrossPay, annualPreTaxDeductions) {
     const standardDeduction = input.filingStatus === 'marriedJointly' ? 22400 : 11200;
     const taxable = Math.max(0, annualGrossPay - annualPreTaxDeductions - standardDeduction);

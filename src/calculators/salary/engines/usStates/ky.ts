@@ -8,6 +8,7 @@ import type { StateTaxEngine } from './types';
  */
 export const kyStateEngine: StateTaxEngine = {
   stateCode: 'KY',
+  meta: { type: 'flat', flatRate: 0.035, standardDeductionSingle: 3360, standardDeductionMarriedJointly: 3360 },
   calculate(input, annualGrossPay, annualPreTaxDeductions) {
     const standardDeduction = input.filingStatus === 'marriedJointly' ? 3360 : 3360;
     const taxable = Math.max(0, annualGrossPay - annualPreTaxDeductions - standardDeduction);

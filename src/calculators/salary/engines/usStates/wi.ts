@@ -30,6 +30,7 @@ function getBrackets(filingStatus: FilingStatus): TaxBracket[] {
 
 export const wiStateEngine: StateTaxEngine = {
   stateCode: 'WI',
+  meta: { type: 'graduated', bracketsSingle: WI_BRACKETS_2026_SINGLE, bracketsMarriedJointly: WI_BRACKETS_2026_MARRIED_JOINTLY, standardDeductionSingle: 13960, standardDeductionMarriedJointly: 25840 },
   calculate(input, annualGrossPay, annualPreTaxDeductions) {
     const standardDeduction = input.filingStatus === 'marriedJointly' ? 25840 : 13960;
     const taxable = Math.max(0, annualGrossPay - annualPreTaxDeductions - standardDeduction);

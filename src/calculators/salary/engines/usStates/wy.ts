@@ -3,6 +3,7 @@ import type { UsPaycheckInput } from '../usPaycheck';
 
 export const wyStateEngine: StateTaxEngine = {
   stateCode: 'WY',
+  meta: { type: 'none' },
   calculate(
     _input: UsPaycheckInput,
     _annualGrossPay: number,

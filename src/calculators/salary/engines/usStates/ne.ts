@@ -28,6 +28,7 @@ function getBrackets(filingStatus: FilingStatus): TaxBracket[] {
 
 export const neStateEngine: StateTaxEngine = {
   stateCode: 'NE',
+  meta: { type: 'graduated', bracketsSingle: NE_BRACKETS_2026_SINGLE, bracketsMarriedJointly: NE_BRACKETS_2026_MARRIED_JOINTLY, standardDeductionSingle: 8850, standardDeductionMarriedJointly: 17700 },
   calculate(input, annualGrossPay, annualPreTaxDeductions) {
     const standardDeduction = input.filingStatus === 'marriedJointly' ? 17700 : 8850;
     const taxable = Math.max(0, annualGrossPay - annualPreTaxDeductions - standardDeduction);

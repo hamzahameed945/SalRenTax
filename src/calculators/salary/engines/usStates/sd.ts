@@ -3,6 +3,7 @@ import type { UsPaycheckInput } from '../usPaycheck';
 
 export const sdStateEngine: StateTaxEngine = {
   stateCode: 'SD',
+  meta: { type: 'none' },
   calculate(
     _input: UsPaycheckInput,
     _annualGrossPay: number,

@@ -8,6 +8,7 @@ import type { StateTaxEngine } from './types';
  */
 export const inStateEngine: StateTaxEngine = {
   stateCode: 'IN',
+  meta: { type: 'flat', flatRate: 0.0295, standardDeductionSingle: 0, standardDeductionMarriedJointly: 0 },
   calculate(input, annualGrossPay, annualPreTaxDeductions) {
     const standardDeduction = input.filingStatus === 'marriedJointly' ? 0 : 0;
     const taxable = Math.max(0, annualGrossPay - annualPreTaxDeductions - standardDeduction);

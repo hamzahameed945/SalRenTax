@@ -3,6 +3,7 @@ import type { UsPaycheckInput } from '../usPaycheck';
 
 export const tnStateEngine: StateTaxEngine = {
   stateCode: 'TN',
+  meta: { type: 'none' },
   calculate(
     _input: UsPaycheckInput,
     _annualGrossPay: number,

@@ -8,6 +8,7 @@ import type { StateTaxEngine } from './types';
  */
 export const gaStateEngine: StateTaxEngine = {
   stateCode: 'GA',
+  meta: { type: 'flat', flatRate: 0.0519, standardDeductionSingle: 12000, standardDeductionMarriedJointly: 24000 },
   calculate(input, annualGrossPay, annualPreTaxDeductions) {
     const standardDeduction = input.filingStatus === 'marriedJointly' ? 24000 : 12000;
     const taxable = Math.max(0, annualGrossPay - annualPreTaxDeductions - standardDeduction);

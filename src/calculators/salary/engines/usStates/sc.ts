@@ -54,6 +54,19 @@ export function calculateSciad(federalAgi: number, filingStatus: FilingStatus): 
 
 export const scStateEngine: StateTaxEngine = {
   stateCode: 'SC',
+  meta: {
+    type: 'graduated',
+    bracketsSingle: [
+      { min: 0, max: BRACKET_BREAK, rate: RATE_LOW },
+      { min: BRACKET_BREAK, max: null, rate: RATE_HIGH },
+    ],
+    bracketsMarriedJointly: [
+      { min: 0, max: BRACKET_BREAK, rate: RATE_LOW },
+      { min: BRACKET_BREAK, max: null, rate: RATE_HIGH },
+    ],
+    sciadBaseSingle: 15000,
+    sciadBaseMarriedJointly: 30000,
+  },
   calculate(input, annualGrossPay, annualPreTaxDeductions) {
     // Federal AGI proxy: pre-tax deductions reduce AGI.
     const federalAgi = Math.max(0, annualGrossPay - annualPreTaxDeductions);

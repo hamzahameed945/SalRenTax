@@ -6,6 +6,13 @@ import type { StateTaxEngine } from './types';
  */
 export const ilStateEngine: StateTaxEngine = {
   stateCode: 'IL',
+  meta: {
+    type: 'flat',
+    flatRate: 0.0495,
+    standardDeductionSingle: 2925,
+    standardDeductionMarriedJointly: 2925,
+    deductionLabel: 'personal exemption',
+  },
   calculate(_input, annualGrossPay, annualPreTaxDeductions) {
     const taxable = Math.max(0, annualGrossPay - annualPreTaxDeductions - 2925);
     const annualStateIncomeTax = taxable * 0.0495;

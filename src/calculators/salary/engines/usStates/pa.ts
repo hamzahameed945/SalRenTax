@@ -9,6 +9,7 @@ const PA_FLAT_RATE_2026 = 0.0307;
 
 export const paStateEngine: StateTaxEngine = {
   stateCode: 'PA',
+  meta: { type: 'flat', flatRate: PA_FLAT_RATE_2026 },
   calculate(_input, annualGrossPay, annualPreTaxDeductions) {
     // Pennsylvania taxes gross income minus pre-tax deductions at a flat rate
     const taxableIncome = Math.max(0, annualGrossPay - annualPreTaxDeductions);

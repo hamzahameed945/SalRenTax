@@ -62,7 +62,12 @@ import { vaStateEngine } from './usStates/va';
 import { wvStateEngine } from './usStates/wv';
 import { wiStateEngine } from './usStates/wi';
 import { wyStateEngine } from './usStates/wy';
-import type { StateTaxEngine } from './usStates/types';
+import type { StateTaxEngine, StateTaxMeta } from './usStates/types';
+
+/** Static 2026 tax facts for a state, for content generation on state pages. */
+export function getStateTaxMeta(stateCode: string): StateTaxMeta | undefined {
+  return stateEngines[stateCode.toUpperCase()]?.meta;
+}
 
 const stateEngines: Record<string, StateTaxEngine> = {
   TX: txStateEngine,

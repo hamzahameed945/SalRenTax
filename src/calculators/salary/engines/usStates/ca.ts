@@ -43,6 +43,7 @@ function getCABrackets(filingStatus: FilingStatus): TaxBracket[] {
 
 export const caStateEngine: StateTaxEngine = {
   stateCode: 'CA',
+  meta: { type: 'graduated', bracketsSingle: CA_BRACKETS_2026_SINGLE, bracketsMarriedJointly: CA_BRACKETS_2026_MARRIED_JOINTLY, standardDeductionSingle: 5540, standardDeductionMarriedJointly: 11080 },
   calculate(input, annualGrossPay, annualPreTaxDeductions) {
     const standardDeduction = input.filingStatus === 'marriedJointly' ? 11080 : 5540;
     const taxable = Math.max(0, annualGrossPay - annualPreTaxDeductions - standardDeduction);

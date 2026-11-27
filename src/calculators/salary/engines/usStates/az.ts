@@ -7,6 +7,7 @@ import type { StateTaxEngine } from './types';
  */
 export const azStateEngine: StateTaxEngine = {
   stateCode: 'AZ',
+  meta: { type: 'flat', flatRate: 0.025, standardDeductionSingle: 15750, standardDeductionMarriedJointly: 31500 },
   calculate(input, annualGrossPay, annualPreTaxDeductions) {
     const standardDeduction = input.filingStatus === 'marriedJointly' ? 31500 : 15750;
     const taxable = Math.max(0, annualGrossPay - annualPreTaxDeductions - standardDeduction);

@@ -36,6 +36,7 @@ function getBrackets(filingStatus: FilingStatus): TaxBracket[] {
 
 export const ctStateEngine: StateTaxEngine = {
   stateCode: 'CT',
+  meta: { type: 'graduated', bracketsSingle: CT_BRACKETS_2026_SINGLE, bracketsMarriedJointly: CT_BRACKETS_2026_MARRIED_JOINTLY, standardDeductionSingle: 0, standardDeductionMarriedJointly: 0 },
   calculate(input, annualGrossPay, annualPreTaxDeductions) {
     const standardDeduction = input.filingStatus === 'marriedJointly' ? 0 : 0;
     const taxable = Math.max(0, annualGrossPay - annualPreTaxDeductions - standardDeduction);
