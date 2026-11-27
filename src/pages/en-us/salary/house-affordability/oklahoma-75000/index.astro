@@ -50,6 +50,7 @@ const faqJsonLd = buildFaqJsonLd(faqItems);
   title={meta.title}
   description={meta.description}
   canonical={meta.canonical}
+  robots="noindex, follow"
 >
   <JsonLd entries={[faqJsonLd]} />
   <Breadcrumbs
