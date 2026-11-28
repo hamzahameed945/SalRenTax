@@ -1,0 +1,92 @@
+---
+import CalculatorResource from '../../../../components/content/CalculatorResource.astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/navigation/Breadcrumbs.astro';
+import InContentAd from '../../../../components/ads/InContentAd.astro';
+import CalculatorFAQ from '../../../../components/calculator/CalculatorFAQ.astro';
+import MxAguinaldoCalculator from '../../../../components/islands/MxAguinaldoCalculator';
+import { buildLocalePath } from '../../../../i18n/utils';
+
+const locale = 'es-MX' as const;
+const title = 'Calculadora de Aguinaldo 2026 — PayRenTax';
+const description =
+  'Calcula tu aguinaldo 2026 en México: bruto, ISR exento hasta 30 UMAs y neto estimado con la tarifa mensual del SAT.';
+const canonical = '/es-mx/labor/calculadora-aguinaldo/';
+const faqItems = [
+  {
+    question: '¿Cómo se calcula el aguinaldo?',
+    answer:
+      'El aguinaldo bruto es tu salario diario (sueldo mensual entre 30) por los días de aguinaldo que te corresponden, ajustado por los meses trabajados en el año. Por ley el mínimo es 15 días (Artículo 87 de la LFT). Ejemplo: con sueldo mensual de $20,000, tu salario diario es $666.67 y con 15 días y 12 meses trabajados, tu aguinaldo bruto es de $10,000.00.',
+  },
+  {
+    question: '¿Cuándo deben pagar el aguinaldo?',
+    answer:
+      'La Ley Federal del Trabajo (Artículo 87) establece que el aguinaldo debe pagarse antes del 20 de diciembre de cada año.',
+  },
+  {
+    question: '¿El aguinaldo paga ISR?',
+    answer:
+      'Sí, parcialmente. El aguinaldo está exento de ISR hasta 30 UMAs ($3,519.30 en 2026) y solo el excedente paga ISR con la tarifa mensual del Artículo 96 de la LISR. Ejemplo: de un aguinaldo bruto de $10,000.00, $3,519.30 están exentos y solo $6,480.70 forman la base gravada.',
+  },
+  {
+    question: '¿Qué pasa si trabajé menos de un año?',
+    answer:
+      'Te corresponde la parte proporcional conforme al tiempo trabajado: 1.25 días de salario por cada mes trabajado (15 días entre 12 meses, Artículo 87 de la LFT). Si trabajaste 6 meses, te corresponden 7.5 días de salario.',
+  },
+];
+---
+
+<BaseLayout locale={locale} title={title} description={description} canonical={canonical}>
+  <Breadcrumbs
+    locale={locale}
+    trail={[
+      {
+        label: 'Calculadora de Aguinaldo',
+        href: buildLocalePath(locale, 'labor/calculadora-aguinaldo'),
+      },
+    ]}
+  />
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold text-slate-900">Calculadora de Aguinaldo 2026</h1>
+    <p class="mt-3 max-w-2xl text-slate-600">
+      Calcula tu aguinaldo en México 2026: bruto según tus días y meses trabajados, ISR
+      exento hasta 30 UMAs y neto estimado.
+    </p>
+    <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <MxAguinaldoCalculator client:load />
+    </div>
+    <div class="mt-8">
+      <InContentAd slotId="es-mx-labor-calculadora-aguinaldo-1" />
+    </div>
+    <div class="mt-10 prose prose-slate max-w-none">
+      <h2>Información importante</h2>
+      <p>
+        La Ley Federal del Trabajo (Artículo 87) establece un aguinaldo mínimo de 15 días de
+        salario, que el patrón debe pagar antes del 20 de diciembre. El aguinaldo bruto se
+        calcula como tu salario diario (sueldo mensual entre 30) por los días de aguinaldo,
+        ajustado por los meses trabajados en el año.
+      </p>
+      <p>
+        El aguinaldo está exento de ISR hasta 30 UMAs, es decir $3,519.30 en 2026 (UMA diaria
+        de $117.31, INEGI, vigente desde el 1 de febrero de 2026). Solo el excedente paga ISR,
+        estimado con la tarifa mensual del Artículo 96 de la LISR. Es una estimación: la
+        retención real que aplica el patrón depende de su procedimiento de nómina y de tu
+        ingreso total de diciembre.
+      </p>
+    </div>
+    <nav class="mt-10" aria-label="Aguinaldo por sueldo">
+      <h2 class="text-xl font-semibold">Aguinaldo por sueldo</h2>
+      <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-mx/labor/aguinaldo-10000/">Aguinaldo de $10,000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-mx/labor/aguinaldo-15000/">Aguinaldo de $15,000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-mx/labor/aguinaldo-20000/">Aguinaldo de $20,000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-mx/labor/aguinaldo-30000/">Aguinaldo de $30,000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-mx/labor/aguinaldo-50000/">Aguinaldo de $50,000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-mx/labor/aguinaldo-75000/">Aguinaldo de $75,000</a></li>
+        <li><a class="text-emerald-700 underline hover:text-emerald-900" href="/es-mx/labor/aguinaldo-100000/">Aguinaldo de $100,000</a></li>
+      </ul>
+    </nav>
+    <CalculatorFAQ heading="Preguntas frecuentes" items={faqItems} />
+  </article>
+  <CalculatorResource locale="es-MX" category="labor" />
+</BaseLayout>
