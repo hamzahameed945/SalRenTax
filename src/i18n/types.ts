@@ -94,6 +94,8 @@ export type CalculatorType =
   | 'brHorasExtras'
   | 'esFiniquito'
   | 'mxFiniquito'
+  | 'mxAguinaldo'
+  | 'mxPrimaVacacional'
   | 'dePartTimeSalary'
   | 'deMinijob'
   | 'frBruttoNetto'
